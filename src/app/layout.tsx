@@ -5,6 +5,7 @@ const inter = Inter({subsets: ["latin"]});
 
 export const metadata = {
     title: "Ten Boomgaerde",
+    colorScheme: "light dark",
 };
 
 export default function RootLayout({
