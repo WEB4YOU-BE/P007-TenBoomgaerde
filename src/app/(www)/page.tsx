@@ -15,7 +15,7 @@ export default function Index() {
                     er geen feesten met muziekinstallaties plaats vinden na 22u00.</p>
                 <h2 className={"text-2xl pt-10 pb-2"}>Praktische info</h2>
                 <h3 className={"text-xl pb-4"}>Accomodatie</h3>
-                <ul role={"list"} className={"list-disc pl-5 space-y-2"}>
+                <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     <li>Grote zaal: mogelijkheid om 100 personen aan tafels te plaatsen</li>
                     <li>Kleine zaal: mogelijkheid om 30 personen aan tafels te plaatsen</li>
                     <li>Keuken met voldoende frigo's en diepvriezer (klein formaat)</li>
@@ -25,7 +25,19 @@ export default function Index() {
                 </ul>
                 <p className={"text-base/7 py-2"}>Het complex is volledig rookvrij (art.2 §1 van het KB van
                     15/05/90).</p>
-
+                <h3 className={"text-xl pt-7 pb-4"}>Voorzieningen</h3>
+                <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
+                    <li>Internet toegang (free wifi)</li>
+                    <li>Keukenmateriaal voorzien op 100 personen</li>
+                    <li>Wijnglazen</li>
+                    <li>Aperitiefglazen</li>
+                    <li>koffieperculator</li>
+                    <li>Microgolf</li>
+                    <li>Receptietafels</li>
+                    <li>Beamer</li>
+                    <li>Schrijfbord</li>
+                    <li>Mobiel podium</li>
+                </ul>
             </div>
         </section>
     </main>;
