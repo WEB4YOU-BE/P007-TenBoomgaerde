@@ -7,14 +7,14 @@ export default function Index() {
         </figure>
         <section className={"container mx-auto grid grid-cols-1 md:grid-cols-3 gap-3"}>
             <div className={"flex flex-col gap-1 col-span-2"}>
-                <h1 className={"text-4xl py-4"}>Ten Boomgaerde</h1>
+                <h1 className={"text-4xl py-3"}>Ten Boomgaerde</h1>
                 <p className={"text-base/7"}>Ten Boomgaerde is het beweging.net Dienstencentrum van Lichtervelde. Deze
                     zaal bevat een grote- en kleine zaal. Deze kunnen voor allerhande zaken zoals een clubfeest,
                     geboortereceptie, verjaardagsfeest, vergaderingen en communiefeest worden gereserveerd.</p>
                 <p className={"text-base/7 text-red-700 pt-5"}>Uit respect voor de nachtrust van de buurtbewoners kunnen
                     er geen feesten met muziekinstallaties plaats vinden na 22u00.</p>
                 <h2 className={"text-2xl pt-10 pb-2"}>Praktische info</h2>
-                <h3 className={"text-xl pb-4"}>Accomodatie</h3>
+                <h3 className={"text-xl pb-3"}>Accomodatie</h3>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     <li>Grote zaal: mogelijkheid om 100 personen aan tafels te plaatsen</li>
                     <li>Kleine zaal: mogelijkheid om 30 personen aan tafels te plaatsen</li>
@@ -25,7 +25,7 @@ export default function Index() {
                 </ul>
                 <p className={"text-base/7 py-2"}>Het complex is volledig rookvrij (art.2 §1 van het KB van
                     15/05/90).</p>
-                <h3 className={"text-xl pt-7 pb-4"}>Voorzieningen</h3>
+                <h3 className={"text-xl pt-7 pb-3"}>Voorzieningen</h3>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     <li>Internet toegang (free wifi)</li>
                     <li>Keukenmateriaal voorzien op 100 personen</li>
@@ -38,6 +38,11 @@ export default function Index() {
                     <li>Schrijfbord</li>
                     <li>Mobiel podium</li>
                 </ul>
+                <h3 className={"text-xl pt-7 pb-3"}>Bereikbaarheid</h3>
+                <p className={"text-base/7 py-2"}>Het adres van het dienstencentrum is Boomgaardstraat 4a te 8810
+                    Lichtervelde. Dit is te bereiken via: Afrit 9 van de E403. Richting centrum Lichtervelde volgen.
+                    Eénmaal op de Marktplaats aangekomen, rijdt u rechts van het gemeentehuis de Torhoustraat in. Na 20
+                    meter opnieuw naar rechts de Boomgaardstraat in. Op 30 meter rechts vindt u zaal Ten Boomgaerde.</p>
             </div>
         </section>
     </main>;
