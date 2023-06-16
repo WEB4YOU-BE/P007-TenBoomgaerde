@@ -13,6 +13,19 @@ export default function Index() {
                     geboortereceptie, verjaardagsfeest, vergaderingen en communiefeest worden gereserveerd.</p>
                 <p className={"text-base/7 text-red-700 pt-5"}>Uit respect voor de nachtrust van de buurtbewoners kunnen
                     er geen feesten met muziekinstallaties plaats vinden na 22u00.</p>
+                <h2 className={"text-2xl pt-10 pb-2"}>Praktische info</h2>
+                <h3 className={"text-xl pb-4"}>Accomodatie</h3>
+                <ul role={"list"} className={"list-disc pl-5 space-y-2"}>
+                    <li>Grote zaal: mogelijkheid om 100 personen aan tafels te plaatsen</li>
+                    <li>Kleine zaal: mogelijkheid om 30 personen aan tafels te plaatsen</li>
+                    <li>Keuken met voldoende frigo's en diepvriezer (klein formaat)</li>
+                    <li>Sanitair</li>
+                    <li>Parking voor 10 wagens en eveneens op 50m van de Marktplaats met ruime parkeermogelijkheden.
+                    </li>
+                </ul>
+                <p className={"text-base/7 py-2"}>Het complex is volledig rookvrij (art.2 §1 van het KB van
+                    15/05/90).</p>
+
             </div>
         </section>
     </main>;
