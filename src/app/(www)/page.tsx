@@ -24,7 +24,7 @@ export default function Index() {
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     <li>Grote zaal: mogelijkheid om 100 personen aan tafels te plaatsen</li>
                     <li>Kleine zaal: mogelijkheid om 30 personen aan tafels te plaatsen</li>
-                    <li>Keuken met voldoende frigo's en diepvriezer (klein formaat)</li>
+                    <li>Keuken met voldoende frigo&apos;s en diepvriezer (klein formaat)</li>
                     <li>Sanitair</li>
                     <li>Parking voor 10 wagens en eveneens op 50m van de Marktplaats met ruime parkeermogelijkheden.
                     </li>
