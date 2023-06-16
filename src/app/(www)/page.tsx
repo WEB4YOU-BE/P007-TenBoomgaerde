@@ -6,7 +6,7 @@ export default function Index() {
             <Image className={"w-1/3"} src={"/images/tenboomgaerde.jpg"} alt={""} width={395} height={255}/>
         </figure>
         <section className={"container mx-auto grid grid-cols-1 md:grid-cols-3 gap-3"}>
-            <div className={"flex flex-col gap-1 col-span-2"}>
+            <div className={"flex flex-col col-span-2"}>
                 <h1 className={"text-4xl py-3"}>Ten Boomgaerde</h1>
                 <p className={"text-base/7"}>Ten Boomgaerde is het beweging.net Dienstencentrum van Lichtervelde. Deze
                     zaal bevat een grote- en kleine zaal. Deze kunnen voor allerhande zaken zoals een clubfeest,
@@ -43,6 +43,10 @@ export default function Index() {
                     Lichtervelde. Dit is te bereiken via: Afrit 9 van de E403. Richting centrum Lichtervelde volgen.
                     Eénmaal op de Marktplaats aangekomen, rijdt u rechts van het gemeentehuis de Torhoustraat in. Na 20
                     meter opnieuw naar rechts de Boomgaardstraat in. Op 30 meter rechts vindt u zaal Ten Boomgaerde.</p>
+            </div>
+            <div className={"flex flex-col"}>
+                <h2 className={"text-2xl py-4"}>Beschikbaarheid</h2>
+                <div>Hier komt de agenda of lijst</div>
             </div>
         </section>
     </main>;
