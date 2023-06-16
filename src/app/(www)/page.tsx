@@ -3,9 +3,9 @@ import Image from "next/image";
 export default function Index() {
     return <main className={"w-full min-h-[100svh]"}>
         <figure className={"container mx-auto pt-5 flex flex-row justify-center"}>
-            <Image className={"w-1/3"} src={"/images/tenboomgaerde.jpg"} alt={""} width={395} height={255}/>
+            <Image className={"lg:w-1/3"} src={"/images/tenboomgaerde.jpg"} alt={""} width={395} height={255}/>
         </figure>
-        <section className={"container mx-auto grid grid-cols-1 md:grid-cols-3 gap-3"}>
+        <section className={"container mx-auto p-2 grid grid-cols-1 md:grid-cols-3 gap-3"}>
             <div className={"flex flex-col col-span-2"}>
                 <h1 className={"text-4xl py-3"}>Ten Boomgaerde</h1>
                 <p className={"text-base/7"}>Ten Boomgaerde is het beweging.net Dienstencentrum van Lichtervelde. Deze
@@ -13,6 +13,12 @@ export default function Index() {
                     geboortereceptie, verjaardagsfeest, vergaderingen en communiefeest worden gereserveerd.</p>
                 <p className={"text-base/7 text-red-700 pt-5"}>Uit respect voor de nachtrust van de buurtbewoners kunnen
                     er geen feesten met muziekinstallaties plaats vinden na 22u00.</p>
+            </div>
+            <div className={"flex flex-col"}>
+                <h2 className={"text-2xl py-4 flex flew-row md:justify-center"}>Beschikbaarheid</h2>
+                <div>Hier komt de agenda of lijst</div>
+            </div>
+            <div className={"flex flex-col col-span-2"}>
                 <h2 className={"text-2xl pt-10 pb-2"}>Praktische info</h2>
                 <h3 className={"text-xl pb-3"}>Accomodatie</h3>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
@@ -43,10 +49,6 @@ export default function Index() {
                     Lichtervelde. Dit is te bereiken via: Afrit 9 van de E403. Richting centrum Lichtervelde volgen.
                     Eénmaal op de Marktplaats aangekomen, rijdt u rechts van het gemeentehuis de Torhoustraat in. Na 20
                     meter opnieuw naar rechts de Boomgaardstraat in. Op 30 meter rechts vindt u zaal Ten Boomgaerde.</p>
-            </div>
-            <div className={"flex flex-col"}>
-                <h2 className={"text-2xl py-4"}>Beschikbaarheid</h2>
-                <div>Hier komt de agenda of lijst</div>
             </div>
         </section>
     </main>;
