@@ -11,7 +11,7 @@ export default function Index() {
                     geboortereceptie, verjaardagsfeest, vergaderingen en communiefeest worden gereserveerd.</p>
             </div>
             <div className={"h-full aspect-video md:aspect-auto relative"}>
-                <Image className={"object-cover rounded"} src={"/images/tenboomgaerde.jpg"} alt={"Foto van het gebouw"} fill/>
+                <Image priority className={"object-cover rounded"} src={"/images/tenboomgaerde.jpg"} alt={"Foto van het gebouw"} fill/>
             </div>
             <aside className={"lg:col-start-2 xl:col-start-3 flex flex-col gap-2"}>
                 <h2 className={"text-3xl font-bold lg:text-center"}>Beschikbaarheid</h2>
