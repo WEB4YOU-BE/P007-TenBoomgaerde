@@ -29,7 +29,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                             <div>
                                 <button type={"button"}
                                         className={"flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"}
-                                        aria-expanded={"false"} onClick={props.openUserMenuClick}>
+                                        aria-expanded={"false"}>
                                     <span className="sr-only">Open user menu</span>
                                     <Image src={"/images/avatar.jpg"} alt={""} className={"w-8 h-8 rounded-full"}
                                            width={77}
