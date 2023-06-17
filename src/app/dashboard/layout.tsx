@@ -5,7 +5,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
 
 
     return <>
-        <div className={"fixed top-0 z-50 w-full bg-white border-b border-gray-200"}>
+        <nav className={"fixed top-0 z-50 w-full ml-64 bg-white border-b border-gray-200"}>
             <div className={"px-3 py-3 lg:px-5 lg:pl-3"}>
                 <div className={"flex items-center justify-between"}>
                     <div className={"flex items-center justify-start"}>
@@ -19,9 +19,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                             </svg>
                         </button>
                         <Link href={"/dashboard"} className={"flex ml-2 md:mr-24"}>
-                            <Image className={"aspect-square w-[40px] h-[40px] rounded"}
-                                   src={"/images/logo-bewegingnet - square.png"} alt={"Logo"} width={77} height={77}/>
-                            <span className={"self-center text-xl font-semibold sm:text-2xl whitespace-nowrap pl-2"}>Ten Boomgaerde</span>
+                            <p className={"self-center text-xl font-semibold sm:text-2xl whitespace-nowrap pl-2"}>Ten
+                                Boomgaerde</p>
                         </Link>
                     </div>
                     <div className={"flex items-center"}>
@@ -66,7 +65,52 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                     </div>
                 </div>
             </div>
-        </div>
+        </nav>
+        <aside
+            className={"fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-green-400 border-r border-gray-200 sm:translate-x-0"}
+            aria-label={"Sidebar"}>
+            <div className={"h-full px-3 pb-4 overflow-y-auto bg-green-400"}>
+                <ul className={"space-y-2 font-medium"}>
+                    <li>
+                        <Link href={"#"}
+                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-500"}>
+                            <p className={"ml-3"}>Dashboard</p>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={"#"}
+                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-500"}>
+                            <p className={"ml-3"}>Inbox</p>
+                            <p className={"inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium bg-green-200 rounded-full"}>3</p>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={"#"}
+                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-500"}>
+                            <p className={"ml-3"}>Agenda</p>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={"#"}
+                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-500"}>
+                            <p className={"ml-3"}>Prijzen</p>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={"#"}
+                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-500"}>
+                            <p className={"ml-3"}>Analyses</p>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={"#"}
+                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-500"}>
+                            <p className={"ml-3"}>Users</p>
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+        </aside>
         {children}
     </>;
 }
