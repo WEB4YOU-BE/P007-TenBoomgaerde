@@ -5,7 +5,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
 
 
     return <>
-        <nav className={"fixed top-0 z-50 w-full ml-64 bg-white border-b border-gray-200"}>
+        <nav className={"fixed top-0 z-50 w-full ml-64 border-b border-gray-200"}>
             <div className={"px-3 py-3 lg:px-5 lg:pl-3"}>
                 <div className={"flex items-center justify-between"}>
                     <div className={"flex items-center justify-start"}>
@@ -51,15 +51,15 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                                 <ul className={"py-1"}>
                                     <li>
                                         <Link href={"#"}
-                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300"}>Dashboard</Link>
+                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"}>Dashboard</Link>
                                     </li>
                                     <li>
                                         <Link href={"#"}
-                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300"}>Accountinstellingen</Link>
+                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"}>Accountinstellingen</Link>
                                     </li>
                                     <li>
                                         <Link href={"#"}
-                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300"}>Uitloggen</Link>
+                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"}>Uitloggen</Link>
                                     </li>
                                 </ul>
                             </div>
