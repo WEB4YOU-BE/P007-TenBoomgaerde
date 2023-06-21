@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Start production server" type="js.build_tools.npm" activateToolWindowBeforeRun="false">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="PROJECT:START" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="DATABASE_URL" value="mysql://gs5jkld063y3j6wlxkab:pscale_pw_qPpVBFkrsaqIpmYXczBgzOFGROVhuDNgSsa4h9s6kql@aws.connect.psdb.cloud/p007-tenboomgaerdelichtervelde?sslaccept=strict" />
+    </envs>
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Build production server" run_configuration_type="js.build_tools.npm" />
+      <option name="LaunchBrowser.Before.Run" url="http://localhost:3000" />
+    </method>
+  </configuration>
+</component>
