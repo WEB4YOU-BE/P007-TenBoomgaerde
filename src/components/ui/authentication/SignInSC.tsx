@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {redirect} from "next/navigation";
 import {getAuthSession} from "@/librairy/authenticationOptions";
-import SignInCC from "@/components/ui/SignInCC";
+import SignInCC from "@/components/ui/authentication/SignInCC";
 
 const SignInSC: FC = async () => {
 

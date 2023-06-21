@@ -1,5 +1,5 @@
 import {FC} from "react";
-import SignInSC from "@/components/ui/SignInSC";
+import SignInSC from "@/components/ui/authentication/SignInSC";
 
 const page: FC = () => {
     return <main className={"h-full flex flex-col justify-center"}>
