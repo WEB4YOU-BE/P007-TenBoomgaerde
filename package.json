@@ -5,7 +5,8 @@
   "scripts": {
     "PROJECT:DEV": "next dev",
     "PROJECT:BUILD": "next build",
-    "PROJECT:START": "next start"
+    "PROJECT:START": "next start",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
