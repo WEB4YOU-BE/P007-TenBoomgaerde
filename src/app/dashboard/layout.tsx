@@ -5,152 +5,102 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
 
 
     return <>
-        <nav className={"fixed top-0 z-50 w-full ml-64 border-b border-gray-200"}>
-            <div className={"px-3 py-3 lg:px-5 lg:pl-3"}>
-                <div className={"flex items-center justify-between"}>
-                    <div className={"flex items-center justify-start"}>
-                        <button type={"button"}
-                                className={"inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"}>
-                            <span className={"sr-only"}>Open sidebar</span>
-                            <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-                            </svg>
-                        </button>
-                        <Link href={"/dashboard"} className={"flex ml-2 sm:hidden"}>
-                            <Image className={"aspect-square w-[40px] h-[40px] rounded-full"}
-                                   src={"/images/logo-bewegingnet - square.png"} alt={"Logo"} width={77} height={77}/>
-                            <p className={"self-center text-xl font-semibold sm:text-2xl whitespace-nowrap pl-1"}>Ten
-                                Boomgaerde</p>
-                        </Link>
-                    </div>
-                    <div className={"flex items-center"}>
-                        <div className={"flex items-center ml-3"}>
-                            <div>
-                                <button type={"button"}
-                                        className={"flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"}
-                                        aria-expanded={"false"}>
-                                    <span className="sr-only">Open user menu</span>
-                                    <Image src={"/images/avatar.jpg"} alt={""} className={"w-8 h-8 rounded-full"}
-                                           width={77}
-                                           height={77}/>
-                                </button>
-                            </div>
-                            <div
-                                className={"z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow"}
-                                id={"dropdown-user"}>
-                                <div className={"px-4 py-3"}>
-                                    <p className={"text-sm text-gray-900"}>
-                                        Voornaam Naam
-                                    </p>
-                                    <p className={"text-sm font-medium text-gray-900 truncate"}>
-                                        voornaam.naam@vzwtenboomgaerdelichtervelde.be
-                                    </p>
-                                </div>
-                                <ul className={"py-1"}>
-                                    <li>
-                                        <Link href={"#"}
-                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"}>Dashboard</Link>
-                                    </li>
-                                    <li>
-                                        <Link href={"#"}
-                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"}>Accountinstellingen</Link>
-                                    </li>
-                                    <li>
-                                        <Link href={"#"}
-                                              className={"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"}>Uitloggen</Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <button type={"button"}
+                className={"inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"}>
+            <span className={"sr-only"}>Open sidebar</span>
+            <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+            </svg>
+        </button>
         <aside
-            className={"fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-green-200 border-r border-gray-200 sm:translate-x-0"}
-            aria-label={"Sidebar"}>
-            <Link href={"/dashboard"} className={" flex ml-2 md:mr-24 pt-3"}>
-                <Image className={"aspect-square w-[40px] h-[40px] rounded-full"}
-                       src={"/images/logo-bewegingnet - square.png"} alt={"Logo"} width={77} height={77}/>
-                <p className={"self-center text-xl font-semibold sm:text-2xl whitespace-nowrap pl-1"}>Ten
-                    Boomgaerde</p>
+            className={"bg-green-200 w-80 max-w-screen-sm h-[100svh] flex flex-col gap-4 p-4 fixed top-0 left-0 z-40 transform-gpu -translate-x-80 sm:translate-x-0 transition-transform"}>
+            <Link href={"/dashboard"} className={"flex flex-row gap-2 p-2"}>
+                <Image className={"w-[40px] h-[40px] rounded-full"} src={"/images/logo-bewegingnet - square.png"}
+                       alt={"Logo"} width={40} height={40}/>
+                <p className={"self-center text-xl font-semibold sm:text-2xl whitespace-nowrap pl-1"}>Ten Boomgaerde</p>
             </Link>
-            <div className={"h-full px-3 pb-4 overflow-y-auto bg-green-200 pt-10"}>
-                <ul className={"space-y-2 font-medium"}>
-                    <li>
-                        <Link href={"#"}
-                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-300"}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                 stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
-                            </svg>
-                            <p className={"ml-3"}>Dashboard</p>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={"#"}
-                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-300"}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                 stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859M12 3v8.25m0 0l-3-3m3 3l3-3"/>
-                            </svg>
-                            <p className={"ml-3"}>Inbox</p>
-                            <p className={"inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium bg-green-400 rounded-full"}>3</p>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={"#"}
-                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-300"}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                 stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
-                            </svg>
-                            <p className={"ml-3"}>Agenda</p>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={"#"}
-                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-300"}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                 stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M14.25 7.756a4.5 4.5 0 100 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <p className={"ml-3"}>Prijzen</p>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={"#"}
-                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-300"}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                 stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"/>
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"/>
-                            </svg>
-                            <p className={"ml-3"}>Analyses</p>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={"#"}
-                              className={"flex items-center p-2 text-gray-900 rounded-lg hover:bg-green-300"}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                 stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-                            </svg>
-                            <p className={"ml-3"}>Users</p>
-                        </Link>
-                    </li>
-                </ul>
+            <div className={"flex flex-col flex-grow gap-2"}>
+                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </Link>
+                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+                    </svg>
+                    <span>Agenda</span>
+                </Link>
+                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M14.25 7.756a4.5 4.5 0 100 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Prijzen</span>
+                </Link>
+                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"/>
+                    </svg>
+                    <span>Analyses</span>
+                </Link>
+                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+                    </svg>
+                    <span>Users</span>
+                </Link>
             </div>
+            <Collapsible>
+                <CollapsibleContent>
+                    <div className={"my-2 flex flex-col z-80 bg-green-200 border border-green-400 rounded-lg shadow"}>
+                        <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                                 stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round"
+                                      d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z"/>
+                                <path strokeLinecap="round" strokeLinejoin="round"
+                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>Accountinstellingen</span>
+                        </Link>
+                        <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                                 stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round"
+                                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+                            </svg>
+                            <span>Uitloggen</span>
+                        </Link>
+                    </div>
+                </CollapsibleContent>
+                <CollapsibleTrigger
+                    className={"bg-green-200 w-full hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                    </svg>
+                    <span>Voornaam familienaam</span>
+                </CollapsibleTrigger>
+            </Collapsible>
         </aside>
-        {children}
+        <div className={"md:ml-80"}>
+            {children}
+        </div>
     </>;
 }
