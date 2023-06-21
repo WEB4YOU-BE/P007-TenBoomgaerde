@@ -2,6 +2,7 @@ import {getServerSession, NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authenticationOptions: NextAuthOptions = {
+    session: {strategy: "jwt"},
     providers: [
         CredentialsProvider({
             name: "credentials",
@@ -10,7 +11,7 @@ export const authenticationOptions: NextAuthOptions = {
                 password: {label: "Wachtwoord", type: "password"},
             },
             async authorize(credentials, req) {
-                const result = await fetch("http://localhost:3000/api/login", {
+                const result = await fetch((process.env.VERCEL ? process.env.VERCEL_URL : "http://localhost:3000") + "/api/login", {
                     method: "POST",
                     headers: {"Content-type": "application/json"},
                     body: JSON.stringify({
