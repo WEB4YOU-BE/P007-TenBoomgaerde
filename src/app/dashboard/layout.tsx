@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/Collapsible";
 
 export default function PublicNavigationLayoutDashboard({children}: { children: React.ReactNode }) {
 
