@@ -1,23 +1,23 @@
 "use client";
 
-import {FC, FormEventHandler, useState} from "react";
+import {FC, FormEventHandler, useEffect, useState} from "react";
 import Link from "next/link";
 import {signIn} from "next-auth/react";
-import {useToast} from "@/hooks/use-toast";
+import {toast, useToast} from "@/hooks/use-toast";
 import {buttonVariants} from "@/components/ui/Button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/Card";
 import {useSearchParams} from "next/navigation";
 
 const SignInCC: FC = () => {
-
     const searchParams = useSearchParams();
-    const callbackURL = searchParams.get("callbackUrl");
+    const callbackURLParam = searchParams.get("callbackUrl");
+    let errorParam = searchParams.get("error");
 
     const [credentials, setCredentials] = useState({username: "", password: ""});
 
     const onSignInWithCredentials: FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault();
-        const result = await signIn("credentials", {...credentials, redirect: true, callbackUrl: callbackURL || "/"});
+        await signIn("credentials", {...credentials, redirect: true, callbackUrl: callbackURLParam || "/"});
     };
 
     return <Card className={"max-w-screen-sm"}>
@@ -25,6 +25,9 @@ const SignInCC: FC = () => {
             <CardTitle>Welkom terug</CardTitle>
             <CardDescription>Meld je aan met jouw gebruikersnaam en wachtwoord</CardDescription>
         </CardHeader>
+        {errorParam && <CardContent>
+            <CardDescription className={"border border-red-400 bg-red-100 rounded-lg p-2"}>Gebruikersnaam en/of wachtwoord zijn onjuist.</CardDescription>
+        </CardContent>}
         <CardContent>
             <form id={"sign-in-form"} onSubmit={onSignInWithCredentials} className={"grid w-full items-center gap-4"}>
                 <div className="flex flex-col space-y-1.5">
