@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 export default async function Index() {
-    const result = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL ? ("https://" + process.env.NEXT_PUBLIC_VERCEL_URL) : "http://localhost:3000" + "/api/login", {
+    const result = await fetch((process.env.NEXT_PUBLIC_VERCEL_URL ? ("https://" + process.env.NEXT_PUBLIC_VERCEL_URL) : "http://localhost:3000") + "/api/login", {
         method: "POST",
         headers: {"Content-type": "application/json"},
         body: JSON.stringify({
