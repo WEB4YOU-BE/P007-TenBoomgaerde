@@ -1,11 +1,17 @@
+"use client"
+
+import * as React from "react"
+
 import Link from "next/link";
 import Image from "next/image";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/Collapsible";
 
 
 export default function PublicNavigationLayoutDashboard({children}: { children: React.ReactNode }) {
+    const [isOpen, setIsOpen] = React.useState(false)
+
     return <>
-        <Collapsible className={"sm:hidden"}>
+        <Collapsible className={"sm:hidden"} open={isOpen} onOpenChange={setIsOpen}>
             <div className={"bg-green-200 flex flex-row gap-2 p-2 mr-auto"}>
                 <CollapsibleTrigger
                     className={"inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg  hover:bg-green-300 focus:outline-none focus:ring-2 focus:ring-green-300"}>
@@ -16,7 +22,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                             d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
                 </CollapsibleTrigger>
-                <Link href={"/dashboard"} className={"flex flex-row gap-2 p-2"}>
+                <Link href={"/dashboard"} className={"flex flex-row gap-2 p-2"} onClick={() => setIsOpen(false)}>
                     <Image className={"w-[40px] h-[40px] rounded-full"}
                            src={"/images/logo-bewegingnet - square.png"}
                            alt={"Logo"} width={40} height={40}/>
@@ -26,7 +32,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
             </div>
             <CollapsibleContent>
                 <div className={"sm:hidden flex flex-col flex-grow gap-2 bg-green-200 h-screen"}>
-                    <Link href={""}
+                    <Link href={"/dashboard"} onClick={() => setIsOpen(false)}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                              stroke="currentColor" className="w-6 h-6">
@@ -35,7 +41,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         </svg>
                         <span>Dashboard</span>
                     </Link>
-                    <Link href={""}
+                    <Link href={""} onClick={() => setIsOpen(false)}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                              stroke="currentColor" className="w-6 h-6">
@@ -44,7 +50,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         </svg>
                         <span>Agenda</span>
                     </Link>
-                    <Link href={""}
+                    <Link href={"/dashboard/prijzen"} onClick={() => setIsOpen(false)}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                              stroke="currentColor" className="w-6 h-6">
@@ -53,7 +59,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         </svg>
                         <span>Prijzen</span>
                     </Link>
-                    <Link href={""}
+                    <Link href={""} onClick={() => setIsOpen(false)}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                              stroke="currentColor" className="w-6 h-6">
@@ -64,7 +70,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         </svg>
                         <span>Analyses</span>
                     </Link>
-                    <Link href={""}
+                    <Link href={""} onClick={() => setIsOpen(false)}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                              stroke="currentColor" className="w-6 h-6">
@@ -86,7 +92,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         <CollapsibleContent>
                             <div
                                 className={"my-2 flex flex-col z-80 bg-green-200 border border-green-400 rounded-lg shadow"}>
-                                <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}>
+                                <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}
+                                      onClick={() => setIsOpen(false)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          strokeWidth={1.5}
                                          stroke="currentColor" className="w-6 h-6">
@@ -97,7 +104,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                                     </svg>
                                     <span>Accountinstellingen</span>
                                 </Link>
-                                <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}>
+                                <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}
+                                      onClick={() => setIsOpen(false)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          strokeWidth={1.5}
                                          stroke="currentColor" className="w-6 h-6">
@@ -113,7 +121,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
             </CollapsibleContent>
         </Collapsible>
         <aside
-            className={"bg-green-200 w-80 max-w-screen-sm h-[100svh] flex flex-col gap-4 p-4 fixed top-0 left-0 z-40 transform-gpu -translate-x-80 sm:translate-x-0 transition-transform"}>
+            className={"fixed bg-green-200 w-80 max-w-screen-sm h-[100svh] flex flex-col gap-4 p-4 fixed top-0 left-0 z-20 transform-gpu -translate-x-80 sm:translate-x-0 transition-width"}>
             <Link href={"/dashboard"} className={"flex flex-row gap-2 p-2"}>
                 <Image className={"w-[40px] h-[40px] rounded-full"} src={"/images/logo-bewegingnet - square.png"}
                        alt={"Logo"} width={40} height={40}/>
@@ -121,7 +129,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                     Boomgaerde</p>
             </Link>
             <div className={"flex flex-col flex-grow gap-2"}>
-                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                <Link href={"/dashboard"}
+                      className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round"
@@ -137,7 +146,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                     </svg>
                     <span>Agenda</span>
                 </Link>
-                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                <Link href={"/dashboard/prijzen"}
+                      className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round"
