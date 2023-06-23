@@ -1,6 +1,18 @@
+"use client";
+
 import Image from "next/image";
 
-export default function Index() {
+export default async function Index() {
+
+    console.log(await fetch((process.env.VERCEL_URL || "http://localhost:3000") + "/api/login", {
+        method: "POST",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+            username: "jenspenneman26@gmail.com",
+            password: "Dobbel26",
+        }),
+    }));
+
     return <main className={"w-full min-h-[calc(100svh-72px)]"}>
         <div className={"container mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
             <div className={"xl:col-span-2 flex flex-col gap-2"}>
