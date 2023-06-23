@@ -12,15 +12,12 @@ export const metadata = {
 export default function RootLayout(
     {
         children,
-        authenticationModal,
     }: {
         children: React.ReactNode
-        authenticationModal: React.ReactNode
     }) {
     return (
         <html lang="nl-BE">
         <body className={cn("w-[100svw] h-[100svh] subpixel-antialiased transform-gpu", inter.className)}>
-        {authenticationModal}
         {children}
         <Toaster/>
         </body>
