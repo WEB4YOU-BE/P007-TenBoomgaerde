@@ -14,7 +14,7 @@ export const authenticationOptions: NextAuthOptions = {
                 password: {label: "Wachtwoord", type: "password"},
             },
             async authorize(credentials, req) {
-                const result = await fetch((process.env.VERCEL_URL || "http://localhost:3000") + "/api/login", {
+                const result = await fetch((process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000") + "/api/login", {
                     method: "POST",
                     headers: {"Content-type": "application/json"},
                     body: JSON.stringify({
