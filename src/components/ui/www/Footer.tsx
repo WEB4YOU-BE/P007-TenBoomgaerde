@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const Footer = async () => {
-    return <footer className={"flex flex-col md:flex-row bg-gray-200 rounded-lg shadow m-4 container"}>
+    return <footer className={"flex flex-col md:flex-row bg-gray-200 rounded-lg shadow m-4 container mx-auto"}>
             <span className={"p-4 text-sm text-gray-500 text-center"}>&copy; Made by{" "}
                 <Link href={"https://web-4-you.be/"}>WEB4YOU</Link></span>
         <div
