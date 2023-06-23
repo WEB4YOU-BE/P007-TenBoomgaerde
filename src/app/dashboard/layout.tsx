@@ -92,7 +92,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         <CollapsibleContent>
                             <div
                                 className={"my-2 flex flex-col z-80 bg-green-200 border border-green-400 rounded-lg shadow"}>
-                                <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}
+                                <Link href={"/dashboard/settings"}
+                                      className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}
                                       onClick={() => setIsOpen(false)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          strokeWidth={1.5}
@@ -175,11 +176,13 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                     <span>Users</span>
                 </Link>
             </div>
-            <Collapsible>
+            <Collapsible open={isOpen} onOpenChange={setIsOpen}>
                 <CollapsibleContent>
                     <div
                         className={"my-2 flex flex-col z-80 bg-green-200 border border-green-400 rounded-lg shadow"}>
-                        <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}>
+                        <Link href={"/dashboard/settings"}
+                              className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}
+                              onClick={() => setIsOpen(false)}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  strokeWidth={1.5}
                                  stroke="currentColor" className="w-6 h-6">
@@ -190,7 +193,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                             </svg>
                             <span>Accountinstellingen</span>
                         </Link>
-                        <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}>
+                        <Link href={"#"} className={"flex flex-row gap-2 p-2 font-light hover:bg-green-400"}
+                              onClick={() => setIsOpen(false)}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  strokeWidth={1.5}
                                  stroke="currentColor" className="w-6 h-6">
