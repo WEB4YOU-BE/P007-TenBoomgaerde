@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default async function Index() {
 
-    console.log(process.env.VERCEL_URL);
+    console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
 
     return <main className={"w-full min-h-[calc(100svh-72px)]"}>
         <div className={"container mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
