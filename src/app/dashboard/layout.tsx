@@ -44,7 +44,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         </svg>
                         <span>Agenda</span>
                     </Link>
-                    <Link href={""}
+                    <Link href={"/dashboard/prijzen"}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                              stroke="currentColor" className="w-6 h-6">
@@ -113,7 +113,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
             </CollapsibleContent>
         </Collapsible>
         <aside
-            className={"bg-green-200 w-80 max-w-screen-sm h-[100svh] flex flex-col gap-4 p-4 fixed top-0 left-0 z-40 transform-gpu -translate-x-80 sm:translate-x-0 transition-transform"}>
+            className={"fixed bg-green-200 w-80 max-w-screen-sm h-[100svh] flex flex-col gap-4 p-4 fixed top-0 left-0 z-20 transform-gpu -translate-x-80 sm:translate-x-0 transition-width"}>
             <Link href={"/dashboard"} className={"flex flex-row gap-2 p-2"}>
                 <Image className={"w-[40px] h-[40px] rounded-full"} src={"/images/logo-bewegingnet - square.png"}
                        alt={"Logo"} width={40} height={40}/>
@@ -121,7 +121,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                     Boomgaerde</p>
             </Link>
             <div className={"flex flex-col flex-grow gap-2"}>
-                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                <Link href={"/dashboard"}
+                      className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round"
@@ -137,7 +138,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                     </svg>
                     <span>Agenda</span>
                 </Link>
-                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                <Link href={"/dashboard/prijzen"}
+                      className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round"
