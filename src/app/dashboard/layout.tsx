@@ -70,7 +70,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                         </svg>
                         <span>Analyses</span>
                     </Link>
-                    <Link href={""} onClick={() => setIsOpen(false)}
+                    <Link href={"/dashboard/users"} onClick={() => setIsOpen(false)}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                              stroke="currentColor" className="w-6 h-6">
@@ -165,7 +165,8 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                     </svg>
                     <span>Analyses</span>
                 </Link>
-                <Link href={""} className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                <Link href={"/dashboard/users"}
+                      className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round"
