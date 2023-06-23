@@ -52,8 +52,8 @@ export default function Index() {
                                         'Prijs',
                                         'Categorie',
                                         'Acties'
-                                    ].map((th) => (
-                                        <th scope={"col"}
+                                    ].map((th, index) => (
+                                        <th key={index} scope={"col"}
                                             className={"p-4 text-xs font-medium text-left text-gray-500 uppercase"}>
                                             {th}
                                         </th>
