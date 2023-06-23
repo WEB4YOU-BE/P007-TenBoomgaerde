@@ -6,14 +6,18 @@ import {signIn} from "next-auth/react";
 import {useToast} from "@/hooks/use-toast";
 import {buttonVariants} from "@/components/ui/Button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/Card";
+import {useSearchParams} from "next/navigation";
 
 const SignInCC: FC = () => {
+
+    const searchParams = useSearchParams();
+    const callbackURL = searchParams.get("callbackUrl");
 
     const [credentials, setCredentials] = useState({username: "", password: ""});
 
     const onSignInWithCredentials: FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault();
-        const result = await signIn("credentials", {...credentials, redirect: true, callbackUrl: "/"});
+        const result = await signIn("credentials", {...credentials, redirect: true, callbackUrl: callbackURL || "/"});
     };
 
     return <Card className={"max-w-screen-sm"}>
