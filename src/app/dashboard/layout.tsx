@@ -24,7 +24,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
                 </CollapsibleTrigger>
                 <Link href={"/dashboard"} className={"flex flex-row gap-2 p-2"} onClick={() => setIsOpen(false)}>
                     <Image className={"w-[40px] h-[40px] rounded-full"}
-                           src={"/images/logo-bewegingnet - square.png"}
+                           src={"/images/Logo Ten Boomgaerde.PNG"}
                            alt={"Logo"} width={40} height={40}/>
                     <p className={"self-center text-xl font-semibold sm:text-2xl whitespace-nowrap pl-1"}>Ten
                         Boomgaerde</p>
@@ -124,7 +124,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
         <aside
             className={"fixed bg-green-200 w-80 max-w-screen-sm h-[100svh] flex flex-col gap-4 p-4 fixed top-0 left-0 z-20 transform-gpu -translate-x-80 sm:translate-x-0 transition-width"}>
             <Link href={"/dashboard"} className={"flex flex-row gap-2 p-2"}>
-                <Image className={"w-[40px] h-[40px] rounded-full"} src={"/images/logo-bewegingnet - square.png"}
+                <Image className={"w-[40px] h-[40px] rounded-full"} src={"/images/Logo Ten Boomgaerde.PNG"}
                        alt={"Logo"} width={40} height={40}/>
                 <p className={"self-center text-xl font-semibold sm:text-2xl whitespace-nowrap pl-1"}>Ten
                     Boomgaerde</p>
