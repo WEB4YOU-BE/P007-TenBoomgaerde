@@ -17,7 +17,7 @@ const Navigation = async () => {
                 <nav className={"flex flex-row flex-grow overflow-x-auto invisible sm:visible gap-2"}>
                     <Link className={buttonVariants({variant: "ghost"})} href={"/"}>Startpagina</Link>
                     <Link className={buttonVariants({variant: "ghost"})} href={"/reserveren"}>Reserveer</Link>
-                    <Link className={buttonVariants({variant: "ghost"})} href={"/prijzen"}>Prijzen</Link>
+                    <Link className={buttonVariants({variant: "ghost"})} href={"/producten"}>Prijzen</Link>
                 </nav>
                 {!session && <SignInButton/>}
                 {session && <SignOutButton/>}
@@ -25,7 +25,7 @@ const Navigation = async () => {
             <nav className={"flex flex-row flex-grow flex-wrap sm:hidden gap-2"}>
                 <Link className={buttonVariants({variant: "ghost"})} href={"/"}>Startpagina</Link>
                 <Link className={buttonVariants({variant: "ghost"})} href={"/reserveren"}>Reserveer</Link>
-                <Link className={buttonVariants({variant: "ghost"})} href={"/prijzen"}>Prijzen</Link>
+                <Link className={buttonVariants({variant: "ghost"})} href={"/producten"}>Prijzen</Link>
             </nav>
         </div>
     </div>;
