@@ -1,7 +1,7 @@
 import {Dialog, DialogTrigger} from "@/components/ui/Dialog";
-import CategorieDialog from "@/components/ui/dashboard/CategorieDialog";
 import {Sheet, SheetTrigger} from "@/components/ui/Sheet";
 import ZaalAside from "@/components/ui/dashboard/ZaalAside";
+import TypeDialog from "@/components/ui/dashboard/TypeDialog";
 
 export default function Index() {
     return <main className={"w-full min-h-[100svh]"}>
@@ -113,7 +113,7 @@ export default function Index() {
                                 </svg>
                                 Toevoegen
                             </DialogTrigger>
-                            <CategorieDialog/>
+                            <TypeDialog/>
                         </Dialog>
                     </div>
                 </div>
