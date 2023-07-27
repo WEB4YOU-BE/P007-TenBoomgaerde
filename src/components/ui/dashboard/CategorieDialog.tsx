@@ -1,4 +1,12 @@
-import {DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/Dialog";
+import {
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogClose
+} from "@/components/ui/Dialog";
+
 
 const CategorieDialog = async () => {
     return <DialogContent>
@@ -19,9 +27,9 @@ const CategorieDialog = async () => {
                     placeholder="Naam van de categorie"/>
             </div>
             <DialogFooter className={"mt-5"}>
-                <button type={"submit"}
-                        className={"px-3 py-2 text-sm font-medium text-center rounded-lg bg-green-200 hover:bg-green-300"}>Opslaan
-                </button>
+                <DialogClose
+                    className={"px-3 py-2 text-sm font-medium text-center rounded-lg bg-green-200 hover:bg-green-300"}>Opslaan
+                </DialogClose>
             </DialogFooter>
         </form>
     </DialogContent>

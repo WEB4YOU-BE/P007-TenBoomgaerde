@@ -1,4 +1,6 @@
 import {SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle} from "@/components/ui/Sheet";
+import {Dialog, DialogTrigger} from "@/components/ui/Dialog";
+import CategorieDialog from "@/components/ui/dashboard/CategorieDialog";
 
 const ProductAside = async () => {
     return <SheetContent>
@@ -32,9 +34,13 @@ const ProductAside = async () => {
                     <label
                         className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}
                     >Categorie</label>
-                    <button title={"Nieuwe categorie toevoegen?"}
-                            className={"ml-auto text-md font-medium leading-none"}>+
-                    </button>
+                    <Dialog>
+                        <DialogTrigger title={"Nieuwe categorie toevoegen?"}
+                                       className={"ml-auto text-md font-medium leading-none"} type={"button"}>+
+                        </DialogTrigger>
+                        <CategorieDialog/>
+                    </Dialog>
+
                 </div>
                 <input
                     className={"flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
@@ -47,7 +53,7 @@ const ProductAside = async () => {
                 >Te koop?</label>
                 <input
                     className={"w-full h-5 items-center block rounded-md border border-input bg-transparent px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
-                    id="tekoop" type={"checkbox"} required autoFocus/>
+                    id="tekoop" type={"checkbox"} autoFocus/>
             </div>
             <div>
                 <SheetFooter className={"items-center justify-between block"}>
