@@ -10,7 +10,8 @@ datasource db {
 }
 
 model User {
-  id         Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+
   email      String  @unique
   password   String
   name       String?
@@ -18,8 +19,9 @@ model User {
   postalcode Int?
   City       String?
   phone      String?
-  roleId     Int?
-  role       Role?   @relation(fields: [roleId], references: [id])
+
+  roleId Int?
+  role   Role? @relation(fields: [roleId], references: [id])
 
   @@index([roleId])
 }
@@ -28,4 +30,87 @@ model Role {
   id   Int    @id @default(autoincrement())
   name String
   User User[]
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+
+  name   String
+  teKoop Boolean @default(true)
+
+  categorieId Int?
+  categorie   Categorie? @relation(fields: [categorieId], references: [id])
+
+  @@index([categorieId])
+}
+
+model Categorie {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  Product Product[]
+}
+
+model Zaal {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  ZaalType ZaalType[]
+}
+
+model EvenementType {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  ZaalType ZaalType[]
+}
+
+model ZaalType {
+  zaalId          Int
+  zaal            Zaal          @relation(fields: [zaalId], references: [id])
+  evenementTypeId Int
+  evenementType   EvenementType @relation(fields: [evenementTypeId], references: [id])
+
+  prijsPerDag Int?
+
+  ZaalTypeVastePrijs ZaalTypeVastePrijs[]
+
+  @@id([zaalId, evenementTypeId])
+  @@index([zaalId])
+  @@index([evenementTypeId])
+}
+
+model VastePrijs {
+  id Int @id @default(autoincrement())
+
+  prijs Int
+
+  ZaalTypeVastePrijs ZaalTypeVastePrijs[]
+}
+
+model ZaalTypeVastePrijs {
+  zaalId          Int
+  evenementTypeId Int
+  zaalType        ZaalType   @relation(fields: [zaalId, evenementTypeId], references: [zaalId, evenementTypeId])
+  vastePrijsId    Int
+  vastePrijs      VastePrijs @relation(fields: [vastePrijsId], references: [id])
+
+  @@id([zaalId, evenementTypeId, vastePrijsId])
+  @@index([zaalId, evenementTypeId])
+  @@index([vastePrijsId])
+}
+
+model Reservering {
+  id Int @id @default(autoincrement())
+}
+
+model Blok {
+  id Int @id @default(autoincrement())
+
+  name      String
+  startTime DateTime
+  endTime   DateTime
 }
