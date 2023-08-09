@@ -10,18 +10,112 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
-  posts    Post[]
+  id Int @id @default(autoincrement())
+
+  email      String  @unique
+  password   String
+  name       String?
+  adres      String?
+  postalcode Int?
+  City       String?
+  phone      String?
+
+  Reservation Reservation[]
+
+  role Role @default(USER)
+
+  @@map("users")
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+enum Role {
+  USER
+  ADMIN
+
+  @@map("roles")
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+
+  name        String
+  private     Boolean
+  dayPrice    Float
+  Reservation Reservation[]
+
+  @@map("rooms")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+
+  name   String
+  price  Float
+  teKoop Boolean @default(true)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  ProductsOnReservations ProductOnReservation[]
+
+  @@index([categoryId])
+  @@map("products")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  Product Product[]
+
+  @@map("categories")
+}
+
+model Reservation {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+  roomId Int
+  room   Room @relation(fields: [roomId], references: [id])
+
+  startDate DateTime
+  endDate   DateTime
+
+  startTimeSlotId Int
+  endTimeSlotId   Int
+  startTimeSlot   TimeSlot @relation("starts", fields: [startTimeSlotId], references: [id])
+  endTimeSlot     TimeSlot @relation("ends", fields: [endTimeSlotId], references: [id])
+
+  ProductsOnReservations ProductOnReservation[]
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([startTimeSlotId])
+  @@index([endTimeSlotId])
+  @@map("reservations")
+}
+
+model ProductOnReservation {
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     Int
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+  reservationId Int
+
+  @@id([productId, reservationId])
+  @@index([productId])
+  @@index([reservationId])
+  @@map("products_on_reservations")
+}
+
+model TimeSlot {
+  id Int @id @default(autoincrement())
+
+  name                String
+  startTime           DateTime
+  endTime             DateTime
+  ReservationenStarts Reservation[] @relation("starts")
+  ReservationenEnds   Reservation[] @relation("ends")
+
+  @@map("time_slots")
 }
