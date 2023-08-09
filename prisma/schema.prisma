@@ -20,16 +20,29 @@ model User {
   City       String?
   phone      String?
 
-  roleId Int?
-  role   Role? @relation(fields: [roleId], references: [id])
+  Reservation Reservation[]
 
-  @@index([roleId])
+  role Role @default(USER)
+
+  @@map("users")
 }
 
-model Role {
-  id   Int    @id @default(autoincrement())
-  name String
-  User User[]
+enum Role {
+  USER
+  ADMIN
+
+  @@map("roles")
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+
+  name        String
+  private     Boolean
+  dayPrice    Float
+  Reservation Reservation[]
+
+  @@map("rooms")
 }
 
 model Product {
@@ -38,79 +51,70 @@ model Product {
   name   String
   teKoop Boolean @default(true)
 
-  categorieId Int?
-  categorie   Categorie? @relation(fields: [categorieId], references: [id])
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
 
-  @@index([categorieId])
+  ProductsOnReservations ProductOnReservation[]
+
+  @@index([categoryId])
+  @@map("products")
 }
 
-model Categorie {
+model Category {
   id Int @id @default(autoincrement())
 
   name String
 
   Product Product[]
+
+  @@map("categories")
 }
 
-model Zaal {
+model Reservation {
   id Int @id @default(autoincrement())
 
-  name String
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+  roomId Int
+  room   Room @relation(fields: [roomId], references: [id])
 
-  ZaalType ZaalType[]
+  startDate DateTime
+  endDate   DateTime
+
+  startTimeSlotId Int
+  endTimeSlotId   Int
+  startTimeSlot   TimeSlot @relation("starts", fields: [startTimeSlotId], references: [id])
+  endTimeSlot     TimeSlot @relation("ends", fields: [endTimeSlotId], references: [id])
+
+  ProductsOnReservations ProductOnReservation[]
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([startTimeSlotId])
+  @@index([endTimeSlotId])
+  @@map("reservations")
 }
 
-model EvenementType {
+model ProductOnReservation {
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     Int
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+  reservationId Int
+
+  @@id([productId, reservationId])
+  @@index([productId])
+  @@index([reservationId])
+  @@map("products_on_reservations")
+}
+
+model TimeSlot {
   id Int @id @default(autoincrement())
 
-  name String
+  name                String
+  startTime           DateTime
+  endTime             DateTime
+  ReservationenStarts Reservation[] @relation("starts")
+  ReservationenEnds   Reservation[] @relation("ends")
 
-  ZaalType ZaalType[]
-}
-
-model ZaalType {
-  zaalId          Int
-  zaal            Zaal          @relation(fields: [zaalId], references: [id])
-  evenementTypeId Int
-  evenementType   EvenementType @relation(fields: [evenementTypeId], references: [id])
-
-  prijsPerDag Int?
-
-  ZaalTypeVastePrijs ZaalTypeVastePrijs[]
-
-  @@id([zaalId, evenementTypeId])
-  @@index([zaalId])
-  @@index([evenementTypeId])
-}
-
-model VastePrijs {
-  id Int @id @default(autoincrement())
-
-  prijs Int
-
-  ZaalTypeVastePrijs ZaalTypeVastePrijs[]
-}
-
-model ZaalTypeVastePrijs {
-  zaalId          Int
-  evenementTypeId Int
-  zaalType        ZaalType   @relation(fields: [zaalId, evenementTypeId], references: [zaalId, evenementTypeId])
-  vastePrijsId    Int
-  vastePrijs      VastePrijs @relation(fields: [vastePrijsId], references: [id])
-
-  @@id([zaalId, evenementTypeId, vastePrijsId])
-  @@index([zaalId, evenementTypeId])
-  @@index([vastePrijsId])
-}
-
-model Reservering {
-  id Int @id @default(autoincrement())
-}
-
-model Blok {
-  id Int @id @default(autoincrement())
-
-  name      String
-  startTime DateTime
-  endTime   DateTime
+  @@map("time_slots")
 }
