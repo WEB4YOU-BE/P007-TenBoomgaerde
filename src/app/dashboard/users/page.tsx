@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Index() {
     return <main className={"w-full min-h-[100svh]"}>
         <div className={"p-4 block sm:flex items-center justify-between"}>
@@ -25,7 +27,8 @@ export default function Index() {
                             </svg>
                             Bijwerken
                         </button>
-                        <button
+                        <Link
+                            href={"/dashboard/settings"}
                             className={"inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center rounded-lg bg-green-200 hover:bg-green-300 focus:ring-4 focus:ring-green-300 sm:w-auto"}>
                             <svg className={"w-5 h-5 mr-2 -ml-1"} fill={"currentColor"} viewBox={"0 0 20 20"}
                                  xmlns={"http://www.w3.org/2000/svg"}>
@@ -34,7 +37,7 @@ export default function Index() {
                                 ></path>
                             </svg>
                             Toevoegen
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,11 @@
 "use client"
 
 import * as React from "react"
+import {FC} from "react"
 
 import Link from "next/link";
 import Image from "next/image";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/Collapsible";
-import {FC} from "react";
 
 const DashboardNavigation: FC = () => {
     const [isOpen, setIsOpen] = React.useState(false)
@@ -49,6 +49,16 @@ const DashboardNavigation: FC = () => {
                                   d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
                         </svg>
                         <span>Agenda</span>
+                    </Link>
+                    <Link href={"/dashboard/zalen"} onClick={() => setIsOpen(false)}
+                          className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                             stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round"
+                                  d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/>
+                        </svg>
+
+                        <span>Zalen</span>
                     </Link>
                     <Link href={"/dashboard/producten"} onClick={() => setIsOpen(false)}
                           className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
@@ -156,6 +166,15 @@ const DashboardNavigation: FC = () => {
                               d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
                     </svg>
                     <span>Agenda</span>
+                </Link>
+                <Link href={"/dashboard/zalen"}
+                      className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/>
+                    </svg>
+                    <span>Zalen</span>
                 </Link>
                 <Link href={"/dashboard/producten"}
                       className={"bg-green-200 hover:bg-green-300 rounded-lg flex flex-row gap-2 p-2"}>
