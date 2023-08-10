@@ -14,7 +14,7 @@ const Navigation = async () => {
             <div className={"flex flex-row gap-2"}>
                 <Image className={"aspect-square w-[40px] h-[40px] rounded-lg"} src={"/images/Logo Ten Boomgaerde.PNG"}
                        alt={"Logo"} width={77} height={77}/>
-                <nav className={"flex flex-row flex-grow overflow-x-auto invisible sm:visible gap-2"}>
+                <nav className={"flex flex-row flex-grow overflow-x-auto gap-2"}>
                     <Link className={buttonVariants({variant: "ghost"})} href={"/"}>Startpagina</Link>
                     <Link className={buttonVariants({variant: "ghost"})} href={"/reserveren"}>Reserveer</Link>
                     <Link className={buttonVariants({variant: "ghost"})} href={"/producten"}>Prijzen</Link>
@@ -22,11 +22,6 @@ const Navigation = async () => {
                 {!session && <SignInButton/>}
                 {session && <SignOutButton/>}
             </div>
-            <nav className={"flex flex-row flex-grow flex-wrap sm:hidden gap-2"}>
-                <Link className={buttonVariants({variant: "ghost"})} href={"/"}>Startpagina</Link>
-                <Link className={buttonVariants({variant: "ghost"})} href={"/reserveren"}>Reserveer</Link>
-                <Link className={buttonVariants({variant: "ghost"})} href={"/producten"}>Prijzen</Link>
-            </nav>
         </div>
     </div>;
 };
