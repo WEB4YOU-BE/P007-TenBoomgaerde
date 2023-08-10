@@ -9,7 +9,6 @@ const SignInSC: FC = async () => {
     const session = await getAuthSession();
     if (session) redirect("/", RedirectType.replace);
 
-    //TODO Add the client component to the return.
     return <SignUpCC/>;
 };
 
