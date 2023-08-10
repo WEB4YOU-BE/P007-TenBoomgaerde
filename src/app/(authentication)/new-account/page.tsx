@@ -5,3 +5,5 @@ const page: FC = () => {
 
     </main>;
 };
+
+export default page;
