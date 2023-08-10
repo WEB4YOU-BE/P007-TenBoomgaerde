@@ -4,13 +4,32 @@ import {FC, FormEventHandler, useState} from "react";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/Card";
 import Link from "next/link";
 import {buttonVariants} from "@/components/ui/Button";
+import {useSearchParams} from "next/navigation";
+import {signIn} from "next-auth/react";
 
 const SignUpCC: FC = () => {
+    const searchParams = useSearchParams();
+    const callbackURLParam = searchParams.get("callbackUrl");
+
     const [credentials, setCredentials] = useState({username: "", password: "", confirmedPassword: ""});
     const [userInfo, setUserInfo] = useState({firstname: "", lastname: ""});
 
     const onSignUpWithCredentials: FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault();
+
+        if (!(credentials.password === credentials.confirmedPassword)) return;
+
+        const response = await fetch((process.env.NEXT_PUBLIC_VERCEL_URL ? ("https://" + process.env.NEXT_PUBLIC_VERCEL_URL) : "http://localhost:3000") + "/api/user", {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify({
+                name: userInfo.firstname + " " + userInfo.lastname,
+                email: credentials.username,
+                password: credentials.password,
+            }),
+        });
+
+        if (response.ok) await signIn("credentials", {...credentials, redirect: true, callbackUrl: callbackURLParam || "/new-account"});
     };
 
     return <Card className={"min-w-[30svw] max-w-screen-sm"}>
