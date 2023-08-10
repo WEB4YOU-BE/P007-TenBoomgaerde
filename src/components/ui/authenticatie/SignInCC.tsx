@@ -1,12 +1,11 @@
 "use client";
 
-import {FC, FormEventHandler, useEffect, useState} from "react";
+import {FC, FormEventHandler, useState} from "react";
 import Link from "next/link";
+import {useSearchParams} from "next/navigation";
 import {signIn} from "next-auth/react";
-import {toast, useToast} from "@/hooks/use-toast";
 import {buttonVariants} from "@/components/ui/Button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/Card";
-import {useSearchParams} from "next/navigation";
 
 const SignInCC: FC = () => {
     const searchParams = useSearchParams();
@@ -20,7 +19,7 @@ const SignInCC: FC = () => {
         await signIn("credentials", {...credentials, redirect: true, callbackUrl: callbackURLParam || "/"});
     };
 
-    return <Card className={"max-w-screen-sm"}>
+    return <Card className={"min-w-[30svw] max-w-screen-sm"}>
         <CardHeader>
             <CardTitle>Welkom terug</CardTitle>
             <CardDescription>Meld je aan met jouw gebruikersnaam en wachtwoord</CardDescription>
@@ -38,17 +37,17 @@ const SignInCC: FC = () => {
                         id="username" type={"text"} autoComplete={"username"} required autoFocus placeholder="Jouw gebruikersnaam of email"/>
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                    <label className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"} htmlFor="password">Wachtwoord</label>
+                    <label className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"} htmlFor="current-password">Wachtwoord</label>
                     <input
                         className={"flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
                         value={credentials.password} onChange={({target}) => setCredentials({...credentials, password: target.value})}
-                        id="password" type={"password"} autoComplete={"password"} required placeholder="Jouw wachtwoord"/>
+                        id="current-password" type={"password"} autoComplete={"current-password"} required placeholder="Jouw wachtwoord"/>
                 </div>
             </form>
         </CardContent>
         <CardFooter className="flex justify-between">
             <Link className={buttonVariants({variant: "secondary"})} href={"/sign-up"}>Maak een account</Link>
-            <button type={"submit"} form={"sign-in-form"} className={buttonVariants()}>Meld aan</button>
+            <button type={"submit"} form={"sign-in-form"} className={buttonVariants()}>Log in</button>
         </CardFooter>
     </Card>;
 };
