@@ -16,7 +16,6 @@ export default async function Index() {
             <aside className={"lg:col-start-2 xl:col-start-3 flex flex-col gap-2"}>
                 <h2 className={"text-3xl font-bold lg:text-center"}>Beschikbaarheid</h2>
                 <div className={"bg-gray-200 flex-grow min-h-[calc((100svh-72px-1rem)/2)] rounded p-2"}>React Kalender</div>
-                {/* h-[calc(100svh-72px-1rem)] */}
             </aside>
             <section className={"lg:row-start-2 lg:col-span-1 xl:col-span-2 flex flex-col gap-2"}>
                 <h2 className={"text-3xl font-bold"}>Praktische info</h2>
