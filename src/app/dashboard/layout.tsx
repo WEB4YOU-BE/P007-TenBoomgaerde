@@ -5,7 +5,7 @@ import * as React from "react"
 import DashboardNavigation from "@/components/ui/dashboard/Navigation";
 
 
-export default function PublicNavigationLayoutDashboard({children}: { children: React.ReactNode }) {
+export default function PublicNavigationLayoutKlant({children}: { children: React.ReactNode }) {
 
     return <>
         <DashboardNavigation/>
