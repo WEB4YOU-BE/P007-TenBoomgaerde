@@ -4,7 +4,7 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/Hov
 interface reservationProps {
     resnumber: String,
     name: String,
-    date: String,
+    date: Date,
     room: String,
     tel: String,
     code: String,
@@ -28,7 +28,7 @@ const Reservation = async (reservation: reservationProps) => {
             </div>
             <div className={"sm:row-start-3 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Datum: </span>
-                <span>{reservation.date}</span>
+                <span>{reservation.date.toString()}</span>
             </div>
             <div className={"sm:row-start-4 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Zaal: </span>
