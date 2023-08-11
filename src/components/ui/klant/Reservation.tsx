@@ -45,8 +45,8 @@ const Reservation = async (reservation: reservationProps) => {
             </div>
             <div className={"sm:row-start-3 col-span-3 sm:col-span-1"}>
                 <HoverCard>
-                    <HoverCardTrigger className={"font-bold"}>GSM'nr voor poort: </HoverCardTrigger>
-                    <HoverCardContent>Dit gsm'nr wordt gebruikt om de poort open te bellen.</HoverCardContent>
+                    <HoverCardTrigger className={"font-bold"}>GSM&apos;nr voor poort: </HoverCardTrigger>
+                    <HoverCardContent>Dit GSM&apos;nr wordt gebruikt om de poort open te bellen.</HoverCardContent>
                 </HoverCard>
                 <span>{reservation.tel}</span>
             </div>
