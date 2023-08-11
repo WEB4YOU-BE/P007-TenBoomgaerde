@@ -1,4 +1,5 @@
 import {Badge} from "@/components/ui/Badge";
+import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/Hover-card";
 
 const Reservation = async () => {
     return <div className={"p-4 border border-gray-200 rounded-lg shadow-sm"}>
@@ -22,12 +23,18 @@ const Reservation = async () => {
                 <span>Grote zaal</span>
             </div>
             <div className={"sm:row-start-3 col-span-3 sm:col-span-1"}>
-                <span className={"font-bold"}>GSM'nr voor poort: </span>
+                <HoverCard>
+                    <HoverCardTrigger className={"font-bold"}>GSM'nr voor poort: </HoverCardTrigger>
+                    <HoverCardContent>Dit gsm'nr wordt gebruikt om de poort open te bellen.</HoverCardContent>
+                </HoverCard>
                 <span>+32 471 71 09 91</span>
             </div>
             <div className={"sm:row-start-4 col-span-3 sm:col-span-1"}>
                 <span className={"font-bold"}>Code sleutel: </span>
-                <span>Nog niet bekend</span>
+                <HoverCard>
+                    <HoverCardTrigger>Nog niet bekend</HoverCardTrigger>
+                    <HoverCardContent>Deze code komt de zondag voor uw reservatie online.</HoverCardContent>
+                </HoverCard>
             </div>
         </div>
     </div>
