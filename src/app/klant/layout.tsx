@@ -9,7 +9,7 @@ export default function PublicNavigationLayoutDashboard({children}: { children: 
 
     return <>
         <KlantNavigation/>
-        <div className={"sm:ml-80"}>
+        <div className={"sm:ml-80 h-full sm:overflow-y-auto"}>
             {children}
         </div>
     </>;
