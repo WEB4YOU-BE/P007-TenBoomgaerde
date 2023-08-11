@@ -1,40 +1,56 @@
 import {Badge} from "@/components/ui/Badge";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/Hover-card";
 
-const Reservation = async () => {
-    return <div className={"p-4 border border-gray-200 rounded-lg shadow-sm"}>
+interface reservationProps {
+    resnumber: String,
+    name: String,
+    date: String,
+    room: String,
+    tel: String,
+    code: String,
+    state: String
+}
+
+const Reservation = async (reservation: reservationProps) => {
+    return <div className={"p-4 mb-4 border border-gray-200 rounded-lg shadow-sm"}>
         <div className={"grid gap-4 grid-cols-3 grid-rows-4"}>
             <div className={"font-bold text-xl row-start-1 col-span-2"}>
-                Reservatienummer: <span>21457</span>
+                Reservatienummer: <span>{reservation.resnumber}</span>
             </div>
             <span className={"flex justify-end text-sm"}>
-                <Badge variant={"success"}>Goedgekeurd</Badge>
+                {(reservation.state === 'success') && <Badge variant={"success"}>Bevestigd</Badge>}
+                {(reservation.state === 'denied') && <Badge variant={"denied"}>Geweigerd</Badge>}
+                {(reservation.state === 'hold') && <Badge variant={"hold"}>In afwachting</Badge>}
             </span>
             <div className={"sm:row-start-2 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Reserveerder: </span>
-                <span>Tiebe Deweerdt</span>
+                <span>{reservation.name}</span>
             </div>
             <div className={"sm:row-start-3 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Datum: </span>
-                <span>11-08-2023 van 13:00 tot 21:00</span>
+                <span>{reservation.date}</span>
             </div>
             <div className={"sm:row-start-4 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Zaal: </span>
-                <span>Grote zaal</span>
+                <span>{reservation.room}</span>
             </div>
             <div className={"sm:row-start-3 col-span-3 sm:col-span-1"}>
                 <HoverCard>
                     <HoverCardTrigger className={"font-bold"}>GSM'nr voor poort: </HoverCardTrigger>
                     <HoverCardContent>Dit gsm'nr wordt gebruikt om de poort open te bellen.</HoverCardContent>
                 </HoverCard>
-                <span>+32 471 71 09 91</span>
+                <span>{reservation.tel}</span>
             </div>
             <div className={"sm:row-start-4 col-span-3 sm:col-span-1"}>
                 <span className={"font-bold"}>Code sleutel: </span>
-                <HoverCard>
-                    <HoverCardTrigger>Nog niet bekend</HoverCardTrigger>
-                    <HoverCardContent>Deze code komt de zondag voor uw reservatie online.</HoverCardContent>
-                </HoverCard>
+                {
+                    (reservation.code === '') &&
+                    <HoverCard>
+                        <HoverCardTrigger>Nog niet bekend</HoverCardTrigger>
+                        <HoverCardContent>Deze code komt de zondag voor uw reservatie online.</HoverCardContent>
+                    </HoverCard>
+                }
+                {reservation.code}
             </div>
         </div>
     </div>
