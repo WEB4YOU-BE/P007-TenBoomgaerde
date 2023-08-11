@@ -12,6 +12,15 @@ interface reservationProps {
 }
 
 const Reservation = async (reservation: reservationProps) => {
+
+    function formatDate(date: Date) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const year = date.getFullYear();
+
+        return `${day}-${month}-${year}`;
+    }
+
     return <div className={"p-4 mb-4 border border-gray-200 rounded-lg shadow-sm"}>
         <div className={"grid gap-4 grid-cols-3 grid-rows-4"}>
             <div className={"font-bold text-xl row-start-1 col-span-2"}>
@@ -28,7 +37,7 @@ const Reservation = async (reservation: reservationProps) => {
             </div>
             <div className={"sm:row-start-3 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Datum: </span>
-                <span>{reservation.date.toString()}</span>
+                <span>{formatDate(reservation.date)}</span>
             </div>
             <div className={"sm:row-start-4 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Zaal: </span>
