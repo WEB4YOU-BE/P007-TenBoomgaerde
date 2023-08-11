@@ -21,7 +21,7 @@ const Reservation = async (reservation: reservationProps) => {
         return `${day}-${month}-${year}`;
     }
 
-    return <div className={"p-4 mb-4 border border-gray-200 rounded-lg shadow-sm"}>
+    return <div className={"p-4 my-4 border border-gray-200 rounded-lg shadow-sm"}>
         <div className={"grid gap-4 grid-cols-3 grid-rows-4"}>
             <div className={"font-bold text-xl row-start-1 col-span-2"}>
                 Reservatienummer: <span>{reservation.resnumber}</span>
