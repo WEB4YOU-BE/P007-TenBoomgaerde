@@ -16,7 +16,7 @@ export default function Index() {
                 </div>
                 <div className={"grid sm:grid-cols-2 grid-cols-1 gap-4"}>
                     <form
-                        className={"grid grid-cols-2 w-full gap-4 p-4 my-4 border border-gray-200 rounded-lg shadow-sm"}>
+                        className={"grid grid-cols-2 w-full gap-4 p-4 my-4 border border-gray-200 rounded-lg shadow-sm max-h-44"}>
                         <label
                             className={" my-auto font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mr-4 "}
                         >Naam</label>
@@ -30,16 +30,16 @@ export default function Index() {
                         <Switch checked={zaal[0].private}/>
                         <div
                             className={"col-span-2 grid grid-cols-3 gap-1 w-full p-1 my-1 border border-gray-200 rounded-full shadow-sm bg-green-100"}>
-                            <Link href={""}
+                            <Link href={`/dashboard/zalen/${zaal[0].id}/1`} id={"1"}
                                   className={"flex justify-center p-1 w-full border border-gray-200 rounded-full shadow-sm bg-green-200 hover:bg-green-300"}>VM: &euro; 70</Link>
-                            <Link href={""}
+                            <Link href={`/dashboard/zalen/${zaal[0].id}/2`} id={"2"}
                                   className={"flex justify-center p-1 w-full border border-gray-200 rounded-full shadow-sm bg-green-200 hover:bg-green-300"}>NM: &euro; 70</Link>
-                            <Link href={""}
+                            <Link href={`/dashboard/zalen/${zaal[0].id}/3`} id={"3"}
                                   className={"flex justify-center p-1 w-full border border-gray-200 rounded-full shadow-sm bg-green-200 hover:bg-green-300"}>AV: &euro; 70</Link>
                         </div>
                     </form>
+                    <div className={"bg-gray-200 flex-grow h-72 rounded p-2"}>React Kalender</div>
                 </div>
-
             </div>
         </div>
     </main>;
