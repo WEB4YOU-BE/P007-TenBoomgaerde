@@ -54,7 +54,6 @@ export default function Index() {
                         <Link href={`/dashboard/zalen/${useParams().zaalId}`} type={"submit"}
                               className={"items-center px-3 py-2 text-sm font-medium text-center rounded-lg bg-green-200 hover:bg-green-300 focus:ring-4 focus:ring-green-300"}>Opslaan</Link>
                     </div>
-
                 </form>
             </div>
         </div>
