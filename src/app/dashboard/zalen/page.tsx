@@ -1,14 +1,28 @@
+'use client'
+
 import {Sheet, SheetTrigger} from "@/components/ui/Sheet";
 import ZaalAside from "@/components/ui/dashboard/ZaalAside";
 import Link from "next/link";
+import {ToastAction} from "@/components/ui/Toast";
+import {useToast} from "@/hooks/use-toast";
 
 export default function Index() {
-
     const zalen = [
         {id: 1, name: 'Kleine zaal', private: false, dayPrice: 150},
         {id: 2, name: 'Grote zaal', private: false, dayPrice: 250},
         {id: 3, name: 'CM vergaderzaal', private: true, dayPrice: 0},
     ]
+
+    const {toast} = useToast()
+    const deleteOnClick = (name: String) => {
+        console.log('verwijderd')
+        toast({
+            variant: "destructive",
+            title: "verwijderd",
+            description: `${name} is verwijderd`,
+            action: <ToastAction altText={"Undo"}>Undo</ToastAction>
+        })
+    }
 
     return <main className={"w-full min-h-[100svh]"}>
         <div className={"p-4 block sm:flex items-center justify-between"}>
@@ -121,6 +135,7 @@ export default function Index() {
                                         </Link>
                                         <button
                                             className={"inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300"}
+                                            onClick={() => deleteOnClick(zaal.name)}
                                         >
                                             <svg
                                                 className={"w-4 h-4"}
