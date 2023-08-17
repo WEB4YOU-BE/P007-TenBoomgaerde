@@ -9,7 +9,7 @@ export default function PublicNavigationLayoutKlant({children}: { children: Reac
 
     return <>
         <DashboardNavigation/>
-        <div className={"sm:ml-80"}>
+        <div className={"sm:ml-80 h-full sm:overflow-y-auto"}>
             {children}
         </div>
     </>;
