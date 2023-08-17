@@ -1,7 +1,29 @@
+'use client'
+
 import {Sheet, SheetTrigger} from "@/components/ui/Sheet";
 import ZaalAside from "@/components/ui/dashboard/ZaalAside";
+import Link from "next/link";
+import {ToastAction} from "@/components/ui/Toast";
+import {useToast} from "@/hooks/use-toast";
 
 export default function Index() {
+    const zalen = [
+        {id: 1, name: 'Kleine zaal', private: false, dayPrice: 150},
+        {id: 2, name: 'Grote zaal', private: false, dayPrice: 250},
+        {id: 3, name: 'CM vergaderzaal', private: true, dayPrice: 0},
+    ]
+
+    const {toast} = useToast()
+    const deleteOnClick = (name: String) => {
+        console.log('verwijderd')
+        toast({
+            variant: "destructive",
+            title: "verwijderd",
+            description: `${name} is verwijderd`,
+            action: <ToastAction altText={"Undo"}>Undo</ToastAction>
+        })
+    }
+
     return <main className={"w-full min-h-[100svh]"}>
         <div className={"p-4 block sm:flex items-center justify-between"}>
             <div className={"w-full mb-1"}>
@@ -55,6 +77,7 @@ export default function Index() {
                                 {
                                     [
                                         'Naam',
+                                        'privaat',
                                         'Public',
                                         'Acties'
                                     ].map((th, index) => (
@@ -67,7 +90,70 @@ export default function Index() {
                             </tr>
                             </thead>
                             <tbody className={"divide-y divide-gray-200"}>
-
+                            {zalen.map((zaal) => (
+                                <tr className={"hover:bg-gray-100"} key={zaal.id}>
+                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap"}>
+                                        <data value={"naam"}>{zaal.name}</data>
+                                    </td>
+                                    <td>
+                                        <div className={"flex items-center p-4"}>
+                                            <input
+                                                id={`checkbox-${zaal.private}`}
+                                                checked={zaal.private}
+                                                readOnly={true}
+                                                aria-describedby={"checkbox-1"}
+                                                type={"checkbox"}
+                                                className={"w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"}
+                                            />
+                                        </div>
+                                    </td>
+                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap"}>
+                                        <data value={"naam"}>&euro; {zaal.dayPrice}</data>
+                                    </td>
+                                    <td className={"p-4 space-x-2 whitespace-nowrap"}>
+                                        <Link
+                                            className={"inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg bg-green-200 hover:bg-green-300 focus:ring-4 focus:ring-green-300"}
+                                            href={`/dashboard/zalen/${zaal.id}`}
+                                        >
+                                            <svg
+                                                className={"w-4 h-4"}
+                                                fill={"currentColor"}
+                                                viewBox={"0 0 20 20"}
+                                                xmlns={"http://www.w3.org/2000/svg"}
+                                            >
+                                                <svg>
+                                                    <path
+                                                        d={"M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"}/>
+                                                    <path
+                                                        fillRule={"evenodd"}
+                                                        d={"M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"}
+                                                        clipRule={"evenodd"}
+                                                    />
+                                                </svg>
+                                            </svg>
+                                            <span className={"sm:ml-2 hidden sm:block"}>Bewerk</span>
+                                        </Link>
+                                        <button
+                                            className={"inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300"}
+                                            onClick={() => deleteOnClick(zaal.name)}
+                                        >
+                                            <svg
+                                                className={"w-4 h-4"}
+                                                fill={"currentColor"}
+                                                viewBox={"0 0 20 20"}
+                                                xmlns={"http://www.w3.org/2000/svg"}
+                                            >
+                                                <path
+                                                    fillRule={"evenodd"}
+                                                    d={"M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"}
+                                                    clipRule={"evenodd"}
+                                                />
+                                            </svg>
+                                            <span className={"sm:ml-2 hidden sm:block"}>Verwijder</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     </div>
