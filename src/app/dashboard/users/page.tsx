@@ -84,7 +84,7 @@ export default function Index() {
                                         'Acties'
                                     ].map((th, index) => (
                                         <th key={index} scope={"col"}
-                                            className={"p-4 text-xs font-medium text-left text-gray-500 uppercase hidden sm:table-cell"}>
+                                            className={"py-4 pl-3 pr-4 text-xs font-medium text-left text-gray-500 uppercase hidden sm:table-cell"}>
                                             {th}
                                         </th>
                                     ))
@@ -96,7 +96,7 @@ export default function Index() {
                                         'Acties'
                                     ].map((th, index) => (
                                         <th key={index} scope={"col"}
-                                            className={"p-4 text-xs font-medium text-left text-gray-500 uppercase sm:hidden"}>
+                                            className={"py-4 pl-3 pr-4 text-xs font-medium text-left text-gray-500 uppercase sm:hidden"}>
                                             {th}
                                         </th>
                                     ))
@@ -107,29 +107,29 @@ export default function Index() {
                             <tbody className={"divide-y divide-gray-200"}>
                             {users.map((user) => (
                                 <tr className={"hover:bg-gray-100"} key={user.id}>
-                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap"}>
+                                    <td className={"p-3 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap"}>
                                         <data value={"naam"}>{user.name}</data>
                                     </td>
-                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap hidden sm:table-cell"}>
+                                    <td className={"p-3 text-base font-medium text-gray-900 whitespace-nowrap hidden sm:table-cell"}>
                                         <data value={"email"}>{user.email}</data>
                                     </td>
-                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap hidden sm:table-cell"}>
+                                    <td className={"p-3 text-base font-medium text-gray-900 whitespace-nowrap hidden sm:table-cell"}>
                                         <data value={"email"}>{user.postcode}</data>
                                     </td>
-                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap hidden sm:table-cell"}>
+                                    <td className={"p-3 text-base font-medium text-gray-900 whitespace-nowrap hidden sm:table-cell"}>
                                         <data value={"email"}>{user.telnr}</data>
                                     </td>
-                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap"}>
+                                    <td className={"p-3 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap"}>
                                         <data value={"email"}>{user.rol}</data>
                                     </td>
-                                    <td className={"p-4 space-x-2 whitespace-nowrap"}>
+                                    <td className={"p-3 space-x-2 whitespace-nowrap"}>
                                         <Link
                                             className={"inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg bg-green-200 hover:bg-green-300 focus:ring-4 focus:ring-green-300"}
                                             href={`/dashboard/users/${user.id}`}
                                         >
                                             <svg xmlns={"http://www.w3.org/2000/svg"} fill={"none"}
                                                  viewBox={"0 0 24 24"} strokeWidth={1.5} stroke={"currentColor"}
-                                                 className={"w-5 h-5"}>
+                                                 className={"w-3 sm:w-4 h-3 sm:h-4"}>
                                                 <path strokeLinecap={"round"} strokeLinejoin={"round"}
                                                       d={"M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"}/>
                                             </svg>
@@ -139,7 +139,7 @@ export default function Index() {
                                             className={"inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300"}
                                         >
                                             <svg
-                                                className={"w-5 h-5"}
+                                                className={"w-3 sm:w-4 h-3 sm:h-4"}
                                                 fill={"currentColor"}
                                                 viewBox={"0 0 20 20"}
                                                 xmlns={"http://www.w3.org/2000/svg"}
