@@ -71,7 +71,7 @@ export default function Index() {
             <div className={"overflow-x-auto"}>
                 <div className={"inline-block min-w-full align-middle"}>
                     <div className={"overflow-hidden shadow"}>
-                        <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
+                        <table className={"min-w-full divide-y divide-gray-200 table-fixed sm:text-xs"}>
                             <thead className={"bg-gray-100"}>
                             <tr>
                                 {
@@ -92,7 +92,7 @@ export default function Index() {
                             <tbody className={"divide-y divide-gray-200"}>
                             {zalen.map((zaal) => (
                                 <tr className={"hover:bg-gray-100"} key={zaal.id}>
-                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap"}>
+                                    <td className={"p-4 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap"}>
                                         <data value={"naam"}>{zaal.name}</data>
                                     </td>
                                     <td>
@@ -107,7 +107,7 @@ export default function Index() {
                                             />
                                         </div>
                                     </td>
-                                    <td className={"p-4 text-base font-medium text-gray-900 whitespace-nowrap"}>
+                                    <td className={"p-4 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap"}>
                                         <data value={"naam"}>&euro; {zaal.dayPrice}</data>
                                     </td>
                                     <td className={"p-4 space-x-2 whitespace-nowrap"}>
@@ -116,7 +116,7 @@ export default function Index() {
                                             href={`/dashboard/zalen/${zaal.id}`}
                                         >
                                             <svg
-                                                className={"w-4 h-4"}
+                                                className={"w-3 sm:w-4 h-3 sm:h-4"}
                                                 fill={"currentColor"}
                                                 viewBox={"0 0 20 20"}
                                                 xmlns={"http://www.w3.org/2000/svg"}
@@ -138,7 +138,7 @@ export default function Index() {
                                             onClick={() => deleteOnClick(zaal.name)}
                                         >
                                             <svg
-                                                className={"w-4 h-4"}
+                                                className={"w-3 sm:w-4 h-3 sm:h-4"}
                                                 fill={"currentColor"}
                                                 viewBox={"0 0 20 20"}
                                                 xmlns={"http://www.w3.org/2000/svg"}
