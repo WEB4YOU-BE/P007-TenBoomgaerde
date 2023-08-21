@@ -103,7 +103,7 @@ export default function Index() {
                                                 readOnly={true}
                                                 aria-describedby={"checkbox-1"}
                                                 type={"checkbox"}
-                                                className={"w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"}
+                                                className={"w-3 sm:w-4 h-3 sm:h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"}
                                             />
                                         </div>
                                     </td>
