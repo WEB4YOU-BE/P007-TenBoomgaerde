@@ -1,5 +1,5 @@
 import Messages from './messages'
-import {buttonVariants} from "@/components/button";
+import {buttonVariants} from "@/components/ui/button";
 
 export default function Login() {
     return <form action={"/auth/sign-in"} method={"POST"}
