@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+export const dynamic = 'force-dynamic'
+
 export default async function Index() {
     return <main className={"w-full min-h-[calc(100svh-72px)]"}>
         <div className={"container mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
