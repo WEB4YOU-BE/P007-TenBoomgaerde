@@ -3,7 +3,9 @@ import NavigationHeader from "@/components/navigation/navigation-header";
 import NavigationHeaderLink from "@/components/navigation/navigation-header-link";
 import NavigationHeaderAuthentication from "@/components/authentication/navigation-header-authentication";
 
-export default function PublicNavigationLayout({children}: { children: React.ReactNode }) {
+export const dynamic = 'force-dynamic'
+
+export default async function PublicNavigationLayout({children}: { children: React.ReactNode }) {
     return <>
         <NavigationHeader authNode={<NavigationHeaderAuthentication/>}>
             <NavigationHeaderLink href={"/"}>Startpagina</NavigationHeaderLink>
