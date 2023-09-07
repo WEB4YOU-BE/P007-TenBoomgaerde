@@ -1,6 +1,8 @@
 import Messages from './messages'
 import {buttonVariants} from "@/components/ui/button";
 
+export const dynamic = 'force-dynamic'
+
 export default function Login() {
     return <form action={"/auth/sign-in"} method={"POST"}
                  className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 rounded-lg border bg-white text-black grid gap-4 p-4"}>
