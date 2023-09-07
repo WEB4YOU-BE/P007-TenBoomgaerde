@@ -1,9 +1,11 @@
 import Image from "next/image";
+import RoomsTable from "@/components/business/rooms/rooms-table";
 
 export const dynamic = 'force-dynamic'
 
 export default async function Index() {
     return <main className={"w-full min-h-[calc(100svh-72px)]"}>
+        <RoomsTable/>
         <div className={"container mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
             <div className={"xl:col-span-2 flex flex-col gap-2"}>
                 <h1 className={"text-5xl font-extrabold"}>Ten boomgaarde</h1>

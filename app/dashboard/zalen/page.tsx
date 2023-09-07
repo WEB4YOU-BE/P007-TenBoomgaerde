@@ -2,9 +2,11 @@
 
 import {Sheet, SheetTrigger} from "@/components/ui/Sheet";
 import ZaalAside from "@/components/ui/dashboard/ZaalAside";
-import Link from "next/link";
 import {ToastAction} from "@/components/ui/Toast";
 import {useToast} from "@/hooks/use-toast";
+import RoomsTable from "@/components/business/rooms/rooms-table";
+
+export const dynamic = 'force-dynamic'
 
 export default function Index() {
     const zalen = [
@@ -12,6 +14,7 @@ export default function Index() {
         {id: 2, name: 'Grote zaal', private: false, dayPrice: 250},
         {id: 3, name: 'CM vergaderzaal', private: true, dayPrice: 0},
     ]
+
 
     const {toast} = useToast()
     const deleteOnClick = (name: String) => {
@@ -67,6 +70,8 @@ export default function Index() {
                 </div>
             </div>
         </div>
+        {/*<RoomsTable/>*/}
+        {/*
         <div className={"flex flex-col"}>
             <div className={"overflow-x-auto"}>
                 <div className={"inline-block min-w-full align-middle"}>
@@ -159,6 +164,6 @@ export default function Index() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*/}
     </main>;
 }
