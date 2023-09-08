@@ -1,0 +1,4 @@
+export default async function page() {
+    return <div>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>Hallo<br/>
+    </div>
+}
