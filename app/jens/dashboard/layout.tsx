@@ -3,6 +3,8 @@ import NavigationSidebar from "@/components/navigation/navigation-sidebar";
 import NavigationSidebarAuthentication from "@/components/authentication/navigation-sidebar-authentication";
 import NavigationSidebarLink from "@/components/navigation/navigation-sidebar-link";
 
+export const dynamic = 'force-dynamic'
+
 interface LayoutProps {
     children: React.ReactNode;
 }
