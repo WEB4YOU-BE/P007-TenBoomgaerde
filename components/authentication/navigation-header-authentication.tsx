@@ -2,6 +2,7 @@ import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import LogoutButton from "@/components/authentication/LogoutButton";
 import NavigationHeaderLink from "@/components/navigation/navigation-header-link";
+import LoginButton from "@/components/authentication/LoginButton";
 
 export const dynamic = 'force-dynamic'
 
@@ -23,5 +24,5 @@ async function NavigationIsLogedIn() {
 }
 
 async function NavigationIsLogedOut() {
-    return <NavigationHeaderLink href={"/login"}>Log in</NavigationHeaderLink>
+    return <LoginButton/>
 }
