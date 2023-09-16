@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 export default async function layout({children}: LayoutProps) {
-    return <div className={"flex flex-col sm:flex-row"}>
+    return <div className={"flex flex-col md:flex-row"}>
         <NavigationSidebar authNode={<NavigationSidebarAuthentication/>}>
             <NavigationSidebarLink href={"/dashboard/zalen"}>Zalen</NavigationSidebarLink>
         </NavigationSidebar>
