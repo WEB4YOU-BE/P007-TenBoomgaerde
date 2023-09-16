@@ -20,5 +20,7 @@ async function NavigationIsLogedIn() {
 }
 
 async function NavigationIsLogedOut() {
-    return <NavigationSidebarLink href={"/login"}>Log in</NavigationSidebarLink>
+    return <div className={"flex flex-col-reverse gap-2"}>
+        <NavigationSidebarLink href={"/login"}>Log in</NavigationSidebarLink>
+    </div>
 }
