@@ -2,6 +2,9 @@ import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import RoomsTable from "@/components/business/rooms/rooms-table";
 import {DbResult} from "@/lib/database.types";
+import Link from "next/link";
+import {buttonVariants} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
 
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
@@ -10,8 +13,11 @@ export default async function page() {
 
     if (!rooms.data) return undefined
 
-    return <main className={"w-full"}>
-
+    return <main className={"flex flex-col gap-2"}>
+        <div className={"flex flex-col md:flex-row gap-2"}>
+            <h1 className={"scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl pt-2 px-2 md:flex-grow"}>Zalen</h1>
+            <Link href={"/dashboard/zalen/add"} className={cn(buttonVariants(), "mx-2 md:mt-2")}>Toevoegen</Link>
+        </div>
         <RoomsTable rooms={rooms.data}/>
     </main>
 }
