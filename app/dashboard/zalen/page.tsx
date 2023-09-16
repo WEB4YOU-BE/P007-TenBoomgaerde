@@ -11,6 +11,7 @@ export default async function page() {
     if (!rooms.data) return undefined
 
     return <main className={"w-full"}>
-        <RoomsTable rooms={rooms.data}/>
+
+    <RoomsTable rooms={rooms.data}/>
     </main>
 }
