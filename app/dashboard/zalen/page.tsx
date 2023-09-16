@@ -12,6 +12,6 @@ export default async function page() {
 
     return <main className={"w-full"}>
 
-    <RoomsTable rooms={rooms.data}/>
+        <RoomsTable rooms={rooms.data}/>
     </main>
 }

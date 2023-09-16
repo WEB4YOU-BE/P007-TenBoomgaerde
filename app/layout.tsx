@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function RootLayout({children,}: { children: React.ReactNode }) {
     return <html lang="nl-BE">
-    <body className={inter.className}>
+    <body className={inter.className + " overscroll-none"}>
     {children}
     </body>
     </html>
