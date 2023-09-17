@@ -1,16 +1,22 @@
-"use client"
+import React from "react";
+import NavigationSidebar from "@/components/navigation/navigation-sidebar";
+import NavigationSidebarAuthentication from "@/components/authentication/navigation-sidebar-authentication";
+import NavigationSidebarLink from "@/components/navigation/navigation-sidebar-link";
 
-import * as React from "react"
+export const dynamic = 'force-dynamic'
 
-import DashboardNavigation from "@/components/ui/dashboard/Navigation";
+interface LayoutProps {
+    children: React.ReactNode;
+}
 
-
-export default function PublicNavigationLayoutKlant({children}: { children: React.ReactNode }) {
-
-    return <>
-        <DashboardNavigation/>
-        <div className={"sm:ml-80 h-full sm:overflow-y-auto"}>
+export default async function layout({children}: LayoutProps) {
+    return <div className={"flex flex-col md:flex-row"}>
+        <NavigationSidebar authNode={<NavigationSidebarAuthentication/>}>
+            <NavigationSidebarLink href={"/dashboard"}>Dashboard</NavigationSidebarLink>
+            <NavigationSidebarLink href={"/dashboard/zalen"}>Zalen</NavigationSidebarLink>
+        </NavigationSidebar>
+        <div className={"w-full"}>
             {children}
         </div>
-    </>;
+    </div>
 }
