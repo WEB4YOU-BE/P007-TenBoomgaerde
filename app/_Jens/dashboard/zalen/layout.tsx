@@ -10,8 +10,6 @@ interface LayoutProps {
 export default async function layout(props: LayoutProps) {
     return <>
         {props.children}
-        <div className={"absolute top-1/2 left-1/2 -translate-x-1/2 ml-[320px]"}>
-            {props.modal}
-        </div>
+        {props.modal}
     </>
 }
