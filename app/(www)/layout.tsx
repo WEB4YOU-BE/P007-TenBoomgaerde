@@ -10,7 +10,7 @@ export default async function PublicNavigationLayout({children}: { children: Rea
         <NavigationHeader authNode={<NavigationHeaderAuthentication/>}>
             <NavigationHeaderLink href={"/"}>Startpagina</NavigationHeaderLink>
             <NavigationHeaderLink href={"/reserveren"}>Reserveer</NavigationHeaderLink>
-            <NavigationHeaderLink href={"/producten"}>Prijzen</NavigationHeaderLink>
+            <NavigationHeaderLink href={"/prijzen"}>Prijzen</NavigationHeaderLink>
         </NavigationHeader>
         {children}
         <Footer/>
