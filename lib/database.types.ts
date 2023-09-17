@@ -1,4 +1,4 @@
-import {PostgrestError} from '@supabase/supabase-js'
+import {PostgrestError} from "@supabase/supabase-js";
 
 export type Json =
     | string
@@ -11,6 +11,52 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      categories: {
+        Row: {
+          id: string
+          name: string
+        }
+        Insert: {
+          id?: string
+          name: string
+        }
+        Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          categorie_id: string | null
+          for_sale: boolean | null
+          id: string
+          name: string
+          price: number | null
+        }
+        Insert: {
+          categorie_id?: string | null
+          for_sale?: boolean | null
+          id?: string
+          name: string
+          price?: number | null
+        }
+        Update: {
+          categorie_id?: string | null
+          for_sale?: boolean | null
+          id?: string
+          name?: string
+          price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_categorie_id_fkey"
+            columns: ["categorie_id"]
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       rooms: {
         Row: {
           day_price: number | null
