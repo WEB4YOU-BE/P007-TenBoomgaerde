@@ -7,11 +7,11 @@ interface ProductRecordIndexProps {
     name?: string;
     price?: number | null;
     forSale?: boolean;
-    category?: string | null;
+    categorieId: string | null;
 }
 
 
-export default async function ProductRecordIndex({id, name, price, forSale, category}: ProductRecordIndexProps) {
+export default async function ProductRecordIndex({id, name, price, forSale, categorieId}: ProductRecordIndexProps) {
     return <tr className={"hover:bg-gray-100"} key={id}>
         <td className={"p-3 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap"}>
             <data value={"naam"}>{name}</data>
@@ -20,7 +20,7 @@ export default async function ProductRecordIndex({id, name, price, forSale, cate
             <data value={"price"}>&euro; {price}</data>
         </td>
         <td className={"p-3 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap"}>
-            <data value={"category"}>{category}</data>
+            <data value={"category"}>{categorieId}</data>
         </td>
         <td>
             <div className={"flex items-center p-4"}>

@@ -8,7 +8,8 @@ import ProductsTable from "@/components/business/products/products-table";
 
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
-    const query = supabase.from("products").select(`id, name, price, for_sale, categories (name)`)
+    //const query = supabase.from("products").select(`id, name, price, for_sale, categories (name)`)
+    const query = supabase.from("products").select()
     const products: DbResult<typeof query> = await query
 
     if (!products.data) return undefined
