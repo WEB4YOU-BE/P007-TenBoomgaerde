@@ -6,8 +6,7 @@ interface RoomsTableProps {
 }
 
 export default async function RoomsTable({rooms}: RoomsTableProps) {
-    {/*TODO fix the not working sticky feature.*/
-    }
+    /*TODO fix the not working sticky feature.*/
     return <div className={"max-w-[100dvw] overflow-x-auto"}>
         <table className={"w-full"}>
             <thead className={"sticky top-0"}>
