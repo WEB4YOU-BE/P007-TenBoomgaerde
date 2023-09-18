@@ -6,24 +6,20 @@ interface RoomsTableProps {
 }
 
 export default async function RoomsTable({rooms}: RoomsTableProps) {
-    /*TODO fix the not working sticky feature.*/
+    /*TODO fix the, not working, sticky feature in the head.*/
     return <div className={"max-w-[100dvw] overflow-x-auto"}>
         <table className={"w-full"}>
-            <thead className={"sticky top-0"}>
-            <tr className={"bg-white even:bg-muted"}>
-                {
-                    ["Naam", "Is privé", "Prijs", "Acties"]
-                        .map((title, index) => <th key={index} className={"px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)
-                }
-            </tr>
+            <thead>
+            <tr className={"bg-white odd:bg-muted"}>{
+                ["Naam", "Is privé", "Prijs", "Acties"]
+                    .map((title, index) => <th key={index} className={"px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)
+            }</tr>
             </thead>
-            <tbody>
-            {
+            <tbody>{
                 rooms
                     .map((room, index) =>
                         <RoomRecordIndex key={index} id={room.id} name={room.name} isPrivate={room.private} pricePerDay={room.day_price}/>)
-            }
-            </tbody>
+            }</tbody>
         </table>
     </div>
 }
