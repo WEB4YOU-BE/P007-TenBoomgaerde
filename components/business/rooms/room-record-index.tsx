@@ -14,7 +14,7 @@ export default async function RoomRecordIndex({id, name, isPrivate, pricePerDay}
     return <tr className={"hover:bg-muted whitespace-nowrap"}>
         <RoomRecordDatapoint>{name}</RoomRecordDatapoint>
         <RoomRecordDatapoint>{isPrivate ? "ja" : "nee"}</RoomRecordDatapoint>
-        <RoomRecordDatapoint>€{pricePerDay}</RoomRecordDatapoint>
+        <RoomRecordDatapoint>&euro;{pricePerDay}</RoomRecordDatapoint>
         <RoomRecordDatapoint><RoomRecordIndexActions id={id}/></RoomRecordDatapoint>
     </tr>
 }
