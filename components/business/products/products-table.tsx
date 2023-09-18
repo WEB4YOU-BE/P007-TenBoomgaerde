@@ -6,36 +6,20 @@ interface ProductsTableProps {
 }
 
 export default async function ProductsTable({products}: ProductsTableProps) {
-    return <div className={"max-w-[100dvw] overflow-x-auto"}>
-        <div className={"inline-block min-w-full align-middle"}>
-            <div className={"overflow-hidden shadow"}>
-                <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
-                    <thead className={"bg-gray-100"}>
-                    <tr>
-                        {
-                            [
-                                'Naam',
-                                'Prijs',
-                                'Categorie',
-                                'Koop',
-                                'Acties'
-                            ].map((th, index) => (
-                                <th key={index} scope={"col"}
-                                    className={"py-4 pl-3 pr-4 text-xs font-medium text-left text-gray-500 uppercase"}>
-                                    {th}
-                                </th>
-                            ))
-                        }
-                    </tr>
-                    </thead>
-                    <tbody className={"divide-y divide-gray-200"}>
-                    {products.map((product) =>
-                        <ProductRecordIndex id={product.id} name={product.name} price={product.price}
-                                            forSale={!!product.for_sale} categorieId={product.categorie_id}/>
-                    )}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
+        <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
+            <thead>
+            <tr className={"bg-muted"}>{
+                ['Naam', 'Prijs', 'Categorie', 'Te koop', 'Acties']
+                    .map((title, index) => <th key={index} scope={"col"}
+                                               className={"px-4 py-2 text-left font-bold uppercase text-muted-foreground [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)
+            }</tr>
+            </thead>
+            <tbody className={"divide-y divide-muted"}>{
+                products
+                    .map((product, index) =>
+                        <ProductRecordIndex key={index} id={product.id} name={product.name} price={product.price} forSale={!!product.for_sale} categorieId={product.categorie_id}/>)
+            }</tbody>
+        </table>
     </div>
 }

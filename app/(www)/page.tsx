@@ -3,8 +3,8 @@ import Image from "next/image";
 export const dynamic = 'force-dynamic'
 
 export default async function Index() {
-    return <main className={"w-full min-h-[calc(100svh-72px)]"}>
-        <div className={"container mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
+    return <main className={"min-h-[calc(100svh-72px)]"}>
+        <div className={"container max-w-screen-xl mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
             <div className={"xl:col-span-2 flex flex-col gap-2"}>
                 <h1 className={"text-5xl font-extrabold"}>Ten boomgaarde</h1>
                 <span className={"bg-red-100 border-red-400 border-2 rounded p-2"}>Uit respect voor de nachtrust van de buurtbewoners kunnen er geen feesten met muziekinstallaties plaats vinden na 22u00.</span>
