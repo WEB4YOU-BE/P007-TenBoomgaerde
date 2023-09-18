@@ -12,7 +12,7 @@ interface ProductRecordIndexProps {
 
 
 export default async function ProductRecordIndex({id, name, price, forSale, categorieId}: ProductRecordIndexProps) {
-    return <tr className={"hover:bg-gray-100"} key={id}>
+    return <tr className={"hover:bg-muted shrink-0 truncate"}>
         <td className={"p-3 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap"}>
             <data value={"naam"}>{name}</data>
         </td>
