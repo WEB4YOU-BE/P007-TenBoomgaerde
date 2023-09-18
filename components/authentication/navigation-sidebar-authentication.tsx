@@ -3,6 +3,7 @@ import {cookies} from "next/headers";
 import LogoutButton from "@/components/authentication/LogoutButton";
 import NavigationSidebarLink from "@/components/navigation/navigation-sidebar-link";
 import LoginButton from "@/components/authentication/LoginButton";
+import {UserCircle} from "lucide-react";
 
 export default async function NavigationSidebarAuthentication() {
     const supabase = createServerComponentClient({cookies})
@@ -16,7 +17,7 @@ export default async function NavigationSidebarAuthentication() {
 async function NavigationIsLogedIn() {
     return <div className={"flex flex-col-reverse gap-2"}>
         <LogoutButton/>
-        <NavigationSidebarLink href={"/dashboard"}>Accountinstellingen</NavigationSidebarLink>
+        <NavigationSidebarLink href={"/dashboard"}><UserCircle/>Accountinstellingen</NavigationSidebarLink>
     </div>
 }
 
