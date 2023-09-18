@@ -17,7 +17,7 @@ export default async function page() {
     return <main className={"flex flex-col gap-2"}>
         <div className={"flex flex-col md:flex-row gap-2 py-4 pl-4"}>
             <h1 className={"text-xl font-semibold text-gray-900 sm:text-2xl scroll-m-20 tracking-tight md:flex-grow"}>Producten</h1>
-            <Link href={"/dashboard/products/add"} className={cn(buttonVariants({variant: "green"}), "mx-2")}>
+            <Link href={"/dashboard/producten/add"} className={cn(buttonVariants({variant: "green"}), "mx-2")}>
                 <svg className={"w-5 h-5 mr-2 -ml-1"} fill={"currentColor"} viewBox={"0 0 20 20"}
                      xmlns={"http://www.w3.org/2000/svg"}>
                     <path
