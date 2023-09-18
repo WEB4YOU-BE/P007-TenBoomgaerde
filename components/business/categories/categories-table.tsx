@@ -6,32 +6,20 @@ interface CategoriesTableProps {
 }
 
 export default async function CategoriesTable({categories}: CategoriesTableProps) {
-    return <div className={"max-w-[100dvw] overflow-x-auto"}>
-        <div className={"inline-block min-w-full align-middle"}>
-            <div className={"overflow-hidden shadow"}>
-                <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
-                    <thead className={"bg-gray-100"}>
-                    <tr>
-                        {
-                            [
-                                'Naam',
-                                'Acties'
-                            ].map((th, index) => (
-                                <th key={index} scope={"col"}
-                                    className={"py-4 pl-3 pr-4 text-xs font-medium text-left text-gray-500 uppercase"}>
-                                    {th}
-                                </th>
-                            ))
-                        }
-                    </tr>
-                    </thead>
-                    <tbody className={"divide-y divide-gray-200"}>
-                    {categories.map((category) =>
-                        <CategoryRecordIndex id={category.id} name={category.name}/>
-                    )}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
+        <table className={"w-full"}>
+            <thead>
+            <tr className={"bg-muted"}>{
+                ["Naam", "Acties"]
+                    .map((title, index) => <th key={index}
+                                               className={"px-4 py-2 text-left font-bold uppercase text-muted-foreground [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)
+            }</tr>
+            </thead>
+            <tbody className={"divide-y divide-muted"}>{
+                categories
+                    .map((category) =>
+                        <CategoryRecordIndex id={category.id} name={category.name}/>)
+            }</tbody>
+        </table>
     </div>
 }

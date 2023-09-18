@@ -6,7 +6,6 @@ interface RoomsTableProps {
 }
 
 export default async function RoomsTable({rooms}: RoomsTableProps) {
-    /*TODO fix the, not working, sticky feature in the head.*/
     return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
         <table className={"w-full"}>
             <thead>
