@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import {cn} from "@/lib/utils";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import {useState} from "react";
+import {buttonVariants} from "@/components/ui/button";
 
 export const generateDate = (month = dayjs().month(), year = dayjs().year()) => {
     const firstDateOfMonth = dayjs().year(year).month(month).startOf("month");
@@ -57,8 +58,8 @@ export default function Calendar() {
     const [selectDate, setSelectDate] = useState(currentDate)
 
     return <div
-        className={"flex flex-col md:flex-row md:w-1/2 mx-auto md:divide-x-2 divide-y-2 md:divide-y-0 gap-10 h-screen items-center md:items-start"}>
-        <div className={"w-96 md:w-full h-96"}>
+        className={"flex flex-col md:flex-row md:divide-x-2 divide-y-2 md:divide-y-0 gap-10 h-screen items-center md:items-start justify-center"}>
+        <div className={"w-96 h-96"}>
             <div className={"flex justify-between"}>
                 <h1 className={"font-bold"}>{months[today.month()]}, {today.year()}</h1>
                 <div className={"flex items-center gap-5"}>
@@ -83,7 +84,7 @@ export default function Calendar() {
                 {generateDate(today.month(), today.year()).map(({date, currentMonth, today}, index) => {
                     return <div key={index} className={"h-14 border-t grid place-content-center text-sm"}>
                         <button
-                            className={cn(currentMonth ? "" : "text-gray-400", date < currentDate ? "text-gray-400 cursor-text" : "hover:bg-black hover:text-white", today ? "bg-red-600 text-white" : "", selectDate === date ? "bg-black text-white" : "", "h-10 w-10 grid place-content-center rounded-full  transition-all")}
+                            className={cn(currentMonth ? "" : "text-gray-400", date < currentDate ? "text-gray-400 cursor-text" : "hover:bg-green-300", today ? "text-green-500" : "", selectDate === date ? "bg-green-200" : "", "h-10 w-10 grid place-content-center rounded-full transition-all")}
                             onClick={() => {
                                 if (date >= currentDate) setSelectDate(date)
                             }}>
@@ -95,6 +96,12 @@ export default function Calendar() {
         </div>
         <div className={"h-96 w-96 p-5 block"}>
             <h1>Beschikbaarheden voor {selectDate.date()} {months[selectDate.month()]} {selectDate.year()}</h1>
+            <div className={"flex flex-col mt-10 items-center gap-6"}>
+                <button className={cn(buttonVariants({variant: "green"}), "rounded-full")}>Volledige dag</button>
+                <button className={cn(buttonVariants({variant: "green"}), "rounded-full")}>08:00 - 12:00</button>
+                <button className={cn(buttonVariants({variant: "green"}), "rounded-full")}>13:00 - 17:00</button>
+                <button className={cn(buttonVariants({variant: "green"}), "rounded-full")}>18:00 - 23:00</button>
+            </div>
         </div>
     </div>
 }
