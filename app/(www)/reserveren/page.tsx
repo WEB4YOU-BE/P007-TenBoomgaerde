@@ -1,5 +1,8 @@
-import GroteZaal from "@/components/Calendar/grote-zaal";
+
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
+import Calendar from "@/components/Calendar/calendar";
+
+
 
 export default async function Index() {
     return <main className={"w-full min-h-[calc(100svh-72px)]"}>
@@ -15,7 +18,7 @@ export default async function Index() {
                     <SelectItem value={"Beide zalen"}>Beide zalen</SelectItem>
                 </SelectContent>
             </Select>
-            <GroteZaal/>
+            <Calendar/>
         </div>
     </main>;
 }
