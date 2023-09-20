@@ -1,9 +1,11 @@
-import {Select, SelectContent, SelectTrigger, SelectValue} from "@/components/ui/Select";
 import {DbResult} from "@/lib/database.types";
 import SelectCalendarIndex from "@/components/Calendar/select-calendar-item";
 import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
-
+import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger} from "@/components/ui/Dropdown-menu";
+import {ChevronDown} from "lucide-react";
+import {cn} from "@/lib/utils";
+import {buttonVariants} from "@/components/ui/button";
 
 export default async function SelectCalendar() {
     const supabase = createServerComponentClient({cookies})
@@ -11,17 +13,16 @@ export default async function SelectCalendar() {
     const rooms: DbResult<typeof query> = await query
 
     if (!rooms.data) return undefined
-    return <Select>
-        <SelectTrigger className={"w-[180px] my-4"}>
-            <SelectValue placeholder={"Kies uw zaal"}/>
-        </SelectTrigger>
-        <SelectContent>
+    return <DropdownMenu>
+        <DropdownMenuTrigger
+            className={cn(buttonVariants({variant: "green"}), "flex flex-row w-[150px] my-4 justify-between")}>Kies uw
+            zaal<ChevronDown/></DropdownMenuTrigger>
+        <DropdownMenuContent>
             {
                 rooms.data.map((room) =>
                     <SelectCalendarIndex name={room.name} id={room.id}/>
                 )
             }
-        </SelectContent>
-    </Select>
-
+        </DropdownMenuContent>
+    </DropdownMenu>
 }
