@@ -15,7 +15,8 @@ export default function Index() {
                     reservatie. Wij bevestigen zo spoedig mogelijk uw reservatie.</p>
                 <div className={"flex flex-row justify-between mt-28 text-center"}>
                     <Link href={"/"} className={cn(buttonVariants(), "w-1/3")}>Terug naar startpagina</Link>
-                    <Link href={"/"} className={cn(buttonVariants({variant: "green"}), "w-1/3")}>Mijn dashboard</Link>
+                    <Link href={"/klant"} className={cn(buttonVariants({variant: "green"}), "w-1/3")}>Mijn
+                        dashboard</Link>
                 </div>
             </div>
         </main>
