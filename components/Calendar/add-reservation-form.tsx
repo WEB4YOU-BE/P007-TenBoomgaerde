@@ -4,6 +4,7 @@ import {Switch} from "@/components/ui/Switch";
 import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import {DbResult} from "@/lib/database.types";
+import {RedirectType} from "next/dist/client/components/redirect";
 
 export default async function AddReservationForm() {
     "use server"
@@ -22,7 +23,7 @@ export default async function AddReservationForm() {
         //const supabase = createServerComponentClient({cookies})
         //await supabase.from("reservations").insert({name: name})
 
-        //redirect("/dashboard/zalen", RedirectType.push)
+        redirect("/reserveren/b5c484f6-66b5-4086-a022-fccda3b815c8/1/overview", RedirectType.push)
     }
 
     return <form action={onCreateReservation} className={"grid md:grid-cols-2 gap-2"}>
