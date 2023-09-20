@@ -1,11 +1,21 @@
 import {redirect} from "next/navigation";
 import {buttonVariants} from "@/components/ui/button";
 import {Switch} from "@/components/ui/Switch";
+import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
+import {cookies} from "next/headers";
+import {DbResult} from "@/lib/database.types";
 
 export default async function AddReservationForm() {
+    "use server"
+    const supabase = createServerComponentClient({cookies})
+    const queryMaterials = supabase.from("products").select().eq("categorie_id", "839926c4-97a7-48c4-a115-45548580c148")
+    const materials: DbResult<typeof queryMaterials> = await queryMaterials
+
+    if (!materials.data) return undefined
     const onCreateReservation = async (formData: FormData) => {
         "use server"
         const name = formData.get("name")
+
 
         if (name === null) redirect("/name")
 
@@ -16,14 +26,23 @@ export default async function AddReservationForm() {
     }
 
     return <form action={onCreateReservation} className={"grid md:grid-cols-2 gap-2"}>
-        <div className={"col-span-2"}>
-            <h2 className={" text-2xl font-bold text-center mb-4"}>Duid hieronder extra's aan</h2>
-            <div>
+        <div className={"col-span-2 mb-8"}>
+            <h2 className={" text-2xl font-bold text-center"}>Duid hieronder extra's aan</h2>
+            <div className={"flex flex-row my-4"}>
                 <Switch className={"mr-2"}/>
                 <label htmlFor={"drinks"}
-                       className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>We
-                    wensen gebruik te maken van de drank aanwezig</label>
+                       className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 my-auto"}>Drank
+                    aanwezig</label>
             </div>
+            {
+                materials.data.map((material) =>
+                    <div className={"flex flex-row my-4"}>
+                        <Switch className={"mr-2"}/>
+                        <label htmlFor={"material"}
+                               className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 my-auto"}>{material.name}</label>
+                    </div>
+                )
+            }
         </div>
         <h2 className={"col-span-2 text-2xl font-bold text-center"}>Vul uw gegevens in</h2>
         <div>
