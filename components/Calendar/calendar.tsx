@@ -53,6 +53,7 @@ export default function Calendar() {
     const months = [
         "Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"
     ]
+
     const currentDate = dayjs()
     const [today, setToday] = useState(currentDate)
 
@@ -62,7 +63,7 @@ export default function Calendar() {
         className={"flex flex-col md:flex-row md:divide-x-2 divide-y-2 md:divide-y-0 gap-10 h-screen items-center md:items-start justify-center"}>
         <div className={"w-96 h-96"}>
             <div className={"flex justify-between"}>
-                <h1 className={"font-bold"}>{months[today.month()]}, {today.year()}</h1>
+                <h1 className={"font-bold"}>{months[today.month()]} {today.year()}</h1>
                 <div className={"flex items-center gap-5"}>
                     <button onClick={() => {
                         setToday(today.month(today.month() - 1))
