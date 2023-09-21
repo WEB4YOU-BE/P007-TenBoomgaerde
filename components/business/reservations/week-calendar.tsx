@@ -89,10 +89,7 @@ export default function WeekCalendar() {
                 {generateDate(today.week(), today.month(), today.year()).map(({date, currentWeek, today}, index) => {
                     return <div key={index} className={"grid  place-content-center text-sm pb-2 border-x"}>
                         <span
-                            className={cn(currentWeek ? "" : "text-gray-400", date < currentDate ? "text-gray-400 cursor-text" : "", today ? "text-green-500" : "", "grid place-content-center transition-all")}
-                            onClick={() => {
-                                if (date >= currentDate) setSelectDate(date)
-                            }}>
+                            className={cn(currentWeek ? "" : "text-gray-400", date < currentDate ? "text-gray-400 cursor-text" : "", today ? "text-green-500" : "", "grid place-content-center transition-all")}>
                             {date.date()}
                         </span>
                     </div>
