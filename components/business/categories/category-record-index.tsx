@@ -3,17 +3,18 @@ import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import React from "react";
 import {Edit, Trash} from "lucide-react";
-import {deleteCategory} from "@/components/business/categories/delete_category";
+import {Delete} from "@/components/business/delete";
 
 interface CategoryRecordIndexProps {
     id: string;
     name?: string;
+    tableName: string;
 }
 
-export default async function CategoryRecordIndex({id, name}: CategoryRecordIndexProps) {
+export default async function CategoryRecordIndex({id, name, tableName}: CategoryRecordIndexProps) {
     return <tr className={"hover:bg-muted whitespace-nowrap"}>
         <CategoryRecordDatapoint>{name}</CategoryRecordDatapoint>
-        <CategoryRecordDatapoint><CategoryRecordIndexActions id={id}/></CategoryRecordDatapoint>
+        <CategoryRecordDatapoint><CategoryRecordIndexActions id={id} tableName={tableName}/></CategoryRecordDatapoint>
     </tr>
 }
 
@@ -27,11 +28,12 @@ async function CategoryRecordDatapoint({children}: CategoryRecordDatapointProps)
 
 interface CategoryRecordIndexActionsProps {
     id: string;
+    tableName: string;
 }
 
-async function CategoryRecordIndexActions({id}: CategoryRecordIndexActionsProps) {
+async function CategoryRecordIndexActions({id, tableName}: CategoryRecordIndexActionsProps) {
     const handleDelete = async () => {
-        await deleteCategory({id})
+        await Delete({id, tableName})
     }
 
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>

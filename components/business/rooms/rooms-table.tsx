@@ -18,7 +18,8 @@ export default async function RoomsTable({rooms}: RoomsTableProps) {
             <tbody className={"divide-y divide-muted"}>{
                 rooms
                     .map((room, index) =>
-                        <RoomRecordIndex key={index} id={room.id} name={room.name} isPrivate={room.private} pricePerDay={room.day_price}/>)
+                        <RoomRecordIndex key={index} id={room.id} name={room.name} isPrivate={room.private}
+                                         pricePerDay={room.day_price} tableName={"rooms"}/>)
             }</tbody>
         </table>
     </div>
