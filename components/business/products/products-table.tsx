@@ -18,7 +18,9 @@ export default async function ProductsTable({products}: ProductsTableProps) {
             <tbody className={"divide-y divide-muted"}>{
                 products
                     .map((product, index) =>
-                        <ProductRecordIndex key={index} id={product.id} name={product.name} price={product.price} forSale={!!product.for_sale} categorieId={product.categorie_id}/>)
+                        <ProductRecordIndex key={index} id={product.id} name={product.name} price={product.price}
+                                            forSale={!!product.for_sale} categorieId={product.categorie_id}
+                                            tableName={"products"}/>)
             }</tbody>
         </table>
     </div>
