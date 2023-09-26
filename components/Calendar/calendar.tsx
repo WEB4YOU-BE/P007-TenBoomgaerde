@@ -96,7 +96,7 @@ export default function Calendar() {
                 })}
             </div>
         </div>
-        <div className={"h-96 w-96 p-5 flex"}>
+        <div className={"h-96 w-96 p-5 flex flex-col"}>
             {currentDate === selectDate ? <h1 className={"m-auto"}>Selecteer een datum</h1> :
                 <h1>Beschikbaarheden voor {selectDate.date()} {months[selectDate.month()]} {selectDate.year()}</h1>}
             <div className={currentDate != selectDate ? "flex flex-col mt-10 items-center gap-6" : "hidden"}>
