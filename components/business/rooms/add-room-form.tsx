@@ -3,6 +3,7 @@ import {cookies} from "next/headers";
 import {buttonVariants} from "@/components/ui/button";
 import {redirect} from "next/navigation";
 import {RedirectType} from "next/dist/client/components/redirect";
+import {Switch} from "@/components/ui/Switch";
 
 export default async function AddRoomForm() {
     const onCreateRoom = async (formData: FormData) => {
@@ -40,9 +41,9 @@ export default async function AddRoomForm() {
         </div>
         */}
         <div className={"flex items-center text-current gap-2"}>
-            <input type={"checkbox"} id={"forSale"} name={"forSale"}
-                   className={"peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"}/>
-            <label htmlFor={"forSale"} className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Is te koop?</label>
+            <label htmlFor={"forSale"}
+                   className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Privaat?</label>
+            <Switch id={"forSale"} name={"forSale"}/>
         </div>
         <button type={"submit"} className={buttonVariants({variant: "green"})}>Maak aan</button>
     </form>
