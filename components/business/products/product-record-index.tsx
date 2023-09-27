@@ -4,6 +4,7 @@ import {cn} from "@/lib/utils";
 import {Edit, Trash} from "lucide-react";
 import React from "react";
 import {Delete} from "@/components/business/delete";
+import Link from "next/link";
 
 interface ProductRecordIndexProps {
     id: string;
@@ -47,7 +48,9 @@ async function ProductRecordIndexActions({id, tableName}: ProductRecordIndexActi
     }
 
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
-        <button className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit size={16}/><span>Bewerk</span></button>
+        <Link href={`/dashboard/producten/${id}`}
+              className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit
+            size={16}/><span>Bewerk</span></Link>
         <button onClick={handleDelete}
                 className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash
             size={16}/><span>Verwijder</span></button>
