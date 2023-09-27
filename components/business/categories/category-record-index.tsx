@@ -4,6 +4,7 @@ import {buttonVariants} from "@/components/ui/button";
 import React from "react";
 import {Edit, Trash} from "lucide-react";
 import {Delete} from "@/components/business/delete";
+import Link from "next/link";
 
 interface CategoryRecordIndexProps {
     id: string;
@@ -37,7 +38,9 @@ async function CategoryRecordIndexActions({id, tableName}: CategoryRecordIndexAc
     }
 
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
-        <button className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit size={16}/><span>Bewerk</span></button>
+        <Link href={`/dashboard/producten/categorieen/${id}`}
+              className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit
+            size={16}/><span>Bewerk</span></Link>
         <button onClick={handleDelete}
                 className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash
             size={16}/><span>Verwijder</span></button>
