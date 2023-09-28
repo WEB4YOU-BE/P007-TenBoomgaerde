@@ -80,19 +80,37 @@ export interface Database {
       }
       users: {
         Row: {
+            city: string | null
+            Email: string | null
           firstname: string | null
           id: string
+            is_admin: boolean
           lastname: string | null
+            phone: string | null
+            postcode: string | null
+            street: string | null
         }
         Insert: {
+            city?: string | null
+            Email?: string | null
           firstname?: string | null
           id: string
+            is_admin?: boolean
           lastname?: string | null
+            phone?: string | null
+            postcode?: string | null
+            street?: string | null
         }
         Update: {
+            city?: string | null
+            Email?: string | null
           firstname?: string | null
           id?: string
+            is_admin?: boolean
           lastname?: string | null
+            phone?: string | null
+            postcode?: string | null
+            street?: string | null
         }
         Relationships: [
           {
@@ -108,7 +126,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+        is_admin: {
+            Args: {
+                user_id: string
+            }
+            Returns: boolean
+        }
     }
     Enums: {
       [_ in never]: never
@@ -121,6 +144,7 @@ export interface Database {
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
 export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]
+export type Functions<T extends keyof Database['public']['Functions']> = Database['public']['Functions'][T]
 // etc.
 
 
