@@ -3,6 +3,7 @@ import {cookies} from "next/headers";
 import LogoutButton from "@/components/authentication/LogoutButton";
 import NavigationHeaderLink from "@/components/navigation/navigation-header-link";
 import LoginButton from "@/components/authentication/LoginButton";
+import AdminComponentProtection from "@/components/authentication/admin-component-protection";
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +20,7 @@ export default async function NavigationHeaderAuthentication() {
 async function NavigationIsLogedIn() {
     return <div className={"flex flex-row-reverse gap-2"}>
         <LogoutButton/>
-        <NavigationHeaderLink href={"/dashboard"}>Dashboard</NavigationHeaderLink>
+        <AdminComponentProtection><NavigationHeaderLink href={"/dashboard"}>Dashboard</NavigationHeaderLink></AdminComponentProtection>
     </div>
 }
 
