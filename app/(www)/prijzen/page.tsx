@@ -26,15 +26,15 @@ export default async function page() {
                 <h2 className={"text-2xl font-bold mb-4"}>Huurprijs zaal</h2>
                 <div className={"flex flex-row gap-4"}>
                     {
-                        rooms.data.map((room) =>
-                            <Card className={"max-w-sm md:w-1/3 w-full"}>
+                        rooms.data.map((room, index) =>
+                            <Card className={"max-w-sm md:w-1/3 w-full"} key={index}>
                                 <CardHeader className={"text-xl text-center font-bold"}>{room.name}</CardHeader>
                                 <CardContent className={"text-center"}>
                                     <p>&euro; {room.day_price}</p>
                                     <p className={"font-light"}>per dag</p>
                                 </CardContent>
                                 <CardFooter className={"justify-center"}>
-                                    <Link href={"/reserveren"}
+                                    <Link href={"/reserveren/" + room.id}
                                           className={cn(buttonVariants({variant: "green"}), "mx-2")}>Reserveer nu</Link>
                                 </CardFooter>
                             </Card>
