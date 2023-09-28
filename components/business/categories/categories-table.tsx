@@ -18,7 +18,7 @@ export default async function CategoriesTable({categories}: CategoriesTableProps
             <tbody className={"divide-y divide-muted"}>{
                 categories
                     .map((category) =>
-                        <CategoryRecordIndex id={category.id} name={category.name}/>)
+                        <CategoryRecordIndex id={category.id} name={category.name} tableName={"categories"}/>)
             }</tbody>
         </table>
     </div>

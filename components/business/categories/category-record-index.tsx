@@ -1,17 +1,21 @@
+"use client"
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import React from "react";
 import {Edit, Trash} from "lucide-react";
+import {Delete} from "@/components/business/delete";
+import Link from "next/link";
 
 interface CategoryRecordIndexProps {
     id: string;
     name?: string;
+    tableName: string;
 }
 
-export default async function CategoryRecordIndex({id, name}: CategoryRecordIndexProps) {
+export default async function CategoryRecordIndex({id, name, tableName}: CategoryRecordIndexProps) {
     return <tr className={"hover:bg-muted whitespace-nowrap"}>
         <CategoryRecordDatapoint>{name}</CategoryRecordDatapoint>
-        <CategoryRecordDatapoint><CategoryRecordIndexActions id={id}/></CategoryRecordDatapoint>
+        <CategoryRecordDatapoint><CategoryRecordIndexActions id={id} tableName={tableName}/></CategoryRecordDatapoint>
     </tr>
 }
 
@@ -25,11 +29,20 @@ async function CategoryRecordDatapoint({children}: CategoryRecordDatapointProps)
 
 interface CategoryRecordIndexActionsProps {
     id: string;
+    tableName: string;
 }
 
-async function CategoryRecordIndexActions({id}: CategoryRecordIndexActionsProps) {
+async function CategoryRecordIndexActions({id, tableName}: CategoryRecordIndexActionsProps) {
+    const handleDelete = async () => {
+        await Delete({id, tableName})
+    }
+
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
-        <button className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit size={16}/><span>Bewerk</span></button>
-        <button className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash size={16}/><span>Verwijder</span></button>
+        <Link href={`/dashboard/producten/categorieen/${id}`}
+              className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit
+            size={16}/><span>Bewerk</span></Link>
+        <button onClick={handleDelete}
+                className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash
+            size={16}/><span>Verwijder</span></button>
     </div>
 }
