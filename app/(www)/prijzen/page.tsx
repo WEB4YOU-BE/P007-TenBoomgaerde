@@ -19,8 +19,8 @@ export default async function page() {
     if (!materials.data) return undefined
     if (!rooms.data) return undefined
 
-    return <main className={"w-full min-h-[calc(100svh-72px)]"}>
-        <div className={"container mx-auto"}>
+    return <main className={"min-h-[calc(100svh-72px)]"}>
+        <div className={"container max-w-screen-xl mx-auto px-4"}>
             <h1 className={"text-3xl font-bold"}>Prijzen</h1>
             <section className={"mt-4"}>
                 <h2 className={"text-2xl font-bold mb-4"}>Huurprijs zaal</h2>

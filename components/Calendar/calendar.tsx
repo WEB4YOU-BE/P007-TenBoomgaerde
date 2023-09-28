@@ -96,8 +96,9 @@ export default function Calendar() {
                 })}
             </div>
         </div>
-        <div className={"h-96 w-96 p-5 block"}>
-            <h1>Beschikbaarheden voor {selectDate.date()} {months[selectDate.month()]} {selectDate.year()}</h1>
+        <div className={"h-96 w-96 p-5 flex flex-col"}>
+            {currentDate === selectDate ? <h1 className={"m-auto"}>Selecteer een datum</h1> :
+                <h1>Beschikbaarheden voor {selectDate.date()} {months[selectDate.month()]} {selectDate.year()}</h1>}
             <div className={currentDate != selectDate ? "flex flex-col mt-10 items-center gap-6" : "hidden"}>
                 <Link href={"/reserveren/b5c484f6-66b5-4086-a022-fccda3b815c8/1"}
                       className={cn(buttonVariants({variant: "green"}), "rounded-full")}>Volledige dag</Link>
