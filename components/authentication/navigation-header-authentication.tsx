@@ -4,6 +4,7 @@ import LogoutButton from "@/components/authentication/LogoutButton";
 import NavigationHeaderLink from "@/components/navigation/navigation-header-link";
 import LoginButton from "@/components/authentication/LoginButton";
 import AdminComponentProtection from "@/components/authentication/admin-component-protection";
+import LoginComponentProtection from "@/components/authentication/login-component-protection";
 
 export const dynamic = 'force-dynamic'
 
@@ -21,6 +22,7 @@ async function NavigationIsLogedIn() {
     return <div className={"flex flex-row-reverse gap-2"}>
         <LogoutButton/>
         <AdminComponentProtection><NavigationHeaderLink href={"/dashboard"}>Dashboard</NavigationHeaderLink></AdminComponentProtection>
+        <LoginComponentProtection><NavigationHeaderLink href={"/klant"}>Jouw overzicht</NavigationHeaderLink></LoginComponentProtection>
     </div>
 }
 
