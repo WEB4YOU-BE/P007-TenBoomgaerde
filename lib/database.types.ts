@@ -11,6 +11,30 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      bloks: {
+        Row: {
+          end_hour: string | null
+          id: string
+          name: string
+          price: number | null
+          start_hour: string | null
+        }
+        Insert: {
+          end_hour?: string | null
+          id?: string
+          name: string
+          price?: number | null
+          start_hour?: string | null
+        }
+        Update: {
+          end_hour?: string | null
+          id?: string
+          name?: string
+          price?: number | null
+          start_hour?: string | null
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           id: string
@@ -80,37 +104,37 @@ export interface Database {
       }
       users: {
         Row: {
-            city: string | null
-            Email: string | null
+          city: string | null
+          Email: string | null
           firstname: string | null
           id: string
-            is_admin: boolean
+          is_admin: boolean
           lastname: string | null
-            phone: string | null
-            postcode: string | null
-            street: string | null
+          phone: string | null
+          postcode: string | null
+          street: string | null
         }
         Insert: {
-            city?: string | null
-            Email?: string | null
+          city?: string | null
+          Email?: string | null
           firstname?: string | null
           id: string
-            is_admin?: boolean
+          is_admin?: boolean
           lastname?: string | null
-            phone?: string | null
-            postcode?: string | null
-            street?: string | null
+          phone?: string | null
+          postcode?: string | null
+          street?: string | null
         }
         Update: {
-            city?: string | null
-            Email?: string | null
+          city?: string | null
+          Email?: string | null
           firstname?: string | null
           id?: string
-            is_admin?: boolean
+          is_admin?: boolean
           lastname?: string | null
-            phone?: string | null
-            postcode?: string | null
-            street?: string | null
+          phone?: string | null
+          postcode?: string | null
+          street?: string | null
         }
         Relationships: [
           {
@@ -126,12 +150,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-        is_admin: {
-            Args: {
-                user_id: string
-            }
-            Returns: boolean
+      is_admin: {
+        Args: {
+          user_id: string
         }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
