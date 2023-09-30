@@ -1,5 +1,5 @@
 import {Tables} from "@/lib/database.types";
-import BlokRecordIndex from "@/components/business/reservation/bloks/blok-record-index";
+import BlokRecordIndex from "@/components/business/reservations/bloks/blok-record-index";
 
 interface BloksTableProps {
     bloks: Tables<"bloks">[];

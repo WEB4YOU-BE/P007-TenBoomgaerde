@@ -5,7 +5,7 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import {PlusCircle} from "lucide-react";
-import BloksTable from "@/components/business/reservation/bloks/bloks-table";
+import BloksTable from "@/components/business/reservations/bloks/bloks-table";
 
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
