@@ -6,11 +6,11 @@ import {buttonVariants} from "@/components/ui/button";
 import {DbResult} from "@/lib/database.types";
 import {Switch} from "@/components/ui/Switch";
 
-interface CategoryIndexProps {
+interface RoomIndexProps {
     id: string;
 }
 
-export default async function ChangeRoomForm({id}: CategoryIndexProps) {
+export default async function ChangeRoomForm({id}: RoomIndexProps) {
     const onChangeRoom = async (formData: FormData) => {
         "use server"
         const name = formData.get("name")
@@ -18,6 +18,8 @@ export default async function ChangeRoomForm({id}: CategoryIndexProps) {
         const price = formData.get("price")
 
         if (name === null) redirect("/name")
+        if (forSale === null) redirect("/forSale")
+        if (price === null) redirect("/price")
 
         const supabase = createServerComponentClient({cookies})
         await supabase.from("rooms").update({name: name, private: forSale, day_price: price}).eq('id', id)
