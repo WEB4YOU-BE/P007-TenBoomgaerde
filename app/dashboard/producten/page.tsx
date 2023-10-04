@@ -21,6 +21,5 @@ export default async function page() {
             <Link href={"/dashboard/producten/add"} className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2")}><PlusCircle size={16}/>Toevoegen</Link>
         </div>
         <ProductsTable products={products.data}/>
-
     </main>
 }

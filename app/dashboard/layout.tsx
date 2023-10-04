@@ -2,7 +2,7 @@ import React from "react";
 import NavigationSidebar from "@/components/navigation/navigation-sidebar";
 import NavigationSidebarAuthentication from "@/components/authentication/navigation-sidebar-authentication";
 import NavigationSidebarLink from "@/components/navigation/navigation-sidebar-link";
-import {Box, Calendar, Clock3, Home, PackageOpen, PieChart, Tag, Users} from "lucide-react";
+import {Box, Calendar, Clock3, Home, List, PackageOpen, PieChart, Tag, Users} from "lucide-react";
 import AdminRouteProtection from "@/components/authentication/admin-route-protection";
 
 export const dynamic = 'force-dynamic'
@@ -17,6 +17,8 @@ export default async function layout({children}: LayoutProps) {
             <NavigationSidebar authNode={<NavigationSidebarAuthentication/>}>
                 <NavigationSidebarLink href={"/dashboard"}><Home/><span>Dashboard</span></NavigationSidebarLink>
                 <NavigationSidebarLink href={"/dashboard/agenda"}><Calendar/><span>Agenda</span></NavigationSidebarLink>
+                <NavigationSidebarLink
+                    href={"/dashboard/reservaties"}><List/><span>Reservaties</span></NavigationSidebarLink>
                 <NavigationSidebarLink href={"/dashboard/zalen"}><Box/><span>Zalen</span></NavigationSidebarLink>
                 <NavigationSidebarLink href={"/dashboard/zalen/blokken"}><Clock3/>Blokken</NavigationSidebarLink>
                 <NavigationSidebarLink href={"/dashboard/producten"}><PackageOpen/><span>Producten</span></NavigationSidebarLink>

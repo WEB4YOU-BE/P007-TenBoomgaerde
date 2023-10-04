@@ -84,17 +84,17 @@ export interface Database {
       reservations: {
         Row: {
           access_code: number | null
-          end_date: string | null
-          end_hour: string | null
+          end_date: string
+          end_hour: any
           id: string
-          product_id: string | null
+          products: any
           reservation_number: number | null
           reservation_year: string
-          room_id: string | null
-          start_date: string | null
-          start_hour: string | null
+          rooms: any
+          start_date: string
+          start_hour: any
           status: string | null
-          user_id: string | null
+          users: any
         }
         Insert: {
           access_code?: number | null
