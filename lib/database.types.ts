@@ -13,25 +13,25 @@ export interface Database {
     Tables: {
       bloks: {
         Row: {
-          end_hour: string | null
+          end_hour: string
           id: string
           name: string
           price: number | null
-          start_hour: string | null
+          start_hour: string
         }
         Insert: {
-          end_hour?: string | null
+          end_hour: string
           id?: string
           name: string
           price?: number | null
-          start_hour?: string | null
+          start_hour: string
         }
         Update: {
-          end_hour?: string | null
+          end_hour?: string
           id?: string
           name?: string
           price?: number | null
-          start_hour?: string | null
+          start_hour?: string
         }
         Relationships: []
       }
@@ -77,6 +77,82 @@ export interface Database {
             foreignKeyName: "products_categorie_id_fkey"
             columns: ["categorie_id"]
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      reservations: {
+        Row: {
+          access_code: number | null
+          end_date: string | null
+          end_hour: string | null
+          id: string
+          product_id: string | null
+          reservation_number: number | null
+          reservation_year: string
+          room_id: string | null
+          start_date: string | null
+          start_hour: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          access_code?: number | null
+          end_date?: string | null
+          end_hour?: string | null
+          id?: string
+          product_id?: string | null
+          reservation_number?: number | null
+          reservation_year: string
+          room_id?: string | null
+          start_date?: string | null
+          start_hour?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_code?: number | null
+          end_date?: string | null
+          end_hour?: string | null
+          id?: string
+          product_id?: string | null
+          reservation_number?: number | null
+          reservation_year?: string
+          room_id?: string | null
+          start_date?: string | null
+          start_hour?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_end_hour_fkey"
+            columns: ["end_hour"]
+            referencedRelation: "bloks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_product_id_fkey"
+            columns: ["product_id"]
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_room_id_fkey"
+            columns: ["room_id"]
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_start_hour_fkey"
+            columns: ["start_hour"]
+            referencedRelation: "bloks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]
@@ -165,6 +241,7 @@ export interface Database {
     }
   }
 }
+
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
 export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]
