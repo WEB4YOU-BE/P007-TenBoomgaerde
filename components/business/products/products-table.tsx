@@ -19,7 +19,7 @@ export default async function ProductsTable({products}: ProductsTableProps) {
                 products
                     .map((product, index) =>
                         <ProductRecordIndex key={index} id={product.id} name={product.name} price={product.price}
-                                            forSale={!!product.for_sale} categorieId={product.categorie_id}
+                                            forSale={!!product.for_sale} categories={product.categories}
                                             tableName={"products"}/>)
             }</tbody>
         </table>
