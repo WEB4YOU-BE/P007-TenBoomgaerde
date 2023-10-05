@@ -22,8 +22,6 @@ export default async function ChangeBlokForm({id}: BlokIndexProps) {
         if (endHour === null) redirect("/endHour")
         if (price === null) redirect("/price")
 
-        console.log(name, startHour, endHour, price)
-
         const supabase = createServerComponentClient({cookies})
         await supabase.from("bloks").update({
             name: name,

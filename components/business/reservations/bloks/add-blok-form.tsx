@@ -17,8 +17,6 @@ export default async function AddBlokForm() {
         if (endHour === null) redirect("/endHour")
         if (price === null) redirect("/price")
 
-        console.log(name, startHour, endHour, price)
-
         const supabase = createServerComponentClient({cookies})
         await supabase.from("bloks").insert({name: name, start_hour: startHour, end_hour: endHour, price: price})
 

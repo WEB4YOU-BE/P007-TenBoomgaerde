@@ -14,8 +14,6 @@ export default async function page() {
 
     if (!reservations.data) return undefined
 
-    console.log(reservations.data)
-
     return <main className={"flex flex-col gap-2"}>
         <div className={"flex flex-col md:flex-row gap-2 p-4"}>
             <h1 className={"text-4xl font-extrabold tracking-tight lg:text-5xl md:flex-grow"}>Alle reservaties</h1>
