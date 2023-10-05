@@ -1,8 +1,8 @@
 import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import {DbResult} from "@/lib/database.types";
-import {Badge} from "@/components/ui/Badge";
 import React from "react";
+import SelectStatus from "@/components/business/reservations/select-status";
 
 interface ReservationIndexProps {
     id: string;
@@ -16,16 +16,14 @@ export default async function InfoReservationForm({id}: ReservationIndexProps) {
 
     if (!reservation.data) return undefined
 
-
-    return <form className={"grid lg:grid-cols-2 p-2 gap-8"}>
+    return <div className={"grid lg:grid-cols-2 p-2 gap-8"}>
         <div className={"flex flex-row gap-4 col-span-2 mb-16 justify-between"}>
             <div className={"bg-green-400 p-2 rounded-xl"}>
                 <span className={"font-bold uppercase"}>Reservatienummer: </span>
                 <span>{reservation.data[0].reservation_year.substring(0, 4) + '-' + reservation.data[0].reservation_number}</span>
             </div>
-            <div className={"ml-auto bg-blue-400 p-2 rounded-xl"}>
-                <span className={"font-bold uppercase"}>Code: </span>
-                <span>{reservation.data[0].access_code === null ? 'Onbekend' : reservation.data[0].access_code}</span>
+            <div className={"ml-auto"}>
+                <SelectStatus id={reservation.data[0].id} status={reservation.data[0].status}/>
             </div>
         </div>
         <div className={"flex flex-row gap-4"}>
@@ -49,10 +47,8 @@ export default async function InfoReservationForm({id}: ReservationIndexProps) {
             <span>{/*reservation.data[0].rooms.name*/}</span>
         </div>
         <div className={"flex flex-row gap-4"}>
-            <span className={"font-bold uppercase"}>Status:</span>
-            {(reservation.data[0].status === 'success') && <Badge variant={"success"}>Bevestigd</Badge>}
-            {(reservation.data[0].status === 'denied') && <Badge variant={"denied"}>Geweigerd</Badge>}
-            {(reservation.data[0].status === 'hold') && <Badge variant={"hold"}>In afwachting</Badge>}
+            <span className={"font-bold uppercase"}>Code:</span>
+            {reservation.data[0].access_code === null ? 'Onbekend' : reservation.data[0].access_code}
         </div>
         <div className={"flex flex-row gap-4"}>
             <span className={"font-bold uppercase"}>Voornaam:</span>
@@ -75,5 +71,5 @@ export default async function InfoReservationForm({id}: ReservationIndexProps) {
             <span className={"font-bold uppercase"}>Producten:</span>
             <span>{/*reservation.data[0].products.name*/}</span>
         </div>
-    </form>
+    </div>
 }
