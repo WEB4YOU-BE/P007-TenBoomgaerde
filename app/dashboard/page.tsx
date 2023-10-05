@@ -9,7 +9,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/Tabs";
 export default async function page() {
     //const today = new Date()
     const supabase = createServerComponentClient({cookies})
-    const queryHold = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('status', 'hold')
+    const queryHold = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('status', 'in afwachting')
     //const queryWeak = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('start_date', today)
     const reservationsHold: DbResult<typeof queryHold> = await queryHold
     //const reservationsWeak: DbResult<typeof queryWeak> = await queryWeak

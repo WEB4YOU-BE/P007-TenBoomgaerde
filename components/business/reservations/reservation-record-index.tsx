@@ -39,9 +39,9 @@ export default async function ReservationRecordIndex({
         <ReservationRecordDatapoint>{start_hour.start_hour.substring(0, 5) + "-" + end_hour.end_hour.substring(0, 5)}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{rooms.name}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>
-            {(status === 'success') && <Badge variant={"success"}>Bevestigd</Badge>}
-            {(status === 'denied') && <Badge variant={"denied"}>Geweigerd</Badge>}
-            {(status === 'hold') && <Badge variant={"hold"}>In afwachting</Badge>}
+            {(status === 'goedgekeurd') && <Badge variant={"success"}>Bevestigd</Badge>}
+            {(status === 'geweigerd') && <Badge variant={"denied"}>Geweigerd</Badge>}
+            {(status === 'in afwachting') && <Badge variant={"hold"}>In afwachting</Badge>}
         </ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{users.firstname + " " + users.lastname}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{accessCode === null ? 'Onbekend' : accessCode}</ReservationRecordDatapoint>
