@@ -17,7 +17,7 @@ interface ReservationRecordIndexProps {
 }
 
 
-export default async function DashboardReservationHoldRecordIndex({
+export default async function DashboardReservationRecordIndex({
                                                                       id,
                                                                       reservationYear,
                                                                       reservationNumber,

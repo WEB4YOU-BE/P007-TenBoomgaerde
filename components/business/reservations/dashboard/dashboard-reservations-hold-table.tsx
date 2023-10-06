@@ -1,12 +1,12 @@
 import {Tables} from "@/lib/database.types";
-import DashboardReservationHoldRecordIndex
-    from "@/components/business/reservations/dashboard/dashboard-reservation-hold-record-index";
+import DashboardReservationRecordIndex
+    from "@/components/business/reservations/dashboard/dashboard-reservation-record-index";
 
 interface ReservationsTableProps {
     reservations: Tables<"reservations">[]
 }
 
-export default async function DashboardReservationRecordIndex({reservations}: ReservationsTableProps) {
+export default async function DashboardReservationRecordTable({reservations}: ReservationsTableProps) {
     return <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
         <thead>
         <tr className={"bg-muted"}>
@@ -30,14 +30,14 @@ export default async function DashboardReservationRecordIndex({reservations}: Re
         <tbody className={"divide-y divide-muted"}>{
             reservations
                 .map((reservation, index) =>
-                    <DashboardReservationHoldRecordIndex key={index} id={reservation.id}
-                                                         reservationYear={reservation.reservation_year}
-                                                         reservationNumber={reservation.reservation_number}
-                                                         users={reservation.users} rooms={reservation.rooms}
-                                                         start_date={reservation.start_date}
-                                                         end_date={reservation.end_date}
-                                                         start_hour={reservation.start_hour}
-                                                         end_hour={reservation.end_hour}/>)
+                    <DashboardReservationRecordIndex key={index} id={reservation.id}
+                                                     reservationYear={reservation.reservation_year}
+                                                     reservationNumber={reservation.reservation_number}
+                                                     users={reservation.users} rooms={reservation.rooms}
+                                                     start_date={reservation.start_date}
+                                                     end_date={reservation.end_date}
+                                                     start_hour={reservation.start_hour}
+                                                     end_hour={reservation.end_hour}/>)
         }</tbody>
     </table>
 }

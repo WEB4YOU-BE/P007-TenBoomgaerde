@@ -6,15 +6,34 @@ import {cookies} from "next/headers";
 import {DbResult} from "@/lib/database.types";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/Tabs";
 
+function getWeekDates() {
+    const now = new Date()
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1)
+    const end = new Date(start)
+    end.setDate(start.getDate() + 6)
+    return {start, end}
+}
+
+function formatDate({date}: {
+    date: Date
+}) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
+}
+
 export default async function page() {
-    //const today = new Date()
     const supabase = createServerComponentClient({cookies})
     const queryHold = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('status', 'in afwachting')
-    //const queryWeak = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('start_date', today)
+    const queryWeak = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).gte('start_date', formatDate({date: getWeekDates().start})).lte('end_date', formatDate({date: getWeekDates().end}))
     const reservationsHold: DbResult<typeof queryHold> = await queryHold
-    //const reservationsWeak: DbResult<typeof queryWeak> = await queryWeak
+    const reservationsWeak: DbResult<typeof queryWeak> = await queryWeak
 
     if (!reservationsHold.data) return undefined
+    if (!reservationsWeak.data) return undefined
+
+    console.log(reservationsWeak.data)
 
     return <main className={"flex flex-col gap-2"}>
         <div className={"px-4 pt-6"}>
@@ -37,29 +56,7 @@ export default async function page() {
                             </TabsList>
                         </div>
                         <TabsContent value={"Deze week"}>
-                            <table className={"min-w-full divide-y divide-gray-200 table-fixed "}>
-                                <thead className={"bg-gray-100"}>
-                                <tr>
-                                    {
-                                        [
-                                            'Datum',
-                                            'Uur',
-                                            'Naam',
-                                            'Tel',
-                                            'Details'
-                                        ].map((th, index) => (
-                                            <th key={index} scope={"col"}
-                                                className={"p-4 text-xs font-medium text-left text-gray-500 uppercase"}>
-                                                {th}
-                                            </th>
-                                        ))
-                                    }
-                                </tr>
-                                </thead>
-                                <tbody className={"divide-y divide-gray-200"}>
-
-                                </tbody>
-                            </table>
+                            <DashboardReservationsHoldTable reservations={reservationsWeak.data}/>
                         </TabsContent>
                         <TabsContent value={"Te controleren"}>
                             <DashboardReservationsHoldTable reservations={reservationsHold.data}/>
@@ -78,19 +75,19 @@ export default async function page() {
                     </HoverCard>
                     <p className={"text-6xl font-bold text-green-600 sm:text-8xl text-center"}>{reservationsHold.data.length}</p>
                 </div>
-                {/*<div className={"p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6"}>
+                <div className={"p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6"}>
                     <HoverCard>
                         <HoverCardTrigger asChild>
-                            <h2 className={"mb-4 pb-2 text-lg font-semibold text-center border-b border-gray-200"}>Nieuwe
-                                reserveringen</h2>
+                            <h2 className={"mb-4 pb-2 text-lg font-semibold text-center border-b border-gray-200"}>Aantal
+                                reserveringen deze week
+                            </h2>
                         </HoverCardTrigger>
                         <HoverCardContent>
-                            <p>Dit zijn de nieuwe reserveringen vanaf maandag deze week.</p>
+                            <p>Dit zijn de reserveringen vanaf maandag deze week.</p>
                         </HoverCardContent>
                     </HoverCard>
-                    <p className={"text-6xl font-bold text-green-600 sm:text-8xl text-center"}>6</p>
+                    <p className={"text-6xl font-bold text-green-600 sm:text-8xl text-center"}>{reservationsWeak.data.length}</p>
                 </div>
-                */}
             </div>
         </div>
     </main>
