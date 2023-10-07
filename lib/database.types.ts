@@ -11,6 +11,30 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      bloks: {
+        Row: {
+          end_hour: string
+          id: string
+          name: string
+          price: number | null
+          start_hour: string
+        }
+        Insert: {
+          end_hour: string
+          id?: string
+          name: string
+          price?: number | null
+          start_hour: string
+        }
+        Update: {
+          end_hour?: string
+          id?: string
+          name?: string
+          price?: number | null
+          start_hour?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           id: string
@@ -28,7 +52,7 @@ export interface Database {
       }
       products: {
         Row: {
-          categorie_id: string | null
+          categories: any
           for_sale: boolean | null
           id: string
           name: string
@@ -57,6 +81,82 @@ export interface Database {
           }
         ]
       }
+      reservations: {
+        Row: {
+          access_code: number | null
+          end_date: string
+          end_hour: any
+          id: string
+          products: any
+          reservation_number: number | null
+          reservation_year: string
+          rooms: any
+          start_date: string
+          start_hour: any
+          status: string | null
+          users: any
+        }
+        Insert: {
+          access_code?: number | null
+          end_date?: string | null
+          end_hour?: string | null
+          id?: string
+          product_id?: string | null
+          reservation_number?: number | null
+          reservation_year: string
+          room_id?: string | null
+          start_date?: string | null
+          start_hour?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_code?: number | null
+          end_date?: string | null
+          end_hour?: string | null
+          id?: string
+          product_id?: string | null
+          reservation_number?: number | null
+          reservation_year?: string
+          room_id?: string | null
+          start_date?: string | null
+          start_hour?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_end_hour_fkey"
+            columns: ["end_hour"]
+            referencedRelation: "bloks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_product_id_fkey"
+            columns: ["product_id"]
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_room_id_fkey"
+            columns: ["room_id"]
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_start_hour_fkey"
+            columns: ["start_hour"]
+            referencedRelation: "bloks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       rooms: {
         Row: {
           day_price: number | null
@@ -80,37 +180,37 @@ export interface Database {
       }
       users: {
         Row: {
-            city: string | null
-            Email: string | null
+          city: string | null
+          Email: string | null
           firstname: string | null
           id: string
-            is_admin: boolean
+          is_admin: boolean
           lastname: string | null
-            phone: string | null
-            postcode: string | null
-            street: string | null
+          phone: string | null
+          postcode: string | null
+          street: string | null
         }
         Insert: {
-            city?: string | null
-            Email?: string | null
+          city?: string | null
+          Email?: string | null
           firstname?: string | null
           id: string
-            is_admin?: boolean
+          is_admin?: boolean
           lastname?: string | null
-            phone?: string | null
-            postcode?: string | null
-            street?: string | null
+          phone?: string | null
+          postcode?: string | null
+          street?: string | null
         }
         Update: {
-            city?: string | null
-            Email?: string | null
+          city?: string | null
+          Email?: string | null
           firstname?: string | null
           id?: string
-            is_admin?: boolean
+          is_admin?: boolean
           lastname?: string | null
-            phone?: string | null
-            postcode?: string | null
-            street?: string | null
+          phone?: string | null
+          postcode?: string | null
+          street?: string | null
         }
         Relationships: [
           {
@@ -126,12 +226,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-        is_admin: {
-            Args: {
-                user_id: string
-            }
-            Returns: boolean
+      is_admin: {
+        Args: {
+          user_id: string
         }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
@@ -141,6 +241,7 @@ export interface Database {
     }
   }
 }
+
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
 export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]

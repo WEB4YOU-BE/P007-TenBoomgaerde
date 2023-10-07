@@ -11,16 +11,23 @@ interface ProductRecordIndexProps {
     name?: string;
     price?: number | null;
     forSale?: boolean;
-    categorieId: string | null;
+    categories: { name: string };
     tableName: string;
 }
 
 
-export default async function ProductRecordIndex({id, name, price, forSale, categorieId, tableName}: ProductRecordIndexProps) {
+export default async function ProductRecordIndex({
+                                                     id,
+                                                     name,
+                                                     price,
+                                                     forSale,
+                                                     categories,
+                                                     tableName
+                                                 }: ProductRecordIndexProps) {
     return <tr className={"hover:bg-muted shrink-0 truncate"}>
         <ProductRecordDatapoint>{name}</ProductRecordDatapoint>
         <ProductRecordDatapoint>&euro;{price}</ProductRecordDatapoint>
-        <ProductRecordDatapoint>{categorieId}</ProductRecordDatapoint>
+        <ProductRecordDatapoint>{categories !== undefined ? categories.name : "niet toegekend"}</ProductRecordDatapoint>
         <ProductRecordDatapoint>
             <input id={`checkbox-${forSale}`} checked={!!forSale} readOnly aria-describedby={"checkbox-1"} type={"checkbox"}
                    className={"w-3 sm:w-4 h-3 sm:h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"}/>
