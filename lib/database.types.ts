@@ -181,7 +181,7 @@ export interface Database {
       users: {
         Row: {
           city: string | null
-          Email: string | null
+            Email: string
           firstname: string | null
           id: string
           is_admin: boolean
