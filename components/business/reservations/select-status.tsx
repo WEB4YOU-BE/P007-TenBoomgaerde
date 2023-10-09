@@ -5,7 +5,7 @@ import {Command, CommandEmpty, CommandGroup, CommandItem} from "@/components/ui/
 import {ChevronDown, Check} from "lucide-react";
 import React from "react";
 import {cn} from "@/lib/utils";
-import {UpdateStatus} from "@/components/business/update-reservation-status";
+import {UpdateStatus} from "@/components/business/reservations/update-reservation-status";
 
 interface SelectStatusProps {
     id: string;
