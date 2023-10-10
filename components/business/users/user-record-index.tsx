@@ -23,7 +23,7 @@ export default async function UserRecordIndex({id, firstname, lastname, isAdmin,
         <UserRecordDatapoint>{email}</UserRecordDatapoint>
         <UserRecordDatapoint>{phone ?? ""}</UserRecordDatapoint>
         <UserRecordDatapoint>{city ?? ""}</UserRecordDatapoint>
-        <UserRecordDatapoint><ChangeAdmin id={id} isAdmin={isAdmin}/></UserRecordDatapoint>
+        <UserRecordDatapoint><ChangeAdmin id={id} isAdmin={isAdmin} email={email}/></UserRecordDatapoint>
         <UserRecordDatapoint><UserRecordIndexActions id={id}/></UserRecordDatapoint>
     </tr>
 }
