@@ -11,7 +11,6 @@ interface ReservationIndexProps {
     id: string;
 }
 
-
 export default async function InfoReservationForm({id}: ReservationIndexProps) {
     const supabase = createServerComponentClient({cookies})
     const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone, email), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('id', id)

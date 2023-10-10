@@ -3,7 +3,7 @@ import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 
 export default function Index() {
-    return <div className={" container max-w-screen-xl mx-auto p-2 px-4"}>
+    return <div className={"container max-w-screen-xl mx-auto p-2 px-4"}>
         <main className={"w-full min-h-[calc(100svh-72px)]"}>
             <div className={"lg:w-1/2 mx-auto mt-8"}>
                 <h1 className={"text-3xl font-bold text-center mt-4"}>Bedankt voor uw reservatie</h1>

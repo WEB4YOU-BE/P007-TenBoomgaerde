@@ -17,7 +17,7 @@ export default async function NavigationSidebarAuthentication() {
 async function NavigationIsLogedIn() {
     return <div className={"flex flex-col-reverse gap-2"}>
         <LogoutButton/>
-        <NavigationSidebarLink href={"/dashboard"}><UserCircle/>Accountinstellingen</NavigationSidebarLink>
+        <NavigationSidebarLink href={"/account"}><UserCircle/>Accountinstellingen</NavigationSidebarLink>
     </div>
 }
 

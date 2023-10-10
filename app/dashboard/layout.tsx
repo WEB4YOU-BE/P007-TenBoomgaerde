@@ -24,7 +24,8 @@ export default async function layout({children}: LayoutProps) {
                 <NavigationSidebarLink href={"/dashboard/producten"}><PackageOpen/><span>Producten</span></NavigationSidebarLink>
                 <NavigationSidebarLink href={"/dashboard/producten/categorieen"}><Tag/><span>Categorieën</span></NavigationSidebarLink>
                 <NavigationSidebarLink href={"/dashboard/analyses"}><PieChart/><span>Analyses</span></NavigationSidebarLink>
-                <NavigationSidebarLink href={"/dashboard/users"}><Users/><span>Gebruikers</span></NavigationSidebarLink>
+                <NavigationSidebarLink
+                    href={"/dashboard/gebruikers"}><Users/><span>Gebruikers</span></NavigationSidebarLink>
             </NavigationSidebar>
             <div className={"w-full"}>
                 {children}

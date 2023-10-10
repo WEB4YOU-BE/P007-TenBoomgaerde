@@ -181,7 +181,7 @@ export interface Database {
       users: {
         Row: {
           city: string | null
-          Email: string | null
+          email: string
           firstname: string | null
           id: string
           is_admin: boolean
@@ -192,7 +192,7 @@ export interface Database {
         }
         Insert: {
           city?: string | null
-          Email?: string | null
+          email?: string | null
           firstname?: string | null
           id: string
           is_admin?: boolean
@@ -203,7 +203,7 @@ export interface Database {
         }
         Update: {
           city?: string | null
-          Email?: string | null
+          email?: string | null
           firstname?: string | null
           id?: string
           is_admin?: boolean

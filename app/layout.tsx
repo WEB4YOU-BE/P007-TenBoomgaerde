@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 import {inter} from "@/styles/fonts";
+import {Toaster} from "@/components/ui/Toaster";
 
 export const metadata = {
     title: 'Create Next App',
@@ -10,6 +11,7 @@ export default function RootLayout({children,}: { children: React.ReactNode }) {
     return <html lang="nl-BE">
     <body className={inter.className + " overscroll-none"}>
     {children}
+    <Toaster/>
     </body>
     </html>
 }
