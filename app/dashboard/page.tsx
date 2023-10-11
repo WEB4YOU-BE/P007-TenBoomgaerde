@@ -33,8 +33,6 @@ export default async function page() {
     if (!reservationsHold.data) return undefined
     if (!reservationsWeak.data) return undefined
 
-    console.log(reservationsWeak.data)
-
     return <main className={"flex flex-col gap-2"}>
         <div className={"px-4 pt-6"}>
             <div className={"grid gap-4 grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 grid-rows-2"}>

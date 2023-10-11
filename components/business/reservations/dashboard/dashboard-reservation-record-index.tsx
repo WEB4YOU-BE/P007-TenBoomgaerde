@@ -28,12 +28,15 @@ export default async function DashboardReservationRecordIndex({
                                                                       start_hour,
                                                                       end_hour
                                                                   }: ReservationRecordIndexProps) {
+    const voornaam = users.firstname ?? ""
+    const familienaam = users.lastname ?? ""
+
     return <tr className={"hover:bg-muted shrink-0 truncate"}>
         <ReservationRecordDatapoint>{reservationYear.substring(0, 4) + '-' + reservationNumber}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{start_date === end_date ? start_date : start_date + " tot " + end_date}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{start_hour.start_hour.substring(0, 5) + "-" + end_hour.end_hour.substring(0, 5)}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{rooms.name}</ReservationRecordDatapoint>
-        <ReservationRecordDatapoint>{users.firstname + " " + users.lastname}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{voornaam + " " + familienaam}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint><ReservationRecordIndexActions id={id}/></ReservationRecordDatapoint>
     </tr>
 }
