@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
 
 const WeekPDF = ({reservations}: pdfProps) => {
     return (
-        <Document>
+        <Document
+            title={"Reservaties " + formatDate({date: getWeekDates().start}) + " tot " + formatDate({date: getWeekDates().end})}>
             <Page size={"A4"} orientation={"landscape"}>
                 <View style={styles.view}>
                     <Text wrap={false} style={styles.h1}>Reservaties deze week</Text>
