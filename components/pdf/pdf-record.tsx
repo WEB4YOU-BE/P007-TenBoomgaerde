@@ -17,12 +17,12 @@ interface ReservationRecordIndexProps {
 const styles = StyleSheet.create({
     tableRow: {
         margin: "auto",
-        flexDirection: "row"
+        flexDirection: "row",
+        borderBottom: 1,
+        paddingVertical: 7
     },
     tableCol: {
-        width: "13%",
-        borderStyle: "solid",
-        borderWidth: 1,
+        width: "12%",
     },
     tableCell: {
         margin: "auto",

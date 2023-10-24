@@ -8,33 +8,51 @@ interface pdfProps {
     reservations: Tables<"reservations">[];
 }
 
+function getWeekDates() {
+    const now = new Date()
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1)
+    const end = new Date(start)
+    end.setDate(start.getDate() + 6)
+    return {start, end}
+}
+
+function formatDate({date}: {
+    date: Date
+}) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${day}-${month}-${year}`;
+}
 
 const styles = StyleSheet.create({
-    body: {
-        margin: 20
+    view: {
+        display: "flex",
+        margin: 20,
+        textAlign: "center",
     },
     h1: {
-        fontSize: 30
+        fontSize: 30,
+        marginBottom: 10
+    },
+    date: {
+        fontSize: 15,
     },
     table: {
         display: "flex",
-        borderStyle: "solid",
-        marginHorizontal: 40
     },
     tableRow: {
         margin: "auto",
-        flexDirection: "row"
+        flexDirection: "row",
+        borderBottom: 1,
+        backgroundColor: "#BBF7D0",
+        paddingVertical: 10,
     },
     tableCol: {
-        width: "13%",
-        borderStyle: "solid",
-        borderWidth: 1,
+        width: "12%",
     },
     tableColHead: {
-        width: "13%",
-        borderStyle: "solid",
-        borderWidth: 1,
-        backgroundColor: "#d3d3d3"
+        width: "12%",
     },
     tableCell: {
         margin: "auto",
@@ -52,8 +70,10 @@ const WeekPDF = ({reservations}: pdfProps) => {
     return (
         <Document>
             <Page size={"A4"} orientation={"landscape"}>
-                <View style={{display: 'flex', justifyContent: "center", margin: 20}}>
+                <View style={styles.view}>
                     <Text wrap={false} style={styles.h1}>Reservaties deze week</Text>
+                    <Text wrap={false}
+                          style={styles.date}>{formatDate({date: getWeekDates().start})} tot {formatDate({date: getWeekDates().end})}</Text>
                 </View>
                 <View style={styles.table}>
                     <View style={styles.tableRow}>
