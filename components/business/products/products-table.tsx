@@ -7,9 +7,9 @@ interface ProductsTableProps {
 
 export default async function ProductsTable({products}: ProductsTableProps) {
     return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
-        <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
+        <table className={"min-w-full divide-y divide-gray-200 table-fixed max-sm:text-sm"}>
             <thead>
-            <tr className={"bg-muted"}>{
+            <tr className={"bg-muted max-sm:[&>*:nth-child(4)]:hidden"}>{
                 ['Naam', 'Prijs', 'Categorie', 'Te koop', 'Acties']
                     .map((title, index) => <th key={index} scope={"col"}
                                                className={"px-4 py-2 text-left font-bold uppercase text-muted-foreground [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)
