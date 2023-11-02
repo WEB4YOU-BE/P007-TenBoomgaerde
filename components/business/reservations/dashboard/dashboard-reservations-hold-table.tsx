@@ -9,10 +9,10 @@ interface ReservationsTableProps {
 export default async function DashboardReservationRecordTable({reservations}: ReservationsTableProps) {
     return <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
         <thead>
-        <tr className={"bg-muted"}>
+        <tr className={"bg-muted max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden"}>
             {
                 [
-                    'Resevatienummer',
+                    'Resevatienr',
                     'Datum(s)',
                     'Uur',
                     'Zaal',
