@@ -18,7 +18,8 @@ interface UserRecordIndexProps {
 export default async function UserRecordIndex({id, firstname, lastname, isAdmin, email, phone, city}: UserRecordIndexProps) {
     const voornaam = firstname ?? ""
     const familienaam = lastname ?? ""
-    return <tr className={"hover:bg-muted whitespace-nowrap"}>
+    return <tr
+        className={"hover:bg-muted whitespace-nowrap max-sm:[&>*:nth-child(1)]:hidden max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden"}>
         <UserRecordDatapoint>{voornaam + " " + familienaam}</UserRecordDatapoint>
         <UserRecordDatapoint>{email}</UserRecordDatapoint>
         <UserRecordDatapoint>{phone ?? ""}</UserRecordDatapoint>
@@ -45,6 +46,6 @@ async function UserRecordIndexActions({id}: UserRecordIndexActionsProps) {
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/gebruikers/${id}`}
               className={cn(buttonVariants({variant: "blue"}), "flex flex-row gap-2 flex-shrink-0")}><Info
-            size={16}/><span>Info</span></Link>
+            size={16}/><span className={"max-sm:hidden"}>Info</span></Link>
     </div>
 }

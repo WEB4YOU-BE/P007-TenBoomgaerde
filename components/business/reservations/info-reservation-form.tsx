@@ -20,8 +20,8 @@ export default async function InfoReservationForm({id}: ReservationIndexProps) {
 
     return <main>
         <div className={"grid grid-cols-1 lg:grid-cols-2 p-2 gap-8"}>
-            <div>
-                <div className={"flex flex-col-reverse lg:flex-row gap-4 col-span-2 lg:mb-16 justify-between"}>
+            <div className={"lg:col-span-2"}>
+                <div className={"flex flex-col-reverse lg:flex-row gap-4  lg:mb-16 justify-between"}>
                     <div className={"pt-2"}>
                         <span className={"font-bold uppercase"}>Reservatienummer: </span>
                         <span>{reservation.data[0].reservation_year.substring(0, 4) + '-' + reservation.data[0].reservation_number}</span>

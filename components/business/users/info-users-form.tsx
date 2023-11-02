@@ -23,10 +23,12 @@ export default async function InfoUserForm({id}: UserIndexProps) {
 
     return <div>
         <div className={"grid lg:grid-cols-2 p-2 gap-8"}>
-            <div className={"flex flex-row gap-4 col-span-2 mb-16 justify-end"}>
-                <div className={"ml-auto flex flex-row gap-4"}>
-                    <p>Administrator?</p>
-                    <ChangeAdmin id={user.data[0].id} isAdmin={user.data[0].is_admin} email={user.data[0].email}/>
+            <div className={"lg:col-span-2"}>
+                <div className={"flex flex-row gap-4  lg:mb-16 lg:justify-end"}>
+                    <div className={"lg:ml-auto flex flex-row gap-4"}>
+                        <p className={"font-bold uppercase"}>Administrator?</p>
+                        <ChangeAdmin id={user.data[0].id} isAdmin={user.data[0].is_admin} email={user.data[0].email}/>
+                    </div>
                 </div>
             </div>
             <div className={"flex flex-row gap-4"}>
