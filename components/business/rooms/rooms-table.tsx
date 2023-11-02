@@ -7,9 +7,9 @@ interface RoomsTableProps {
 
 export default async function RoomsTable({rooms}: RoomsTableProps) {
     return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
-        <table className={"w-full"}>
+        <table className={"w-full max-sm:text-sm"}>
             <thead>
-            <tr className={"bg-muted"}>{
+            <tr className={"bg-muted max-sm:[&>*:nth-child(3)]:hidden"}>{
                 ["Naam", "Is privé", "Prijs", "Acties"]
                     .map((title, index) => <th key={index}
                                                className={"px-4 py-2 text-left font-bold uppercase text-muted-foreground [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)

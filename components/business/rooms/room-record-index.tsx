@@ -15,7 +15,7 @@ interface RoomRecordIndexProps {
 }
 
 export default async function RoomRecordIndex({id, name, isPrivate, pricePerDay, tableName}: RoomRecordIndexProps) {
-    return <tr className={"hover:bg-muted whitespace-nowrap"}>
+    return <tr className={"hover:bg-muted whitespace-nowrap max-sm:[&>*:nth-child(3)]:hidden"}>
         <RoomRecordDatapoint>{name}</RoomRecordDatapoint>
         <RoomRecordDatapoint>{isPrivate ? "ja" : "nee"}</RoomRecordDatapoint>
         <RoomRecordDatapoint>&euro;{pricePerDay}</RoomRecordDatapoint>
@@ -44,9 +44,9 @@ async function RoomRecordIndexActions({id, tableName}: RoomRecordIndexActionsPro
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/zalen/${id}`}
               className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit
-            size={16}/><span>Bewerk</span></Link>
+            size={16}/><span className={"max-sm:hidden"}>Bewerk</span></Link>
         <button onClick={handleDelete}
                 className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash
-            size={16}/><span>Verwijder</span></button>
+            size={16}/><span className={"max-sm:hidden"}>Verwijder</span></button>
     </div>
 }
