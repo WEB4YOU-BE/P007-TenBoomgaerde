@@ -67,6 +67,6 @@ async function ReservationRecordIndexActions({id}: ReservationRecordIndexActions
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/reservaties/${id}`}
               className={cn(buttonVariants({variant: "blue"}), "flex flex-row gap-2 flex-shrink-0")}><Info
-            size={16}/><span className={" max-sm:hidden"}>Info</span></Link>
+            size={16}/><span className={"max-sm:hidden"}>Info</span></Link>
     </div>
 }
