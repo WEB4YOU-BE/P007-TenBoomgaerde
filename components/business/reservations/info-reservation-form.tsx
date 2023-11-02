@@ -19,14 +19,16 @@ export default async function InfoReservationForm({id}: ReservationIndexProps) {
     if (!reservation.data) return undefined
 
     return <main>
-        <div className={"grid lg:grid-cols-2 p-2 gap-8"}>
-            <div className={"flex flex-row gap-4 col-span-2 mb-16 justify-between"}>
-                <div className={"pt-2"}>
-                    <span className={"font-bold uppercase"}>Reservatienummer: </span>
-                    <span>{reservation.data[0].reservation_year.substring(0, 4) + '-' + reservation.data[0].reservation_number}</span>
-                </div>
-                <div className={"ml-auto"}>
-                    <SelectStatus id={reservation.data[0].id} status={reservation.data[0].status}/>
+        <div className={"grid grid-cols-1 lg:grid-cols-2 p-2 gap-8"}>
+            <div>
+                <div className={"flex flex-col-reverse lg:flex-row gap-4 col-span-2 lg:mb-16 justify-between"}>
+                    <div className={"pt-2"}>
+                        <span className={"font-bold uppercase"}>Reservatienummer: </span>
+                        <span>{reservation.data[0].reservation_year.substring(0, 4) + '-' + reservation.data[0].reservation_number}</span>
+                    </div>
+                    <div className={"ml-auto"}>
+                        <SelectStatus id={reservation.data[0].id} status={reservation.data[0].status}/>
+                    </div>
                 </div>
             </div>
             <div className={"flex flex-row gap-4"}>
