@@ -9,9 +9,33 @@ import {cn} from "@/lib/utils";
 
 interface ReservationIndexProps {
     id: string;
+    reservationYear: string;
+    reservationNumber: number | null
+    users: { id: string, firstname: string, lastname: string, phone: string, email: string };
+    rooms: { name: string };
+    start_date: string;
+    end_date: string;
+    start_hour: { start_hour: string };
+    end_hour: { end_hour: string };
+    accessCode: number | null;
+    status: string;
+    products: { name: string };
 }
 
-export default async function InfoReservationForm({id}: ReservationIndexProps) {
+export default async function InfoReservationForm({
+                                                      id,
+                                                      reservationYear,
+                                                      reservationNumber,
+                                                      users,
+                                                      rooms,
+                                                      start_date,
+                                                      end_date,
+                                                      start_hour,
+                                                      end_hour,
+                                                      accessCode,
+                                                      status,
+                                                      products
+                                                  }: ReservationIndexProps) {
     const supabase = createServerComponentClient({cookies})
     const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone, email), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('id', id)
     const reservation: DbResult<typeof query> = await query
@@ -24,57 +48,57 @@ export default async function InfoReservationForm({id}: ReservationIndexProps) {
                 <div className={"flex flex-col-reverse lg:flex-row gap-4  lg:mb-16 justify-between"}>
                     <div className={"pt-2"}>
                         <span className={"font-bold uppercase"}>Reservatienummer: </span>
-                        <span>{reservation.data[0].reservation_year.substring(0, 4) + '-' + reservation.data[0].reservation_number}</span>
+                        <span>{reservationYear.substring(0, 4) + '-' + reservationNumber}</span>
                     </div>
                     <div className={"ml-auto"}>
-                        <SelectStatus id={reservation.data[0].id} status={reservation.data[0].status}/>
+                        <SelectStatus id={id} status={status}/>
                     </div>
                 </div>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Startdatum:</span>
-                <span>{reservation.data[0].start_date}</span>
+                <span>{start_date}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Einddatum:</span>
-                <span>{reservation.data[0].end_date}</span>
+                <span>{end_date}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Startuur:</span>
-                <span>{/*reservation.data[0].start_hour.start_hour.substring(0, 5)*/}</span>
+                <span>{start_hour.start_hour.substring(0, 5)}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Einduur:</span>
-                <span>{/*reservation.data[0].end_hour.end_hour.substring(0, 5)*/}</span>
+                <span>{end_hour.end_hour.substring(0, 5)}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Zaal:</span>
-                <span>{/*reservation.data[0].rooms.name*/}</span>
+                <span>{rooms.name}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Code:</span>
-                {reservation.data[0].access_code === null ? 'Onbekend' : reservation.data[0].access_code}
+                {accessCode === null ? 'Onbekend' : accessCode}
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Voornaam:</span>
-                <span>{/*reservation.data[0].users.firstname*/}</span>
+                <span>{users.firstname}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Achternaam:</span>
-                <span>{/*reservation.data[0].users.lastname*/}</span>
+                <span>{users.lastname}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Telefoonnummer:</span>
-                <span>{/*reservation.data[0].users.phone*/}</span>
+                <span>{users.phone}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Email:</span>
-                <span>{/*reservation.data[0].users.email*/}</span>
+                <span>{users.email}</span>
             </div>
 
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Producten:</span>
-                <span>{/*reservation.data[0].products.name*/}</span>
+                <span>{products.name}</span>
             </div>
         </div>
         <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "green"}), "mt-12")}>Terug naar
