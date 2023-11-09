@@ -31,9 +31,10 @@ export default async function DashboardReservationRecordIndex({
     const voornaam = users.firstname ?? ""
     const familienaam = users.lastname ?? ""
 
-    return <tr className={"hover:bg-muted shrink-0 truncate"}>
+    return <tr
+        className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(2)]:hidden max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden"}>
         <ReservationRecordDatapoint>{reservationYear.substring(0, 4) + '-' + reservationNumber}</ReservationRecordDatapoint>
-        <ReservationRecordDatapoint>{start_date === end_date ? start_date : start_date + " tot " + end_date}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{start_date === end_date ? start_date : start_date + " tot " + end_date.substring(5, 10)}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{start_hour.start_hour.substring(0, 5) + "-" + end_hour.end_hour.substring(0, 5)}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{rooms.name}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{voornaam + " " + familienaam}</ReservationRecordDatapoint>
@@ -58,6 +59,6 @@ async function ReservationRecordIndexActions({id}: ReservationRecordIndexActions
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/reservaties/${id}`}
               className={cn(buttonVariants({variant: "blue"}), "flex flex-row gap-2 flex-shrink-0")}><Info
-            size={16}/><span>Bekijk</span></Link>
+            size={16}/><span className={"max-sm:hidden"}>Bekijk</span></Link>
     </div>
 }

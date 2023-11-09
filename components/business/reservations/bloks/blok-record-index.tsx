@@ -10,17 +10,17 @@ import {Edit, Trash} from "lucide-react";
 interface BlokRecordIndexProps {
     id: string;
     name?: string;
-    startHour?: string | null;
-    endHour?: string | null;
+    startHour: string;
+    endHour: string;
     price?: number | null;
     tableName: string;
 }
 
 export default async function BlokRecordIndex({id, name, startHour, endHour, price, tableName}: BlokRecordIndexProps) {
-    return <tr className={"hover:bg-muted shrink-0 truncate"}>
+    return <tr className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(4)]:hidden"}>
         <BlokRecordDatapoint>{name}</BlokRecordDatapoint>
-        <BlokRecordDatapoint>{startHour}</BlokRecordDatapoint>
-        <BlokRecordDatapoint>{endHour}</BlokRecordDatapoint>
+        <BlokRecordDatapoint>{startHour.substring(0, 5)}</BlokRecordDatapoint>
+        <BlokRecordDatapoint>{endHour.substring(0, 5)}</BlokRecordDatapoint>
         <BlokRecordDatapoint>&euro;{price}</BlokRecordDatapoint>
         <BlokRecordDatapoint><BlokRecordIndexActions id={id} tableName={tableName}/></BlokRecordDatapoint>
     </tr>
@@ -48,9 +48,9 @@ async function BlokRecordIndexActions({id, tableName}: BlokRecordIndexActionsPro
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/zalen/blokken/${id}`}
               className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit
-            size={16}/><span>Bewerk</span></Link>
+            size={16}/><span className={"max-sm:hidden"}>Bewerk</span></Link>
         <button onClick={handleDelete}
                 className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash
-            size={16}/><span>Verwijder</span></button>
+            size={16}/><span className={"max-sm:hidden"}>Verwijder</span></button>
     </div>
 }

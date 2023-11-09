@@ -24,7 +24,7 @@ export default async function ProductRecordIndex({
                                                      categories,
                                                      tableName
                                                  }: ProductRecordIndexProps) {
-    return <tr className={"hover:bg-muted shrink-0 truncate"}>
+    return <tr className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(4)]:hidden"}>
         <ProductRecordDatapoint>{name}</ProductRecordDatapoint>
         <ProductRecordDatapoint>&euro;{price}</ProductRecordDatapoint>
         <ProductRecordDatapoint>{categories !== undefined ? categories.name : "niet toegekend"}</ProductRecordDatapoint>
@@ -57,9 +57,9 @@ async function ProductRecordIndexActions({id, tableName}: ProductRecordIndexActi
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/producten/${id}`}
               className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit
-            size={16}/><span>Bewerk</span></Link>
+            size={16}/><span className={"max-sm:hidden"}>Bewerk</span></Link>
         <button onClick={handleDelete}
                 className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash
-            size={16}/><span>Verwijder</span></button>
+            size={16}/><span className={"max-sm:hidden"}>Verwijder</span></button>
     </div>
 }

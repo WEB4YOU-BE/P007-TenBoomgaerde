@@ -7,12 +7,12 @@ interface ReservationsTableProps {
 
 export default async function ReservationsTable({reservations}: ReservationsTableProps) {
     return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
-        <table className={"min-w-full divide-y divide-gray-200 table-fixed"}>
+        <table className={"min-w-full divide-y divide-gray-200 table-fixed  max-sm:text-sm"}>
             <thead>
-            <tr className={"bg-muted"}>{
+            <tr className={"bg-muted lg:table-row max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden max-lg:[&>*:nth-child(6)]:hidden max-sm:[&>*:nth-child(7)]:hidden"}>{
                 ['Reservatienr', 'Datum(s)', 'Uur', 'Zaal', 'Status', 'Reserveerder', 'Code', 'Acties']
                     .map((title, index) => <th key={index} scope={"col"}
-                                               className={"px-4 py-2 text-left font-bold uppercase text-muted-foreground [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)
+                                               className={" px-4 py-2 text-left font-bold uppercase text-muted-foreground [&[align=center]]:text-center [&[align=right]]:text-right shrink-0 truncate"}>{title}</th>)
             }</tr>
             </thead>
             <tbody className={"divide-y divide-muted"}>{
