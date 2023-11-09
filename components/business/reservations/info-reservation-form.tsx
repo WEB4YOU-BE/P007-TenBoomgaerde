@@ -18,7 +18,7 @@ interface ReservationIndexProps {
     start_hour: { start_hour: string };
     end_hour: { end_hour: string };
     accessCode: number | null;
-    status: string;
+    status: string | null;
     products: { name: string };
 }
 

@@ -9,7 +9,7 @@ import {UpdateStatus} from "@/components/business/reservations/update-reservatio
 
 interface SelectStatusProps {
     id: string;
-    status: string;
+    status: string | null;
 }
 
 const statussen = [
