@@ -22,11 +22,16 @@ export default async function page() {
     const query = supabase.from("users").select('*').eq('id', user?.id)
     const gebruiker: DbResult<typeof query> = await query
 
+    const queryLatestRes = supabase.from("reservations").select(`reservation_number`).order('reservation_number', {ascending: false}).limit(1)
+    const reservationNumber: DbResult<typeof queryLatestRes> = await queryLatestRes
+
+    const latestReservationNumber: number = reservationNumber.data === null ? 0 : reservationNumber.data[0].reservation_number
+
     const handleSubmitReservation = async (formData: FormData) => {
         "use server"
         const supabase = createServerComponentClient({cookies})
 
-        const reservationNumber = 4
+        const reservationNumber = latestReservationNumber + 1
         const userId = formData.get("userId")
         const roomId = formData.get("room")
         const startDate = formData.get("start")

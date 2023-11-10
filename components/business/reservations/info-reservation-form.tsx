@@ -98,7 +98,7 @@ export default async function InfoReservationForm({
 
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Producten:</span>
-                <span>{products.name}</span>
+                <span>{products === null ? "" : products.name}</span>
             </div>
         </div>
         <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "green"}), "mt-12")}>Terug naar

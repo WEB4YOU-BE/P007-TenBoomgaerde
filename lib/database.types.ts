@@ -88,7 +88,7 @@ export interface Database {
           end_hour: any
           id: string
           products: any
-          reservation_number: number | null
+          reservation_number: number
           reservation_year: string
           rooms: any
           start_date: string
@@ -102,7 +102,7 @@ export interface Database {
           end_hour?: string | null
           id?: string
           product_id?: string | null
-          reservation_number?: number | null
+          reservation_number: number
           reservation_year: string
           room_id?: string | null
           start_date?: string | null
@@ -116,7 +116,7 @@ export interface Database {
           end_hour?: string | null
           id?: string
           product_id?: string | null
-          reservation_number?: number | null
+          reservation_number: number
           reservation_year?: string
           room_id?: string | null
           start_date?: string | null

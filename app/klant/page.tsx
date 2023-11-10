@@ -1,15 +1,19 @@
 import Reservation from "@/components/ui/klant/Reservation";
+import {cookies} from "next/headers";
+import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
+import {DbResult, Tables} from "@/lib/database.types";
 
-export default function Index() {
-    const reservations = [
-        {resnumber: '15', name: 'Tiebe Deweerdt', date: new Date('2023-08-12'), room: 'Grote zaal', tel: '+32 123 45 67 89', code: '1234', state: 'success'},
-        {resnumber: '34', name: 'Tiebe Deweerdt', date: new Date('2023-05-04'), room: 'Grote zaal', tel: '+32 123 45 67 89', code: '1234', state: 'success'},
-        {resnumber: '40', name: 'Tiebe Deweerdt', date: new Date('2023-06-08'), room: 'Grote zaal', tel: '+32 123 45 67 89', code: '1234', state: 'success'},
-        {resnumber: '65', name: 'Jens Penneman', date: new Date('2023-09-07'), room: 'Grote & kleine zaal', tel: '+32 987 65 43 21', code: '', state: 'denied'},
-        {resnumber: '78', name: 'Jens Penneman', date: new Date('2023-06-29'), room: 'Grote & kleine zaal', tel: '+32 987 65 43 21', code: '1234', state: 'success'},
-        {resnumber: '89', name: 'Guy Beeuseart', date: new Date('2023-12-26'), room: 'Kleine zaal', tel: '+32 147 85 23 69', code: '', state: 'hold'}
-    ]
+export default async function Index() {
+    const supabase = createServerComponentClient({cookies})
 
+    const {data: {user}} = await supabase.auth.getUser()
+
+    const queryReservation = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('user_id', user?.id)
+    const reservations: DbResult<typeof queryReservation> = await queryReservation
+
+    if (!reservations.data) return undefined
+
+    const usersReservations: Tables<"reservations">[] = reservations.data
 
     return <main className={"w-full min-h-[100svh]"}>
         <div className={"p-4 block sm:flex items-center justify-between"}>
@@ -20,14 +24,14 @@ export default function Index() {
                 <section>
                     <h2 className={"text-xl font-semibold text-gray-900 sm:text-2xl border-b pb-2 pt-4 sticky top-0 bg-white"}>Komende
                         boekingen</h2>
-                    {reservations.filter(reservation => ((reservation.date) >= new Date())).map(
+                    {usersReservations.filter(reservation => ((new Date(reservation.start_date)) >= new Date())).map(
                         (reservation, index) => <Reservation key={index} {...reservation} />
                     )}
                 </section>
                 <section>
                     <h2 className={"text-xl font-semibold text-gray-900 sm:text-2xl border-b pb-2 pt-4 sticky top-0 bg-white"}>Verleden
                         boekingen</h2>
-                    {reservations.filter(reservation => ((reservation.date) <= new Date())).map(
+                    {usersReservations.filter(reservation => ((new Date(reservation.start_date)) <= new Date())).map(
                         (reservation, index) => <Reservation key={index} {...reservation} />
                     )}
                 </section>
