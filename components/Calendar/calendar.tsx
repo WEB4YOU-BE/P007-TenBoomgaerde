@@ -96,6 +96,7 @@ export default function Calendar() {
                 })}
             </div>
         </div>
+        <input type={"date"} value={selectDate.date().toLocaleString()}/>
         <div className={"h-96 w-96 p-5 flex flex-col"}>
             {currentDate === selectDate ? <h1 className={"m-auto"}>Selecteer een datum</h1> :
                 <h1>Beschikbaarheden voor {selectDate.date()} {months[selectDate.month()]} {selectDate.year()}</h1>}

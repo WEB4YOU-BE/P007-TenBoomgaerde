@@ -34,7 +34,7 @@ export default async function page() {
                                     <p className={"font-light"}>per dag</p>
                                 </CardContent>
                                 <CardFooter className={"justify-center"}>
-                                    <Link href={"/reserveren/" + room.id}
+                                    <Link href={"/reserveren/"}
                                           className={cn(buttonVariants({variant: "green"}), "mx-2")}>Reserveer nu</Link>
                                 </CardFooter>
                             </Card>
