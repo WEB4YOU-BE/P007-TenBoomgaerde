@@ -14,7 +14,6 @@ export default async function Index() {
     if (!reservations.data) return undefined
 
     const usersReservations: Tables<"reservations">[] = reservations.data
-    console.log(usersReservations)
 
     return <main className={"w-full min-h-[100svh]"}>
         <div className={"p-4 block sm:flex items-center justify-between"}>
