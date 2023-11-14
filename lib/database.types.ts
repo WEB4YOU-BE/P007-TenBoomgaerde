@@ -16,21 +16,18 @@ export interface Database {
           end_hour: string
           id: string
           name: string
-          price: number | null
           start_hour: string
         }
         Insert: {
           end_hour: string
           id?: string
           name: string
-          price?: number | null
           start_hour: string
         }
         Update: {
           end_hour?: string
           id?: string
           name?: string
-          price?: number | null
           start_hour?: string
         }
         Relationships: []
