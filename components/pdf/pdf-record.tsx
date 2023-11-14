@@ -11,7 +11,8 @@ interface ReservationRecordIndexProps {
     start_hour: { start_hour: string };
     end_hour: { end_hour: string };
     accessCode: number | null;
-    status: string | null
+    status: string | null;
+    gefactureerd: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -41,7 +42,7 @@ export default function PdfReservationRecordIndex({
                                                       start_hour,
                                                       end_hour,
                                                       accessCode,
-                                                      status
+                                                      status,
                                                   }: ReservationRecordIndexProps) {
     return <View style={styles.tableRow}>
         <View style={styles.tableCol}>
