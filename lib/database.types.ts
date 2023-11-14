@@ -52,7 +52,7 @@ export interface Database {
       }
       products: {
         Row: {
-          categorie_id: string | null
+          categories: any
           for_sale: boolean | null
           id: string
           name: string
