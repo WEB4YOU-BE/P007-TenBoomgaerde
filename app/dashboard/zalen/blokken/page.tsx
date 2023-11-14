@@ -9,7 +9,7 @@ import BloksTable from "@/components/business/reservations/bloks/bloks-table";
 
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
-    const query = supabase.from("bloks").select()
+    const query = supabase.from("bloks").select().order('start_hour')
     const bloks: DbResult<typeof query> = await query
 
     if (!bloks.data) return undefined
