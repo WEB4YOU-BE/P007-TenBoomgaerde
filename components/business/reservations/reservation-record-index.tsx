@@ -4,7 +4,6 @@ import {Info} from "lucide-react";
 import React from "react";
 import Link from "next/link";
 import {Badge} from "@/components/ui/Badge";
-import {Switch} from "@/components/ui/Switch";
 import ChangeFacturatie from "@/components/business/reservations/change-facturatie";
 
 interface ReservationRecordIndexProps {
