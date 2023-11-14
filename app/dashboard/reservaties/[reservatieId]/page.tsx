@@ -9,7 +9,7 @@ export default async function page({params}: {
     }
 }) {
     const supabase = createServerComponentClient({cookies})
-    const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone, email), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('id', params.reservatieId)
+    const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone, email), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd`).eq('id', params.reservatieId)
     const reservation: DbResult<typeof query> = await query
 
     if (!reservation.data) return undefined
@@ -26,6 +26,7 @@ export default async function page({params}: {
                              start_date={reservations[0].start_date} end_date={reservations[0].end_date}
                              start_hour={reservations[0].start_hour} end_hour={reservations[0].end_hour}
                              accessCode={reservations[0].access_code}
-                             status={reservations[0].status} products={reservations[0].products}/>
+                             status={reservations[0].status} products={reservations[0].products}
+                             gefactureerd={reservations[0].gefactureerd}/>
     </main>
 }
