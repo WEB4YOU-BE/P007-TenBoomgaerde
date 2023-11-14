@@ -5,6 +5,7 @@ import React from "react";
 import Link from "next/link";
 import {Badge} from "@/components/ui/Badge";
 import {Switch} from "@/components/ui/Switch";
+import ChangeFacturatie from "@/components/business/reservations/change-facturatie";
 
 interface ReservationRecordIndexProps {
     id: string;
@@ -49,7 +50,8 @@ export default async function ReservationRecordIndex({
         </ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{users.firstname + " " + users.lastname}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{accessCode === null ? 'Onbekend' : accessCode}</ReservationRecordDatapoint>
-        <ReservationRecordDatapoint><Switch defaultChecked={gefactureerd}/></ReservationRecordDatapoint>
+        <ReservationRecordDatapoint><ChangeFacturatie id={id}
+                                                      isGefactureerd={gefactureerd}/></ReservationRecordDatapoint>
         <ReservationRecordDatapoint><ReservationRecordIndexActions id={id}/></ReservationRecordDatapoint>
     </tr>
 }
