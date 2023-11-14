@@ -52,7 +52,7 @@ export interface Database {
       }
       products: {
         Row: {
-          categories: any
+          categorie_id: string | null
           for_sale: boolean | null
           id: string
           name: string
@@ -76,6 +76,7 @@ export interface Database {
           {
             foreignKeyName: "products_categorie_id_fkey"
             columns: ["categorie_id"]
+            isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]
           }
@@ -86,6 +87,7 @@ export interface Database {
           access_code: number | null
           end_date: string
           end_hour: any
+          gefactureerd: boolean
           id: string
           products: any
           reservation_number: number
@@ -95,12 +97,12 @@ export interface Database {
           start_hour: any
           status: string | null
           users: any
-          gefactureerd: boolean
         }
         Insert: {
           access_code?: number | null
           end_date?: string | null
           end_hour?: string | null
+          gefactureerd?: boolean
           id?: string
           product_id?: string | null
           reservation_number: number
@@ -110,12 +112,12 @@ export interface Database {
           start_hour?: string | null
           status?: string | null
           user_id?: string | null
-          gefactureerd?: boolean
         }
         Update: {
           access_code?: number | null
           end_date?: string | null
           end_hour?: string | null
+          gefactureerd?: boolean
           id?: string
           product_id?: string | null
           reservation_number: number
@@ -125,36 +127,40 @@ export interface Database {
           start_hour?: string | null
           status?: string | null
           user_id?: string | null
-          gefactureerd?: boolean
         }
         Relationships: [
           {
             foreignKeyName: "reservations_end_hour_fkey"
             columns: ["end_hour"]
+            isOneToOne: false
             referencedRelation: "bloks"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_product_id_fkey"
             columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_room_id_fkey"
             columns: ["room_id"]
+            isOneToOne: false
             referencedRelation: "rooms"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_start_hour_fkey"
             columns: ["start_hour"]
+            isOneToOne: false
             referencedRelation: "bloks"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -195,7 +201,7 @@ export interface Database {
         }
         Insert: {
           city?: string | null
-          email?: string | null
+          email?: string
           firstname?: string | null
           id: string
           is_admin?: boolean
@@ -206,7 +212,7 @@ export interface Database {
         }
         Update: {
           city?: string | null
-          email?: string | null
+          email?: string
           firstname?: string | null
           id?: string
           is_admin?: boolean
@@ -219,6 +225,7 @@ export interface Database {
           {
             foreignKeyName: "users_id_fkey"
             columns: ["id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
