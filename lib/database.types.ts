@@ -95,6 +95,7 @@ export interface Database {
           start_hour: any
           status: string | null
           users: any
+          gefactureerd: boolean
         }
         Insert: {
           access_code?: number | null
@@ -109,6 +110,7 @@ export interface Database {
           start_hour?: string | null
           status?: string | null
           user_id?: string | null
+          gefactureerd?: boolean
         }
         Update: {
           access_code?: number | null
@@ -123,6 +125,7 @@ export interface Database {
           start_hour?: string | null
           status?: string | null
           user_id?: string | null
+          gefactureerd?: boolean
         }
         Relationships: [
           {

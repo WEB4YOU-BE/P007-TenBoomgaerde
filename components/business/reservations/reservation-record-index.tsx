@@ -4,6 +4,7 @@ import {Info} from "lucide-react";
 import React from "react";
 import Link from "next/link";
 import {Badge} from "@/components/ui/Badge";
+import {Switch} from "@/components/ui/Switch";
 
 interface ReservationRecordIndexProps {
     id: string;
@@ -16,7 +17,8 @@ interface ReservationRecordIndexProps {
     start_hour: { start_hour: string };
     end_hour: { end_hour: string };
     accessCode: number | null;
-    status: string | null
+    status: string | null;
+    gefactureerd: boolean;
 }
 
 
@@ -31,7 +33,8 @@ export default async function ReservationRecordIndex({
                                                          start_hour,
                                                          end_hour,
                                                          accessCode,
-                                                         status
+                                                         status,
+                                                         gefactureerd
                                                      }: ReservationRecordIndexProps) {
     return <tr
         className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden max-lg:[&>*:nth-child(6)]:hidden max-sm:[&>*:nth-child(7)]:hidden"}>
@@ -46,6 +49,7 @@ export default async function ReservationRecordIndex({
         </ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{users.firstname + " " + users.lastname}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{accessCode === null ? 'Onbekend' : accessCode}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint><Switch defaultChecked={gefactureerd}/></ReservationRecordDatapoint>
         <ReservationRecordDatapoint><ReservationRecordIndexActions id={id}/></ReservationRecordDatapoint>
     </tr>
 }
