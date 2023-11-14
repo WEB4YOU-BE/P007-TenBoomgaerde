@@ -27,11 +27,15 @@ export default async function page() {
     const supabase = createServerComponentClient({cookies})
     const queryHold = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd`).eq('status', 'in afwachting')
     const queryWeak = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd`).gte('start_date', formatDate({date: getWeekDates().start})).lte('end_date', formatDate({date: getWeekDates().end}))
+    const queryInvoice = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd`).eq('gefactureerd', 'FALSE')
+
     const reservationsHold: DbResult<typeof queryHold> = await queryHold
     const reservationsWeak: DbResult<typeof queryWeak> = await queryWeak
+    const reservationsInvoice: DbResult<typeof queryInvoice> = await queryInvoice
 
     if (!reservationsHold.data) return undefined
     if (!reservationsWeak.data) return undefined
+    if (!reservationsInvoice.data) return undefined
 
     return <main className={"flex flex-col gap-2"}>
         <div className={"px-4 pt-6"}>
@@ -51,6 +55,11 @@ export default async function page() {
                                                  className={"inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-green-600 data-[state=active]:border-green-600"}>Te
                                         controleren</TabsTrigger>
                                 </div>
+                                <div className={"mr-2"}>
+                                    <TabsTrigger value={"Te factureren"}
+                                                 className={"inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-green-600 data-[state=active]:border-green-600"}>Te
+                                        factureren</TabsTrigger>
+                                </div>
                             </TabsList>
                         </div>
                         <TabsContent value={"Deze week"}>
@@ -58,6 +67,9 @@ export default async function page() {
                         </TabsContent>
                         <TabsContent value={"Te controleren"}>
                             <DashboardReservationsHoldTable reservations={reservationsHold.data}/>
+                        </TabsContent>
+                        <TabsContent value={"Te factureren"}>
+                            <DashboardReservationsHoldTable reservations={reservationsInvoice.data}/>
                         </TabsContent>
                     </Tabs>
                 </div>
@@ -76,8 +88,20 @@ export default async function page() {
                 <div className={"p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6"}>
                     <HoverCard>
                         <HoverCardTrigger asChild>
-                            <h2 className={"mb-4 pb-2 text-lg font-semibold text-center border-b border-gray-200"}>Aantal
-                                reserveringen deze week
+                            <h2 className={"mb-4 pb-2 text-lg font-semibold text-center border-b border-gray-200"}>Te
+                                factureren</h2>
+                        </HoverCardTrigger>
+                        <HoverCardContent>
+                            <p>Dit zijn de te factureren reserveringen.</p>
+                        </HoverCardContent>
+                    </HoverCard>
+                    <p className={"text-6xl font-bold text-green-600 sm:text-8xl text-center"}>{reservationsInvoice.data.length}</p>
+                </div>
+                <div className={"p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6  lg:col-start-5"}>
+                    <HoverCard>
+                        <HoverCardTrigger asChild>
+                            <h2 className={"mb-4 pb-2 text-lg font-semibold text-center border-b border-gray-200"}>
+                                Reserveringen deze week
                             </h2>
                         </HoverCardTrigger>
                         <HoverCardContent>
