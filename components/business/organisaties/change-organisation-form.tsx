@@ -3,7 +3,6 @@ import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import {RedirectType} from "next/dist/client/components/redirect";
 import {buttonVariants} from "@/components/ui/button";
-import {DbResult} from "@/lib/database.types";
 
 interface OrganisationIndexProps {
     id: string;
@@ -19,7 +18,7 @@ export default async function ChangeOrganisationForm({id}: OrganisationIndexProp
         if (btwNumber === null) redirect("/name")
 
         const supabase = createServerComponentClient({cookies})
-        await supabase.from("organisations").update({name: name, btw_number: btwNumber})
+        await supabase.from("organisations").update({name: name, btw_number: btwNumber}).eq('id', id)
 
         redirect("/dashboard/organisaties", RedirectType.push)
     }
