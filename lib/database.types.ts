@@ -47,6 +47,24 @@ export interface Database {
         }
         Relationships: []
       }
+      organizations: {
+        Row: {
+          btw_number: string
+          id: string
+          name: string
+        }
+        Insert: {
+          btw_number: string
+          id?: string
+          name: string
+        }
+        Update: {
+          btw_number?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           categories: any
@@ -86,6 +104,7 @@ export interface Database {
           end_hour: any
           gefactureerd: boolean
           id: string
+          organizations: any
           products: any
           reservation_number: number
           reservation_year: string
@@ -101,6 +120,7 @@ export interface Database {
           end_hour?: string | null
           gefactureerd?: boolean
           id?: string
+          organizations_id?: string | null
           product_id?: string | null
           reservation_number: number
           reservation_year: string
@@ -116,8 +136,9 @@ export interface Database {
           end_hour?: string | null
           gefactureerd?: boolean
           id?: string
+          organizations_id?: string | null
           product_id?: string | null
-          reservation_number: number
+          reservation_number?: number
           reservation_year?: string
           room_id?: string | null
           start_date?: string | null
@@ -131,6 +152,13 @@ export interface Database {
             columns: ["end_hour"]
             isOneToOne: false
             referencedRelation: "bloks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_organizations_id_fkey"
+            columns: ["organizations_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
           {
@@ -198,7 +226,7 @@ export interface Database {
         }
         Insert: {
           city?: string | null
-          email?: string
+          email: string
           firstname?: string | null
           id: string
           is_admin?: boolean
