@@ -25,7 +25,8 @@ export default async function ReservationsTable({reservations}: ReservationsTabl
                                                 start_date={reservation.start_date} end_date={reservation.end_date}
                                                 start_hour={reservation.start_hour} end_hour={reservation.end_hour}
                                                 accessCode={reservation.access_code}
-                                                status={reservation.status} gefactureerd={reservation.gefactureerd}/>)
+                                                status={reservation.status} gefactureerd={reservation.gefactureerd}
+                                                organizations={reservation.organizations}/>)
             }</tbody>
         </table>
     </div>

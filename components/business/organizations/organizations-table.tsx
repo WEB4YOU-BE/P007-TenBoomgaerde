@@ -6,6 +6,7 @@ interface OrganizationsTableProps {
 }
 
 export default async function OrganizationsTable({organizations}: OrganizationsTableProps) {
+
     return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
         <table className={"w-full"}>
             <thead>
@@ -17,9 +18,9 @@ export default async function OrganizationsTable({organizations}: OrganizationsT
             </thead>
             <tbody className={"divide-y divide-muted"}>{
                 organizations
-                    .map((organization) =>
-                        <OrganizationRecordIndex id={organization.id} name={organization.name}
-                                                 btwNumber={organization.btw_number} tableName={"organisations"}/>)
+                    .map((organization, index) =>
+                        <OrganizationRecordIndex key={index} id={organization.id} name={organization.name}
+                                                 btwNumber={organization.btw_number} tableName={"organizations"}/>)
             }</tbody>
         </table>
     </div>

@@ -19,6 +19,7 @@ interface ReservationRecordIndexProps {
     accessCode: number | null;
     status: string | null;
     gefactureerd: boolean;
+    organizations: { name: string };
 }
 
 
@@ -34,8 +35,17 @@ export default async function ReservationRecordIndex({
                                                          end_hour,
                                                          accessCode,
                                                          status,
-                                                         gefactureerd
+                                                         gefactureerd,
+                                                         organizations,
                                                      }: ReservationRecordIndexProps) {
+    let reserveerder;
+
+    if (organizations === undefined || organizations === null) {
+        reserveerder = users.firstname + " " + users.lastname;
+    } else {
+        reserveerder = organizations.name
+    }
+
     return <tr
         className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden max-lg:[&>*:nth-child(6)]:hidden max-sm:[&>*:nth-child(7)]:hidden max-sm:[&>*:nth-child(8)]:hidden"}>
         <ReservationRecordDatapoint>{reservationYear.substring(0, 4) + '-' + reservationNumber}</ReservationRecordDatapoint>
@@ -47,7 +57,7 @@ export default async function ReservationRecordIndex({
             {(status === 'geweigerd') && <Badge variant={"denied"}>Geweigerd</Badge>}
             {(status === 'in afwachting') && <Badge variant={"hold"}>In afwachting</Badge>}
         </ReservationRecordDatapoint>
-        <ReservationRecordDatapoint>{users.firstname + " " + users.lastname}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{reserveerder}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{accessCode === null ? 'Onbekend' : accessCode}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint><ChangeFacturatie id={id}
                                                       isGefactureerd={gefactureerd}/></ReservationRecordDatapoint>
