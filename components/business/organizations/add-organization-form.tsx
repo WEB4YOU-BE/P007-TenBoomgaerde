@@ -4,7 +4,7 @@ import {cookies} from "next/headers";
 import {RedirectType} from "next/dist/client/components/redirect";
 import {buttonVariants} from "@/components/ui/button";
 
-export default async function AddorganizationForm() {
+export default async function AddOrganizationForm() {
     const onCreateOrganization = async (formData: FormData) => {
         "use server"
         const name = formData.get("name")
@@ -14,7 +14,7 @@ export default async function AddorganizationForm() {
         if (btwNumber === null) redirect("/name")
 
         const supabase = createServerComponentClient({cookies})
-        await supabase.from("organisations").insert({name: name, btw_number: btwNumber})
+        await supabase.from("organizations").insert({name: name, btw_number: btwNumber})
 
         redirect("/dashboard/organisaties", RedirectType.push)
     }
