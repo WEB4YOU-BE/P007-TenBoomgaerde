@@ -2,13 +2,17 @@ import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import Link from "next/link";
 import {PlusCircle} from "lucide-react";
+import {DbResult} from "@/lib/database.types";
+import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
+import {cookies} from "next/headers";
+import OrganizationsTable from "@/components/business/organizations/organizations-table";
 
 export default async function page() {
-    /*const supabase = createServerComponentClient({cookies})
-    const query = supabase.from("products").select(`id, name, price, for_sale, categories(name)`)
-    const products: DbResult<typeof query> = await query
+    const supabase = createServerComponentClient({cookies})
+    const query = supabase.from("organizations").select(`id, name, btw_number`)
+    const organizations: DbResult<typeof query> = await query
 
-    if (!products.data) return undefined*/
+    if (!organizations.data) return undefined
 
     return <main className={"flex flex-col gap-2"}>
         <div className={"flex flex-col md:flex-row gap-2 p-4"}>
@@ -16,6 +20,6 @@ export default async function page() {
             <Link href={"/dashboard/organisaties/add"}
                   className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2")}><PlusCircle size={16}/>Toevoegen</Link>
         </div>
-        {/*<ProductsTable products={products.data}/>*/}
+        <OrganizationsTable organizations={organizations.data}/>
     </main>
 }
