@@ -115,7 +115,8 @@ const WeekPDF = ({reservations}: pdfProps) => {
                                                            start_hour={reservation.start_hour}
                                                            end_hour={reservation.end_hour}
                                                            accessCode={reservation.access_code}
-                                                           status={reservation.status}/>
+                                                           status={reservation.status}
+                                                           gefactureerd={reservation.gefactureerd}/>
                             )
                     }
                 </View>

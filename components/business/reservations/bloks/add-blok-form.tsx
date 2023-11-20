@@ -10,15 +10,13 @@ export default async function AddBlokForm() {
         const name = formData.get("name")
         const startHour = formData.get("startHour")
         const endHour = formData.get("endHour")
-        const price = formData.get("price")
 
         if (name === null) redirect("/name")
         if (startHour === null) redirect("/startHour")
         if (endHour === null) redirect("/endHour")
-        if (price === null) redirect("/price")
 
         const supabase = createServerComponentClient({cookies})
-        await supabase.from("bloks").insert({name: name, start_hour: startHour, end_hour: endHour, price: price})
+        await supabase.from("bloks").insert({name: name, start_hour: startHour, end_hour: endHour})
 
         redirect("/dashboard/zalen/blokken", RedirectType.push)
     }
@@ -45,12 +43,6 @@ export default async function AddBlokForm() {
                 <input autoFocus required type={"time"} id={"endHour"} name={"endHour"}
                        className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}/>
             </div>
-        </div>
-        <div>
-            <label htmlFor={"price"}
-                   className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Prijs</label>
-            <input type={"number"} step={0.01} min={0} required id={"price"} name={"price"} placeholder={"20.00"}
-                   className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}/>
         </div>
         <button type={"submit"} className={buttonVariants({variant: "green"})}>Maak aan</button>
     </form>

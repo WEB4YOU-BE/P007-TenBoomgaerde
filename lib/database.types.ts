@@ -16,21 +16,18 @@ export interface Database {
           end_hour: string
           id: string
           name: string
-          price: number | null
           start_hour: string
         }
         Insert: {
           end_hour: string
           id?: string
           name: string
-          price?: number | null
           start_hour: string
         }
         Update: {
           end_hour?: string
           id?: string
           name?: string
-          price?: number | null
           start_hour?: string
         }
         Relationships: []
@@ -45,6 +42,24 @@ export interface Database {
           name: string
         }
         Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      organizations: {
+        Row: {
+          btw_number: string
+          id: string
+          name: string
+        }
+        Insert: {
+          btw_number: string
+          id?: string
+          name: string
+        }
+        Update: {
+          btw_number?: string
           id?: string
           name?: string
         }
@@ -76,6 +91,7 @@ export interface Database {
           {
             foreignKeyName: "products_categorie_id_fkey"
             columns: ["categorie_id"]
+            isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]
           }
@@ -86,7 +102,9 @@ export interface Database {
           access_code: number | null
           end_date: string
           end_hour: any
+          gefactureerd: boolean
           id: string
+          organizations: any
           products: any
           reservation_number: number
           reservation_year: string
@@ -100,7 +118,9 @@ export interface Database {
           access_code?: number | null
           end_date?: string | null
           end_hour?: string | null
+          gefactureerd?: boolean
           id?: string
+          organizations_id?: string | null
           product_id?: string | null
           reservation_number: number
           reservation_year: string
@@ -114,9 +134,11 @@ export interface Database {
           access_code?: number | null
           end_date?: string | null
           end_hour?: string | null
+          gefactureerd?: boolean
           id?: string
+          organizations_id?: string | null
           product_id?: string | null
-          reservation_number: number
+          reservation_number?: number
           reservation_year?: string
           room_id?: string | null
           start_date?: string | null
@@ -128,30 +150,42 @@ export interface Database {
           {
             foreignKeyName: "reservations_end_hour_fkey"
             columns: ["end_hour"]
+            isOneToOne: false
             referencedRelation: "bloks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_organizations_id_fkey"
+            columns: ["organizations_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_product_id_fkey"
             columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_room_id_fkey"
             columns: ["room_id"]
+            isOneToOne: false
             referencedRelation: "rooms"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_start_hour_fkey"
             columns: ["start_hour"]
+            isOneToOne: false
             referencedRelation: "bloks"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reservations_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -192,7 +226,7 @@ export interface Database {
         }
         Insert: {
           city?: string | null
-          email?: string | null
+          email: string
           firstname?: string | null
           id: string
           is_admin?: boolean
@@ -203,7 +237,7 @@ export interface Database {
         }
         Update: {
           city?: string | null
-          email?: string | null
+          email?: string
           firstname?: string | null
           id?: string
           is_admin?: boolean
@@ -216,6 +250,7 @@ export interface Database {
           {
             foreignKeyName: "users_id_fkey"
             columns: ["id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           }

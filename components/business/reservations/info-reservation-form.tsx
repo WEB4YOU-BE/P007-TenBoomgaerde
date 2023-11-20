@@ -1,11 +1,9 @@
-import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
-import {cookies} from "next/headers";
-import {DbResult} from "@/lib/database.types";
 import React from "react";
 import SelectStatus from "@/components/business/reservations/select-status";
 import {buttonVariants} from "@/components/ui/button";
 import Link from "next/link";
 import {cn} from "@/lib/utils";
+import ChangeFacturatie from "@/components/business/reservations/change-facturatie";
 
 interface ReservationIndexProps {
     id: string;
@@ -20,6 +18,8 @@ interface ReservationIndexProps {
     accessCode: number | null;
     status: string | null;
     products: { name: string };
+    gefactureerd: boolean;
+    organizations: { name: string, btw_number: string };
 }
 
 export default async function InfoReservationForm({
@@ -34,24 +34,24 @@ export default async function InfoReservationForm({
                                                       end_hour,
                                                       accessCode,
                                                       status,
-                                                      products
+                                                      products,
+                                                      gefactureerd,
+                                                      organizations
                                                   }: ReservationIndexProps) {
-    const supabase = createServerComponentClient({cookies})
-    const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone, email), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status`).eq('id', id)
-    const reservation: DbResult<typeof query> = await query
-
-    if (!reservation.data) return undefined
-
     return <main>
-        <div className={"grid grid-cols-1 lg:grid-cols-2 p-2 gap-8"}>
+        <div className={"grid grid-cols-1 lg:grid-cols-2 p-2 gap-6"}>
             <div className={"lg:col-span-2"}>
-                <div className={"flex flex-col-reverse lg:flex-row gap-4  lg:mb-16 justify-between"}>
+                <div className={"flex flex-col-reverse lg:flex-row gap-4 lg:mb-4 justify-between"}>
                     <div className={"pt-2"}>
                         <span className={"font-bold uppercase"}>Reservatienummer: </span>
                         <span>{reservationYear.substring(0, 4) + '-' + reservationNumber}</span>
                     </div>
-                    <div className={"ml-auto"}>
+                    <div className={"ml-auto flex flex-col gap-4"}>
                         <SelectStatus id={id} status={status}/>
+                        <div className={"flex flex-row gap-4"}>
+                            <span>Gefactureerd</span>
+                            <ChangeFacturatie id={id} isGefactureerd={gefactureerd}/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,15 +95,26 @@ export default async function InfoReservationForm({
                 <span className={"font-bold uppercase"}>Email:</span>
                 <span>{users.email}</span>
             </div>
-
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Producten:</span>
                 <span>{products === null ? "" : products.name}</span>
             </div>
+            {organizations !== undefined && organizations !== null && (
+                <div className="flex flex-col gap-4 border rounded-xl p-4">
+                    <h3 className="font-bold uppercase text-xl">Organisatie</h3>
+                    <div className={"flex flex-row gap-4"}>
+                        <span className="font-bold uppercase">Naam:</span>
+                        <span>{organizations.name}</span>
+                    </div>
+                    <div className={"flex flex-row gap-4"}>
+                        <span className="font-bold uppercase">BTW-nummer:</span>
+                        <span>{organizations.btw_number}</span>
+                    </div>
+                </div>
+            )}
         </div>
         <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "green"}), "mt-12")}>Terug naar
             reservatielijst</Link>
-
     </main>
 
 }

@@ -12,16 +12,14 @@ interface BlokRecordIndexProps {
     name?: string;
     startHour: string;
     endHour: string;
-    price?: number | null;
     tableName: string;
 }
 
-export default async function BlokRecordIndex({id, name, startHour, endHour, price, tableName}: BlokRecordIndexProps) {
+export default async function BlokRecordIndex({id, name, startHour, endHour, tableName}: BlokRecordIndexProps) {
     return <tr className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(4)]:hidden"}>
         <BlokRecordDatapoint>{name}</BlokRecordDatapoint>
         <BlokRecordDatapoint>{startHour.substring(0, 5)}</BlokRecordDatapoint>
         <BlokRecordDatapoint>{endHour.substring(0, 5)}</BlokRecordDatapoint>
-        <BlokRecordDatapoint>&euro;{price}</BlokRecordDatapoint>
         <BlokRecordDatapoint><BlokRecordIndexActions id={id} tableName={tableName}/></BlokRecordDatapoint>
     </tr>
 }
