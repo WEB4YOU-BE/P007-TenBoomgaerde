@@ -5,9 +5,8 @@ export const dynamic = 'force-dynamic'
 export default async function Index() {
     return <main className={"min-h-[calc(100svh-72px)]"}>
         <div className={"container max-w-screen-xl mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
-            <div className={"xl:col-span-2 flex flex-col gap-2"}>
+            <div className={"xl:col-span-2 flex flex-col gap-4 pb-6"}>
                 <h1 className={"text-5xl font-extrabold"}>Ten boomgaerde</h1>
-                <span className={"bg-red-100 border-red-400 border-2 rounded p-2"}>Uit respect voor de nachtrust van de buurtbewoners kunnen er geen feesten met muziekinstallaties plaats vinden na 22u00.</span>
                 <p>Ten Boomgaerde is het beweging.net Dienstencentrum van Lichtervelde. Deze
                     zaal bevat een grote- en kleine zaal. Deze kunnen voor allerhande zaken zoals een clubfeest,
                     geboortereceptie, verjaardagsfeest, vergaderingen en communiefeest worden gereserveerd.</p>
@@ -19,7 +18,7 @@ export default async function Index() {
                 <h2 className={"text-3xl font-bold lg:text-center"}>Beschikbaarheid</h2>
                 <div className={"bg-gray-200 flex-grow min-h-[calc((100svh-72px-1rem)/2)] rounded p-2"}>React Kalender</div>
             </aside>
-            <section className={"lg:row-start-2 lg:col-span-1 xl:col-span-2 flex flex-col gap-2"}>
+            <section className={"lg:row-start-2 lg:col-span-1 xl:col-span-2 flex flex-col gap-4"}>
                 <h2 className={"text-3xl font-bold"}>Praktische info</h2>
                 <h3 className={"text-xl font-semibold"}>Accomodatie</h3>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
@@ -43,6 +42,7 @@ export default async function Index() {
                     <li>Schrijfbord</li>
                     <li>Mobiel podium</li>
                 </ul>
+                <span className={"bg-red-100 border-red-400 border-2 rounded p-2"}>Uit respect voor de nachtrust van de buurtbewoners kunnen er geen feesten met muziekinstallaties plaats vinden na 22u00.</span>
                 <h3 className={"text-xl font-semibold"}>Bereikbaarheid</h3>
                 <p>Het adres van het dienstencentrum is Boomgaardstraat 4a te 8810
                     Lichtervelde. Dit is te bereiken via: Afrit 9 van de E403. Richting centrum Lichtervelde volgen.
