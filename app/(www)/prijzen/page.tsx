@@ -31,7 +31,7 @@ export default async function page() {
                                 <CardHeader className={"text-xl text-center font-bold"}>{room.name}</CardHeader>
                                 <CardContent className={"text-center"}>
                                     <p>&euro; {room.day_price}</p>
-                                    <p className={"font-light"}>per dag</p>
+                                    <p className={"font-light"}>per tijdsblok</p>
                                 </CardContent>
                                 <CardFooter className={"justify-center"}>
                                     <Link href={"/reserveren/"}
