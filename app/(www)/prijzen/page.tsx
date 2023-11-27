@@ -42,10 +42,14 @@ export default async function page() {
                     }
                 </div>
                 <h3 className={"text-xl font-bold mt-6"}>Extra informatie</h3>
+                <span>Vanaf januarie 2024 werken met een All-in prijs formule</span>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
-                    <li>Het gebruik van de keuken is gratis</li>
-                    <li>Forfait elektriciteit en water per activiteit &euro; 5.00</li>
-                    <li>Verwarming per eenheid &euro; 1.25</li>
+                    <li>Huur zaal</li>
+                    <li>Water</li>
+                    <li>Elektriciteit</li>
+                    <li>Verwarming</li>
+                    <li>Wifi</li>
+                    <li>Zaaluitrusting</li>
                 </ul>
             </section>
             <section className={"mt-8"}>
