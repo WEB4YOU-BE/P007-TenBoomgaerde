@@ -41,14 +41,14 @@ export default async function page() {
                         )
                     }
                 </div>
-                <h3 className={"text-xl font-bold mt-4"}>Extra informatie</h3>
+                <h3 className={"text-xl font-bold mt-6"}>Extra informatie</h3>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     <li>Het gebruik van de keuken is gratis</li>
                     <li>Forfait elektriciteit en water per activiteit &euro; 5.00</li>
                     <li>Verwarming per eenheid &euro; 1.25</li>
                 </ul>
             </section>
-            <section className={"mt-4"}>
+            <section className={"mt-8"}>
                 <h2 className={"text-2xl font-bold"}>Huurprijs aanwezig materiaal</h2>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     {
@@ -58,7 +58,7 @@ export default async function page() {
                     }
                 </ul>
             </section>
-            <section className={"mt-4"}>
+            <section className={"mt-6"}>
                 <h2 className={"text-2xl font-bold"}>Prijslijst drank</h2>
                 <p>De vermelde prijs is de prijs die wordt aangerekend per gebruikte consumptie tijdens een feest of
                     activiteit.</p>
