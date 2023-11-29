@@ -7,6 +7,59 @@ import {buttonVariants} from "@/components/ui/button";
 import CategoriesTable from "@/components/business/categories/categories-table";
 import {PlusCircle} from "lucide-react";
 
+export const metadata = {
+    title: "Product categorieën",
+    description: 'Bekijk de categorieën waaronder de producten kunnen vallen.',
+
+    robots: {
+        index: false,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: false,
+            follow: true,
+            noimageindex: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+
+    applicationName: "VZW Ten Boomgaerde Lichtervelde",
+    keywords: ["Ten Boomgaerde", "Lichtervelde", "VZW"],
+
+    creator: "WEB4YOU",
+    publisher: "WEB4YOU",
+    authors: [{name: "Jens Penneman", url: "https://jenspenneman.com"}],
+
+    colorScheme: "light dark",
+    themeColor: [
+        {media: "(prefers-color-scheme: light)", color: "#e7e5e4"},
+        {media: "(prefers-color-scheme: dark)", color: "#292524"},
+    ],
+    formatDetection: {
+        url: false,
+        email: false,
+        telephone: false,
+        address: false,
+        date: false,
+    },
+
+    metadataBase: new URL("https://www.vzwtenboomgaerdelichtervelde.be"),
+    referrer: "origin-when-cross-origin",
+    alternates: {
+        canonical: "/dashboard/producten/categorieen",
+        languages: {},
+    },
+
+    appleWebApp: {
+        title: "VZW Ten Boomgaerde Lichtervelde",
+        statusBarStyle: "default",
+    },
+
+    generator: "Next.js",
+};
+
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
     const query = supabase.from("categories").select()

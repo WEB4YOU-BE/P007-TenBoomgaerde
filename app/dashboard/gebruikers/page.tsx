@@ -3,6 +3,59 @@ import {cookies} from "next/headers";
 import {DbResult} from "@/lib/database.types";
 import UsersTable from "@/components/business/users/users-table";
 
+export const metadata = {
+    title: "Alle gebruikers",
+    description: 'Bekijk de lijst van aangemelde gebruikers bij VZW Ten Boomgaerde Lichtervelde.',
+
+    robots: {
+        index: false,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: false,
+            follow: true,
+            noimageindex: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+
+    applicationName: "VZW Ten Boomgaerde Lichtervelde",
+    keywords: ["Ten Boomgaerde", "Lichtervelde", "VZW"],
+
+    creator: "WEB4YOU",
+    publisher: "WEB4YOU",
+    authors: [{name: "Jens Penneman", url: "https://jenspenneman.com"}],
+
+    colorScheme: "light dark",
+    themeColor: [
+        {media: "(prefers-color-scheme: light)", color: "#e7e5e4"},
+        {media: "(prefers-color-scheme: dark)", color: "#292524"},
+    ],
+    formatDetection: {
+        url: false,
+        email: false,
+        telephone: false,
+        address: false,
+        date: false,
+    },
+
+    metadataBase: new URL("https://www.vzwtenboomgaerdelichtervelde.be"),
+    referrer: "origin-when-cross-origin",
+    alternates: {
+        canonical: "/dashboard/gebruikers",
+        languages: {},
+    },
+
+    appleWebApp: {
+        title: "VZW Ten Boomgaerde Lichtervelde",
+        statusBarStyle: "default",
+    },
+
+    generator: "Next.js",
+};
+
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
     const query = supabase.from("users").select(`*`)

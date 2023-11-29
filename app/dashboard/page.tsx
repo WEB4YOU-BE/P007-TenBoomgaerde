@@ -1,10 +1,62 @@
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/Hover-card";
-import DashboardReservationsHoldTable
-    from "@/components/business/reservations/dashboard/dashboard-reservations-hold-table";
+import DashboardReservationsHoldTable from "@/components/business/reservations/dashboard/dashboard-reservations-hold-table";
 import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import {DbResult} from "@/lib/database.types";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/Tabs";
+
+export const metadata = {
+    title: "Dashboard",
+    description: 'Ga naar jouw overzicht met alle reserveren VZW Ten Boomgaerde Lichtervelde.',
+
+    robots: {
+        index: false,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: false,
+            follow: true,
+            noimageindex: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+
+    applicationName: "VZW Ten Boomgaerde Lichtervelde",
+    keywords: ["Ten Boomgaerde", "Lichtervelde", "VZW"],
+
+    creator: "WEB4YOU",
+    publisher: "WEB4YOU",
+    authors: [{name: "Jens Penneman", url: "https://jenspenneman.com"}],
+
+    colorScheme: "light dark",
+    themeColor: [
+        {media: "(prefers-color-scheme: light)", color: "#e7e5e4"},
+        {media: "(prefers-color-scheme: dark)", color: "#292524"},
+    ],
+    formatDetection: {
+        url: false,
+        email: false,
+        telephone: false,
+        address: false,
+        date: false,
+    },
+
+    metadataBase: new URL("https://www.vzwtenboomgaerdelichtervelde.be"),
+    referrer: "origin-when-cross-origin",
+    alternates: {
+        canonical: "/dashboard",
+        languages: {},
+    },
+
+    appleWebApp: {
+        title: "VZW Ten Boomgaerde Lichtervelde",
+        statusBarStyle: "default",
+    },
+
+    generator: "Next.js",
+};
 
 function getWeekDates() {
     const now = new Date()

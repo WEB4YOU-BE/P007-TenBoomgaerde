@@ -8,6 +8,59 @@ import {Printer} from "lucide-react";
 import ReservationsTable from "@/components/business/reservations/reservations-table";
 import ExportExcel from "@/components/business/export-excel";
 
+export const metadata = {
+    title: "Analyses",
+    description: 'Trek verschillende rapporten met data zoals de reservaties en gebruikers die aangemeld zijn.',
+
+    robots: {
+        index: false,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: false,
+            follow: true,
+            noimageindex: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+
+    applicationName: "VZW Ten Boomgaerde Lichtervelde",
+    keywords: ["Ten Boomgaerde", "Lichtervelde", "VZW"],
+
+    creator: "WEB4YOU",
+    publisher: "WEB4YOU",
+    authors: [{name: "Jens Penneman", url: "https://jenspenneman.com"}],
+
+    colorScheme: "light dark",
+    themeColor: [
+        {media: "(prefers-color-scheme: light)", color: "#e7e5e4"},
+        {media: "(prefers-color-scheme: dark)", color: "#292524"},
+    ],
+    formatDetection: {
+        url: false,
+        email: false,
+        telephone: false,
+        address: false,
+        date: false,
+    },
+
+    metadataBase: new URL("https://www.vzwtenboomgaerdelichtervelde.be"),
+    referrer: "origin-when-cross-origin",
+    alternates: {
+        canonical: "/dashboard/analyses",
+        languages: {},
+    },
+
+    appleWebApp: {
+        title: "VZW Ten Boomgaerde Lichtervelde",
+        statusBarStyle: "default",
+    },
+
+    generator: "Next.js",
+};
+
 function getWeekDates() {
     const now = new Date()
     const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1)
