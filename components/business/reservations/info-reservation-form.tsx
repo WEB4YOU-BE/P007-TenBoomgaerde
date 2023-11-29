@@ -114,7 +114,7 @@ export default async function InfoReservationForm({
                 </div>
             )}
         </div>
-        <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "green"}), "mt-12")}>Terug naar
+        <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "secondary"}), "mt-12")}>Terug naar
             reservatielijst</Link>
     </main>
 

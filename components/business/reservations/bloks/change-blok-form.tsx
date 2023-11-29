@@ -4,6 +4,8 @@ import {cookies} from "next/headers";
 import {RedirectType} from "next/dist/client/components/redirect";
 import {buttonVariants} from "@/components/ui/button";
 import {DbResult} from "@/lib/database.types";
+import {cn} from "@/lib/utils";
+import Link from "next/link";
 
 interface BlokIndexProps {
     id: string;
@@ -61,6 +63,10 @@ export default async function ChangeBlokForm({id}: BlokIndexProps) {
                        className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}/>
             </div>
         </div>
-        <button type={"submit"} className={buttonVariants({variant: "green"})}>Wijzig</button>
+        <div className={"grid lg:grid-cols-2 gap-4 mt-4"}>
+            <Link href={"/dashboard/zalen/blokken"} className={buttonVariants({variant: "secondary"})}>Terug</Link>
+            <button type={"submit"} className={cn(buttonVariants({variant: "green"}), "max-sm:row-start-1")}>Wijzig
+            </button>
+        </div>
     </form>
 }
