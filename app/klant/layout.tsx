@@ -10,6 +10,45 @@ import LoginComponentProtection from "@/components/authentication/login-componen
 
 export const dynamic = 'force-dynamic'
 
+export const metadata = {
+    title: "Overzicht",
+    description: 'Ga naar jouw overzicht met alle reserveren VZW Ten Boomgaerde Lichtervelde.',
+
+    applicationName: "VZW Ten Boomgaerde Lichtervelde",
+    keywords: ["Ten Boomgaerde", "Lichtervelde", "VZW"],
+
+    creator: "WEB4YOU",
+    publisher: "WEB4YOU",
+    authors: [{name: "Jens Penneman", url: "https://jenspenneman.com"}],
+
+    colorScheme: "light dark",
+    themeColor: [
+        {media: "(prefers-color-scheme: light)", color: "#e7e5e4"},
+        {media: "(prefers-color-scheme: dark)", color: "#292524"},
+    ],
+    formatDetection: {
+        url: false,
+        email: false,
+        telephone: false,
+        address: false,
+        date: false,
+    },
+
+    metadataBase: new URL("https://www.vzwtenboomgaerdelichtervelde.be"),
+    referrer: "origin-when-cross-origin",
+    alternates: {
+        canonical: "/klant",
+        languages: {},
+    },
+
+    appleWebApp: {
+        title: "VZW Ten Boomgaerde Lichtervelde",
+        statusBarStyle: "default",
+    },
+
+    generator: "Next.js",
+};
+
 interface LayoutProps {
     children: React.ReactNode;
 }
