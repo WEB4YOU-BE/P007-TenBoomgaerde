@@ -9,11 +9,6 @@ export const metadata = {
     publisher: "WEB4YOU",
     authors: [{name: "Jens Penneman", url: "https://jenspenneman.com"}],
 
-    colorScheme: "light dark",
-    themeColor: [
-        {media: "(prefers-color-scheme: light)", color: "#e7e5e4"},
-        {media: "(prefers-color-scheme: dark)", color: "#292524"},
-    ],
     formatDetection: {
         url: false,
         email: false,
