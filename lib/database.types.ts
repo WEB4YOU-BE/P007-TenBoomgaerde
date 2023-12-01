@@ -223,6 +223,7 @@ export interface Database {
           phone: string | null
           postcode: string | null
           street: string | null
+          type: number
         }
         Insert: {
           city?: string | null

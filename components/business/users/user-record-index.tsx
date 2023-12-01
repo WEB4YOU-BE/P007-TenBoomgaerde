@@ -13,17 +13,28 @@ interface UserRecordIndexProps {
     email: string;
     phone: string | null
     city: string | null
+    type: number
 }
 
-export default async function UserRecordIndex({id, firstname, lastname, isAdmin, email, phone, city}: UserRecordIndexProps) {
+export default async function UserRecordIndex({
+                                                  id,
+                                                  firstname,
+                                                  lastname,
+                                                  isAdmin,
+                                                  email,
+                                                  phone,
+                                                  city,
+                                                  type
+                                              }: UserRecordIndexProps) {
     const voornaam = firstname ?? ""
     const familienaam = lastname ?? ""
     return <tr
-        className={"hover:bg-muted whitespace-nowrap max-sm:[&>*:nth-child(1)]:hidden max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden"}>
+        className={"hover:bg-muted whitespace-nowrap max-sm:[&>*:nth-child(1)]:hidden max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden max-sm:[&>*:nth-child(6)]:hidden"}>
         <UserRecordDatapoint>{voornaam + " " + familienaam}</UserRecordDatapoint>
         <UserRecordDatapoint>{email}</UserRecordDatapoint>
         <UserRecordDatapoint>{phone ?? ""}</UserRecordDatapoint>
         <UserRecordDatapoint>{city ?? ""}</UserRecordDatapoint>
+        <UserRecordDatapoint>{type}</UserRecordDatapoint>
         <UserRecordDatapoint><ChangeAdmin id={id} isAdmin={isAdmin} email={email}/></UserRecordDatapoint>
         <UserRecordDatapoint><UserRecordIndexActions id={id}/></UserRecordDatapoint>
     </tr>
