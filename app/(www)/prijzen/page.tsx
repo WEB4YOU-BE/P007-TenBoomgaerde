@@ -42,7 +42,7 @@ export default async function page() {
                     }
                 </div>
                 <h3 className={"text-xl font-bold mt-6"}>Extra informatie</h3>
-                <span>Vanaf januarie 2024 werken met een All-in prijs formule</span>
+                <span>Vanaf januari 2024 werken met een All-in prijs formule</span>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     <li>Huur zaal</li>
                     <li>Water</li>
