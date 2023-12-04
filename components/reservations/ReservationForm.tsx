@@ -6,7 +6,7 @@ import {buttonVariants} from "@/components/ui/button";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Calendar} from "@/components/ui/calendar";
 import {nlBE} from "date-fns/locale";
-import {addYears, compareAsc, eachDayOfInterval, formatISO} from "date-fns";
+import {addDays, addYears, compareAsc, eachDayOfInterval, formatISO, isAfter, isSameDay} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {Tables} from "@/lib/database.types";
 
@@ -52,8 +52,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     }, [endDate])
 
     const reservationsInSelectedRoom = allReservations.data
-            ?.filter((reservation, index) => reservation.rooms.id === selectedRoom)
-            ?.filter((reservation, index) => reservation.status !== "geweigerd")
+            ?.filter((reservation) => reservation.rooms.id === selectedRoom)
+            ?.filter((reservation) => reservation.status !== "geweigerd")
         || []
     const sortedReservationsInSelectedRoom = reservationsInSelectedRoom
         .sort((r1, r2) => compareAsc(new Date(r1.start_date), new Date(r2.start_date)))
@@ -86,18 +86,46 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
         };
     }
 
+    function timeframeDisabledStart(timeframeId: string, day?: Date): boolean {
+        if (day === undefined) return false
+        return bookedTimeframeDays
+            .filter((bookedTFD) => formatISO(bookedTFD.date, {representation: 'date'}) === formatISO(day, {representation: 'date'}))
+            .filter((bookedTFD) => bookedTFD.timeframes.map((tf) => tf.id).includes(timeframeId))
+            .length > 0
+    }
+
+    function findMaxRangeDayIfExists() {
+        const bookingsOnOrAfterStartDay = bookedTimeframeDays.filter((bookedTimeframeDays) => isAfter(bookedTimeframeDays.date, startDate || fiveYearsFromToday) || isSameDay(bookedTimeframeDays.date, startDate || fiveYearsFromToday))
+        if (bookingsOnOrAfterStartDay.length === 0) return undefined
+
+        if (formatISO(bookingsOnOrAfterStartDay[0].date, {representation: 'date'}) === formatISO(startDate || new Date(), {representation: 'date'}))
+            return startDate
+        if (formatISO(bookingsOnOrAfterStartDay[0].date, {representation: 'date'}) !== formatISO(startDate || new Date(), {representation: 'date'}))
+            return addDays(startDate || new Date(), 1)
+    }
+
+    function timeframeDisabledEnd(timeframeId: string, day?: Date): boolean {
+        if (day === undefined) return false
+        return bookedTimeframeDays
+            .filter((bookedTFD) => formatISO(bookedTFD.date, {representation: 'date'}) === formatISO(day, {representation: 'date'}))
+            .flatMap((bookedTFD) => bookedTFD.timeframes)
+            .map((timeframe) => timeframe.id)
+            .includes(timeframeId)
+    }
+
     const modifiedClassnames = {
         available: "text-green-600 bg-green-100",
-        partialyAvailable: "!text-amber-600 !bg-amber-100",
-        notAvailable: "!text-red-600 !bg-red-100",
+        partialyAvailable: "text-amber-600 bg-amber-100",
+        notAvailable: "text-red-600 bg-red-100",
     }
-    const availableDays: Date[] = eachDayOfInterval({start: today, end: fiveYearsFromToday})
-    const partialyAvailableDays: Date[] = bookedTimeframeDays
-        .filter((bookedTFD) => 0 < bookedTFD.timeframes.length && bookedTFD.timeframes.length < sortedTimeframes.length)
-        .map((bookedTimeframeDays) => bookedTimeframeDays.date)
     const notAvailableDays: Date[] = bookedTimeframeDays
         .filter((bookedTFD) => bookedTFD.timeframes.length === sortedTimeframes.length)
         .map((bookedTimeframeDays) => bookedTimeframeDays.date)
+    const partialyAvailableDays: Date[] = bookedTimeframeDays
+        .filter((bookedTFD) => 0 < bookedTFD.timeframes.length && bookedTFD.timeframes.length < sortedTimeframes.length)
+        .map((bookedTimeframeDays) => bookedTimeframeDays.date)
+    const availableDays: Date[] = eachDayOfInterval({start: today, end: fiveYearsFromToday})
+        .filter((date) => !partialyAvailableDays.map((date) => formatISO(date, {representation: 'date'})).includes(formatISO(date, {representation: 'date'})) && !notAvailableDays.map((date) => formatISO(date, {representation: 'date'})).includes(formatISO(date, {representation: 'date'})))
     const modifierDays = {
         available: availableDays,
         partialyAvailable: partialyAvailableDays,
@@ -155,9 +183,10 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                         sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
                                    checked={startTimestamp === timeframe.id} onChange={() => setStartTimeStamp(timeframe.id)}
+                                   disabled={timeframeDisabledStart(timeframe.id, startDate)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"start-" + timeframe.id}
-                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
+                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
                         </div>)
                     }
                 </fieldset>
@@ -180,7 +209,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                 selected={endDate}
                                 onSelect={setEndDate}
                                 fromDate={startDate}
-                                toDate={fiveYearsFromToday}
+                                toDate={findMaxRangeDayIfExists() || fiveYearsFromToday}
                                 fixedWeeks
                                 disabled={notAvailableDays}
                                 modifiers={modifierDays}
@@ -195,9 +224,10 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                         sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
                                    checked={endTimestamp === timeframe.id} onChange={() => setEndTimestamp(timeframe.id)}
+                                   disabled={timeframeDisabledEnd(timeframe.id, endDate)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"end-" + timeframe.id}
-                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{timeframe.name} ({timeframe.end_hour.substring(0, 5)})</label>
+                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.end_hour.substring(0, 5)})</label>
                         </div>)
                     }
                 </fieldset>
