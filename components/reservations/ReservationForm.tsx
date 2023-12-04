@@ -85,10 +85,6 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
         };
     }
 
-    useEffect(() => {
-        console.log(bookedTimeframeDays)
-    }, [bookedTimeframeDays]);
-
     const modifiedClassnames = {
         available: "text-green-600 bg-green-100",
         partialyAvailable: "text-amber-600 bg-amber-100",
