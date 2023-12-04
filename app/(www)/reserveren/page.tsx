@@ -12,7 +12,7 @@ export default async function page() {
     const queryRooms = supabase.from("rooms").select()
     const rooms: DbResult<typeof queryRooms> = await queryRooms
 
-    const queryAllReservations = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).gte('start_date', formatISO(new Date(), {representation: 'date'})).order('start_date')
+    const queryAllReservations = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(id), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).gte('start_date', formatISO(new Date(), {representation: 'date'})).order('start_date')
     const allReservations: DbResult<typeof queryAllReservations> = await queryAllReservations
 
     const queryTimeframes = supabase.from("bloks").select()

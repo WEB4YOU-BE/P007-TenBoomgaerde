@@ -8,29 +8,50 @@ import {Calendar} from "@/components/ui/calendar";
 import {nlBE} from "date-fns/locale";
 import {addDays, eachDayOfInterval, formatISO} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
+import {Tables} from "@/lib/database.types";
 
 export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations}: {
     submit: (formData: FormData) => Promise<never>,
-    rooms: PostgrestSingleResponse<any[]>,
-    timeframes: PostgrestSingleResponse<any[]>,
-    materials: PostgrestSingleResponse<any[]>,
-    gebruiker: PostgrestSingleResponse<any[]>,
+    rooms: PostgrestSingleResponse<Tables<"rooms">[]>,
+    timeframes: PostgrestSingleResponse<Tables<"bloks">[]>,
+    materials: PostgrestSingleResponse<Tables<"products">[]>,
+    gebruiker: PostgrestSingleResponse<Tables<"users">[]>,
     user: User | null,
-    allReservations: PostgrestSingleResponse<any[]>,
+    allReservations: PostgrestSingleResponse<Tables<"reservations">[]>,
 }): JSX.Element {
     const today = new Date()
+    const sortedTimeframes = timeframes.data?.sort((timeframe1, timeframe2) => (timeframe1.start_hour.localeCompare(timeframe2.start_hour))) || []
 
-    const [selectedRoom, setSelectedRoom] = useState(undefined)
+    const [selectedRoom, setSelectedRoom] = useState<string | undefined>(undefined)
     const [startDate, setStartDate] = useState<Date | undefined>(undefined)
-    const [startTimestamp, setStartTimeStamp] = useState(undefined)
+    const [startTimestamp, setStartTimeStamp] = useState<string | undefined>(undefined)
     const [endDate, setEndDate] = useState<Date | undefined>(undefined)
-    const [endTimestamp, setEndTimestamp] = useState(undefined)
+    const [endTimestamp, setEndTimestamp] = useState<string | undefined>(undefined)
 
     useEffect(() => {
-        console.log(allReservations?.data?.flatMap((reservation) => eachDayOfInterval({start: new Date(reservation.start_date), end: new Date(reservation.end_date)})))
-    }, [allReservations])
+        setStartDate(undefined)
+        setStartTimeStamp(undefined)
+        setEndDate(undefined)
+        setEndTimestamp(undefined)
+    }, [selectedRoom])
 
-    const combinedReservationTimestamps = undefined
+    useEffect(() => {
+        setStartTimeStamp(undefined)
+        setEndDate(undefined)
+        setEndTimestamp(undefined)
+    }, [startDate])
+
+    useEffect(() => {
+        setEndDate(undefined)
+        setEndTimestamp(undefined)
+    }, [startTimestamp])
+
+    useEffect(() => {
+        setEndTimestamp(undefined)
+    }, [endDate])
+
+    const reservationsInSelectedRoom = allReservations.data?.filter((reservation, index) => reservation.rooms.id === selectedRoom) || []
+
     const modifiedClassnames = {
         available: "text-green-600 bg-green-100",
         partialyAvailable: "text-amber-600 bg-amber-100",
@@ -38,7 +59,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     }
     const availableDaysStart: Date[] = []
     const partialyAvailableDaysStart: Date[] = []
-    const notAvailableDaysStart = allReservations?.data?.flatMap((reservation) => eachDayOfInterval({start: new Date(reservation.start_date), end: new Date(reservation.end_date)})) || []
+    const notAvailableDaysStart = reservationsInSelectedRoom.flatMap((reservation) => eachDayOfInterval({start: new Date(reservation.start_date), end: new Date(reservation.end_date)})) || []
     const modifierDaysStart = {
         available: availableDaysStart,
         partialyAvailable: partialyAvailableDaysStart,
@@ -62,9 +83,9 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     <legend className={"text-xl font-semibold"}>Selecteer de zaal</legend>
                     {
                         rooms.data?.map((room) => <div key={room.id} className={"flex-grow"}>
-                            <input required form="reservationForm" type="radio" name="room" id={room.id} value={room.id} className={"peer hidden"} onClick={() => {
-                                setSelectedRoom(room.id)
-                            }}/>
+                            <input required form="reservationForm" type="radio" name="room" id={room.id} value={room.id}
+                                   checked={selectedRoom === room.id} onClick={() => setSelectedRoom(room.id)}
+                                   className={"peer hidden"}/>
                             <label htmlFor={room.id}
                                    className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{room.name}</label>
                         </div>)
@@ -78,7 +99,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     <legend className={"text-xl font-semibold"}>Selecteer de startmoment</legend>
                     <Popover>
                         <PopoverTrigger asChild>
-                            <input required readOnly form="reservationForm" type="date" name="start" value={startDate ? formatISO(startDate, {representation: 'date'}) : undefined}
+                            <input required readOnly form="reservationForm" type="date" name="start"
+                                   defaultValue={formatISO(startDate || new Date(), {representation: 'date'})}
                                    className={cn(buttonVariants({variant: "outline"}), "w-full")}/>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
@@ -99,8 +121,9 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 </fieldset>
                 <fieldset className={cn((!!selectedRoom && !!startDate) ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                     {
-                        timeframes.data?.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
-                            <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id} onClick={() => setStartTimeStamp(timeframe.id)}
+                        sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
+                            <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
+                                   checked={startTimestamp === timeframe.id} onClick={() => setStartTimeStamp(timeframe.id)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"start-" + timeframe.id}
                                    className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
@@ -115,7 +138,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     <legend className={"text-xl font-semibold"}>Selecteer de eindmoment</legend>
                     <Popover>
                         <PopoverTrigger asChild>
-                            <input required readOnly form="reservationForm" type="date" name="end" value={endDate ? formatISO(endDate, {representation: 'date'}) : undefined}
+                            <input required readOnly form="reservationForm" type="date" name="end"
+                                   defaultValue={formatISO(endDate || startDate || new Date(), {representation: 'date'})}
                                    className={cn(buttonVariants({variant: "outline"}), "w-full")}/>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
@@ -136,7 +160,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 </fieldset>
                 <fieldset className={cn((!!selectedRoom && !!startDate && !!startTimestamp && !!endDate) ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                     {
-                        timeframes.data?.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
+                        sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id} className={"peer hidden"}
                                    onClick={() => setEndTimestamp(timeframe.id)}/>
                             <label htmlFor={"end-" + timeframe.id}
