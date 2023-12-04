@@ -6,7 +6,7 @@ import {buttonVariants} from "@/components/ui/button";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Calendar} from "@/components/ui/calendar";
 import {nlBE} from "date-fns/locale";
-import {compareAsc, eachDayOfInterval, formatISO} from "date-fns";
+import {addYears, compareAsc, eachDayOfInterval, formatISO} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {Tables} from "@/lib/database.types";
 
@@ -20,6 +20,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     allReservations: PostgrestSingleResponse<Tables<"reservations">[]>,
 }): JSX.Element {
     const today = new Date()
+    const fiveYearsFromToday = addYears(today, 5)
     const sortedTimeframes = timeframes.data?.sort((timeframe1, timeframe2) => (timeframe1.start_hour.localeCompare(timeframe2.start_hour))) || []
 
     const [selectedRoom, setSelectedRoom] = useState<string | undefined>(undefined)
@@ -87,10 +88,10 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
 
     const modifiedClassnames = {
         available: "text-green-600 bg-green-100",
-        partialyAvailable: "text-amber-600 bg-amber-100",
-        notAvailable: "text-red-600 bg-red-100",
+        partialyAvailable: "!text-amber-600 !bg-amber-100",
+        notAvailable: "!text-red-600 !bg-red-100",
     }
-    const availableDays: Date[] = []
+    const availableDays: Date[] = eachDayOfInterval({start: today, end: fiveYearsFromToday})
     const partialyAvailableDays: Date[] = bookedTimeframeDays
         .filter((bookedTFD) => 0 < bookedTFD.timeframes.length && bookedTFD.timeframes.length < sortedTimeframes.length)
         .map((bookedTimeframeDays) => bookedTimeframeDays.date)
@@ -139,6 +140,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                 selected={startDate}
                                 onSelect={setStartDate}
                                 fromDate={today}
+                                toDate={fiveYearsFromToday}
                                 fixedWeeks
                                 disabled={notAvailableDays}
                                 modifiers={modifierDays}
@@ -178,6 +180,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                 selected={endDate}
                                 onSelect={setEndDate}
                                 fromDate={startDate}
+                                toDate={fiveYearsFromToday}
                                 fixedWeeks
                                 disabled={notAvailableDays}
                                 modifiers={modifierDays}
