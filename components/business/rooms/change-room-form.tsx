@@ -5,6 +5,8 @@ import {RedirectType} from "next/dist/client/components/redirect";
 import {buttonVariants} from "@/components/ui/button";
 import {DbResult} from "@/lib/database.types";
 import {Switch} from "@/components/ui/Switch";
+import Link from "next/link";
+import {cn} from "@/lib/utils";
 
 interface RoomIndexProps {
     id: string;
@@ -53,6 +55,10 @@ export default async function ChangeRoomForm({id}: RoomIndexProps) {
                    className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Privaat?</label>
             <Switch id={"forSale"} name={"forSale"} defaultChecked={room.data[0].private}/>
         </div>
-        <button type={"submit"} className={buttonVariants({variant: "green"})}>Wijzig</button>
+        <div className={"grid lg:grid-cols-2 gap-4 mt-4"}>
+            <Link href={"/dashboard/zalen"} className={buttonVariants({variant: "secondary"})}>Terug</Link>
+            <button type={"submit"} className={cn(buttonVariants({variant: "green"}), "max-sm:row-start-1")}>Wijzig
+            </button>
+        </div>
     </form>
 }

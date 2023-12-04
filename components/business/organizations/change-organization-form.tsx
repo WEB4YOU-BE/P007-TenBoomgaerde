@@ -4,6 +4,8 @@ import {cookies} from "next/headers";
 import {RedirectType} from "next/dist/client/components/redirect";
 import {buttonVariants} from "@/components/ui/button";
 import {DbResult} from "@/lib/database.types";
+import Link from "next/link";
+import {cn} from "@/lib/utils";
 
 interface OrganizationIndexProps {
     id: string;
@@ -43,6 +45,10 @@ export default async function ChangeOrganizationForm({id}: OrganizationIndexProp
             <input autoFocus required id={"btwNumber"} name={"btwNumber"} defaultValue={organization.data[0].btw_number}
                    className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}/>
         </div>
-        <button type={"submit"} className={buttonVariants({variant: "green"})}>Wijzig aan</button>
+        <div className={"grid lg:grid-cols-2 gap-4 mt-4"}>
+            <Link href={"/dashboard/organisaties"} className={buttonVariants({variant: "secondary"})}>Terug</Link>
+            <button type={"submit"} className={cn(buttonVariants({variant: "green"}), "max-sm:row-start-1")}>Wijzig
+            </button>
+        </div>
     </form>
 }

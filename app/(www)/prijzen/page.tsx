@@ -31,7 +31,7 @@ export default async function page() {
                                 <CardHeader className={"text-xl text-center font-bold"}>{room.name}</CardHeader>
                                 <CardContent className={"text-center"}>
                                     <p>&euro; {room.day_price}</p>
-                                    <p className={"font-light"}>per dag</p>
+                                    <p className={"font-light"}>per tijdsblok</p>
                                 </CardContent>
                                 <CardFooter className={"justify-center"}>
                                     <Link href={"/reserveren/"}
@@ -41,14 +41,18 @@ export default async function page() {
                         )
                     }
                 </div>
-                <h3 className={"text-xl font-bold mt-4"}>Extra informatie</h3>
+                <h3 className={"text-xl font-bold mt-6"}>Extra informatie</h3>
+                <span>Vanaf januari 2024 werken met een All-in prijs formule</span>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
-                    <li>Het gebruik van de keuken is gratis</li>
-                    <li>Forfait elektriciteit en water per activiteit &euro; 5.00</li>
-                    <li>Verwarming per eenheid &euro; 1.25</li>
+                    <li>Huur zaal</li>
+                    <li>Water</li>
+                    <li>Elektriciteit</li>
+                    <li>Verwarming</li>
+                    <li>Wifi</li>
+                    <li>Zaaluitrusting</li>
                 </ul>
             </section>
-            <section className={"mt-4"}>
+            <section className={"mt-8"}>
                 <h2 className={"text-2xl font-bold"}>Huurprijs aanwezig materiaal</h2>
                 <ul role={"list"} className={"list-disc pl-5 space-y-1"}>
                     {
@@ -58,7 +62,7 @@ export default async function page() {
                     }
                 </ul>
             </section>
-            <section className={"mt-4"}>
+            <section className={"mt-6"}>
                 <h2 className={"text-2xl font-bold"}>Prijslijst drank</h2>
                 <p>De vermelde prijs is de prijs die wordt aangerekend per gebruikte consumptie tijdens een feest of
                     activiteit.</p>

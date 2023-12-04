@@ -44,9 +44,9 @@ async function OrganizationRecordIndexActions({id, tableName}: OrganizationRecor
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/organisaties/${id}`}
               className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2 flex-shrink-0")}><Edit
-            size={16}/><span>Bewerk</span></Link>
+            size={16}/><span className={"max-sm:hidden"}>Bewerk</span></Link>
         <button onClick={handleDelete}
                 className={cn(buttonVariants({variant: "destructive"}), "flex flex-row gap-2 flex-shrink-0")}><Trash
-            size={16}/><span>Verwijder</span></button>
+            size={16}/><span className={"max-sm:hidden"}>Verwijder</span></button>
     </div>
 }

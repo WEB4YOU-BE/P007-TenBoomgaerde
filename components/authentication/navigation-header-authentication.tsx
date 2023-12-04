@@ -19,7 +19,7 @@ export default async function NavigationHeaderAuthentication() {
 
 
 async function NavigationIsLogedIn() {
-    return <div className={"flex flex-row-reverse gap-2"}>
+    return <div className={"flex flex-col-reverse lg:flex-row-reverse gap-2"}>
         <LogoutButton/>
         <AdminComponentProtection><NavigationHeaderLink href={"/dashboard"}>Dashboard</NavigationHeaderLink></AdminComponentProtection>
         <LoginComponentProtection><NavigationHeaderLink href={"/klant"}>Jouw overzicht</NavigationHeaderLink></LoginComponentProtection>

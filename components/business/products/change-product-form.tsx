@@ -5,6 +5,8 @@ import {Switch} from "@/components/ui/Switch";
 import {buttonVariants} from "@/components/ui/button";
 import {DbResult} from "@/lib/database.types";
 import {RedirectType} from "next/dist/client/components/redirect";
+import Link from "next/link";
+import {cn} from "@/lib/utils";
 
 interface ProductIndexProps {
     id: string;
@@ -75,6 +77,10 @@ export default async function ChangeProductForm({id}: ProductIndexProps) {
                 </select>
             </label>
         </div>
-        <button type={"submit"} className={buttonVariants({variant: "green"})}>Maak aan</button>
+        <div className={"grid lg:grid-cols-2 gap-4 mt-4"}>
+            <Link href={"/dashboard/producten"} className={buttonVariants({variant: "secondary"})}>Terug</Link>
+            <button type={"submit"} className={cn(buttonVariants({variant: "green"}), "max-sm:row-start-1")}>Wijzig
+            </button>
+        </div>
     </form>
 }

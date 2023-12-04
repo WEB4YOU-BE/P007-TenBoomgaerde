@@ -4,6 +4,8 @@ import {buttonVariants} from "@/components/ui/button";
 import {redirect} from "next/navigation";
 import {RedirectType} from "next/dist/client/components/redirect";
 import {Switch} from "@/components/ui/Switch";
+import Link from "next/link";
+import {cn} from "@/lib/utils";
 
 export default async function AddRoomForm() {
     const onCreateRoom = async (formData: FormData) => {
@@ -45,6 +47,10 @@ export default async function AddRoomForm() {
                    className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Privaat?</label>
             <Switch id={"forSale"} name={"forSale"}/>
         </div>
-        <button type={"submit"} className={buttonVariants({variant: "green"})}>Maak aan</button>
+        <div className={"grid lg:grid-cols-2 gap-4 mt-4"}>
+            <Link href={"/dashboard/zalen"} className={buttonVariants({variant: "secondary"})}>Terug</Link>
+            <button type={"submit"} className={cn(buttonVariants({variant: "green"}), "max-sm:row-start-1")}>Maak aan
+            </button>
+        </div>
     </form>
 }

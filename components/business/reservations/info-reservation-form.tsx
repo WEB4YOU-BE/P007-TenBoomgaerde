@@ -5,6 +5,7 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import ChangeFacturatie from "@/components/business/reservations/change-facturatie";
 
+
 interface ReservationIndexProps {
     id: string;
     reservationYear: string;
@@ -113,7 +114,7 @@ export default async function InfoReservationForm({
                 </div>
             )}
         </div>
-        <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "green"}), "mt-12")}>Terug naar
+        <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "secondary"}), "mt-12")}>Terug naar
             reservatielijst</Link>
     </main>
 

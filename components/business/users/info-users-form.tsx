@@ -59,8 +59,12 @@ export default async function InfoUserForm({id}: UserIndexProps) {
                 <span className={"font-bold uppercase"}>Gemeente:</span>
                 <span>{postcode + " " + gemeente}</span>
             </div>
+            <div className={"flex flex-row gap-4"}>
+                <span className={"font-bold uppercase"}>Type klant:</span>
+                <span>{user.data[0].type ?? ""}</span>
+            </div>
         </div>
-        <Link href={"/dashboard/gebruikers"} className={cn(buttonVariants({variant: "green"}), "mt-12")}>Terug naar
+        <Link href={"/dashboard/gebruikers"} className={cn(buttonVariants({variant: "secondary"}), "mt-12")}>Terug naar
             gebruikerslijst</Link>
         <div className={"my-5 border border-gray-300 rounded-2xl p-2"}>
             <div className={"flex flex-col md:flex-row gap-2 p-4"}>
