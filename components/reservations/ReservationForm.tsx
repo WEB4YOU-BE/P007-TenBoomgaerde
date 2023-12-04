@@ -84,7 +84,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     {
                         rooms.data?.map((room) => <div key={room.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="room" id={room.id} value={room.id}
-                                   checked={selectedRoom === room.id} onClick={() => setSelectedRoom(room.id)}
+                                   checked={selectedRoom === room.id} onChange={() => setSelectedRoom(room.id)}
                                    className={"peer hidden"}/>
                             <label htmlFor={room.id}
                                    className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{room.name}</label>
@@ -100,8 +100,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     <Popover>
                         <PopoverTrigger asChild>
                             <input required readOnly form="reservationForm" type="date" name="start"
-                                   defaultValue={formatISO(startDate || new Date(), {representation: 'date'})}
-                                   className={cn(buttonVariants({variant: "outline"}), "w-full")}/>
+                                   value={formatISO(startDate || new Date(), {representation: 'date'})}
+                                   className={cn(buttonVariants({variant: "outline"}), "w-full", startDate && "border-blue-400")}/>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
                             <Calendar
@@ -123,7 +123,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     {
                         sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
-                                   checked={startTimestamp === timeframe.id} onClick={() => setStartTimeStamp(timeframe.id)}
+                                   checked={startTimestamp === timeframe.id} onChange={() => setStartTimeStamp(timeframe.id)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"start-" + timeframe.id}
                                    className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
@@ -139,8 +139,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     <Popover>
                         <PopoverTrigger asChild>
                             <input required readOnly form="reservationForm" type="date" name="end"
-                                   defaultValue={formatISO(endDate || startDate || new Date(), {representation: 'date'})}
-                                   className={cn(buttonVariants({variant: "outline"}), "w-full")}/>
+                                   value={formatISO(endDate || startDate || new Date(), {representation: 'date'})}
+                                   className={cn(buttonVariants({variant: "outline"}), "w-full", endDate && "border-blue-400")}/>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
                             <Calendar
@@ -161,8 +161,9 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 <fieldset className={cn((!!selectedRoom && !!startDate && !!startTimestamp && !!endDate) ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                     {
                         sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
-                            <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id} className={"peer hidden"}
-                                   onClick={() => setEndTimestamp(timeframe.id)}/>
+                            <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
+                                   checked={endTimestamp === timeframe.id} onChange={() => setEndTimestamp(timeframe.id)}
+                                   className={"peer hidden"}/>
                             <label htmlFor={"end-" + timeframe.id}
                                    className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{timeframe.name} ({timeframe.end_hour.substring(0, 5)})</label>
                         </div>)
