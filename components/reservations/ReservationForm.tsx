@@ -6,7 +6,7 @@ import {buttonVariants} from "@/components/ui/button";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Calendar} from "@/components/ui/calendar";
 import {nlBE} from "date-fns/locale";
-import {addDays, eachDayOfInterval, formatISO} from "date-fns";
+import {compareAsc, eachDayOfInterval, formatISO} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {Tables} from "@/lib/database.types";
 
@@ -50,28 +50,61 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
         setEndTimestamp(undefined)
     }, [endDate])
 
-    const reservationsInSelectedRoom = allReservations.data?.filter((reservation, index) => reservation.rooms.id === selectedRoom) || []
+    const reservationsInSelectedRoom = allReservations.data
+            ?.filter((reservation, index) => reservation.rooms.id === selectedRoom)
+            ?.filter((reservation, index) => reservation.status !== "geweigerd")
+        || []
+    const sortedReservationsInSelectedRoom = reservationsInSelectedRoom
+        .sort((r1, r2) => compareAsc(new Date(r1.start_date), new Date(r2.start_date)))
+    const bookedTimeframeDays = sortedReservationsInSelectedRoom
+        .flatMap((reservation) =>
+            eachDayOfInterval({start: new Date(reservation.start_date), end: new Date(reservation.end_date)})
+                .map((dayInReservation, index) => generateDayInReservation(reservation, index, dayInReservation))
+        )
+
+    function generateDayInReservation(reservation: Tables<"reservations">, index: number, day: Date) {
+        let dayTF: any[] = []
+        if ((formatISO(new Date(reservation.start_date), {representation: 'date'}) === formatISO(day, {representation: 'date'})) && !(formatISO(new Date(reservation.end_date), {representation: 'date'}) === formatISO(day, {representation: 'date'})))
+            sortedTimeframes.forEach((tf) => {
+                if (tf.start_hour.substring(0, 2) >= reservation.start_hour.start_hour.substring(0, 2)) dayTF.push(tf)
+            })
+        if (!(formatISO(new Date(reservation.start_date), {representation: 'date'}) === formatISO(day, {representation: 'date'})) && (formatISO(new Date(reservation.end_date), {representation: 'date'}) === formatISO(day, {representation: 'date'})))
+            sortedTimeframes.forEach((tf) => {
+                if (tf.end_hour.substring(0, 2) <= reservation.end_hour.end_hour.substring(0, 2)) dayTF.push(tf)
+            })
+        if ((formatISO(new Date(reservation.start_date), {representation: 'date'}) === formatISO(day, {representation: 'date'})) && formatISO(new Date(reservation.end_date), {representation: 'date'}) === formatISO(day, {representation: 'date'}))
+            sortedTimeframes.forEach((tf) => {
+                if (tf.start_hour.substring(0, 2) >= reservation.start_hour.start_hour.substring(0, 2) && tf.end_hour.substring(0, 2) <= reservation.end_hour.end_hour.substring(0, 2)) dayTF.push(tf)
+            })
+        if (!((formatISO(new Date(reservation.start_date), {representation: 'date'}) === formatISO(day, {representation: 'date'})) || formatISO(new Date(reservation.end_date), {representation: 'date'}) === formatISO(day, {representation: 'date'})))
+            dayTF = sortedTimeframes
+
+        return {
+            date: day,
+            timeframes: dayTF
+        };
+    }
+
+    useEffect(() => {
+        console.log(bookedTimeframeDays)
+    }, [bookedTimeframeDays]);
 
     const modifiedClassnames = {
         available: "text-green-600 bg-green-100",
         partialyAvailable: "text-amber-600 bg-amber-100",
         notAvailable: "text-red-600 bg-red-100",
     }
-    const availableDaysStart: Date[] = []
-    const partialyAvailableDaysStart: Date[] = []
-    const notAvailableDaysStart = reservationsInSelectedRoom.flatMap((reservation) => eachDayOfInterval({start: new Date(reservation.start_date), end: new Date(reservation.end_date)})) || []
-    const modifierDaysStart = {
-        available: availableDaysStart,
-        partialyAvailable: partialyAvailableDaysStart,
-        notAvailable: notAvailableDaysStart,
-    }
-    const availableDaysEnd = [new Date()]
-    const partialyAvailableDaysEnd = [addDays(new Date(), 1)]
-    const notAvailableDaysEnd = [addDays(new Date(), 2)]
-    const modifierDaysEnd = {
-        available: availableDaysEnd,
-        partialyAvailable: partialyAvailableDaysEnd,
-        notAvailable: notAvailableDaysEnd,
+    const availableDays: Date[] = []
+    const partialyAvailableDays: Date[] = bookedTimeframeDays
+        .filter((bookedTFD) => 0 < bookedTFD.timeframes.length && bookedTFD.timeframes.length < sortedTimeframes.length)
+        .map((bookedTimeframeDays) => bookedTimeframeDays.date)
+    const notAvailableDays: Date[] = bookedTimeframeDays
+        .filter((bookedTFD) => bookedTFD.timeframes.length === sortedTimeframes.length)
+        .map((bookedTimeframeDays) => bookedTimeframeDays.date)
+    const modifierDays = {
+        available: availableDays,
+        partialyAvailable: partialyAvailableDays,
+        notAvailable: notAvailableDays,
     }
 
     return <div>
@@ -111,8 +144,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                 onSelect={setStartDate}
                                 fromDate={today}
                                 fixedWeeks
-                                disabled={notAvailableDaysStart}
-                                modifiers={modifierDaysStart}
+                                disabled={notAvailableDays}
+                                modifiers={modifierDays}
                                 modifiersClassNames={modifiedClassnames}
                                 locale={nlBE}
                             />
@@ -150,8 +183,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                 onSelect={setEndDate}
                                 fromDate={startDate}
                                 fixedWeeks
-                                disabled={notAvailableDaysEnd}
-                                modifiers={modifierDaysEnd}
+                                disabled={notAvailableDays}
+                                modifiers={modifierDays}
                                 modifiersClassNames={modifiedClassnames}
                                 locale={nlBE}
                             />
