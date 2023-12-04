@@ -7,7 +7,6 @@ import Link from "next/link";
 import {Printer} from "lucide-react";
 import ReservationsTable from "@/components/business/reservations/reservations-table";
 import ExportExcel from "@/components/business/export-excel";
-import {getPreviousMonth} from "react-day-picker/src/contexts/Navigation/utils/getPreviousMonth";
 
 function getWeekDates() {
     const now = new Date()
