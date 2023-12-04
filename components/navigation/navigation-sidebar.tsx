@@ -26,7 +26,7 @@ export default function NavigationSidebar({children, authNode}: NavigationSideba
                 <div className={"p-2"}>{authNode}</div>
             </>
         </ResponsiveSidebar>
-        <nav className={"max-sm:hidden flex-grow flex flex-col gap-2 overflow-y-auto"}>{children}</nav>
-        <div className={"max-sm:hidden p-2"}>{authNode}</div>
+        <nav className={"max-lg:hidden flex-grow flex flex-col gap-2 overflow-y-auto"}>{children}</nav>
+        <div className={"max-lg:hidden p-2"}>{authNode}</div>
     </div>
 }

@@ -22,10 +22,10 @@ export default async function NavigationHeader({children, authNode}: NavigationH
                     <div className={"flex flex-col"}>{authNode}</div>
                 </>
             </ResponsiveHeader>
-            <nav className={"max-sm:hidden flex flex-row flex-grow md:overflow-x-auto gap-2"}>
+            <nav className={"max-lg:hidden flex flex-row flex-grow md:overflow-x-auto gap-2"}>
                 {children}
             </nav>
-            <div className={"max-sm:hidden"}>{authNode}</div>
+            <div className={"max-lg:hidden"}>{authNode}</div>
         </div>
     </div>
 }
