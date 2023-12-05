@@ -106,6 +106,13 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
 
     function timeframeDisabledEnd(timeframeId: string, day?: Date): boolean {
         if (day === undefined) return false
+        if (formatISO(day, {representation: 'date'}) === formatISO(startDate || new Date(), {representation: 'date'}) && startTimestamp)
+            return sortedTimeframes
+                .map((timeframe) => timeframe.id)
+                .indexOf(timeframeId) < sortedTimeframes
+                .map((timeframe) => timeframe.id)
+                .indexOf(startTimestamp)
+
         return bookedTimeframeDays
             .filter((bookedTFD) => formatISO(bookedTFD.date, {representation: 'date'}) === formatISO(day, {representation: 'date'}))
             .flatMap((bookedTFD) => bookedTFD.timeframes)
