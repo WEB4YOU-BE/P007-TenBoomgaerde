@@ -121,9 +121,9 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     }
 
     const modifiedClassnames = {
-        available: "text-green-600 bg-green-100",
-        partialyAvailable: "text-amber-600 bg-amber-100",
-        notAvailable: "text-red-600 bg-red-100",
+        available: "text-green-700 bg-green-300",
+        partialyAvailable: "text-amber-700 bg-amber-300",
+        notAvailable: "text-red-700 bg-red-300",
     }
     const notAvailableDays: Date[] = bookedTimeframeDays
         .filter((bookedTFD) => bookedTFD.timeframes.length === sortedTimeframes.length)
@@ -152,7 +152,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                    checked={selectedRoom === room.id} onChange={() => setSelectedRoom(room.id)}
                                    className={"peer hidden"}/>
                             <label htmlFor={room.id}
-                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{room.name}</label>
+                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>{room.name}</label>
                         </div>)
                     }
                 </fieldset>
@@ -161,12 +161,12 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
             <section className={"flex flex-col flex-wrap gap-2"}>
                 <span className={cn((!selectedRoom) ? "block" : "hidden")}>Vervolledig de vorige stap.</span>
                 <fieldset className={cn(selectedRoom !== undefined ? "block" : "hidden")}>
-                    <legend className={"text-xl font-semibold"}>Selecteer de startmoment</legend>
+                    <legend className={"text-xl font-semibold"}>Selecteer het startmoment</legend>
                     <Popover>
                         <PopoverTrigger asChild>
                             <input required readOnly form="reservationForm" type="date" name="start"
                                    value={formatISO(startDate || new Date(), {representation: 'date'})}
-                                   className={cn(buttonVariants({variant: "outline"}), "w-full", startDate && "border-blue-400")}/>
+                                   className={cn(buttonVariants({variant: "outline"}), "w-full", startDate && "border-green-400")}/>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
                             <Calendar
@@ -193,7 +193,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                    disabled={timeframeDisabledStart(timeframe.id, startDate)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"start-" + timeframe.id}
-                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
+                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
                         </div>)
                     }
                 </fieldset>
@@ -202,12 +202,12 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
             <section className={"flex flex-col flex-wrap gap-2"}>
                 <span className={cn((!selectedRoom || !startDate || !startTimestamp) ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
                 <fieldset className={cn((startDate !== undefined && startTimestamp !== undefined) ? "block" : "hidden")}>
-                    <legend className={"text-xl font-semibold"}>Selecteer de eindmoment</legend>
+                    <legend className={"text-xl font-semibold"}>Selecteer het eindmoment</legend>
                     <Popover>
                         <PopoverTrigger asChild>
                             <input required readOnly form="reservationForm" type="date" name="end"
                                    value={formatISO(endDate || startDate || new Date(), {representation: 'date'})}
-                                   className={cn(buttonVariants({variant: "outline"}), "w-full", endDate && "border-blue-400")}/>
+                                   className={cn(buttonVariants({variant: "outline"}), "w-full", endDate && "border-green-400")}/>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
                             <Calendar
@@ -234,7 +234,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                    disabled={timeframeDisabledEnd(timeframe.id, endDate)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"end-" + timeframe.id}
-                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.end_hour.substring(0, 5)})</label>
+                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.end_hour.substring(0, 5)})</label>
                         </div>)
                     }
                 </fieldset>
@@ -248,13 +248,13 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                         <input form="reservationForm" type="checkbox" name="material" id={"material-drank"} value={"drank"}
                                className={"peer hidden"}/>
                         <label htmlFor={"material-drank"}
-                               className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>Drank</label>
+                               className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>Drank</label>
                     </div>
                     {
                         materials.data?.map((material) => <div key={material.id} className={"flex-grow"}>
                             <input form="reservationForm" type="checkbox" name="material" id={"material-" + material.id} value={material.id} className={"peer hidden"}/>
                             <label htmlFor={"material-" + material.id}
-                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-blue-400 w-full")}>{material.name}</label>
+                                   className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>{material.name}</label>
                         </div>)
                     }
                 </fieldset>
