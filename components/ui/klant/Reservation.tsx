@@ -26,7 +26,7 @@ const Reservation = async (reservation: reservationProps) => {
             <div className={"font-bold text-xl row-start-1 col-span-2"}>
                 Reservatienummer: <span>{reservation.reservation_year.substring(0, 4) + '-' + reservation.reservation_number}</span>
             </div>
-            <span className={"flex justify-end text-sm"}>
+            <span className={"flex justify-end text-sm text-center"}>
                 {(reservation.status === 'goedgekeurd') && <Badge variant={"success"}>Bevestigd</Badge>}
                 {(reservation.status === 'geweigerd') && <Badge variant={"denied"}>Geweigerd</Badge>}
                 {(reservation.status === 'in afwachting') && <Badge variant={"hold"}>In afwachting</Badge>}
@@ -36,24 +36,28 @@ const Reservation = async (reservation: reservationProps) => {
                 <span>{voornaam + " " + familienaam}</span>
             </div>
             <div className={"sm:row-start-3 col-span-3 sm:col-span-2"}>
+                <span className={"font-bold"}>Uur: </span>
+                <span>{reservation.start_hour.start_hour.substring(0, 5) + "-" + reservation.end_hour.end_hour.substring(0, 5)}</span>
+            </div>
+            <div className={"sm:row-start-4 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Datum: </span>
                 <span>{reservation.start_date === reservation.end_date ? reservation.start_date : reservation.start_date + " tot " + reservation.end_date}</span>
             </div>
-            <div className={"sm:row-start-4 col-span-3 sm:col-span-2"}>
+            <div className={"sm:row-start-5 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Zaal: </span>
                 <span>{reservation.rooms.name}</span>
             </div>
-            <div className={"sm:row-start-3 col-span-3 sm:col-span-1"}>
+            <div className={"sm:row-start-4 col-span-3 sm:col-span-1"}>
                 <HoverCard>
                     <HoverCardTrigger className={"font-bold"}>GSM&apos;nr voor poort: </HoverCardTrigger>
                     <HoverCardContent>Dit GSM&apos;nr wordt gebruikt om de poort open te bellen.</HoverCardContent>
                 </HoverCard>
                 <span>{reservation.users.phone}</span>
             </div>
-            <div className={"sm:row-start-4 col-span-3 sm:col-span-1"}>
+            <div className={"sm:row-start-5 col-span-3 sm:col-span-1"}>
                 <span className={"font-bold"}>Code sleutel: </span>
                 {
-                    (reservation.access_code === 0) &&
+                    (reservation.access_code === null) &&
                     <HoverCard>
                         <HoverCardTrigger>Nog niet bekend</HoverCardTrigger>
                         <HoverCardContent>Deze code komt de zondag voor uw reservatie online.</HoverCardContent>
