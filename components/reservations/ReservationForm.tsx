@@ -10,8 +10,16 @@ import {addDays, addYears, compareAsc, eachDayOfInterval, formatISO, isAfter, is
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {Tables} from "@/lib/database.types";
 import Link from "next/link";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/Dialog";
 
-export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations}: {
+export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations, organizations}: {
     submit: (formData: FormData) => Promise<never>,
     rooms: PostgrestSingleResponse<Tables<"rooms">[]>,
     timeframes: PostgrestSingleResponse<Tables<"bloks">[]>,
@@ -19,6 +27,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     gebruiker: PostgrestSingleResponse<Tables<"users">[]>,
     user: User | null,
     allReservations: PostgrestSingleResponse<Tables<"reservations">[]>,
+    organizations: PostgrestSingleResponse<Tables<"organizations">[]>,
 }): JSX.Element {
     let document = "/documents/Reglement_vergaderzalen_Ten_Boomgaerde_vzw.pdf"
     const today = new Date()
@@ -26,11 +35,15 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     const sortedTimeframes = timeframes.data?.sort((timeframe1, timeframe2) => (timeframe1.start_hour.localeCompare(timeframe2.start_hour))) || []
 
     const [selectedRoom, setSelectedRoom] = useState<string | undefined>(undefined)
+    const [selectedRoomString, setSelectedRoomString] = useState<string | undefined>(undefined)
     const [startDate, setStartDate] = useState<Date | undefined>(undefined)
     const [startTimestamp, setStartTimeStamp] = useState<string | undefined>(undefined)
+    const [startTime, setStartTime] = useState<string>()
     const [endDate, setEndDate] = useState<Date | undefined>(undefined)
     const [endTimestamp, setEndTimestamp] = useState<string | undefined>(undefined)
+    const [endTime, setEndTime] = useState<string>()
     const [selectedConditions, setSelectedConditions] = useState<boolean>(false)
+    const [selectedOrganization, setSelectedOrganization] = useState<string | undefined>(undefined)
 
     useEffect(() => {
         setStartDate(undefined)
@@ -152,7 +165,10 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     {
                         rooms.data?.map((room) => <div key={room.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="room" id={room.id} value={room.id}
-                                   checked={selectedRoom === room.id} onChange={() => setSelectedRoom(room.id)}
+                                   checked={selectedRoom === room.id} onChange={() => {
+                                setSelectedRoom(room.id);
+                                setSelectedRoomString(room.name)
+                            }}
                                    className={"peer hidden"}/>
                             <label htmlFor={room.id}
                                    className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>{room.name}</label>
@@ -192,7 +208,10 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     {
                         sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
-                                   checked={startTimestamp === timeframe.id} onChange={() => setStartTimeStamp(timeframe.id)}
+                                   checked={startTimestamp === timeframe.id} onChange={() => {
+                                setStartTimeStamp(timeframe.id);
+                                setStartTime(timeframe.start_hour.substring(0, 5))
+                            }}
                                    disabled={timeframeDisabledStart(timeframe.id, startDate)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"start-" + timeframe.id}
@@ -233,7 +252,10 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     {
                         sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                             <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
-                                   checked={endTimestamp === timeframe.id} onChange={() => setEndTimestamp(timeframe.id)}
+                                   checked={endTimestamp === timeframe.id} onChange={() => {
+                                setEndTimestamp(timeframe.id);
+                                setEndTime(timeframe.end_hour.substring(0, 5))
+                            }}
                                    disabled={timeframeDisabledEnd(timeframe.id, endDate)}
                                    className={"peer hidden"}/>
                             <label htmlFor={"end-" + timeframe.id}
@@ -267,6 +289,28 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 <span
                     className={cn((!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp) ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
                 <fieldset
+                    className={cn((!!selectedRoom && !!startDate && !!startTimestamp && !!endDate && !!endTimestamp) ? "flex flex-col flex-wrap gap-2" : "hidden")}>
+                    <label htmlFor={"existOrganization"}
+                           className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Organisatie
+                        (optioneel)</label>
+                    <select id={"existOrganization"} name={"existOrganization"}
+                            className={cn(buttonVariants({variant: "outline"}), "lg:max-w-[25%]")}
+                            defaultValue={"organisatie"}>
+                        <option value={"organisatie"} disabled hidden>Kies een organisatie</option>
+                        {
+                            organizations.data?.map((organization, index) => (
+                                <option key={index} value={organization.id}
+                                        onChange={() => setSelectedOrganization(organization.id)}>{organization.name}</option>
+                            ))
+                        }
+                    </select>
+                </fieldset>
+            </section>
+            <hr/>
+            <section className={"flex flex-col flex-wrap gap-2"}>
+                <span
+                    className={cn((!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp) ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
+                <fieldset
                     className={cn((!!selectedRoom && !!startDate && !!startTimestamp && !!endDate && !!endTimestamp) ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                     <input type={"checkbox"} className={"h-6 justify-center"}
                            onChange={() => setSelectedConditions(!selectedConditions)}/>
@@ -280,10 +324,51 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 <input form="reservationForm" type="text" name="userId" defaultValue={user?.id} readOnly className={"hidden"}/>
             </section>
             <section>
-                <button
+                <Dialog>
+                    <DialogTrigger
+                        disabled={(!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp || !selectedConditions)}
+                        className={buttonVariants()}>Reserveer</DialogTrigger>
+                    <DialogContent>
+                        <DialogTitle>Overzicht</DialogTitle>
+                        <DialogDescription>
+                            <div className={"grid grid-cols-2 my-4"}>
+                                <span className={"font-bold"}>Datum:</span>
+                                <span>{startDate?.toISOString().substring(0, 10) === endDate?.toISOString().substring(0, 10) ? startDate?.toISOString().substring(0, 10) : startDate?.toISOString().substring(0, 10) + " tot " + endDate?.toISOString().substring(0, 10)}</span>
+                                <span className={"font-bold"}>Tijd:</span>
+                                <span>{startTime} - {endTime}</span>
+                                <span className={"font-bold"}>Zaal:</span>
+                                <span>{selectedRoomString}</span>
+                            </div>
+                            <h2 className={"text-xl font-bold text-center"}>Uw gegevens</h2>
+                            <div className={"grid grid-cols-2 my-4"}>
+                                <span className={"font-bold"}>Naam:</span>
+                                <span>{gebruiker.data && gebruiker.data[0].firstname} {gebruiker.data && gebruiker.data[0].lastname}</span>
+                                <span className={"font-bold"}>Email:</span>
+                                <span>{gebruiker.data && gebruiker.data[0].email}</span>
+                                <span className={"font-bold"}>Gsm-nummer:</span>
+                                <span>{gebruiker.data && gebruiker.data[0].phone}</span>
+                                <span className={"font-bold"}>Straat en huisnr</span>
+                                <span>{gebruiker.data && gebruiker.data[0].street}</span>
+                                <span className={"font-bold"}>Woonplaats</span>
+                                <span>{gebruiker.data && gebruiker.data[0].city}</span>
+                                <span className={"font-bold"}>Organistie</span>
+                                <span>{selectedOrganization}</span>
+                                <span className={"font-bold"}>BTW-nummer</span>
+                                <span></span>
+                            </div>
+                        </DialogDescription>
+                        <DialogFooter>
+                            <button
+                                disabled={(!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp || !selectedConditions)}
+                                form={"reservationForm"} className={buttonVariants()}>Reserveer
+                            </button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+                {/*<button
                     disabled={(!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp || !selectedConditions)}
                     form={"reservationForm"} className={buttonVariants()}>Reserveer
-                </button>
+                </button>*/}
             </section>
         </div>
     </div>
