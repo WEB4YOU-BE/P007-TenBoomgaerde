@@ -9,6 +9,7 @@ import {nlBE} from "date-fns/locale";
 import {addDays, addYears, compareAsc, eachDayOfInterval, formatISO, isAfter, isSameDay} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {Tables} from "@/lib/database.types";
+import Link from "next/link";
 
 export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations}: {
     submit: (formData: FormData) => Promise<never>,
@@ -19,6 +20,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     user: User | null,
     allReservations: PostgrestSingleResponse<Tables<"reservations">[]>,
 }): JSX.Element {
+    let document = "/documents/Reglement_vergaderzalen_Ten_Boomgaerde_vzw.pdf"
     const today = new Date()
     const fiveYearsFromToday = addYears(today, 5)
     const sortedTimeframes = timeframes.data?.sort((timeframe1, timeframe2) => (timeframe1.start_hour.localeCompare(timeframe2.start_hour))) || []
@@ -28,6 +30,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     const [startTimestamp, setStartTimeStamp] = useState<string | undefined>(undefined)
     const [endDate, setEndDate] = useState<Date | undefined>(undefined)
     const [endTimestamp, setEndTimestamp] = useState<string | undefined>(undefined)
+    const [selectedConditions, setSelectedConditions] = useState<boolean>(false)
 
     useEffect(() => {
         setStartDate(undefined)
@@ -251,7 +254,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>Drank</label>
                     </div>
                     {
-                        materials.data?.map((material) => <div key={material.id} className={"flex-grow"}>
+                        materials.data?.map((material) => <div key={material.id} className={"flex-grow hidden"}>
                             <input form="reservationForm" type="checkbox" name="material" id={"material-" + material.id} value={material.id} className={"peer hidden"}/>
                             <label htmlFor={"material-" + material.id}
                                    className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>{material.name}</label>
@@ -260,12 +263,27 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 </fieldset>
             </section>
             <hr/>
+            <section className={"flex flex-col flex-wrap gap-2"}>
+                <span
+                    className={cn((!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp) ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
+                <fieldset
+                    className={cn((!!selectedRoom && !!startDate && !!startTimestamp && !!endDate && !!endTimestamp) ? "flex flex-row flex-wrap gap-2" : "hidden")}>
+                    <input type={"checkbox"} className={"h-6 justify-center"}
+                           onChange={() => setSelectedConditions(!selectedConditions)}/>
+                    <label className={""}>Ik ga akkoord met het <Link href={document} target={"_blank"}>reglement
+                        vergaderzalen</Link></label>
+                </fieldset>
+            </section>
+            <hr/>
             <section>
                 <p>Je bent aangemeld als {gebruiker.data && gebruiker.data[0].firstname}</p>
                 <input form="reservationForm" type="text" name="userId" defaultValue={user?.id} readOnly className={"hidden"}/>
             </section>
             <section>
-                <button disabled={(!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp)} form={"reservationForm"} className={buttonVariants()}>Reserveer</button>
+                <button
+                    disabled={(!selectedRoom || !startDate || !startTimestamp || !endDate || !endTimestamp || !selectedConditions)}
+                    form={"reservationForm"} className={buttonVariants()}>Reserveer
+                </button>
             </section>
         </div>
     </div>
