@@ -9,16 +9,22 @@ export default async function NavigationFooter() {
     let contactURL = "mailto:info@vzwtenboomgaerdelichtervelde.be";
 
     return <div className={"sm:sticky sm:top-0 sm:z-50 container max-w-screen-xl mx-auto p-2"}>
-        <div className={"bg-gray-200 rounded-lg flex flex-col md:flex-row gap-2 p-2 text-center md:text-start"}>
-            <span className={"flex-grow"}>&copy; Made by <Link className={cn(buttonVariants({variant: "ghost"}), "px-0 hover:px-2 transition-all duration-300")} href={creatorURL}
+        <div className={"bg-green-200 rounded-lg flex flex-col md:flex-row gap-2 p-2 text-center md:text-start"}>
+            <span className={"flex-grow"}>&copy; Made by <Link
+                className={cn(buttonVariants({variant: "green"}), "px-0 hover:px-2 transition-all duration-300")}
+                href={creatorURL}
                                                                target={"_blank"}>WEB4YOU</Link></span>
             <span className={"flex-grow"}><Link
-                className={cn(buttonVariants({variant: "ghost"}), "px-0 hover:px-2 transition-all duration-300")}
+                className={cn(buttonVariants({variant: "green"}), "px-0 hover:px-2 transition-all duration-300")}
                 href={document}
                 target={"_blank"}>Reglement Vergaderzalen</Link></span>
             <nav className={"flex flex-row flex-grow-0 overflow-x-auto gap-2"}>
-                <Link className={cn(buttonVariants({variant: "ghost"}), "transition-all duration-300 flex-grow truncate")} href={mapsURL} target={"_blank"}>Boomgaerdstraat 4a, 8810 Lichtervelde</Link>
-                <Link className={cn(buttonVariants({variant: "secondary"}), "transition-all duration-300 flex-grow")} href={contactURL} target={"_blank"}>Contact</Link>
+                <Link
+                    className={cn(buttonVariants({variant: "green"}), "transition-all duration-300 flex-grow truncate")}
+                    href={mapsURL} target={"_blank"}>Boomgaerdstraat 4a, 8810 Lichtervelde</Link>
+                <Link
+                    className={cn(buttonVariants({variant: "green"}), "transition-all duration-300 flex-grow bg-green-400")}
+                    href={contactURL} target={"_blank"}>Contact</Link>
             </nav>
         </div>
     </div>;
