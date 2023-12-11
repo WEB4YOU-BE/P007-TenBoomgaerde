@@ -15,7 +15,7 @@ interface NavigationHeaderLinkProps {
 
 export default async function NavigationHeaderLink({href, target, children}: NavigationHeaderLinkProps) {
     return <Link href={href} target={target}
-                 className={cn(buttonVariants({variant: "ghost"}), "flex-shrink-0")}>
+                 className={cn(buttonVariants({variant: "green"}), "flex-shrink-0")}>
         {children}
     </Link>
 }

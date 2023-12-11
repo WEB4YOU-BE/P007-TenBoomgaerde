@@ -28,6 +28,9 @@ export default async function page() {
     const queryLatestRes = supabase.from("reservations").select(`reservation_number`).order('reservation_number', {ascending: false}).limit(1)
     const reservationNumber: DbResult<typeof queryLatestRes> = await queryLatestRes
 
+    const queryOrganizations = supabase.from("organizations").select()
+    const organizations: DbResult<typeof queryOrganizations> = await queryOrganizations
+
     const latestReservationNumber: number = reservationNumber.data === null ? 0 : reservationNumber.data[0].reservation_number
 
     const handleSubmitReservation = async (formData: FormData) => {
@@ -41,8 +44,11 @@ export default async function page() {
         const startHour = formData.get("startTimeframe")
         const endDate = formData.get("end")
         const endHour = formData.get("endTimeframe")
+        const organization = formData.get("#organizationSelect")
 
         const status = "in afwachting"
+
+        console.log(organization)
 
         await supabase.from("reservations").insert({
             reservation_year: startDate,
@@ -53,14 +59,16 @@ export default async function page() {
             end_date: endDate,
             start_hour: startHour,
             end_hour: endHour,
-            status: status
+            status: status,
         })
         redirect("/klant", RedirectType.push)
     }
 
     return <LoginRouteProtection>
         <main className={"container mx-auto max-w-screen-xl p-2"}>
-            <ReservationForm submit={handleSubmitReservation} rooms={rooms} timeframes={timeframes} materials={materials} gebruiker={gebruiker} user={user} allReservations={allReservations}/>
+            <ReservationForm submit={handleSubmitReservation} rooms={rooms} timeframes={timeframes}
+                             materials={materials} gebruiker={gebruiker} user={user} allReservations={allReservations}
+                             organizations={organizations}/>
         </main>
     </LoginRouteProtection>
 }
