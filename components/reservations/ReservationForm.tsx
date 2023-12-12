@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Tables} from "@/lib/database.types";
-import {compareAsc, eachDayOfInterval, formatISO} from "date-fns";
+import {addYears, compareAsc, eachDayOfInterval, formatISO} from "date-fns";
 
 export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations, organisations}: {
     submit: (formData: FormData) => Promise<never>,
@@ -120,6 +120,31 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
             });
 
         return tfs
+    }
+
+    // MAPPED -- Not available days -- start day
+    const notAvailableDays = addedTimeFramesToDate
+        .filter((date) => date.timeframes.length === sortedTimeframes.length)
+        .map((date) => new Date(date.date));
+    // MAPPED -- Partially available days -- start day
+    const partiallyAvailableDays = addedTimeFramesToDate
+        .filter((date) => date.timeframes.length < sortedTimeframes.length && date.timeframes.length > 0)
+        .map((date) => new Date(date.date));
+    // MAPPED -- Fully available days -- start day until 5 years from today
+    const fullyAvailableDays: Date[] = eachDayOfInterval({start: today, end: addYears(today, 3)})
+        .filter((date) => !partiallyAvailableDays.map((date) => formatISO(date, {representation: 'date'})).includes(formatISO(date, {representation: 'date'})) && !notAvailableDays.map((date) => formatISO(date, {representation: 'date'})).includes(formatISO(date, {representation: 'date'})))
+    console.log("fullyAvailableDays", fullyAvailableDays)
+
+    // Add classnames to the correct days
+    const modifiedClassnames = {
+        available: "text-green-700 bg-green-300",
+        partialyAvailable: "text-amber-700 bg-amber-300",
+        notAvailable: "text-red-700 bg-red-300",
+    }
+    const modifierDays = {
+        available: fullyAvailableDays,
+        partialyAvailable: partiallyAvailableDays,
+        notAvailable: notAvailableDays,
     }
 
 
