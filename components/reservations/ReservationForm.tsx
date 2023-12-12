@@ -4,6 +4,11 @@ import {useEffect, useState} from "react";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Tables} from "@/lib/database.types";
 import {addYears, compareAsc, eachDayOfInterval, formatISO} from "date-fns";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
+import {cn} from "@/lib/utils";
+import {buttonVariants} from "@/components/ui/button";
+import nlBE from "date-fns/locale/nl-BE";
+import {Calendar} from "@/components/ui/calendar";
 
 export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations, organisations}: {
     submit: (formData: FormData) => Promise<never>,
@@ -122,6 +127,14 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
         return tfs
     }
 
+    function timeframeDisabledStart(timeframeId: string, day?: Date): boolean {
+        if (day === undefined) return false
+        return addedTimeFramesToDate
+            .filter((bookedTFD) => bookedTFD.date === formatISO(day, {representation: 'date'}))
+            .filter((bookedTFD) => bookedTFD.timeframes.map((tf) => tf.id).includes(timeframeId))
+            .length > 0
+    }
+
     // MAPPED -- Not available days -- start day
     const notAvailableDays = addedTimeFramesToDate
         .filter((date) => date.timeframes.length === sortedTimeframes.length)
@@ -138,12 +151,12 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     // Add classnames to the correct days
     const modifiedClassnames = {
         available: "text-green-700 bg-green-300",
-        partialyAvailable: "text-amber-700 bg-amber-300",
+        partiallyAvailable: "text-amber-700 bg-amber-300",
         notAvailable: "text-red-700 bg-red-300",
     }
     const modifierDays = {
         available: fullyAvailableDays,
-        partialyAvailable: partiallyAvailableDays,
+        partiallyAvailable: partiallyAvailableDays,
         notAvailable: notAvailableDays,
     }
 
@@ -166,9 +179,43 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     </fieldset>
                 </section>
                 <hr/>
-                <section>
+                <section className={"flex flex-col flex-wrap gap-2"}>
                     <fieldset>
                         <legend>Selecteer het startmoment</legend>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <input required readOnly form="reservationForm" type="date" name="start"
+                                       value={formatISO(selectedStartDate || new Date(), {representation: 'date'})}
+                                       className={cn(buttonVariants({variant: "outline"}), "w-full", selectedStartDate && "border-green-400")}/>
+                            </PopoverTrigger>
+                            <PopoverContent className={"w-auto p-0"}>
+                                <Calendar
+                                    required
+                                    mode={"single"}
+                                    selected={selectedStartDate}
+                                    onSelect={setSelectedStartDate}
+                                    fromDate={today}
+                                    toDate={addYears(today, 3)}
+                                    fixedWeeks
+                                    disabled={notAvailableDays}
+                                    modifiers={modifierDays}
+                                    modifiersClassNames={modifiedClassnames}
+                                    locale={nlBE}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </fieldset>
+                    <fieldset className={"flex flex-row flex-wrap gap-2"}>
+                        {
+                            sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
+                                <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
+                                       checked={selectedStartTimeframe === timeframe.id} onChange={() => setSelectedStartTimeframe(timeframe.id)}
+                                       disabled={timeframeDisabledStart(timeframe.id, selectedStartDate)}
+                                       className={"peer hidden"}/>
+                                <label htmlFor={"start-" + timeframe.id}
+                                       className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
+                            </div>)
+                        }
                     </fieldset>
                 </section>
                 <hr/>
