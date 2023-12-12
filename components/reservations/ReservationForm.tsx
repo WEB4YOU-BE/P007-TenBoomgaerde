@@ -89,26 +89,16 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     }
                 )
         )
-    const concattedByDate = listedByDate
-
-    console.log("CONCATTED BY DATE", concattedByDate)
-
-    /*
-    const listedByDate: { date: string, timeframes: Tables<"bloks">[] }[] = []
-    filteredByRoom
-        .forEach((reservation) => {
-            eachDayOfInterval({start: new Date(reservation.start_date), end: new Date(reservation.end_date)})
-                .forEach((reservationDate) => {
-                    const formattedReservationDate = formatISO(reservationDate, {representation: "date"})
-                    if (!listedByDate.map((mbd) => mbd.date).includes(formattedReservationDate))
-                        listedByDate.push({date: formattedReservationDate, timeframes: []})
-                })
-        })
-    const mappedByDate: { date: string, timeframes: Tables<"bloks">[] }[] = listedByDate
-        .map((mbd) => {
+    const listedAndSortedByDate = listedByDate
+        .sort((day1, day2) =>
+            compareAsc(new Date(day1.date), new Date(day2.date)));
+    const filteredByUniqueDate = listedAndSortedByDate
+        .filter((value, index, array) => index === array.findIndex(value1 => value1.date === value.date))
+    const addedTimeFramesToDate = filteredByUniqueDate
+        .map((date) => {
             return {
-                date: mbd.date,
-                timeframes: getTimeframesFromDate(mbd.date)
+                date: date.date,
+                timeframes: getTimeframesFromDate(date.date)
             }
         })
 
@@ -119,31 +109,18 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
             .forEach((reservation) => {
                 eachDayOfInterval({start: new Date(reservation.start_date), end: new Date(reservation.end_date)})
                     .forEach((reservationDate) => {
-                        if (date === formatISO(reservationDate, {representation: "date"}))
-                            tfs.concat(sortedTimeframes)
-                    })
-            })
+                        const normalizedReservationDate = formatISO(reservationDate, {representation: "date"})
+                        if (date === normalizedReservationDate) {
+                            if (normalizedReservationDate !== reservation.start_date && normalizedReservationDate !== reservation.end_date) tfs.push(...sortedTimeframes)
+                            if (normalizedReservationDate === reservation.start_date && normalizedReservationDate !== reservation.end_date) tfs.push(...sortedTimeframes.filter((tf) => tf.start_hour.substring(0, 2) >= reservation.start_hour.start_hour.substring(0, 2)))
+                            if (normalizedReservationDate !== reservation.start_date && normalizedReservationDate === reservation.end_date) tfs.push(...sortedTimeframes.filter((tf) => tf.end_hour.substring(0, 2) <= reservation.end_hour.end_hour.substring(0, 2)))
+                            if (normalizedReservationDate === reservation.start_date && normalizedReservationDate === reservation.end_date) tfs.push(...sortedTimeframes.filter((tf) => tf.start_hour.substring(0, 2) >= reservation.start_hour.start_hour.substring(0, 2) && tf.end_hour.substring(0, 2) <= reservation.end_hour.end_hour.substring(0, 2)))
+                        }
+                    });
+            });
 
         return tfs
     }
-
-     */
-
-    /*
-    mappedByDate
-        .map((mbd) => {
-            mbd.timeframes = sortedTimeframes.filter((timeframe) => {
-                const reservationStartDate = new Date(reservation.start_date);
-                const reservationEndDate = new Date(reservation.end_date);
-                const timeframeStartDate = new Date(Date.parse("2000-01-01T" + timeframe.start_hour));
-                const timeframeEndDate = new Date(Date.parse("2000-01-01T" + timeframe.end_hour));
-                return (
-                    compareAsc(reservationStartDate, timeframeStartDate) <= 0 &&
-                    compareAsc(reservationEndDate, timeframeEndDate) >= 0
-                );
-            });
-        })
-     */
 
 
     return (
