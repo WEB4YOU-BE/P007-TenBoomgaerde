@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Tables} from "@/lib/database.types";
-import {addYears, compareAsc, eachDayOfInterval, formatISO, isAfter, isSameDay} from "date-fns";
+import {addYears, compareAsc, eachDayOfInterval, formatISO} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
@@ -75,10 +75,9 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
         .sort((res1, res2) =>
             compareAsc(new Date(res1.start_date), new Date(res2.start_date)));
     const normalizedTimeframes = timeframes.data || []
-    const sortedTimeframes = normalizedTimeframes
-        .sort((tf1, tf2) =>
-            compareAsc(new Date(Date.parse("2000-01-01T" + tf1.start_hour)), new Date(Date.parse("2000-01-01T" + tf2.start_hour)))
-        )
+    const sortTimeframesFn = (tf1: Tables<"bloks">, tf2: Tables<"bloks">) =>
+        compareAsc(new Date(Date.parse("2000-01-01T" + tf1.start_hour)), new Date(Date.parse("2000-01-01T" + tf2.start_hour)))
+    const sortedTimeframes = normalizedTimeframes.sort(sortTimeframesFn)
 
     // FILTER -- BASED ON ROOM SELECTION
     const filteredByRoom = sortedReservations
@@ -136,14 +135,18 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
             .length > 0
     }
 
-    function findFirstReservation() {
-        const bookingsOnOrAfterStartDay = addedTimeFramesToDate.filter((bookedTimeframeDays) => isAfter(new Date(bookedTimeframeDays.date), selectedStartDate || addYears(today, 3)) || isSameDay(new Date(bookedTimeframeDays.date), selectedStartDate || addYears(today, 3)))
-        if (bookingsOnOrAfterStartDay.length === 0) return undefined
+    function findNextFirstReservationDate() {
+        let lastDate = new Date()
+        if (!selectedStartDate || !selectedStartTimeframe) return lastDate
 
-        if (bookingsOnOrAfterStartDay[0].date === formatISO(selectedStartDate || new Date(), {representation: 'date'}))
-            return selectedStartDate
-        if (bookingsOnOrAfterStartDay[0].date !== formatISO(selectedStartDate || new Date(), {representation: 'date'}))
-            return new Date(bookingsOnOrAfterStartDay[0].date)
+        lastDate = eachDayOfInterval({start: new Date(selectedStartDate), end: addYears(today, 3)})
+            .find((possibleLastDate, index) => {
+                if (addedTimeFramesToDate.find(value => value.date === formatISO(possibleLastDate, {representation: "date"})) === undefined) return false
+                if (index === 0 && addedTimeFramesToDate.find(value => value.date === formatISO(possibleLastDate, {representation: "date"}))!.timeframes.sort(sortTimeframesFn).reverse()[0].end_hour.substring(0, 2) < sortedTimeframes.find(value => value.id === selectedStartTimeframe)!.start_hour.substring(0, 2)) return false
+                return true
+            }) || addYears(today, 3)
+
+        return lastDate
     }
 
     // MAPPED -- Not available days -- start day
@@ -157,7 +160,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     // MAPPED -- Fully available days -- start day until 5 years from today
     const fullyAvailableDays: Date[] = eachDayOfInterval({start: today, end: addYears(today, 3)})
         .filter((date) => !partiallyAvailableDays.map((date) => formatISO(date, {representation: 'date'})).includes(formatISO(date, {representation: 'date'})) && !notAvailableDays.map((date) => formatISO(date, {representation: 'date'})).includes(formatISO(date, {representation: 'date'})))
-    console.log("fullyAvailableDays", fullyAvailableDays)
+
 
     // Add classnames to the correct days
     const modifiedClassnames = {
@@ -246,7 +249,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                     selected={selectedEndDate}
                                     onSelect={setSelectedEndDate}
                                     fromDate={selectedStartDate}
-                                    toDate={findFirstReservation() || addYears(today, 3)} // TODO FIX
+                                    toDate={findNextFirstReservationDate() || addYears(today, 3)} // TODO FIX
                                     fixedWeeks
                                     disabled={notAvailableDays}
                                     modifiers={modifierDays}
