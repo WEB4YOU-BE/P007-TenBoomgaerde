@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Tables} from "@/lib/database.types";
-import {addYears, compareAsc, eachDayOfInterval, formatISO} from "date-fns";
+import {addYears, compareAsc, eachDayOfInterval, formatISO, isAfter, isSameDay} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
@@ -128,11 +128,22 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     }
 
     function timeframeDisabledStart(timeframeId: string, day?: Date): boolean {
+        //TODO FIX: Wanneer een datum gekozen wordt waarop enkel in de middag gereserveerd wordt, is het kapoet...
         if (day === undefined) return false
         return addedTimeFramesToDate
             .filter((bookedTFD) => bookedTFD.date === formatISO(day, {representation: 'date'}))
             .filter((bookedTFD) => bookedTFD.timeframes.map((tf) => tf.id).includes(timeframeId))
             .length > 0
+    }
+
+    function findFirstReservation() {
+        const bookingsOnOrAfterStartDay = addedTimeFramesToDate.filter((bookedTimeframeDays) => isAfter(new Date(bookedTimeframeDays.date), selectedStartDate || addYears(today, 3)) || isSameDay(new Date(bookedTimeframeDays.date), selectedStartDate || addYears(today, 3)))
+        if (bookingsOnOrAfterStartDay.length === 0) return undefined
+
+        if (bookingsOnOrAfterStartDay[0].date === formatISO(selectedStartDate || new Date(), {representation: 'date'}))
+            return selectedStartDate
+        if (bookingsOnOrAfterStartDay[0].date !== formatISO(selectedStartDate || new Date(), {representation: 'date'}))
+            return new Date(bookingsOnOrAfterStartDay[0].date)
     }
 
     // MAPPED -- Not available days -- start day
@@ -219,9 +230,44 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                     </fieldset>
                 </section>
                 <hr/>
-                <section>
+                <section className={"flex flex-col flex-wrap gap-2"}>
                     <fieldset>
                         <legend>Selecteer het eindmoment</legend>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <input required readOnly form="reservationForm" type="date" name="end"
+                                       value={formatISO(selectedEndDate || selectedStartDate || new Date(), {representation: 'date'})}
+                                       className={cn(buttonVariants({variant: "outline"}), "w-full", selectedEndDate && "border-green-400")}/>
+                            </PopoverTrigger>
+                            <PopoverContent className={"w-auto p-0"}>
+                                <Calendar
+                                    required
+                                    mode={"single"}
+                                    selected={selectedEndDate}
+                                    onSelect={setSelectedEndDate}
+                                    fromDate={selectedStartDate}
+                                    toDate={findFirstReservation() || addYears(today, 3)} // TODO FIX
+                                    fixedWeeks
+                                    disabled={notAvailableDays}
+                                    modifiers={modifierDays}
+                                    modifiersClassNames={modifiedClassnames}
+                                    locale={nlBE}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </fieldset>
+                    {/*TODO FIX*/}
+                    <fieldset className={"flex flex-row flex-wrap gap-2"}>
+                        {
+                            sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
+                                <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
+                                       checked={selectedEndTimeframe === timeframe.id} onChange={() => setSelectedEndTimeframe(timeframe.id)}
+                                       disabled={timeframeDisabledStart(timeframe.id, selectedEndDate)}
+                                       className={"peer hidden"}/>
+                                <label htmlFor={"end-" + timeframe.id}
+                                       className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
+                            </div>)
+                        }
                     </fieldset>
                 </section>
                 <hr/>
