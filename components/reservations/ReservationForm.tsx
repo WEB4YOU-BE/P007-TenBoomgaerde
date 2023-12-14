@@ -9,17 +9,9 @@ import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
 
-export default function ReservationForm({
-                                            submit,
-                                            rooms,
-                                            timeframes,
-                                            materials,
-                                            gebruiker,
-                                            user,
-                                            allReservations,
-                                            organizations
-                                        }: {
+export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations, organizations}: {
     submit: (formData: FormData) => Promise<never>,
     rooms: PostgrestSingleResponse<Tables<"rooms">[]>,
     timeframes: PostgrestSingleResponse<Tables<"bloks">[]>,
@@ -87,6 +79,10 @@ export default function ReservationForm({
     const sortTimeframesFn = (tf1: Tables<"bloks">, tf2: Tables<"bloks">) =>
         compareAsc(new Date(Date.parse("2000-01-01T" + tf1.start_hour)), new Date(Date.parse("2000-01-01T" + tf2.start_hour)))
     const sortedTimeframes = normalizedTimeframes.sort(sortTimeframesFn)
+    const normalizedOrganizations = organizations.data || []
+    const sortedOrganizations = normalizedOrganizations.sort(
+        (org1, org2) =>
+            org1.name.localeCompare(org2.name))
 
     // FILTER -- BASED ON ROOM SELECTION
     const filteredByRoom = sortedReservations
@@ -319,8 +315,22 @@ export default function ReservationForm({
                 </section>
                 <hr/>
                 <section>
-                    <fieldset>
+                    <span className={cn(!selectedEndTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
+                    <fieldset className={cn(!!selectedEndTimeframe ? "block" : "hidden")}>
                         <legend>Selecteer jouw organisatie (optioneel)</legend>
+                        <input form="reservationForm" type="text" name="organisation" readOnly value={selectedOrganisation}
+                               className={"hidden"}/>
+                        <Select required>
+                            <SelectTrigger>
+                                <SelectValue/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                {
+                                    sortedOrganizations.map(organization =>
+                                        <SelectItem value={organization.id}>{organization.name}</SelectItem>)
+                                }
+                            </SelectContent>
+                        </Select>
                     </fieldset>
                 </section>
                 <hr/>
