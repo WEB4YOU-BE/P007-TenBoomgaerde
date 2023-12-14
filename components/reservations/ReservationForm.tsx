@@ -10,14 +10,23 @@ import {buttonVariants} from "@/components/ui/button";
 import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
 
-export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations, organisations}: {
+export default function ReservationForm({
+                                            submit,
+                                            rooms,
+                                            timeframes,
+                                            materials,
+                                            gebruiker,
+                                            user,
+                                            allReservations,
+                                            organizations
+                                        }: {
     submit: (formData: FormData) => Promise<never>,
     rooms: PostgrestSingleResponse<Tables<"rooms">[]>,
     timeframes: PostgrestSingleResponse<Tables<"bloks">[]>,
     materials: PostgrestSingleResponse<Tables<"products">[]>,
     gebruiker: PostgrestSingleResponse<Tables<"users">[]>,
     allReservations: PostgrestSingleResponse<Tables<"reservations">[]>,
-    organisations: PostgrestSingleResponse<Tables<"organizations">[]>,
+    organizations: PostgrestSingleResponse<Tables<"organizations">[]>,
     user: User | null,
 }) {
     // TODAY

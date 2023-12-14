@@ -48,8 +48,6 @@ export default async function page() {
 
         const status = "in afwachting"
 
-        console.log(organization)
-
         await supabase.from("reservations").insert({
             reservation_year: startDate,
             reservation_number: reservationNumber,
