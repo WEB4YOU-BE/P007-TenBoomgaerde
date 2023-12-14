@@ -127,7 +127,6 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     }
 
     function timeframeDisabledStart(timeframeId: string, day?: Date): boolean {
-        //TODO FIX: Wanneer een datum gekozen wordt waarop enkel in de middag gereserveerd wordt, is het kapoet...
         if (day === undefined) return false
         return addedTimeFramesToDate
             .filter((bookedTFD) => bookedTFD.date === formatISO(day, {representation: 'date'}))
@@ -147,6 +146,37 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
             }) || addYears(today, 3)
 
         return lastDate
+    }
+
+    function isDisabledEndTF(timeframeId: string) {
+        const possibleTimeframe = sortedTimeframes.find(tf => tf.id === timeframeId)
+        if (possibleTimeframe === undefined) return true
+
+        if (!selectedStartDate) return true
+        if (!selectedEndDate) return true
+        if (!selectedStartTimeframe) return true
+        const startTFObject = sortedTimeframes.find(tf => tf.id === selectedStartTimeframe)
+        if (startTFObject === undefined) return true
+
+        if (formatISO(selectedStartDate, {representation: "date"}) === formatISO(selectedEndDate, {representation: "date"})) {
+            const tfsOnEndDateBeforeStartTF = sortedTimeframes.filter(tf => tf.start_hour.substring(0, 2) < startTFObject.start_hour.substring(0, 2))
+            if (tfsOnEndDateBeforeStartTF.some(tf => tf.id === possibleTimeframe.id)) return true
+        }
+
+        const possiblyReservedOnEndDate = addedTimeFramesToDate.find(date => date.date === formatISO(selectedEndDate, {representation: "date"}))
+        if (possiblyReservedOnEndDate === undefined) return false
+
+        if (possiblyReservedOnEndDate.timeframes.map(tf => tf.id).includes(timeframeId)) return true
+
+        const tfsOnEndDateAfterFirstResTF = sortedTimeframes.filter(tf => tf.start_hour.substring(0, 2) > possiblyReservedOnEndDate.timeframes[0].start_hour.substring(0, 2))
+        if (formatISO(selectedStartDate, {representation: "date"}) === formatISO(selectedEndDate, {representation: "date"})) {
+            const tfsAfterOrEqStartTF = sortedTimeframes.filter(tf => tf.start_hour.substring(0, 2) >= startTFObject.start_hour.substring(0, 2))
+            const tfsAfterOrEqStartTFAndUntilNextFirstResTF = tfsAfterOrEqStartTF.filter(tf => !tfsOnEndDateAfterFirstResTF.filter((tfA) => !(tfA.start_hour.substring(0, 2) <= startTFObject.start_hour.substring(0, 2))).map((tfA) => tfA.id).includes(tf.id))
+            if (tfsAfterOrEqStartTFAndUntilNextFirstResTF.some(tf => tf.id === possibleTimeframe.id)) return false
+        }
+        if (tfsOnEndDateAfterFirstResTF.some(tf => tf.id === possibleTimeframe.id)) return true
+
+        return false
     }
 
     // MAPPED -- Not available days -- start day
@@ -181,20 +211,25 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
             <h1 className={"text-3xl font-bold"}>Reservatie</h1>
             <div className={"rounded-lg bg-gray-100 shadow-sm p-2 flex flex-col gap-4"}>
                 <section>
-                    <fieldset>
+                    <fieldset className={"flex flex-row flex-wrap gap-2"}>
                         <legend>Selecteer de zaal</legend>
                         {
-                            normalizedRooms.map((room) => <div key={room.id}>
+                            normalizedRooms.map((room) => <div key={room.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="room" id={room.id} value={room.id}
-                                       checked={selectedRoom === room.id} onChange={() => setSelectedRoom(room.id)}/>
-                                <label htmlFor={room.id}>{room.name}</label>
+                                       checked={selectedRoom === room.id} onChange={() => setSelectedRoom(room.id)}
+                                       className={"peer hidden"}/>
+                                <label htmlFor={room.id}
+                                       className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>
+                                    {room.name}
+                                </label>
                             </div>)
                         }
                     </fieldset>
                 </section>
                 <hr/>
                 <section className={"flex flex-col flex-wrap gap-2"}>
-                    <fieldset>
+                    <span className={cn(!selectedRoom ? "block" : "hidden")}>Vervolledig de vorige stap.</span>
+                    <fieldset className={cn(!!selectedRoom ? "block" : "hidden")}>
                         <legend>Selecteer het startmoment</legend>
                         <Popover>
                             <PopoverTrigger asChild>
@@ -219,7 +254,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                             </PopoverContent>
                         </Popover>
                     </fieldset>
-                    <fieldset className={"flex flex-row flex-wrap gap-2"}>
+                    <fieldset className={cn(!!selectedStartDate ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
@@ -234,7 +269,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 </section>
                 <hr/>
                 <section className={"flex flex-col flex-wrap gap-2"}>
-                    <fieldset>
+                    <span className={cn(!selectedStartTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
+                    <fieldset className={cn(!!selectedStartTimeframe ? "block" : "hidden")}>
                         <legend>Selecteer het eindmoment</legend>
                         <Popover>
                             <PopoverTrigger asChild>
@@ -259,24 +295,17 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                             </PopoverContent>
                         </Popover>
                     </fieldset>
-                    {/*TODO FIX*/}
-                    <fieldset className={"flex flex-row flex-wrap gap-2"}>
+                    <fieldset className={cn(!!selectedEndDate ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
                                        checked={selectedEndTimeframe === timeframe.id} onChange={() => setSelectedEndTimeframe(timeframe.id)}
-                                       disabled={timeframeDisabledStart(timeframe.id, selectedEndDate)}
+                                       disabled={isDisabledEndTF(timeframe.id)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={"end-" + timeframe.id}
-                                       className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.start_hour.substring(0, 5)})</label>
+                                       className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 peer-disabled:invisible w-full")}>{timeframe.name} ({timeframe.end_hour.substring(0, 5)})</label>
                             </div>)
                         }
-                    </fieldset>
-                </section>
-                <hr/>
-                <section>
-                    <fieldset>
-                        <legend>Duid uw extra&apos;s aan</legend>
                     </fieldset>
                 </section>
                 <hr/>
