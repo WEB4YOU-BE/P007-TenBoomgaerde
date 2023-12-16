@@ -10,6 +10,16 @@ import {buttonVariants} from "@/components/ui/button";
 import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
+import Link from "next/link";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/Dialog";
+
 
 export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations, organizations}: {
     submit: (formData: FormData) => Promise<never>,
@@ -21,18 +31,21 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     organizations: PostgrestSingleResponse<Tables<"organizations">[]>,
     user: User | null,
 }) {
+    let document = "/documents/Reglement_vergaderzalen_Ten_Boomgaerde_vzw.pdf"
     // TODAY
     const today = new Date()
 
     // STATES
-    const [selectedRoom, setSelectedRoom] = useState<string | undefined>(undefined)
+    const [selectedRoom, setSelectedRoom] = useState<Tables<"rooms"> | undefined>(undefined)
     const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>(undefined)
     const [selectedStartTimeframe, setSelectedStartTimeframe] = useState<string | undefined>(undefined)
     const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(undefined)
     const [selectedEndTimeframe, setSelectedEndTimeframe] = useState<string | undefined>(undefined)
-    const [selectedOrganisation, setSelectedOrganisation] = useState<string | undefined>(undefined)
+    const [selectedOrganisation, setSelectedOrganisation] = useState<Tables<"organizations"> | undefined>(undefined)
     const [acceptedConditions, setAcceptedConditions] = useState<boolean>(false)
 
+    console.log(selectedOrganisation)
+    
     // REMOVE ON CHANGES
     useEffect(() => {
         setSelectedStartDate(undefined)
@@ -86,7 +99,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
 
     // FILTER -- BASED ON ROOM SELECTION
     const filteredByRoom = sortedReservations
-        .filter((reservation) => reservation.rooms.id === selectedRoom)
+        .filter((reservation) => reservation.rooms.id === selectedRoom?.id)
         .filter((reservation) => reservation.status !== "geweigerd");
 
     // MAPPED -- ALL TIMEFRAMES IN A GIVEN DAY, WHICH ARE NOT AVAILABLE ANYMORE
@@ -221,7 +234,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                         {
                             normalizedRooms.map((room) => <div key={room.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="room" id={room.id} value={room.id}
-                                       checked={selectedRoom === room.id} onChange={() => setSelectedRoom(room.id)}
+                                       checked={selectedRoom === room} onChange={() => setSelectedRoom(room)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={room.id}
                                        className={cn(buttonVariants({variant: "outline"}), "peer-checked:border-green-400 peer-checked:bg-green-100 w-full")}>
@@ -315,10 +328,12 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 </section>
                 <hr/>
                 <section>
+                    {/*TODO: FIX*/}
                     <span className={cn(!selectedEndTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
                     <fieldset className={cn(!!selectedEndTimeframe ? "block" : "hidden")}>
                         <legend>Selecteer jouw organisatie (optioneel)</legend>
-                        <input form="reservationForm" type="text" name="organisation" readOnly value={selectedOrganisation}
+                        <input form="reservationForm" type="text" name="organisation" readOnly
+                               value={selectedOrganisation?.id}
                                className={"hidden"}/>
                         <Select required>
                             <SelectTrigger>
@@ -327,7 +342,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                             <SelectContent>
                                 {
                                     sortedOrganizations.map(organization =>
-                                        <SelectItem value={organization.id}>{organization.name}</SelectItem>)
+                                        <SelectItem onChange={() => setSelectedOrganisation(organization)}
+                                                    value={organization.id}>{organization.name}</SelectItem>)
                                 }
                             </SelectContent>
                         </Select>
@@ -336,14 +352,62 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                 <hr/>
                 <section>
                     <fieldset>
-                        <legend>Aangemeld als</legend>
+                        {/*TODO: FIX*/}
+                        <legend>Aangemeld als {gebruiker.data && gebruiker.data[0].firstname}</legend>
+                        <input form="reservationForm" type="text" name="userId" defaultValue={user?.id} readOnly
+                               className={"hidden"}/>
                     </fieldset>
                 </section>
                 <hr/>
                 <section>
                     <fieldset>
-                        <legend>Terms &amp; conditions</legend>
+                        <input type={"checkbox"} className={"h-6 justify-center mr-2"}
+                               onChange={() => setAcceptedConditions(!acceptedConditions)}/>
+                        <label className={""}>Ik ga akkoord met het <Link href={document} target={"_blank"}>reglement
+                            vergaderzalen</Link></label>
                     </fieldset>
+                </section>
+                <section>
+                    <Dialog>
+                        <DialogTrigger
+                            disabled={(!selectedEndTimeframe && !acceptedConditions)}
+                            className={buttonVariants()}>Reserveer</DialogTrigger>
+                        <DialogContent>
+                            <DialogTitle>Overzicht</DialogTitle>
+                            <DialogDescription>
+                                <div className={"grid grid-cols-2 my-4"}>
+                                    <span className={"font-bold"}>Datum:</span>
+                                    <span>{selectedStartDate?.toISOString().substring(0, 10) === selectedEndDate?.toISOString().substring(0, 10) ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedStartDate?.toISOString().substring(0, 10)}</span>
+                                    <span className={"font-bold"}>Tijd:</span>
+                                    <span>{selectedStartTimeframe}</span> {/*TODO: ook einduur*/}
+                                    <span className={"font-bold"}>Zaal:</span>
+                                    <span>{selectedRoom?.name}</span>
+                                </div>
+                                <h2 className={"text-xl font-bold text-center"}>Uw gegevens</h2>
+                                <div className={"grid grid-cols-2 my-4"}>
+                                    <span className={"font-bold"}>Naam:</span>
+                                    <span>{gebruiker.data && gebruiker.data[0].firstname} {gebruiker.data && gebruiker.data[0].lastname}</span>
+                                    <span className={"font-bold"}>Email:</span>
+                                    <span>{gebruiker.data && gebruiker.data[0].email}</span>
+                                    <span className={"font-bold"}>Gsm-nummer:</span>
+                                    <span>{gebruiker.data && gebruiker.data[0].phone}</span>
+                                    <span className={"font-bold"}>Straat en huisnr</span>
+                                    <span>{gebruiker.data && gebruiker.data[0].street}</span>
+                                    <span className={"font-bold"}>Woonplaats</span>
+                                    <span>{gebruiker.data && gebruiker.data[0].city}</span>
+                                    <span className={"font-bold"}>Organistie</span>
+                                    <span>{selectedOrganisation?.name}</span>
+                                    <span className={"font-bold"}>BTW-nummer</span>
+                                    <span>{selectedOrganisation?.btw_number}</span>
+                                </div>
+                            </DialogDescription>
+                            <DialogFooter>
+                                <button
+                                    form={"reservationForm"} className={buttonVariants()}>Reserveer
+                                </button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </section>
             </div>
         </div>
