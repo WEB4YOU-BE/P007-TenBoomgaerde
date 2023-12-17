@@ -23,12 +23,12 @@ export default async function page() {
     const gebruiker: DbResult<typeof query> = await query
 
     const queryLatestRes = supabase.from("reservations").select(`reservation_number`).order('reservation_number', {ascending: false}).limit(1)
-    const reservationNumber: DbResult<typeof queryLatestRes> = await queryLatestRes
+    const latestReservation: DbResult<typeof queryLatestRes> = await queryLatestRes
 
     const queryOrganizations = supabase.from("organizations").select()
     const organizations: DbResult<typeof queryOrganizations> = await queryOrganizations
 
-    const latestReservationNumber: number = reservationNumber.data === null ? 0 : reservationNumber.data[0].reservation_number
+    const latestReservationNumber: number = (latestReservation.data && latestReservation.data[0]) ? latestReservation.data[0].reservation_number : 0
 
     const handleSubmitReservation = async (formData: FormData) => {
         "use server"
@@ -41,7 +41,7 @@ export default async function page() {
         const startHour = formData.get("startTimeframe")
         const endDate = formData.get("end")
         const endHour = formData.get("endTimeframe")
-        const organization = formData.get("#organizationSelect")
+        const organization = formData.get("organization")
 
         const status = "in afwachting"
 
@@ -55,6 +55,7 @@ export default async function page() {
             start_hour: startHour,
             end_hour: endHour,
             status: status,
+            organizations_id: organization,
         })
         redirect("/klant", RedirectType.push)
     }
