@@ -15,7 +15,7 @@ import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, Dia
 import {Checkbox} from "@/components/ui/checkbox";
 
 
-export default function ReservationForm({submit, rooms, timeframes, materials, gebruiker, user, allReservations, organizations}: {
+export default function ReservationForm({submit, rooms, timeframes, gebruiker, user, allReservations, organizations}: {
     submit: (formData: FormData) => Promise<never>,
     rooms: PostgrestSingleResponse<Tables<"rooms">[]>,
     timeframes: PostgrestSingleResponse<Tables<"bloks">[]>,
