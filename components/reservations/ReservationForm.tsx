@@ -222,6 +222,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
         notAvailable: notAvailableDays,
     }
 
+    console.log('gelijk', selectedStartDate?.getDate() === selectedEndDate?.getDate() ? "gelijk" : "niet gelijk")
 
     return (
         <div>
@@ -377,7 +378,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                             <DialogDescription>
                                 <div className={"grid grid-cols-2 my-4"}>
                                     <span className={"font-bold"}>Datum:</span>
-                                    <span>{selectedStartDate?.toISOString().substring(0, 10) === selectedEndDate?.toISOString().substring(0, 10) ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedStartDate?.toISOString().substring(0, 10)}</span>
+                                    <span>{selectedStartDate?.getDate() === selectedEndDate?.getDate() ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedEndDate?.toISOString().substring(0, 10)}</span>
                                     <span className={"font-bold"}>Tijd:</span>
                                     <span>{selectedStartTimeframe}</span> {/*TODO: ook einduur*/}
                                     <span className={"font-bold"}>Zaal:</span>
