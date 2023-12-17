@@ -19,7 +19,6 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
     submit: (formData: FormData) => Promise<never>,
     rooms: PostgrestSingleResponse<Tables<"rooms">[]>,
     timeframes: PostgrestSingleResponse<Tables<"bloks">[]>,
-    materials: PostgrestSingleResponse<Tables<"products">[]>,
     gebruiker: PostgrestSingleResponse<Tables<"users">[]>,
     allReservations: PostgrestSingleResponse<Tables<"reservations">[]>,
     organizations: PostgrestSingleResponse<Tables<"organizations">[]>,
@@ -33,10 +32,8 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
     const [selectedRoom, setSelectedRoom] = useState<string | undefined>(undefined)
     const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>(undefined)
     const [selectedStartTimeframe, setSelectedStartTimeframe] = useState<string | undefined>(undefined)
-    const [selectedStartTimeframeString, setSelectedStartTimeframeString] = useState<string | undefined>(undefined)
     const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(undefined)
     const [selectedEndTimeframe, setSelectedEndTimeframe] = useState<string | undefined>(undefined)
-    const [selectedEndTimeframeString, setSelectedEndTimeframeString] = useState<string | undefined>(undefined)
     const [selectedOrganisation, setSelectedOrganisation] = useState<string | undefined>(undefined)
     const [acceptedConditions, setAcceptedConditions] = useState<boolean>(false)
 
@@ -216,13 +213,11 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
         notAvailable: notAvailableDays,
     }
 
-    const getSelectedZaal = (): Tables<"rooms"> | undefined => {
-        return normalizedRooms.find(value => value.id === selectedRoom)
-    }
+    const getSelectedZaal = (): Tables<"rooms"> | undefined => normalizedRooms.find(value => value.id === selectedRoom)
+    const getSelectedStartTimeframe = (): Tables<"bloks"> | undefined => normalizedTimeframes.find(value => value.id === selectedStartTimeframe)
+    const getSelectedEndTimeframe = (): Tables<"bloks"> | undefined => normalizedTimeframes.find(value => value.id === selectedEndTimeframe)
+    const getSelectedOrganization = (): Tables<"organizations"> | undefined => normalizedOrganizations.find(value => value.id === selectedOrganisation)
 
-    const getSelectedOrganization = (): Tables<"organizations"> | undefined => {
-        return normalizedOrganizations.find(value => value.id === selectedOrganisation)
-    }
 
     return (
         <div>
@@ -277,9 +272,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
-                                       checked={selectedStartTimeframe === timeframe.id} onChange={() => {
-                                    setSelectedStartTimeframe(timeframe.id), setSelectedStartTimeframeString(timeframe.start_hour)
-                                }}
+                                       checked={selectedStartTimeframe === timeframe.id} onChange={() => setSelectedStartTimeframe(timeframe.id)}
                                        disabled={timeframeDisabledStart(timeframe.id, selectedStartDate)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={"start-" + timeframe.id}
@@ -320,9 +313,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
-                                       checked={selectedEndTimeframe === timeframe.id} onChange={() => {
-                                    setSelectedEndTimeframe(timeframe.id), setSelectedEndTimeframeString(timeframe.end_hour)
-                                }}
+                                       checked={selectedEndTimeframe === timeframe.id} onChange={() => setSelectedEndTimeframe(timeframe.id)}
                                        disabled={isDisabledEndTF(timeframe.id)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={"end-" + timeframe.id}
@@ -381,7 +372,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                     <span className={"font-bold"}>Datum:</span>
                                     <span>{selectedStartDate?.getDate() === selectedEndDate?.getDate() ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedEndDate?.toISOString().substring(0, 10)}</span>
                                     <span className={"font-bold"}>Tijd:</span>
-                                    <span>{selectedStartTimeframeString?.substring(0, 5)} - {selectedEndTimeframeString?.substring(0, 5)}</span>
+                                    <span>{getSelectedStartTimeframe()?.start_hour.substring(0, 5)} - {getSelectedEndTimeframe()?.end_hour.substring(0, 5)}</span>
                                     <span className={"font-bold"}>Zaal:</span>
                                     <span>{getSelectedZaal()?.name}</span>
                                 </div>
