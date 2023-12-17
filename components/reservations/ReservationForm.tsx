@@ -271,7 +271,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                     <fieldset className={cn(!!selectedStartDate ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
-                                <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
+                                <input required readOnly form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
                                        checked={selectedStartTimeframe === timeframe.id} onChange={() => setSelectedStartTimeframe(timeframe.id)}
                                        disabled={timeframeDisabledStart(timeframe.id, selectedStartDate)}
                                        className={"peer hidden"}/>
@@ -312,7 +312,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                     <fieldset className={cn(!!selectedEndDate ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
-                                <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
+                                <input required readOnly form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
                                        checked={selectedEndTimeframe === timeframe.id} onChange={() => setSelectedEndTimeframe(timeframe.id)}
                                        disabled={isDisabledEndTF(timeframe.id)}
                                        className={"peer hidden"}/>
@@ -327,10 +327,10 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                     <span className={cn(!selectedEndTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
                     <fieldset className={cn(!!selectedEndTimeframe ? "block" : "hidden")}>
                         <legend>Selecteer jouw organisatie (optioneel)</legend>
-                        <input form="reservationForm" type="text" name="organisation" readOnly
-                               value={selectedOrganisation}
+                        <input form="reservationForm" type="text" name="organization" readOnly
+                               value={selectedOrganisation || ""}
                                className={"hidden"}/>
-                        <Select required onValueChange={(orgId) => setSelectedOrganisation(orgId)}>
+                        <Select onValueChange={(orgId) => setSelectedOrganisation(orgId)}>
                             <SelectTrigger>
                                 <SelectValue/>
                             </SelectTrigger>
@@ -348,7 +348,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                 <section>
                     <fieldset>
                         <legend>Aangemeld als {gebruiker.data && gebruiker.data[0].firstname}</legend>
-                        <input form="reservationForm" type="text" name="userId" defaultValue={user?.id} readOnly
+                        <input form="reservationForm" type="text" name="userId" value={user?.id} readOnly
                                className={"hidden"}/>
                     </fieldset>
                 </section>
@@ -367,34 +367,36 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                             className={buttonVariants()}>Reserveer</DialogTrigger>
                         <DialogContent>
                             <DialogTitle>Overzicht</DialogTitle>
-                            <DialogDescription>
-                                <div className={"grid grid-cols-2 my-4"}>
-                                    <span className={"font-bold"}>Datum:</span>
-                                    <span>{selectedStartDate?.getDate() === selectedEndDate?.getDate() ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedEndDate?.toISOString().substring(0, 10)}</span>
-                                    <span className={"font-bold"}>Tijd:</span>
-                                    <span>{getSelectedStartTimeframe()?.start_hour.substring(0, 5)} - {getSelectedEndTimeframe()?.end_hour.substring(0, 5)}</span>
-                                    <span className={"font-bold"}>Zaal:</span>
-                                    <span>{getSelectedZaal()?.name}</span>
-                                </div>
-                                <h2 className={"text-xl font-bold text-center"}>Uw gegevens</h2>
-                                <div className={"grid grid-cols-2 my-4"}>
-                                    <span className={"font-bold"}>Naam:</span>
-                                    <span>{gebruiker.data && gebruiker.data[0].firstname} {gebruiker.data && gebruiker.data[0].lastname}</span>
-                                    <span className={"font-bold"}>Email:</span>
-                                    <span>{gebruiker.data && gebruiker.data[0].email}</span>
-                                    <span className={"font-bold"}>Gsm-nummer:</span>
-                                    <span>{gebruiker.data && gebruiker.data[0].phone}</span>
-                                    <span className={"font-bold"}>Straat en huisnr</span>
-                                    <span>{gebruiker.data && gebruiker.data[0].street}</span>
-                                    <span className={"font-bold"}>Woonplaats</span>
-                                    <span>{gebruiker.data && gebruiker.data[0].city}</span>
-                                    {selectedOrganisation && <>
-                                        <span className={"font-bold"}>Organistie</span>
-                                        <span>{getSelectedOrganization()?.name}</span>
-                                        <span className={"font-bold"}>BTW-nummer</span>
-                                        <span>{getSelectedOrganization()?.btw_number}</span>
-                                    </>}
-                                </div>
+                            <DialogDescription asChild>
+                                <>
+                                    <div className={"grid grid-cols-2 my-4"}>
+                                        <span className={"font-bold"}>Datum:</span>
+                                        <span>{selectedStartDate?.getDate() === selectedEndDate?.getDate() ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedEndDate?.toISOString().substring(0, 10)}</span>
+                                        <span className={"font-bold"}>Tijd:</span>
+                                        <span>{getSelectedStartTimeframe()?.start_hour.substring(0, 5)} - {getSelectedEndTimeframe()?.end_hour.substring(0, 5)}</span>
+                                        <span className={"font-bold"}>Zaal:</span>
+                                        <span>{getSelectedZaal()?.name}</span>
+                                    </div>
+                                    <h2 className={"text-xl font-bold text-center"}>Uw gegevens</h2>
+                                    <div className={"grid grid-cols-2 my-4"}>
+                                        <span className={"font-bold"}>Naam:</span>
+                                        <span>{gebruiker.data && gebruiker.data[0].firstname} {gebruiker.data && gebruiker.data[0].lastname}</span>
+                                        <span className={"font-bold"}>Email:</span>
+                                        <span>{gebruiker.data && gebruiker.data[0].email}</span>
+                                        <span className={"font-bold"}>Gsm-nummer:</span>
+                                        <span>{gebruiker.data && gebruiker.data[0].phone}</span>
+                                        <span className={"font-bold"}>Straat en huisnr</span>
+                                        <span>{gebruiker.data && gebruiker.data[0].street}</span>
+                                        <span className={"font-bold"}>Woonplaats</span>
+                                        <span>{gebruiker.data && gebruiker.data[0].city}</span>
+                                        {selectedOrganisation && <>
+                                            <span className={"font-bold"}>Organistie</span>
+                                            <span>{getSelectedOrganization()?.name}</span>
+                                            <span className={"font-bold"}>BTW-nummer</span>
+                                            <span>{getSelectedOrganization()?.btw_number}</span>
+                                        </>}
+                                    </div>
+                                </>
                             </DialogDescription>
                             <DialogFooter>
                                 <button
