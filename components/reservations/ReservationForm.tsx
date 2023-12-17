@@ -39,12 +39,12 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
     const [selectedRoom, setSelectedRoom] = useState<Tables<"rooms"> | undefined>(undefined)
     const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>(undefined)
     const [selectedStartTimeframe, setSelectedStartTimeframe] = useState<string | undefined>(undefined)
+    const [selectedStartTimeframeString, setSelectedStartTimeframeString] = useState<string | undefined>(undefined)
     const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(undefined)
     const [selectedEndTimeframe, setSelectedEndTimeframe] = useState<string | undefined>(undefined)
+    const [selectedEndTimeframeString, setSelectedEndTimeframeString] = useState<string | undefined>(undefined)
     const [selectedOrganisation, setSelectedOrganisation] = useState<Tables<"organizations"> | undefined>(undefined)
     const [acceptedConditions, setAcceptedConditions] = useState<boolean>(false)
-
-    console.log(selectedOrganisation)
     
     // REMOVE ON CHANGES
     useEffect(() => {
@@ -222,7 +222,10 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
         notAvailable: notAvailableDays,
     }
 
-    console.log('gelijk', selectedStartDate?.getDate() === selectedEndDate?.getDate() ? "gelijk" : "niet gelijk")
+    const handleOrganizationChange = (selectedOrganization: Tables<"organizations">) => {
+        setSelectedOrganisation(selectedOrganization);
+        console.log('ik ben hier', selectedOrganization);
+    };
 
     return (
         <div>
@@ -277,7 +280,9 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
-                                       checked={selectedStartTimeframe === timeframe.id} onChange={() => setSelectedStartTimeframe(timeframe.id)}
+                                       checked={selectedStartTimeframe === timeframe.id} onChange={() => {
+                                    setSelectedStartTimeframe(timeframe.id), setSelectedStartTimeframeString(timeframe.start_hour)
+                                }}
                                        disabled={timeframeDisabledStart(timeframe.id, selectedStartDate)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={"start-" + timeframe.id}
@@ -318,7 +323,9 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
                                 <input required form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
-                                       checked={selectedEndTimeframe === timeframe.id} onChange={() => setSelectedEndTimeframe(timeframe.id)}
+                                       checked={selectedEndTimeframe === timeframe.id} onChange={() => {
+                                    setSelectedEndTimeframe(timeframe.id), setSelectedEndTimeframeString(timeframe.end_hour)
+                                }}
                                        disabled={isDisabledEndTF(timeframe.id)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={"end-" + timeframe.id}
@@ -343,7 +350,8 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                             <SelectContent>
                                 {
                                     sortedOrganizations.map(organization =>
-                                        <SelectItem onChange={() => setSelectedOrganisation(organization)}
+                                        <SelectItem key={organization.id}
+                                                    onChange={() => handleOrganizationChange(organization)}
                                                     value={organization.id}>{organization.name}</SelectItem>)
                                 }
                             </SelectContent>
@@ -380,7 +388,7 @@ export default function ReservationForm({submit, rooms, timeframes, materials, g
                                     <span className={"font-bold"}>Datum:</span>
                                     <span>{selectedStartDate?.getDate() === selectedEndDate?.getDate() ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedEndDate?.toISOString().substring(0, 10)}</span>
                                     <span className={"font-bold"}>Tijd:</span>
-                                    <span>{selectedStartTimeframe}</span> {/*TODO: ook einduur*/}
+                                    <span>{selectedStartTimeframeString?.substring(0, 5)} - {selectedEndTimeframeString?.substring(0, 5)}</span>
                                     <span className={"font-bold"}>Zaal:</span>
                                     <span>{selectedRoom?.name}</span>
                                 </div>
