@@ -18,13 +18,20 @@ export default async function ChangeRoomForm({id}: RoomIndexProps) {
         const name = formData.get("name")
         const forSale = formData.get("forSale") === "on"
         const price = formData.get("price")
+        const price2 = formData.get("price2")
 
         if (name === null) redirect("/name")
         if (forSale === null) redirect("/forSale")
         if (price === null) redirect("/price")
+        if (price2 === null) redirect("/price2")
 
         const supabase = createServerComponentClient({cookies})
-        await supabase.from("rooms").update({name: name, private: forSale, day_price: price}).eq('id', id)
+        await supabase.from("rooms").update({
+            name: name,
+            private: forSale,
+            day_price: price,
+            day_price2: price2
+        }).eq('id', id)
 
         redirect("/dashboard/zalen", RedirectType.push)
     }
@@ -45,9 +52,17 @@ export default async function ChangeRoomForm({id}: RoomIndexProps) {
         <div>
             <label htmlFor={"price"}
                    className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Prijs
-                per dag</label>
+                per blok</label>
             <input type={"number"} step={0.01} min={0} required id={"price"} name={"price"}
                    defaultValue={room.data[0].day_price}
+                   className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}/>
+        </div>
+        <div>
+            <label htmlFor={"price2"}
+                   className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Prijs
+                vanaf 2 blokken</label>
+            <input type={"number"} step={0.01} min={0} required id={"price2"} name={"price2"}
+                   defaultValue={room.data[0].day_price2}
                    className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}/>
         </div>
         <div className={"flex items-center text-current gap-2"}>

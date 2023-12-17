@@ -194,18 +194,21 @@ export interface Database {
       rooms: {
         Row: {
           day_price: number | null
+          day_price2: number | null
           id: string
           name: string
           private: boolean
         }
         Insert: {
           day_price?: number | null
+          day_price2?: number | null
           id?: string
           name: string
           private?: boolean
         }
         Update: {
           day_price?: number | null
+          day_price2?: number | null
           id?: string
           name?: string
           private?: boolean

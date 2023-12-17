@@ -18,9 +18,6 @@ export default async function page() {
     const queryTimeframes = supabase.from("bloks").select()
     const timeframes: DbResult<typeof queryTimeframes> = await queryTimeframes
 
-    const queryMaterials = supabase.from("products").select().eq("categorie_id", "839926c4-97a7-48c4-a115-45548580c148")
-    const materials: DbResult<typeof queryMaterials> = await queryMaterials
-
     const {data: {user}} = await supabase.auth.getUser()
     const query = supabase.from("users").select('*').eq('id', user?.id)
     const gebruiker: DbResult<typeof query> = await query
@@ -48,8 +45,6 @@ export default async function page() {
 
         const status = "in afwachting"
 
-        console.log(organization)
-
         await supabase.from("reservations").insert({
             reservation_year: startDate,
             reservation_number: reservationNumber,
@@ -66,8 +61,7 @@ export default async function page() {
 
     return <LoginRouteProtection>
         <main className={"container mx-auto max-w-screen-xl p-2"}>
-            <ReservationForm submit={handleSubmitReservation} rooms={rooms} timeframes={timeframes}
-                             materials={materials} gebruiker={gebruiker} user={user} allReservations={allReservations}
+            <ReservationForm submit={handleSubmitReservation} rooms={rooms} timeframes={timeframes} gebruiker={gebruiker} user={user} allReservations={allReservations}
                              organizations={organizations}/>
         </main>
     </LoginRouteProtection>

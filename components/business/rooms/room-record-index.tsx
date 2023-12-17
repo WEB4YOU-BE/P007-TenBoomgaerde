@@ -10,15 +10,25 @@ interface RoomRecordIndexProps {
     id: string;
     name?: string;
     isPrivate?: boolean;
-    pricePerDay: number | null;
+    pricePerBlok: number | null;
+    pricePerBlok2: number | null;
     tableName: string;
 }
 
-export default async function RoomRecordIndex({id, name, isPrivate, pricePerDay, tableName}: RoomRecordIndexProps) {
-    return <tr className={"hover:bg-muted whitespace-nowrap max-sm:[&>*:nth-child(3)]:hidden"}>
+export default async function RoomRecordIndex({
+                                                  id,
+                                                  name,
+                                                  isPrivate,
+                                                  pricePerBlok,
+                                                  pricePerBlok2,
+                                                  tableName
+                                              }: RoomRecordIndexProps) {
+    return <tr
+        className={"hover:bg-muted whitespace-nowrap max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden"}>
         <RoomRecordDatapoint>{name}</RoomRecordDatapoint>
         <RoomRecordDatapoint>{isPrivate ? "ja" : "nee"}</RoomRecordDatapoint>
-        <RoomRecordDatapoint>&euro;{pricePerDay}</RoomRecordDatapoint>
+        <RoomRecordDatapoint>&euro;{pricePerBlok}</RoomRecordDatapoint>
+        <RoomRecordDatapoint>&euro;{pricePerBlok2}</RoomRecordDatapoint>
         <RoomRecordDatapoint><RoomRecordIndexActions id={id} tableName={tableName}/></RoomRecordDatapoint>
     </tr>
 }
