@@ -11,7 +11,14 @@ import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
 import Link from "next/link";
-import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger} from "@/components/ui/Dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/Dialog";
 import {Checkbox} from "@/components/ui/checkbox";
 
 
@@ -334,7 +341,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                             <SelectTrigger>
                                 <SelectValue/>
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className={"max-h-60 overscroll-auto"}>
                                 {
                                     sortedOrganizations.map(organization =>
                                         <SelectItem key={organization.id}
