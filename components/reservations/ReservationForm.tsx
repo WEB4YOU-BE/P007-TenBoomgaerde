@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Tables} from "@/lib/database.types";
-import {addYears, compareAsc, eachDayOfInterval, formatISO} from "date-fns";
+import {addYears, compareAsc, eachDayOfInterval, formatISO, isBefore, subDays} from "date-fns";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
@@ -11,14 +11,7 @@ import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
 import Link from "next/link";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/Dialog";
+import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger} from "@/components/ui/Dialog";
 import {Checkbox} from "@/components/ui/checkbox";
 
 
@@ -150,49 +143,65 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
             .length > 0
     }
 
-    function findNextFirstReservationDate() {
-        let lastDate = new Date()
-        if (!selectedStartDate || !selectedStartTimeframe) return lastDate
+    function findNextFirstReservationDate(): Date {
+        if (!selectedStartDate || !selectedStartTimeframe) return new Date()
+        const fSelectedStartDate = formatISO(selectedStartDate, {representation: "date"})
+        const sTFObject = sortedTimeframes.find(tf => tf.id === selectedStartTimeframe)
+        if (!sTFObject) return new Date()
 
-        lastDate = eachDayOfInterval({start: new Date(selectedStartDate), end: addYears(today, 3)})
-            .find((possibleLastDate, index) => {
-                if (addedTimeFramesToDate.find(value => value.date === formatISO(possibleLastDate, {representation: "date"})) === undefined) return false
-                if (index === 0 && addedTimeFramesToDate.find(value => value.date === formatISO(possibleLastDate, {representation: "date"}))!.timeframes.sort(sortTimeframesFn).reverse()[0].end_hour.substring(0, 2) < sortedTimeframes.find(value => value.id === selectedStartTimeframe)!.start_hour.substring(0, 2)) return false
-                return true
-            }) || addYears(today, 3)
+        const datesAfterOrEqStartDate = addedTimeFramesToDate.filter(value => !isBefore(new Date(value.date), selectedStartDate))
 
-        return lastDate
+        if (datesAfterOrEqStartDate.find((_, index) => index === 0)?.date === fSelectedStartDate) {
+            const resTFOnStartDate = datesAfterOrEqStartDate.find((_, index) => index === 0)?.timeframes || []
+            const tfsAfterSTF = resTFOnStartDate.filter(tf => tf.start_hour.substring(0, 2) > sTFObject.start_hour.substring(0, 2))
+            if (tfsAfterSTF.length !== 0) return selectedStartDate
+        }
+
+        const datesAfterStartDate = datesAfterOrEqStartDate.filter((_, index) => !(datesAfterOrEqStartDate.find((_, index) => index === 0)?.date === fSelectedStartDate) || index !== 0)
+        if (!datesAfterStartDate.find((_, index) => index === 0)) return addYears(today, 3)
+
+        if (datesAfterStartDate.find((_, index) => index === 0)!.timeframes[0].id === sortedTimeframes[0].id)
+            return subDays(new Date(datesAfterStartDate.find((_, index) => index === 0)!.date), 1)
+
+        return new Date(datesAfterStartDate.find((_, index) => index === 0)!.date)
     }
 
     function isDisabledEndTF(timeframeId: string) {
-        const possibleTimeframe = sortedTimeframes.find(tf => tf.id === timeframeId)
-        if (possibleTimeframe === undefined) return true
-
         if (!selectedStartDate) return true
         if (!selectedEndDate) return true
+        const {fSelectedStartDate, fSelectedEndDate} = {
+            fSelectedStartDate: formatISO(selectedStartDate, {representation: "date"}),
+            fSelectedEndDate: formatISO(selectedEndDate, {representation: "date"})
+        }
         if (!selectedStartTimeframe) return true
-        const startTFObject = sortedTimeframes.find(tf => tf.id === selectedStartTimeframe)
-        if (startTFObject === undefined) return true
+        const sTFObject = sortedTimeframes.find(tf => tf.id === selectedStartTimeframe)
+        if (!sTFObject) return true
 
-        if (formatISO(selectedStartDate, {representation: "date"}) === formatISO(selectedEndDate, {representation: "date"})) {
-            const tfsOnEndDateBeforeStartTF = sortedTimeframes.filter(tf => tf.start_hour.substring(0, 2) < startTFObject.start_hour.substring(0, 2))
-            if (tfsOnEndDateBeforeStartTF.some(tf => tf.id === possibleTimeframe.id)) return true
+        if (fSelectedStartDate === fSelectedEndDate) {
+            const resTFOnStartDate = addedTimeFramesToDate.find(date => date.date === fSelectedStartDate)?.timeframes || []
+
+            const tfsAfterSTF = resTFOnStartDate.filter(tf => tf.start_hour.substring(0, 2) > sTFObject.start_hour.substring(0, 2))
+            const firstResTFAfterSTF = tfsAfterSTF.find((_, index) => index === 0)
+
+            const availableAfterSTF = sortedTimeframes.filter(value => value.start_hour.substring(0, 2) > sTFObject.start_hour.substring(0, 2) && (firstResTFAfterSTF === undefined || value.start_hour.substring(0, 2) < firstResTFAfterSTF.start_hour.substring(0, 2)))
+
+            const availableTFs = []
+            availableTFs.push(sTFObject)
+            availableTFs.push(...availableAfterSTF)
+
+            if (availableTFs.some(tf => tf.id === timeframeId)) return false
         }
 
-        const possiblyReservedOnEndDate = addedTimeFramesToDate.find(date => date.date === formatISO(selectedEndDate, {representation: "date"}))
-        if (possiblyReservedOnEndDate === undefined) return false
+        if (fSelectedStartDate !== fSelectedEndDate) {
+            const resTFOnEndDate = addedTimeFramesToDate.find(date => date.date === fSelectedEndDate)?.timeframes || []
 
-        if (possiblyReservedOnEndDate.timeframes.map(tf => tf.id).includes(timeframeId)) return true
+            const firstResTF = resTFOnEndDate.find((_, index) => index === 0)
+            const availableTFs = sortedTimeframes.filter(value => (firstResTF === undefined || value.start_hour.substring(0, 2) < firstResTF.start_hour.substring(0, 2)))
 
-        const tfsOnEndDateAfterFirstResTF = sortedTimeframes.filter(tf => tf.start_hour.substring(0, 2) > possiblyReservedOnEndDate.timeframes[0].start_hour.substring(0, 2))
-        if (formatISO(selectedStartDate, {representation: "date"}) === formatISO(selectedEndDate, {representation: "date"})) {
-            const tfsAfterOrEqStartTF = sortedTimeframes.filter(tf => tf.start_hour.substring(0, 2) >= startTFObject.start_hour.substring(0, 2))
-            const tfsAfterOrEqStartTFAndUntilNextFirstResTF = tfsAfterOrEqStartTF.filter(tf => !tfsOnEndDateAfterFirstResTF.filter((tfA) => !(tfA.start_hour.substring(0, 2) <= startTFObject.start_hour.substring(0, 2))).map((tfA) => tfA.id).includes(tf.id))
-            if (tfsAfterOrEqStartTFAndUntilNextFirstResTF.some(tf => tf.id === possibleTimeframe.id)) return false
+            if (availableTFs.some(tf => tf.id === timeframeId)) return false
         }
-        if (tfsOnEndDateAfterFirstResTF.some(tf => tf.id === possibleTimeframe.id)) return true
 
-        return false
+        return true
     }
 
     // MAPPED -- Not available days -- start day
