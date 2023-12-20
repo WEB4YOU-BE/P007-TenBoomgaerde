@@ -41,7 +41,7 @@ export default async function page() {
         const startHour = formData.get("startTimeframe")
         const endDate = formData.get("end")
         const endHour = formData.get("endTimeframe")
-        const organization = formData.get("organization")
+        const organization = formData.get("organization") === "" ? null : formData.get("organization")
 
         const status = "in afwachting"
 
