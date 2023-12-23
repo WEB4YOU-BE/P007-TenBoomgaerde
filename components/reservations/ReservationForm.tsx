@@ -11,7 +11,14 @@ import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
 import Link from "next/link";
-import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger} from "@/components/ui/Dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/Dialog";
 import {Checkbox} from "@/components/ui/checkbox";
 
 
@@ -234,7 +241,6 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
     const getSelectedEndTimeframe = (): Tables<"bloks"> | undefined => normalizedTimeframes.find(value => value.id === selectedEndTimeframe)
     const getSelectedOrganization = (): Tables<"organizations"> | undefined => normalizedOrganizations.find(value => value.id === selectedOrganisation)
 
-
     return (
         <div>
             <form id="reservationForm" action={submit}/>
@@ -245,7 +251,8 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                         <legend>Selecteer de zaal</legend>
                         {
                             normalizedRooms.map((room) => <div key={room.id} className={"flex-grow"}>
-                                <input required form="reservationForm" type="radio" name="room" id={room.id} value={room.id}
+                                <input required form="reservationForm" type="radio" name="room" id={room.id}
+                                       value={room.id}
                                        checked={selectedRoom === room.id} onChange={() => setSelectedRoom(room.id)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={room.id}
@@ -287,8 +294,10 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                     <fieldset className={cn(!!selectedStartDate ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
-                                <input required readOnly form="reservationForm" type="radio" name="startTimeframe" id={"start-" + timeframe.id} value={timeframe.id}
-                                       checked={selectedStartTimeframe === timeframe.id} onChange={() => setSelectedStartTimeframe(timeframe.id)}
+                                <input required readOnly form="reservationForm" type="radio" name="startTimeframe"
+                                       id={"start-" + timeframe.id} value={timeframe.id}
+                                       checked={selectedStartTimeframe === timeframe.id}
+                                       onChange={() => setSelectedStartTimeframe(timeframe.id)}
                                        disabled={timeframeDisabledStart(timeframe.id, selectedStartDate)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={"start-" + timeframe.id}
@@ -299,7 +308,8 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                 </section>
                 <hr/>
                 <section className={"flex flex-col flex-wrap gap-2"}>
-                    <span className={cn(!selectedStartTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
+                    <span
+                        className={cn(!selectedStartTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
                     <fieldset className={cn(!!selectedStartTimeframe ? "block" : "hidden")}>
                         <legend>Selecteer het eindmoment</legend>
                         <Popover>
@@ -328,8 +338,10 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                     <fieldset className={cn(!!selectedEndDate ? "flex flex-row flex-wrap gap-2" : "hidden")}>
                         {
                             sortedTimeframes.map((timeframe) => <div key={timeframe.id} className={"flex-grow"}>
-                                <input required readOnly form="reservationForm" type="radio" name="endTimeframe" id={"end-" + timeframe.id} value={timeframe.id}
-                                       checked={selectedEndTimeframe === timeframe.id} onChange={() => setSelectedEndTimeframe(timeframe.id)}
+                                <input required readOnly form="reservationForm" type="radio" name="endTimeframe"
+                                       id={"end-" + timeframe.id} value={timeframe.id}
+                                       checked={selectedEndTimeframe === timeframe.id}
+                                       onChange={() => setSelectedEndTimeframe(timeframe.id)}
                                        disabled={isDisabledEndTF(timeframe.id)}
                                        className={"peer hidden"}/>
                                 <label htmlFor={"end-" + timeframe.id}
@@ -340,7 +352,8 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                 </section>
                 <hr/>
                 <section>
-                    <span className={cn(!selectedEndTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
+                    <span
+                        className={cn(!selectedEndTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
                     <fieldset className={cn(!!selectedEndTimeframe ? "block" : "hidden")}>
                         <legend>Selecteer jouw organisatie (optioneel)</legend>
                         <input form="reservationForm" type="text" name="organization" readOnly
@@ -371,8 +384,10 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                 <hr/>
                 <section>
                     <fieldset className={"flex flex-row items-center"}>
-                        <Checkbox id={"termsAndConditions"} className={"mr-2"} checked={acceptedConditions} onCheckedChange={checked => setAcceptedConditions(checked === true)}/>
-                        <label htmlFor={"termsAndConditions"} className={""}>Ik ga akkoord met het <Link href={document} target={"_blank"}>reglement
+                        <Checkbox id={"termsAndConditions"} className={"mr-2"} checked={acceptedConditions}
+                                  onCheckedChange={checked => setAcceptedConditions(checked === true)}/>
+                        <label htmlFor={"termsAndConditions"} className={""}>Ik ga akkoord met het <Link href={document}
+                                                                                                         target={"_blank"}>reglement
                             vergaderzalen</Link></label>
                     </fieldset>
                 </section>
@@ -387,7 +402,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                 <>
                                     <div className={"grid grid-cols-2 my-4"}>
                                         <span className={"font-bold"}>Datum:</span>
-                                        <span>{selectedStartDate?.getDate() === selectedEndDate?.getDate() ? selectedStartDate?.toISOString().substring(0, 10) : selectedStartDate?.toISOString().substring(0, 10) + " tot " + selectedEndDate?.toISOString().substring(0, 10)}</span>
+                                        <span>{selectedStartDate?.getDate() === selectedEndDate?.getDate() ? selectedStartDate?.getDate() + "-" + selectedStartDate?.toISOString().substring(5, 7) + "-" + selectedStartDate?.toISOString().substring(0, 4) : selectedStartDate?.getDate() + "-" + selectedStartDate?.toISOString().substring(5, 7) + "-" + selectedStartDate?.toISOString().substring(0, 4) + " tot " + selectedEndDate?.getDate() + "-" + selectedEndDate?.toISOString().substring(5, 7) + "-" + selectedEndDate?.toISOString().substring(0, 4)}</span>
                                         <span className={"font-bold"}>Tijd:</span>
                                         <span>{getSelectedStartTimeframe()?.start_hour.substring(0, 5)} - {getSelectedEndTimeframe()?.end_hour.substring(0, 5)}</span>
                                         <span className={"font-bold"}>Zaal:</span>
