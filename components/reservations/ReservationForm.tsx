@@ -241,8 +241,6 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
     const getSelectedEndTimeframe = (): Tables<"bloks"> | undefined => normalizedTimeframes.find(value => value.id === selectedEndTimeframe)
     const getSelectedOrganization = (): Tables<"organizations"> | undefined => normalizedOrganizations.find(value => value.id === selectedOrganisation)
 
-    console.log(selectedStartDate?.getDate() + "-" + selectedStartDate?.toISOString().substring(5, 7) + "-" + selectedStartDate?.toISOString().substring(0, 4))
-
     return (
         <div>
             <form id="reservationForm" action={submit}/>
