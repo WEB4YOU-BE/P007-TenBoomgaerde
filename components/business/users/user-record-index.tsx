@@ -16,7 +16,7 @@ interface UserRecordIndexProps {
     type: number
 }
 
-export default async function UserRecordIndex({
+export default function UserRecordIndex({
                                                   id,
                                                   firstname,
                                                   lastname,
@@ -44,7 +44,7 @@ interface UserRecordDatapointProps {
     children?: React.ReactNode;
 }
 
-async function UserRecordDatapoint({children}: UserRecordDatapointProps) {
+function UserRecordDatapoint({children}: UserRecordDatapointProps) {
     return <td
         className={"px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"}>{children}</td>
 }
@@ -53,7 +53,7 @@ interface UserRecordIndexActionsProps {
     id: string;
 }
 
-async function UserRecordIndexActions({id}: UserRecordIndexActionsProps) {
+function UserRecordIndexActions({id}: UserRecordIndexActionsProps) {
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/gebruikers/${id}`}
               className={cn(buttonVariants({variant: "blue"}), "flex flex-row gap-2 flex-shrink-0")}><Info
