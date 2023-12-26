@@ -21,6 +21,19 @@ export default function ProductsTable({serverProducts}: ProductsTableProps) {
                     setProducts(prods => {
                         return prods.filter(item => item.id !== payload.old.id)
                     })
+                } else if (payload.eventType === "UPDATE") {
+                    setProducts(prods => {
+                        // Index zoeken van object op basis van id
+                        const index = prods.findIndex(item => item.id === payload.new.id);
+                        // Als object is gevonden, updaten anders array niet veranderen
+                        if (index !== -1) {
+                            const updatedProducts = [...prods];
+                            updatedProducts[index] = payload.new as product;
+                            return updatedProducts;
+                        } else {
+                            return products;
+                        }
+                    })
                 } else {
                     setProducts([...products, payload.new as product])
                 }
