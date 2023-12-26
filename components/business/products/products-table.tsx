@@ -31,7 +31,7 @@ export default function ProductsTable({serverProducts}: ProductsTableProps) {
                             updatedProducts[index] = payload.new as product;
                             return updatedProducts;
                         } else {
-                            return products;
+                            return prods;
                         }
                     })
                 } else {
