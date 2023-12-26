@@ -15,7 +15,6 @@ export default function ChangeAdmin({id, isAdmin, email}: AdminUserProps) {
 
     const handleChange = () => {
         const checked = !isAdmin
-        console.log(checked)
         UpdateAdmin({id, checked})
         toast({
             title: `${email} is ${checked ? "administator gemaakt" : "geen administrator meer"}`,
