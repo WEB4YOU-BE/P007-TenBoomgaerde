@@ -12,15 +12,18 @@ type product = Tables<"products">
 
 export default function ProductsTable({serverProducts}: ProductsTableProps) {
     const [products, setProducts] = useState(serverProducts)
+
     useEffect(() => {
         const channel = supabase.channel('realtime products').on('postgres_changes', {
                 event: '*', schema: 'public', table: 'products'
             }, (payload) => {
                 if (payload.eventType === "DELETE") {
-                    const prods = products.filter(prod => prod.id !== payload.old.id)
-                    setProducts(prods)
+                    setProducts(prods => {
+                        return prods.filter(item => item.id !== payload.old.id)
+                    })
+                } else {
+                    setProducts([...products, payload.new as product])
                 }
-                setProducts([...products, payload.new as product])
             }
         ).subscribe();
         return () => {
