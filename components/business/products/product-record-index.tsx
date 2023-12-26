@@ -16,7 +16,7 @@ interface ProductRecordIndexProps {
 }
 
 
-export default async function ProductRecordIndex({
+export default function ProductRecordIndex({
                                                      id,
                                                      name,
                                                      price,
@@ -40,7 +40,7 @@ interface ProductRecordDatapointProps {
     children?: React.ReactNode;
 }
 
-async function ProductRecordDatapoint({children}: ProductRecordDatapointProps) {
+function ProductRecordDatapoint({children}: ProductRecordDatapointProps) {
     return <td className={"px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"}>{children}</td>
 }
 
@@ -49,7 +49,7 @@ interface ProductRecordIndexActionsProps {
     tableName: string;
 }
 
-async function ProductRecordIndexActions({id, tableName}: ProductRecordIndexActionsProps) {
+function ProductRecordIndexActions({id, tableName}: ProductRecordIndexActionsProps) {
     const handleDelete = async () => {
         await Delete({id, tableName})
     }

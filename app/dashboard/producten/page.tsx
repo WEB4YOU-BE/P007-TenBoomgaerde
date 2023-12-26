@@ -67,6 +67,6 @@ export default async function page() {
             <h1 className={"text-4xl font-extrabold tracking-tight lg:text-5xl md:flex-grow"}>Producten</h1>
             <Link href={"/dashboard/producten/add"} className={cn(buttonVariants({variant: "green"}), "flex flex-row gap-2")}><PlusCircle size={16}/>Toevoegen</Link>
         </div>
-        <ProductsTable products={products.data}/>
+        <ProductsTable serverProducts={products.data}/>
     </main>
 }

@@ -1,11 +1,32 @@
+'use client'
 import {Tables} from "@/lib/database.types";
 import ProductRecordIndex from "@/components/business/products/product-record-index";
+import {useEffect, useState} from "react";
+import supabase from "@/lib/supabase";
 
 interface ProductsTableProps {
-    products: Tables<"products">[];
+    serverProducts: Tables<"products">[];
 }
 
-export default async function ProductsTable({products}: ProductsTableProps) {
+type product = Tables<"products">
+
+export default function ProductsTable({serverProducts}: ProductsTableProps) {
+    const [products, setProducts] = useState(serverProducts)
+    useEffect(() => {
+        const channel = supabase.channel('realtime products').on('postgres_changes', {
+                event: '*', schema: 'public', table: 'products'
+            }, (payload) => {
+                if (payload.eventType === "DELETE") {
+                    const prods = products.filter(prod => prod.id !== payload.old.id)
+                    setProducts(prods)
+                }
+                setProducts([...products, payload.new as product])
+            }
+        ).subscribe();
+        return () => {
+            void supabase.removeChannel(channel)
+        }
+    }, [supabase, setProducts, products]);
     return <div className={"max-w-[100dvw] md:max-w-[calc(100dvw-320px)] overflow-x-auto"}>
         <table className={"min-w-full divide-y divide-gray-200 table-fixed max-sm:text-sm"}>
             <thead>
