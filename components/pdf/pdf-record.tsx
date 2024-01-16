@@ -13,6 +13,7 @@ interface ReservationRecordIndexProps {
     accessCode: number | null;
     status: string | null;
     gefactureerd: boolean;
+    organization: { name: string };
 }
 
 const styles = StyleSheet.create({
@@ -43,6 +44,7 @@ export default function PdfReservationRecordIndex({
                                                       end_hour,
                                                       accessCode,
                                                       status,
+                                                      organization
                                                   }: ReservationRecordIndexProps) {
     return <View style={styles.tableRow}>
         <View style={styles.tableCol}>
@@ -65,7 +67,8 @@ export default function PdfReservationRecordIndex({
             {(status === 'in afwachting') && <Text style={styles.tableCell}>In afwachting</Text>}
         </View>
         <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>{users.firstname + " " + users.lastname}</Text>
+            <Text
+                style={styles.tableCell}>{organization === undefined || organization === null ? users.firstname + " " + users.lastname : organization.name}</Text>
         </View>
         <View style={styles.tableCol}>
             <Text style={styles.tableCell}>{users.phone}</Text>

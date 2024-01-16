@@ -10,7 +10,6 @@ interface ReservationsProps {
 }
 
 export default function ExportExcel({reservations}: ReservationsProps) {
-
     const handleDownload = () => {
         const rows = reservations.map((reservation) => ({
             Reservatienummer: reservation.reservation_year.substring(0, 4) + '-' + reservation.reservation_number,
@@ -19,7 +18,7 @@ export default function ExportExcel({reservations}: ReservationsProps) {
             Startuur: reservation.start_hour.start_hour,
             Einduur: reservation.end_hour.end_hour,
             Zaal: reservation.rooms.name,
-            Reserveerder: reservation.users.firstname + " " + reservation.users.lastname,
+            Reserveerder: reservation.organizations === undefined || reservation.organizations === null ? reservation.users.firstname + " " + reservation.users.lastname : reservation.organizations.name,
             Toegangscode: reservation.access_code === null ? 'Onbekend' : reservation.access_code,
             Status: reservation.status,
             Gefactureerd: reservation.gefactureerd
