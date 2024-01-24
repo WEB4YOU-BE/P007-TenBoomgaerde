@@ -97,7 +97,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
 
     // FILTER -- BASED ON ROOM SELECTION
     const filteredByRoom = sortedReservations
-        .filter((reservation) => reservation.rooms.id === selectedRoom)
+        .filter((reservation) => reservation.rooms?.id === selectedRoom)
         .filter((reservation) => reservation.status !== "geweigerd");
 
     // MAPPED -- ALL TIMEFRAMES IN A GIVEN DAY, WHICH ARE NOT AVAILABLE ANYMORE
