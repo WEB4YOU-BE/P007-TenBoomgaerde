@@ -11,14 +11,7 @@ import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
 import Link from "next/link";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/Dialog";
+import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger} from "@/components/ui/Dialog";
 import {Checkbox} from "@/components/ui/checkbox";
 
 
@@ -97,7 +90,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
 
     // FILTER -- BASED ON ROOM SELECTION
     const filteredByRoom = sortedReservations
-        .filter((reservation) => reservation.rooms.id === selectedRoom)
+        .filter((reservation) => reservation.rooms?.id === selectedRoom)
         .filter((reservation) => reservation.status !== "geweigerd");
 
     // MAPPED -- ALL TIMEFRAMES IN A GIVEN DAY, WHICH ARE NOT AVAILABLE ANYMORE
