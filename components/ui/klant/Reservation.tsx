@@ -1,5 +1,6 @@
 import {Badge} from "@/components/ui/Badge";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/Hover-card";
+import React from "react";
 
 interface reservationProps {
     id: string;
@@ -14,6 +15,7 @@ interface reservationProps {
     products: { name: string };
     access_code: number | null;
     status: string | null;
+    remarks: string | null;
 }
 
 const Reservation = async (reservation: reservationProps) => {
@@ -65,6 +67,17 @@ const Reservation = async (reservation: reservationProps) => {
                 }
                 {reservation.access_code}
             </div>
+            {reservation.remarks !== undefined && reservation.remarks !== null && (
+                <div className={"sm:row-start-2 col-span-3 sm:col-span-1 sm:row-span-2"}>
+                    <form className={"flex flex-col gap-2 h-full"}>
+                        <label htmlFor={"remark"} className="font-bold">Opmerkingen:</label>
+                        <textarea id={"remark"} name={"remark"} readOnly={true}
+                                  defaultValue={reservation.remarks}
+                                  className={"flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
+                        </textarea>
+                    </form>
+                </div>
+            )}
         </div>
     </div>
 }
