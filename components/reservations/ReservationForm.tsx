@@ -241,6 +241,18 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
     const getSelectedEndTimeframe = (): Tables<"bloks"> | undefined => normalizedTimeframes.find(value => value.id === selectedEndTimeframe)
     const getSelectedOrganization = (): Tables<"organizations"> | undefined => normalizedOrganizations.find(value => value.id === selectedOrganisation)
 
+    const calculatedPrice = () => {
+        if (selectedRoom && selectedStartTimeframe && selectedEndTimeframe) {
+            const isSingleTimeframe = selectedStartTimeframe === selectedEndTimeframe
+
+            if (isSingleTimeframe) {
+                return getSelectedZaal()?.day_price
+            } else {
+                return 5
+            }
+        }
+    }
+
     return (
         <div>
             <form id="reservationForm" action={submit}/>
@@ -407,6 +419,8 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                         <span>{getSelectedStartTimeframe()?.start_hour.substring(0, 5)} - {getSelectedEndTimeframe()?.end_hour.substring(0, 5)}</span>
                                         <span className={"font-bold"}>Zaal:</span>
                                         <span>{getSelectedZaal()?.name}</span>
+                                        <span className={"font-bold"}>Prijs:</span>
+                                        <span>{calculatedPrice()}</span>
                                     </div>
                                     <h2 className={"text-xl font-bold text-center"}>Uw gegevens</h2>
                                     <div className={"grid grid-cols-2 my-4"}>
