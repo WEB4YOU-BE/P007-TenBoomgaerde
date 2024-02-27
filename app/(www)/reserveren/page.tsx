@@ -42,6 +42,7 @@ export default async function page() {
         const endDate = formData.get("end")
         const endHour = formData.get("endTimeframe")
         const organization = formData.get("organization") === "" ? null : formData.get("organization")
+        const remark = formData.get("remark")
 
         const status = "in afwachting"
 
@@ -56,6 +57,7 @@ export default async function page() {
             end_hour: endHour,
             status: status,
             organizations_id: organization,
+            remarks: remark,
         })
         redirect("/klant", RedirectType.push)
     }
