@@ -57,7 +57,7 @@ export const metadata = {
 
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
-    const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).order('start_date')
+    const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).order('start_date')
     const reservations: DbResult<typeof query> = await query
 
     if (!reservations.data) return undefined
