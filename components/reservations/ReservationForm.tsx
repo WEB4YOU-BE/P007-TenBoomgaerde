@@ -94,7 +94,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
     const sortedOrganizations = normalizedOrganizations.sort(
         (org1, org2) =>
             org1.name.localeCompare(org2.name))
-
+    console.log(sortedTimeframes)
     // FILTER -- BASED ON ROOM SELECTION
     const filteredByRoom = sortedReservations
         .filter((reservation) => reservation.rooms.id === selectedRoom)
@@ -242,13 +242,26 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
     const getSelectedOrganization = (): Tables<"organizations"> | undefined => normalizedOrganizations.find(value => value.id === selectedOrganisation)
 
     const calculatedPrice = () => {
+        if (!selectedStartDate) return true
+        if (!selectedEndDate) return true
+        const {fSelectedStartDate, fSelectedEndDate} = {
+            fSelectedStartDate: formatISO(selectedStartDate, {representation: "date"}),
+            fSelectedEndDate: formatISO(selectedEndDate, {representation: "date"})
+        }
+        //@ts-ignore
+        const price2: number = (getSelectedZaal()?.day_price2 !== null && getSelectedZaal()?.day_price2 !== undefined) ? getSelectedZaal()?.day_price2 : 0
         if (selectedRoom && selectedStartTimeframe && selectedEndTimeframe) {
-            const isSingleTimeframe = selectedStartTimeframe === selectedEndTimeframe
-
+            const isSingleTimeframe = selectedStartTimeframe === selectedEndTimeframe && fSelectedEndDate === fSelectedEndDate
             if (isSingleTimeframe) {
                 return getSelectedZaal()?.day_price
+            }
+            if (fSelectedStartDate === fSelectedEndDate) {
+                const startIndex = sortedTimeframes.findIndex(tf => tf.id === selectedStartTimeframe)
+                const endIndex = sortedTimeframes.findIndex(tf => tf.id === selectedEndTimeframe)
+                return price2 * (endIndex - startIndex + 1)
             } else {
-                return 5
+                const differenceDates = (new Date(selectedEndDate).getTime() - new Date(selectedStartDate).getTime()) / 24 * 3600 * 1000
+                return differenceDates
             }
         }
     }
@@ -420,7 +433,7 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                         <span className={"font-bold"}>Zaal:</span>
                                         <span>{getSelectedZaal()?.name}</span>
                                         <span className={"font-bold"}>Prijs:</span>
-                                        <span>{calculatedPrice()}</span>
+                                        <span>€ {calculatedPrice()}</span>
                                     </div>
                                     <h2 className={"text-xl font-bold text-center"}>Uw gegevens</h2>
                                     <div className={"grid grid-cols-2 my-4"}>
