@@ -112,15 +112,6 @@ export default async function InfoReservationForm({
                 <span>{users.email}</span>
             </div>
             <div className={"max-sm:flex max-sm:flex-col-reverse max-sm:gap-4"}>
-                <div className="flex flex-col gap-4 border rounded-xl p-4">
-                    <form className={"flex flex-col gap-4 h-full"} action={updateRemark}>
-                        <label htmlFor={"remark"} className="font-bold uppercase text-xl">Opmerkingen:</label>
-                        <textarea id={"remark"} name={"remark"} defaultValue={remarks === null ? "" : remarks}
-                                  className={"flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
-                        </textarea>
-                        <button type={"submit"} className={cn(buttonVariants({variant: "green"}))}>Verstuur</button>
-                    </form>
-                </div>
                 {organizations !== undefined && organizations !== null && (
                     <div className="flex flex-col gap-4 border rounded-xl p-4">
                         <h3 className="font-bold uppercase text-xl">Organisatie</h3>
@@ -134,6 +125,15 @@ export default async function InfoReservationForm({
                         </div>
                     </div>
                 )}
+            </div>
+            <div className="flex flex-col gap-4 border rounded-xl p-4">
+                <form className={"flex flex-col gap-4 h-full"} action={updateRemark}>
+                    <label htmlFor={"remark"} className="font-bold uppercase text-xl">Opmerkingen:</label>
+                    <textarea id={"remark"} name={"remark"} defaultValue={remarks === null ? "" : remarks}
+                              className={"flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
+                        </textarea>
+                    <button type={"submit"} className={cn(buttonVariants({variant: "green"}))}>Verstuur</button>
+                </form>
             </div>
         </div>
 
