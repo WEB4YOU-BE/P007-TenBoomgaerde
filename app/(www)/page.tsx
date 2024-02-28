@@ -53,7 +53,7 @@ export default async function Index() {
     return <main className={"min-h-[calc(100svh-72px)]"}>
         <div className={"container max-w-screen-xl mx-auto grid lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4"}>
             <div className={"xl:col-span-2 flex flex-col gap-4 pb-6"}>
-                <h1 className={"text-5xl font-extrabold"}>Ten boomgaerde</h1>
+                <h1 className={"text-5xl font-extrabold"}>Ten Boomgaerde</h1>
                 <p>Ten Boomgaerde vzw heet u van harte welkom in ons vergadercentrum in Lichtervelde.</p>
                 <p>Dit complex bevat een grote- en kleine zaal, die verhuurd worden voor allerhande evenementen
                     zoals: </p>
