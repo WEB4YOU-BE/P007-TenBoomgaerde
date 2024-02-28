@@ -12,7 +12,7 @@ export default async function page() {
     const queryRooms = supabase.from("rooms").select()
     const rooms: DbResult<typeof queryRooms> = await queryRooms
 
-    const queryAllReservations = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(id), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).gte('start_date', formatISO(new Date(), {representation: 'date'})).order('start_date')
+    const queryAllReservations = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(id), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).gte('start_date', formatISO(new Date(), {representation: 'date'})).order('start_date')
     const allReservations: DbResult<typeof queryAllReservations> = await queryAllReservations
 
     const queryTimeframes = supabase.from("bloks").select()
@@ -42,6 +42,7 @@ export default async function page() {
         const endDate = formData.get("end")
         const endHour = formData.get("endTimeframe")
         const organization = formData.get("organization") === "" ? null : formData.get("organization")
+        const remark = formData.get("remark")
 
         const status = "in afwachting"
 
@@ -56,6 +57,7 @@ export default async function page() {
             end_hour: endHour,
             status: status,
             organizations_id: organization,
+            remarks: remark,
         })
         redirect("/klant", RedirectType.push)
     }

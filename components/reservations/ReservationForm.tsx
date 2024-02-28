@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {PostgrestSingleResponse, User} from "@supabase/supabase-js";
 import {Tables} from "@/lib/database.types";
 import {addYears, compareAsc, eachDayOfInterval, formatISO, isBefore, subDays} from "date-fns";
@@ -374,6 +374,19 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                     </fieldset>
                 </section>
                 <hr/>
+                {/*<section>
+                    <span
+                        className={cn(!selectedEndTimeframe ? "block" : "hidden")}>Vervolledig de vorige stap(pen).</span>
+                    <fieldset className={cn(!!selectedEndTimeframe ? "block" : "hidden")}>
+                        <legend>Voeg een opmerking toe (optioneel)</legend>
+                        <textarea form="reservationForm" id={"remark"} name={"remark"}
+                                  defaultValue={remarks === null ? "" : remarks}
+                                  onChange={e => setRemarks(e.target.value)}
+                                  className={"flex my-2 w-full md:w-1/2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
+                        </textarea>
+                    </fieldset>
+                </section>
+                <hr/>*/}
                 <section>
                     <fieldset>
                         <legend>Aangemeld als {gebruiker.data && gebruiker.data[0].firstname}</legend>
@@ -407,6 +420,10 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                         <span>{getSelectedStartTimeframe()?.start_hour.substring(0, 5)} - {getSelectedEndTimeframe()?.end_hour.substring(0, 5)}</span>
                                         <span className={"font-bold"}>Zaal:</span>
                                         <span>{getSelectedZaal()?.name}</span>
+                                        <span className={"font-bold"}>Opmerkingen: (optioneel)</span>
+                                        <textarea form="reservationForm" id={"remark"} name={"remark"}
+                                                  className={"flex my-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
+                                        </textarea>
                                     </div>
                                     <h2 className={"text-xl font-bold text-center"}>Uw gegevens</h2>
                                     <div className={"grid grid-cols-2 my-4"}>

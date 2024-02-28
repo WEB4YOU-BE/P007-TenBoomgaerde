@@ -1,5 +1,6 @@
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/Hover-card";
-import DashboardReservationsHoldTable from "@/components/business/reservations/dashboard/dashboard-reservations-hold-table";
+import DashboardReservationsHoldTable
+    from "@/components/business/reservations/dashboard/dashboard-reservations-hold-table";
 import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import {DbResult} from "@/lib/database.types";
@@ -79,10 +80,10 @@ function formatDate({date}: {
 
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
-    const queryHold = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).eq('status', 'in afwachting').order('start_date')
-    const queryWeak = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).gte('start_date', formatDate({date: getWeekDates().start})).lte('end_date', formatDate({date: getWeekDates().end})).order('start_date')
-    const queryMonth = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).gte('start_date', formatDate({date: getMonthDates().start})).lte('end_date', formatDate({date: getMonthDates().end})).order('start_date')
-    const queryInvoice = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name)`).eq('gefactureerd', 'FALSE').order('start_date')
+    const queryHold = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).eq('status', 'in afwachting').order('start_date')
+    const queryWeak = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).gte('start_date', formatDate({date: getWeekDates().start})).lte('end_date', formatDate({date: getWeekDates().end})).order('start_date')
+    const queryMonth = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).gte('start_date', formatDate({date: getMonthDates().start})).lte('end_date', formatDate({date: getMonthDates().end})).order('start_date')
+    const queryInvoice = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).eq('gefactureerd', 'FALSE').order('start_date')
 
     const reservationsHold: DbResult<typeof queryHold> = await queryHold
     const reservationsWeak: DbResult<typeof queryWeak> = await queryWeak

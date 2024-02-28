@@ -4,6 +4,9 @@ import {buttonVariants} from "@/components/ui/button";
 import Link from "next/link";
 import {cn} from "@/lib/utils";
 import ChangeFacturatie from "@/components/business/reservations/change-facturatie";
+import {redirect} from "next/navigation";
+import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
+import {cookies} from "next/headers";
 
 
 interface ReservationIndexProps {
@@ -20,7 +23,8 @@ interface ReservationIndexProps {
     status: string | null;
     products: { name: string };
     gefactureerd: boolean;
-    organizations: { name: string, btw_number: string };
+    organizations: { name: string, btw_number: string }
+    remarks: string | null;
 }
 
 export default async function InfoReservationForm({
@@ -35,10 +39,21 @@ export default async function InfoReservationForm({
                                                       end_hour,
                                                       accessCode,
                                                       status,
-                                                      products,
                                                       gefactureerd,
-                                                      organizations
+                                                      organizations,
+                                                      remarks,
                                                   }: ReservationIndexProps) {
+
+    const updateRemark = async (formData: FormData) => {
+        "use server"
+        const remark = formData.get("remark")
+
+        if (remark === null) redirect("/remark")
+
+        const supabase = createServerComponentClient({cookies})
+        await supabase.from("reservations").update({remarks: remark}).eq('id', id)
+    }
+
     return <main>
         <div className={"grid grid-cols-1 lg:grid-cols-2 p-2 gap-6"}>
             <div className={"lg:col-span-2"}>
@@ -96,24 +111,32 @@ export default async function InfoReservationForm({
                 <span className={"font-bold uppercase"}>Email:</span>
                 <span>{users.email}</span>
             </div>
-            <div className={"flex flex-row gap-4"}>
-                <span className={"font-bold uppercase"}>Producten:</span>
-                <span>{products === null ? "" : products.name}</span>
+            <div className={"max-sm:flex max-sm:flex-col-reverse max-sm:gap-4"}>
+                {organizations !== undefined && organizations !== null && (
+                    <div className="flex flex-col gap-4 border rounded-xl p-4">
+                        <h3 className="font-bold uppercase text-xl">Organisatie</h3>
+                        <div className={"flex flex-row gap-4"}>
+                            <span className="font-bold uppercase">Naam:</span>
+                            <span>{organizations.name}</span>
+                        </div>
+                        <div className={"flex flex-row gap-4"}>
+                            <span className="font-bold uppercase">BTW-nummer:</span>
+                            <span>{organizations.btw_number}</span>
+                        </div>
+                    </div>
+                )}
             </div>
-            {organizations !== undefined && organizations !== null && (
-                <div className="flex flex-col gap-4 border rounded-xl p-4">
-                    <h3 className="font-bold uppercase text-xl">Organisatie</h3>
-                    <div className={"flex flex-row gap-4"}>
-                        <span className="font-bold uppercase">Naam:</span>
-                        <span>{organizations.name}</span>
-                    </div>
-                    <div className={"flex flex-row gap-4"}>
-                        <span className="font-bold uppercase">BTW-nummer:</span>
-                        <span>{organizations.btw_number}</span>
-                    </div>
-                </div>
-            )}
+            <div className="flex flex-col gap-4 border rounded-xl p-4">
+                <form className={"flex flex-col gap-4 h-full"} action={updateRemark}>
+                    <label htmlFor={"remark"} className="font-bold uppercase text-xl">Opmerkingen:</label>
+                    <textarea id={"remark"} name={"remark"} defaultValue={remarks === null ? "" : remarks}
+                              className={"flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
+                        </textarea>
+                    <button type={"submit"} className={cn(buttonVariants({variant: "green"}))}>Verstuur</button>
+                </form>
+            </div>
         </div>
+
         <Link href={"/dashboard/reservaties"} className={cn(buttonVariants({variant: "secondary"}), "mt-12")}>Terug naar
             reservatielijst</Link>
     </main>
