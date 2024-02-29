@@ -88,7 +88,7 @@ const Reservation = async (reservation: reservationProps) => {
                     <div className={"flex sm:flex-row flex-col justify-between"}>
                         <textarea id={"remark"} name={"remark"}
                                   defaultValue={reservation.remarks === null ? "" : reservation.remarks}
-                                  className={"flex w-full max-sm:mb-2 mr-6 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
+                                  className={"flex w-full max-sm:mb-2 mr-6 h-20 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
                         </textarea>
                         <button type={"submit"} className={cn(buttonVariants({variant: "green"}), "my-auto")}>Verstuur
                         </button>
