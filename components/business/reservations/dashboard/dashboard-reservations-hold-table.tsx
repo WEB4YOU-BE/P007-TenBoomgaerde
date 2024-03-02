@@ -7,9 +7,9 @@ interface ReservationsTableProps {
 }
 
 export default async function DashboardReservationRecordTable({reservations}: ReservationsTableProps) {
-    return <table className={"min-w-full divide-y divide-gray-200 table-fixed text-sm"}>
+    return <table className={"min-w-full divide-y divide-gray-200 table-fixed text-xs"}>
         <thead>
-        <tr className={"bg-muted max-sm:[&>*:nth-child(2)]:hidden max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden"}>
+        <tr className={"bg-muted max-sm:[&>*:nth-child(2)]:hidden max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden max-sm:[&>*:nth-child(6)]:hidden"}>
             {
                 [
                     'Resevatienr',
@@ -17,6 +17,7 @@ export default async function DashboardReservationRecordTable({reservations}: Re
                     'Uur',
                     'Zaal',
                     'Reserveerder',
+                    'Organisatie',
                     'Details'
                 ].map((th, index) => (
                     <th key={index} scope={"col"}
@@ -37,7 +38,8 @@ export default async function DashboardReservationRecordTable({reservations}: Re
                                                      start_date={reservation.start_date}
                                                      end_date={reservation.end_date}
                                                      start_hour={reservation.start_hour}
-                                                     end_hour={reservation.end_hour}/>)
+                                                     end_hour={reservation.end_hour}
+                                                     organizations={reservation.organizations}/>)
         }</tbody>
     </table>
 }

@@ -43,9 +43,12 @@ export default function PdfReservationRecordIndex({
                                                       start_hour,
                                                       end_hour,
                                                       accessCode,
-                                                      status,
                                                       organization
                                                   }: ReservationRecordIndexProps) {
+
+    const voornaam = users.firstname ?? ""
+    const familienaam = users.lastname ?? ""
+
     return <View style={styles.tableRow}>
         <View style={styles.tableCol}>
             <Text style={styles.tableCell}>{reservationYear.substring(0, 4) + '-' + reservationNumber}</Text>
@@ -70,13 +73,12 @@ export default function PdfReservationRecordIndex({
             <Text style={styles.tableCell}>{rooms.name}</Text>
         </View>
         <View style={styles.tableCol}>
-            {(status === 'goedgekeurd') && <Text style={styles.tableCell}>Bevestigd</Text>}
-            {(status === 'geweigerd') && <Text style={styles.tableCell}>Geweigerd</Text>}
-            {(status === 'in afwachting') && <Text style={styles.tableCell}>In afwachting</Text>}
+            <Text
+                style={styles.tableCell}>{voornaam + " " + familienaam}</Text>
         </View>
         <View style={styles.tableCol}>
             <Text
-                style={styles.tableCell}>{organization === undefined || organization === null ? users.firstname + " " + users.lastname : organization.name}</Text>
+                style={styles.tableCell}>{organization === undefined || organization === null ? "" : organization.name}</Text>
         </View>
         <View style={styles.tableCol}>
             <Text style={styles.tableCell}>{users.phone}</Text>

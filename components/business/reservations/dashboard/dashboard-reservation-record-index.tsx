@@ -14,20 +14,22 @@ interface ReservationRecordIndexProps {
     end_date: string;
     start_hour: { start_hour: string };
     end_hour: { end_hour: string };
+    organizations: { name: string };
 }
 
 
 export default async function DashboardReservationRecordIndex({
-                                                                      id,
-                                                                      reservationYear,
-                                                                      reservationNumber,
-                                                                      users,
-                                                                      rooms,
-                                                                      start_date,
-                                                                      end_date,
-                                                                      start_hour,
-                                                                      end_hour
-                                                                  }: ReservationRecordIndexProps) {
+                                                                  id,
+                                                                  reservationYear,
+                                                                  reservationNumber,
+                                                                  users,
+                                                                  rooms,
+                                                                  start_date,
+                                                                  end_date,
+                                                                  start_hour,
+                                                                  end_hour,
+                                                                  organizations
+                                                              }: ReservationRecordIndexProps) {
     const voornaam = users.firstname ?? ""
     const familienaam = users.lastname ?? ""
 
@@ -49,6 +51,7 @@ export default async function DashboardReservationRecordIndex({
         <ReservationRecordDatapoint>{start_hour.start_hour.substring(0, 5) + "-" + end_hour.end_hour.substring(0, 5)}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{rooms.name}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{voornaam + " " + familienaam}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{organizations === undefined || organizations === null ? "" : organizations.name}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint><ReservationRecordIndexActions id={id}/></ReservationRecordDatapoint>
     </tr>
 }
@@ -70,6 +73,6 @@ async function ReservationRecordIndexActions({id}: ReservationRecordIndexActions
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/reservaties/${id}`}
               className={cn(buttonVariants({variant: "blue"}), "flex flex-row gap-2 flex-shrink-0")}><Info
-            size={16}/><span className={"max-sm:hidden"}>Bekijk</span></Link>
+            size={16}/></Link>
     </div>
 }

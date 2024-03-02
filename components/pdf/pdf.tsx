@@ -72,7 +72,7 @@ const WeekPDF = ({reservations}: pdfProps) => {
             title={"Reservaties " + formatDate({date: getWeekDates().start}) + " tot " + formatDate({date: getWeekDates().end})}>
             <Page size={"A4"} orientation={"landscape"}>
                 <View style={styles.view}>
-                    <Text wrap={false} style={styles.h1}>Reservaties deze week</Text>
+                    <Text wrap={false} style={styles.h1}>Bevestigde reservaties deze week</Text>
                     <Text wrap={false}
                           style={styles.date}>{formatDate({date: getWeekDates().start})} tot {formatDate({date: getWeekDates().end})}</Text>
                 </View>
@@ -91,10 +91,10 @@ const WeekPDF = ({reservations}: pdfProps) => {
                             <Text style={styles.tableCellHead}>Zaal</Text>
                         </View>
                         <View style={styles.tableColHead}>
-                            <Text style={styles.tableCellHead}>Status</Text>
+                            <Text style={styles.tableCellHead}>Reserveerder</Text>
                         </View>
                         <View style={styles.tableColHead}>
-                            <Text style={styles.tableCellHead}>Reserveerder</Text>
+                            <Text style={styles.tableCellHead}>Organisatie</Text>
                         </View>
                         <View style={styles.tableColHead}>
                             <Text style={styles.tableCellHead}>Gsm-nummer</Text>

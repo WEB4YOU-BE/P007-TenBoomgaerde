@@ -38,13 +38,8 @@ export default async function ReservationRecordIndex({
                                                          gefactureerd,
                                                          organizations,
                                                      }: ReservationRecordIndexProps) {
-    let reserveerder;
-
-    if (organizations === undefined || organizations === null) {
-        reserveerder = users.firstname + " " + users.lastname;
-    } else {
-        reserveerder = organizations.name
-    }
+    const voornaam = users.firstname ?? ""
+    const familienaam = users.lastname ?? ""
 
     return <tr
         className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden max-lg:[&>*:nth-child(6)]:hidden max-sm:[&>*:nth-child(7)]:hidden max-sm:[&>*:nth-child(8)]:hidden"}>
@@ -68,7 +63,8 @@ export default async function ReservationRecordIndex({
             {(status === 'geweigerd') && <Badge variant={"denied"}>Geweigerd</Badge>}
             {(status === 'in afwachting') && <Badge variant={"hold"}>In afwachting</Badge>}
         </ReservationRecordDatapoint>
-        <ReservationRecordDatapoint>{reserveerder}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{voornaam + " " + familienaam}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{organizations === undefined || organizations === null ? "" : organizations.name}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{accessCode === null ? 'Onbekend' : accessCode}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint><ChangeFacturatie id={id}
                                                       isGefactureerd={gefactureerd}/></ReservationRecordDatapoint>
