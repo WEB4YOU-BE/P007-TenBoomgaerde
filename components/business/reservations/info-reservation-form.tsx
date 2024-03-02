@@ -13,7 +13,16 @@ interface ReservationIndexProps {
     id: string;
     reservationYear: string;
     reservationNumber: number | null
-    users: { id: string, firstname: string, lastname: string, phone: string, email: string };
+    users: {
+        id: string,
+        firstname: string,
+        lastname: string,
+        phone: string,
+        email: string,
+        street: string,
+        postcode: string,
+        city: string
+    };
     rooms: { name: string };
     start_date: string;
     end_date: string;
@@ -110,6 +119,14 @@ export default async function InfoReservationForm({
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Email:</span>
                 <span>{users.email}</span>
+            </div>
+            <div className={"flex flex-row gap-4"}>
+                <span className={"font-bold uppercase"}>Adres:</span>
+                <span>{users.street}</span>
+            </div>
+            <div className={"flex flex-row gap-4"}>
+                <span className={"font-bold uppercase"}>Gemeente:</span>
+                <span>{users.postcode ?? "" + " " + users.city ?? ""}</span>
             </div>
             <div className={"max-sm:flex max-sm:flex-col-reverse max-sm:gap-4"}>
                 {organizations !== undefined && organizations !== null && (
