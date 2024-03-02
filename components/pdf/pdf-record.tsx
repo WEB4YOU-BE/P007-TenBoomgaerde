@@ -52,7 +52,15 @@ export default function PdfReservationRecordIndex({
         </View>
         <View style={styles.tableCol}>
             <Text
-                style={styles.tableCell}>{start_date === end_date ? start_date : start_date + " tot " + end_date}</Text>
+                style={styles.tableCell}>{start_date === end_date ? new Date(start_date).toLocaleDateString('nl-NL', {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }) : new Date(start_date).toLocaleDateString('nl-NL', {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }) + " tot " + new Date(end_date).toLocaleString('nl-NL', {day: "2-digit", month: "2-digit"})}</Text>
         </View>
         <View style={styles.tableCol}>
             <Text

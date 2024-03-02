@@ -38,6 +38,7 @@ const Reservation = async (reservation: reservationProps) => {
         await supabase.from("reservations").update({remarks: remark}).eq('id', reservation.id)
     }
 
+
     return <div className={"p-4 my-4 border border-gray-200 rounded-lg shadow-sm"}>
         <div className={"grid gap-4 grid-cols-3 grid-rows-4"}>
             <div className={"font-bold text-xl row-start-1 col-span-2"}>
@@ -58,7 +59,19 @@ const Reservation = async (reservation: reservationProps) => {
             </div>
             <div className={"sm:row-start-4 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Datum: </span>
-                <span>{reservation.start_date === reservation.end_date ? reservation.start_date : reservation.start_date + " tot " + reservation.end_date}</span>
+                <span>{reservation.start_date === reservation.end_date ? new Date(reservation.start_date).toLocaleDateString("nl-NL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }) : new Date(reservation.start_date).toLocaleDateString("nl-NL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }) + " tot " + new Date(reservation.end_date).toLocaleDateString("nl-NL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                })}</span>
             </div>
             <div className={"sm:row-start-5 col-span-3 sm:col-span-2"}>
                 <span className={"font-bold"}>Zaal: </span>

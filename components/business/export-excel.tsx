@@ -13,8 +13,16 @@ export default function ExportExcel({reservations}: ReservationsProps) {
     const handleDownload = () => {
         const rows = reservations.map((reservation) => ({
             Reservatienummer: reservation.reservation_year.substring(0, 4) + '-' + reservation.reservation_number,
-            Startdatum: reservation.start_date,
-            Einddatum: reservation.end_date,
+            Startdatum: new Date(reservation.start_date).toLocaleDateString("nl-NL", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }),
+            Einddatum: new Date(reservation.end_date).toLocaleDateString("nl-NL", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }),
             Startuur: reservation.start_hour.start_hour,
             Einduur: reservation.end_hour.end_hour,
             Zaal: reservation.rooms.name,

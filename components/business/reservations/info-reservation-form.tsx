@@ -82,11 +82,19 @@ export default async function InfoReservationForm({
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Startdatum:</span>
-                <span>{start_date}</span>
+                <span>{new Date(start_date).toLocaleDateString("nl-NL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                })}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Einddatum:</span>
-                <span>{end_date}</span>
+                <span>{new Date(end_date).toLocaleDateString("nl-NL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                })}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Startuur:</span>
