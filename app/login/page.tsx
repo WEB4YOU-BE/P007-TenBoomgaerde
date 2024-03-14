@@ -21,6 +21,6 @@ export default async function Login() {
         </div>
         <button className={buttonVariants()}>Login</button>
         <hr/>
-        <button formAction="/auth/sign-up" className={buttonVariants({variant: "secondary"})}>Meld aan</button>
+        <button formAction="/auth/sign-up" className={buttonVariants({variant: "secondary"})}>Maak account aan</button>
     </form>
 }

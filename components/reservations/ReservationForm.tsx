@@ -447,8 +447,9 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                 </>
                             </DialogDescription>
                             <DialogFooter>
+                                <span className={"bg-red-100 border-red-400 border-2 rounded p-2"}>Let op, kijk goed bovenstaande gegevens na. Je reservatie is hierna definitief, en kan niet meer aangepast worden. </span>
                                 <button
-                                    form={"reservationForm"} className={buttonVariants()}>Reserveer
+                                    form={"reservationForm"} className={cn(buttonVariants(), "my-auto")}>Reserveer
                                 </button>
                             </DialogFooter>
                         </DialogContent>

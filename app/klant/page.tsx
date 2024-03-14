@@ -8,7 +8,7 @@ export default async function Index() {
 
     const {data: {user}} = await supabase.auth.getUser()
 
-    const queryReservation = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).eq('user_id', user?.id)
+    const queryReservation = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).eq('user_id', user?.id).order('start_date', {ascending: false})
     const reservations: DbResult<typeof queryReservation> = await queryReservation
 
     if (!reservations.data) return undefined

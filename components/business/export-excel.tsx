@@ -10,15 +10,25 @@ interface ReservationsProps {
 }
 
 export default function ExportExcel({reservations}: ReservationsProps) {
+
     const handleDownload = () => {
         const rows = reservations.map((reservation) => ({
             Reservatienummer: reservation.reservation_year.substring(0, 4) + '-' + reservation.reservation_number,
-            Startdatum: reservation.start_date,
-            Einddatum: reservation.end_date,
+            Startdatum: new Date(reservation.start_date).toLocaleDateString("nl-NL", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }),
+            Einddatum: new Date(reservation.end_date).toLocaleDateString("nl-NL", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }),
             Startuur: reservation.start_hour.start_hour,
             Einduur: reservation.end_hour.end_hour,
             Zaal: reservation.rooms.name,
-            Reserveerder: reservation.organizations === undefined || reservation.organizations === null ? reservation.users.firstname + " " + reservation.users.lastname : reservation.organizations.name,
+            Reserveerder: reservation.users.firstname === null ? "" : reservation.users.firstname + " " + reservation.users.lastname,
+            Organisatie: reservation.organizations === undefined || reservation.organizations === null ? "" : reservation.organizations.name,
             Toegangscode: reservation.access_code === null ? 'Onbekend' : reservation.access_code,
             Status: reservation.status,
             Gefactureerd: reservation.gefactureerd
@@ -32,7 +42,7 @@ export default function ExportExcel({reservations}: ReservationsProps) {
 
         // customize header names
         XLSX.utils.sheet_add_aoa(worksheet, [
-            ["Reservatienummer", "Start datum", "Eind datum", "Start uur", "Eind uur", "Zaal", "Reserveerder", "Toegangscode", "Status", "Gefactureerd"],
+            ["Reservatienummer", "Start datum", "Eind datum", "Start uur", "Eind uur", "Zaal", "Reserveerder", "Organisatie", "Toegangscode", "Status", "Gefactureerd"],
         ]);
 
         XLSX.writeFile(workbook, "Reservaties.xlsx", {compression: true});

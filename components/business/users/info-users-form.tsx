@@ -16,7 +16,7 @@ export default async function InfoUserForm({id}: UserIndexProps) {
     const supabase = createServerComponentClient({cookies})
     const queryUser = supabase.from("users").select(`*`).eq('id', id)
     const user: DbResult<typeof queryUser> = await queryUser
-    const queryReservation = supabase.from("reservations").select(`id, reservation_year, reservation_number, users!inner(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).eq('users.id', id)
+    const queryReservation = supabase.from("reservations").select(`id, reservation_year, reservation_number, users!inner(id, firstname, lastname), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`).eq('users.id', id).order('start_date')
     const reservations: DbResult<typeof queryReservation> = await queryReservation
 
     if (!user.data) return undefined
