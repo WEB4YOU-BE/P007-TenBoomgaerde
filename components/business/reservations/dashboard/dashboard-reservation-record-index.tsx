@@ -14,30 +14,44 @@ interface ReservationRecordIndexProps {
     end_date: string;
     start_hour: { start_hour: string };
     end_hour: { end_hour: string };
+    organizations: { name: string };
 }
 
 
 export default async function DashboardReservationRecordIndex({
-                                                                      id,
-                                                                      reservationYear,
-                                                                      reservationNumber,
-                                                                      users,
-                                                                      rooms,
-                                                                      start_date,
-                                                                      end_date,
-                                                                      start_hour,
-                                                                      end_hour
-                                                                  }: ReservationRecordIndexProps) {
+                                                                  id,
+                                                                  reservationYear,
+                                                                  reservationNumber,
+                                                                  users,
+                                                                  rooms,
+                                                                  start_date,
+                                                                  end_date,
+                                                                  start_hour,
+                                                                  end_hour,
+                                                                  organizations
+                                                              }: ReservationRecordIndexProps) {
     const voornaam = users.firstname ?? ""
     const familienaam = users.lastname ?? ""
 
     return <tr
         className={"hover:bg-muted shrink-0 truncate max-sm:[&>*:nth-child(2)]:hidden max-sm:[&>*:nth-child(3)]:hidden max-sm:[&>*:nth-child(4)]:hidden max-sm:[&>*:nth-child(5)]:hidden"}>
         <ReservationRecordDatapoint>{reservationYear.substring(0, 4) + '-' + reservationNumber}</ReservationRecordDatapoint>
-        <ReservationRecordDatapoint>{start_date === end_date ? start_date : start_date + " tot " + end_date.substring(5, 10)}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{start_date === end_date ? new Date(start_date).toLocaleDateString('nl-NL', {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }) : new Date(start_date).toLocaleDateString('nl-NL', {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }) + " tot " + new Date(end_date).toLocaleString('nl-NL', {
+            day: "2-digit",
+            month: "2-digit"
+        })}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{start_hour.start_hour.substring(0, 5) + "-" + end_hour.end_hour.substring(0, 5)}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{rooms.name}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint>{voornaam + " " + familienaam}</ReservationRecordDatapoint>
+        <ReservationRecordDatapoint>{organizations === undefined || organizations === null ? "" : organizations.name}</ReservationRecordDatapoint>
         <ReservationRecordDatapoint><ReservationRecordIndexActions id={id}/></ReservationRecordDatapoint>
     </tr>
 }
@@ -59,6 +73,6 @@ async function ReservationRecordIndexActions({id}: ReservationRecordIndexActions
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
         <Link href={`/dashboard/reservaties/${id}`}
               className={cn(buttonVariants({variant: "blue"}), "flex flex-row gap-2 flex-shrink-0")}><Info
-            size={16}/><span className={"max-sm:hidden"}>Bekijk</span></Link>
+            size={16}/></Link>
     </div>
 }

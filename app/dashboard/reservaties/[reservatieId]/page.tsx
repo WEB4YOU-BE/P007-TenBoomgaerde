@@ -9,7 +9,7 @@ export default async function page({params}: {
     }
 }) {
     const supabase = createServerComponentClient({cookies})
-    const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone, email), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name, btw_number), remarks`).eq('id', params.reservatieId)
+    const query = supabase.from("reservations").select(`id, reservation_year, reservation_number, users(id, firstname, lastname, phone, email, street, postcode, city), rooms(name), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name, btw_number), remarks`).eq('id', params.reservatieId)
     const reservation: DbResult<typeof query> = await query
 
     if (!reservation.data) return undefined

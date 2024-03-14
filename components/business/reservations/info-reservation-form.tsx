@@ -13,7 +13,16 @@ interface ReservationIndexProps {
     id: string;
     reservationYear: string;
     reservationNumber: number | null
-    users: { id: string, firstname: string, lastname: string, phone: string, email: string };
+    users: {
+        id: string,
+        firstname: string,
+        lastname: string,
+        phone: string,
+        email: string,
+        street: string,
+        postcode: string,
+        city: string
+    };
     rooms: { name: string };
     start_date: string;
     end_date: string;
@@ -73,11 +82,19 @@ export default async function InfoReservationForm({
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Startdatum:</span>
-                <span>{start_date}</span>
+                <span>{new Date(start_date).toLocaleDateString("nl-NL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                })}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Einddatum:</span>
-                <span>{end_date}</span>
+                <span>{new Date(end_date).toLocaleDateString("nl-NL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                })}</span>
             </div>
             <div className={"flex flex-row gap-4"}>
                 <span className={"font-bold uppercase"}>Startuur:</span>
@@ -111,6 +128,14 @@ export default async function InfoReservationForm({
                 <span className={"font-bold uppercase"}>Email:</span>
                 <span>{users.email}</span>
             </div>
+            <div className={"flex flex-row gap-4"}>
+                <span className={"font-bold uppercase"}>Adres:</span>
+                <span>{users.street}</span>
+            </div>
+            <div className={"flex flex-row gap-4"}>
+                <span className={"font-bold uppercase"}>Gemeente:</span>
+                <span>{users.postcode ?? "" + " " + users.city ?? ""}</span>
+            </div>
             <div className={"max-sm:flex max-sm:flex-col-reverse max-sm:gap-4"}>
                 {organizations !== undefined && organizations !== null && (
                     <div className="flex flex-col gap-4 border rounded-xl p-4">
@@ -130,7 +155,7 @@ export default async function InfoReservationForm({
                 <form className={"flex flex-col gap-4 h-full"} action={updateRemark}>
                     <label htmlFor={"remark"} className="font-bold uppercase text-xl">Opmerkingen:</label>
                     <textarea id={"remark"} name={"remark"} defaultValue={remarks === null ? "" : remarks}
-                              className={"flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
+                              className={"flex h-32 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}>
                         </textarea>
                     <button type={"submit"} className={cn(buttonVariants({variant: "green"}))}>Verstuur</button>
                 </form>
