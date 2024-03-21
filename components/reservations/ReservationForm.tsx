@@ -7,18 +7,10 @@ import {addYears, compareAsc, eachDayOfInterval, formatISO, isBefore, subDays} f
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
-import nlBE from "date-fns/locale/nl-BE";
 import {Calendar} from "@/components/ui/calendar";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/Select";
 import Link from "next/link";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/Dialog";
+import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger} from "@/components/ui/Dialog";
 import {Checkbox} from "@/components/ui/checkbox";
 
 
@@ -286,7 +278,6 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                     disabled={notAvailableDays}
                                     modifiers={modifierDays}
                                     modifiersClassNames={modifiedClassnames}
-                                    locale={nlBE}
                                 />
                             </PopoverContent>
                         </Popover>
@@ -330,7 +321,6 @@ export default function ReservationForm({submit, rooms, timeframes, gebruiker, u
                                     disabled={notAvailableDays}
                                     modifiers={modifierDays}
                                     modifiersClassNames={modifiedClassnames}
-                                    locale={nlBE}
                                 />
                             </PopoverContent>
                         </Popover>

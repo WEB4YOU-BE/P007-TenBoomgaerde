@@ -1,4 +1,5 @@
 import Image from "next/image";
+import {Calendar} from "@/components/ui/calendar";
 
 export const dynamic = 'force-dynamic'
 
@@ -68,7 +69,18 @@ export default async function Index() {
             </div>
             <aside className={"lg:col-start-2 xl:col-start-3 flex flex-col gap-2"}>
                 <h2 className={"text-3xl font-bold lg:text-center"}>Beschikbaarheid</h2>
-                <div className={"bg-gray-200 flex-grow min-h-[calc((100svh-72px-1rem)/2)] rounded p-2"}>React Kalender</div>
+                <div className={"bg-gray-200 rounded p-2 mx-auto w-fit"}>
+                    <h3 className={"text-xl font-semibold text-center"}>Kleine zaal</h3>
+                    <Calendar/>
+                </div>
+                <div className={"bg-gray-200 rounded p-2 mx-auto w-fit"}>
+                    <h3 className={"text-xl font-semibold text-center"}>Bovenzaal</h3>
+                    <Calendar/>
+                </div>
+                <div className={"bg-gray-200 rounded p-2 mx-auto w-fit"}>
+                    <h3 className={"text-xl font-semibold text-center"}>Grote zaal</h3>
+                    <Calendar/>
+                </div>
             </aside>
             <section className={"lg:row-start-2 lg:col-span-1 xl:col-span-2 flex flex-col gap-4"}>
                 <h2 className={"text-3xl font-bold"}>Praktische info</h2>
