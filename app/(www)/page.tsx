@@ -69,6 +69,7 @@ export default async function Index() {
             </div>
             <aside className={"lg:col-start-2 xl:col-start-3 flex flex-col gap-2"}>
                 <h2 className={"text-3xl font-bold lg:text-center"}>Beschikbaarheid</h2>
+                {/* TODO De beschikbaarheid moet een lijst aan beschikbare periodes zijn in plaats van een lijst van agenda's. */}
                 <div className={"bg-gray-200 rounded p-2 mx-auto w-fit"}>
                     <h3 className={"text-xl font-semibold text-center"}>Kleine zaal</h3>
                     <Calendar/>
