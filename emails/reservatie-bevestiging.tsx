@@ -1,4 +1,4 @@
-import {CodeInline, Container, Font, Head, Heading, Html, Row, Section, Tailwind, Text} from "@react-email/components";
+import {Column, Container, Font, Head, Heading, Html, Link, Row, Section, Tailwind, Text} from "@react-email/components";
 
 interface ReservatieBevestigingProps {
     voornaam: string
@@ -20,24 +20,42 @@ export default function Email({voornaam}: ReservatieBevestigingProps) {
         </Head>
         <Tailwind>
             <Container>
-                <Heading as="h1">Dag [Jens]!</Heading>
-                <Text className={"text-sm text-gray-500"}>We hebben uw reservering bij VZW Ten Boomgaerde ontvangen in Lichtervelde. Deze is nog niet bevestigd. U ontvangt een bevestigingsmail bij
-                    goedkeuring of afwijzing, met uw reserveringsnummer: [{"XXXX-XXX"}].</Text>
+                <Heading as="h1">Dag [Jens] {voornaam}!</Heading>
+                <Text className={"text-sm text-gray-500"}>
+                    We hebben <Link href={"https://www.vzwtenboomgaerdelichtervelde.be/klant"}>uw reservering</Link> bij VZW Ten Boomgaerde Lichtervelde ontvangen. Deze is nog niet bevestigd. U kan
+                    dit bekijken op de website bij uw reservering.
+                    {/*U ontvangt een bevestigingsmail bij goedkeuring of afwijzing, met uw reserveringsnummer: [{"XXXX-XXX"}].*/}
+                </Text>
                 <Section>
                     <Row>
                         <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Reservatie</Heading>
+                        <Section className={"border border-black border-solid px-2 rounded"}>
+                            <Row><Text><b>Reservatienummer:</b> [{"XXXX-XXX"}]</Text></Row>
+                            <Row>
+                                <Column><Text><b>Van:</b><br/>[DATUM (UUR)]</Text></Column>
+                                <Column><Text><b>Tot:</b><br/>[DATUM (UUR)]</Text></Column>
+                            </Row>
+                            <Row><Text><b>Zaal:</b> [{"Zaalnaam"}]</Text></Row>
+                            <Row><Text><b>Telefoonnummer van de poort:</b> <Link href={"tel:+32480634334"}>+32 480 63 43 34</Link></Text></Row>
+                        </Section>
                     </Row>
                     <Row>
-                        <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Organisatie</Heading>
-                    </Row>
-                    <Row>
-                        <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Verantwoordelijke</Heading>
+                        <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Reserverende partij</Heading>
+                        <Section className={"border border-black border-solid px-2 rounded"}>
+                            <Row><Text><b>Verantwoordelijke:</b> [{"VOLLEDIGE_NAAM (TELEFOONNUMMER)"}]</Text></Row>
+                            <Row><Text><b>Organistatie:</b> [{"ORG_NAAM (BTW-NUMMER)"}]</Text></Row>
+                            <Row>
+                                <Text>
+                                    <b>Factuuradres:</b>: [STAART NR], [POSTNR STAD]
+                                </Text>
+                            </Row>
+                        </Section>
                     </Row>
                     <Row>
                         <Heading key={"hey"} as="h1" className="text-lg font-semibold leading-none tracking-tight">Opmerkingen</Heading>
-                        <CodeInline key={"hoi"} className={"text-gray-500 text-sm"}>
+                        <Text key={"hoi"} className={"text-gray-500 text-sm border border-black border-solid p-2 rounded"}>
                             [Meegegeven opmerking]
-                        </CodeInline>
+                        </Text>
                     </Row>
                 </Section>
             </Container>
