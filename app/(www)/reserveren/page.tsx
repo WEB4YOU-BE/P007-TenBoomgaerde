@@ -6,6 +6,10 @@ import {redirect} from "next/navigation";
 import {RedirectType} from "next/dist/client/components/redirect";
 import ReservationForm from "@/components/reservations/ReservationForm";
 import {formatISO} from "date-fns";
+import {Resend} from "resend";
+import Mail from "@/emails/reservatie-bevestiging"
+
+const resend = new Resend(process.env.RESEND_SEND_KEY)
 
 export default async function page() {
     const supabase = createServerComponentClient({cookies})
@@ -35,18 +39,18 @@ export default async function page() {
         const supabase = createServerComponentClient({cookies})
 
         const reservationNumber = latestReservationNumber + 1
-        const userId = formData.get("userId")
-        const roomId = formData.get("room")
-        const startDate = formData.get("start")
-        const startHour = formData.get("startTimeframe")
-        const endDate = formData.get("end")
-        const endHour = formData.get("endTimeframe")
-        const organization = formData.get("organization") === "" ? null : formData.get("organization")
-        const remark = formData.get("remark")
+        const userId = formData.get("userId") !== null ? String(formData.get("userId")) : null
+        const roomId = formData.get("room") !== null ? String(formData.get("room")) : null
+        const startDate = formData.get("start") !== null ? String(formData.get("start")) : null
+        const startHour = formData.get("startTimeframe") !== null ? String(formData.get("startTimeframe")) : null
+        const endDate = formData.get("end") !== null ? String(formData.get("end")) : null
+        const endHour = formData.get("endTimeframe") !== null ? String(formData.get("endTimeframe")) : null
+        const organization = formData.get("organization") !== null ? String(formData.get("organization")) : null
+        const remark = formData.get("remark") !== null ? String(formData.get("remark")) : null
 
         const status = "in afwachting"
 
-        await supabase.from("reservations").insert({
+        supabase.from("reservations").insert({
             reservation_year: startDate,
             reservation_number: reservationNumber,
             user_id: userId,
@@ -59,6 +63,30 @@ export default async function page() {
             organizations_id: organization,
             remarks: remark,
         })
+
+
+        await resend.emails.send({
+            from: 'VZW Ten Boomgaerde Lichtervelde <info@vzwtenboomgaerdelichtervelde.be>',
+            to: user?.email || "jenspenneman26@gmail.com",
+            subject: 'Bevestiging reservatie bij Ten Boomgaerde',
+            react: Mail({
+                reservationNumber: reservationNumber.toString(),
+                fullName: gebruiker.data?.[0].firstname,
+                startDate: new Date(),
+                startTime: "17:00",
+                endDate: new Date(),
+                endTime: "22:00",
+                roomName: "Grote zaal",
+                phoneNumber: "0471710991",
+                organisationName: "Okra",
+                vatNumber: "BE1234567890",
+                delAddress: "Leysafortstraat 20",
+                delCity: "Stekene",
+                delPostalCode: 8810,
+                remarks: "Stoelen & tafels graag"
+            }),
+        });
+
         redirect("/klant", RedirectType.push)
     }
 

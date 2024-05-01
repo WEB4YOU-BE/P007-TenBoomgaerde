@@ -1,10 +1,38 @@
 import {Column, Container, Font, Head, Heading, Html, Link, Row, Section, Tailwind, Text} from "@react-email/components";
 
 interface ReservatieBevestigingProps {
-    voornaam: string
+    fullName: string;
+    reservationNumber: string;
+    startDate: Date;
+    startTime: String;
+    endDate: Date;
+    endTime: String;
+    roomName: String;
+    phoneNumber: String;
+    organisationName: String;
+    vatNumber: String;
+    delAddress: String;
+    delPostalCode: number;
+    delCity: String;
+    remarks: String;
 }
 
-export default function Email({voornaam}: ReservatieBevestigingProps) {
+export default function Email({
+                                  fullName,
+                                  reservationNumber,
+                                  startDate,
+                                  startTime,
+                                  endDate,
+                                  endTime,
+                                  roomName,
+                                  phoneNumber,
+                                  organisationName,
+                                  vatNumber,
+                                  delAddress,
+                                  delPostalCode,
+                                  delCity,
+                                  remarks
+                              }: ReservatieBevestigingProps) {
     return <Html>
         <Head>
             <Font
@@ -20,44 +48,43 @@ export default function Email({voornaam}: ReservatieBevestigingProps) {
         </Head>
         <Tailwind>
             <Container>
-                <Heading as="h1">Dag [Jens] {voornaam}!</Heading>
+                <Heading as="h1">Dag {fullName}!</Heading>
                 <Text className={"text-sm text-gray-500"}>
                     We hebben <Link href={"https://www.vzwtenboomgaerdelichtervelde.be/klant"}>uw reservering</Link> bij VZW Ten Boomgaerde Lichtervelde ontvangen. Deze is nog niet bevestigd. U kan
                     dit bekijken op de website bij uw reservering.
                     {/*U ontvangt een bevestigingsmail bij goedkeuring of afwijzing, met uw reserveringsnummer: [{"XXXX-XXX"}].*/}
                 </Text>
-                <Section>
+            </Container>
+            <Container>
+                <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Reservatie</Heading>
+                <Section className={"border border-black border-solid px-2 rounded"}>
+                    <Row><Text><b>Reservatienummer:</b> {reservationNumber}</Text></Row>
                     <Row>
-                        <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Reservatie</Heading>
-                        <Section className={"border border-black border-solid px-2 rounded"}>
-                            <Row><Text><b>Reservatienummer:</b> [{"XXXX-XXX"}]</Text></Row>
-                            <Row>
-                                <Column><Text><b>Van:</b><br/>[DATUM (UUR)]</Text></Column>
-                                <Column><Text><b>Tot:</b><br/>[DATUM (UUR)]</Text></Column>
-                            </Row>
-                            <Row><Text><b>Zaal:</b> [{"Zaalnaam"}]</Text></Row>
-                            <Row><Text><b>Telefoonnummer van de poort:</b> <Link href={"tel:+32480634334"}>+32 480 63 43 34</Link></Text></Row>
-                        </Section>
+                        <Column><Text><b>Van:</b><br/>{startDate?.toString()} ({startTime})</Text></Column>
+                        <Column><Text><b>Tot:</b><br/>{endDate?.toString()} ({endTime})</Text></Column>
                     </Row>
+                    <Row><Text><b>Zaal:</b> {roomName}</Text></Row>
+                    <Row><Text><b>Telefoonnummer van de poort:</b> <Link href={"tel:+32480634334"}>+32 480 63 43 34</Link></Text></Row>
+                </Section>
+            </Container>
+            <Container>
+                <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Reserverende partij</Heading>
+                <Section className={"border border-black border-solid px-2 rounded"}>
+                    <Row><Text><b>Verantwoordelijke:</b> {fullName}</Text></Row>
+                    <Row><Text><b>Telefoonnummer van de verantwoordelijke:</b> {phoneNumber}</Text></Row>
+                    <Row><Text><b>Organistatie:</b> {organisationName} <span className={"text-gray-500 text-sm"}>{vatNumber}</span></Text></Row>
                     <Row>
-                        <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Reserverende partij</Heading>
-                        <Section className={"border border-black border-solid px-2 rounded"}>
-                            <Row><Text><b>Verantwoordelijke:</b> [{"VOLLEDIGE_NAAM (TELEFOONNUMMER)"}]</Text></Row>
-                            <Row><Text><b>Organistatie:</b> [{"ORG_NAAM (BTW-NUMMER)"}]</Text></Row>
-                            <Row>
-                                <Text>
-                                    <b>Factuuradres:</b>: [STAART NR], [POSTNR STAD]
-                                </Text>
-                            </Row>
-                        </Section>
-                    </Row>
-                    <Row>
-                        <Heading key={"hey"} as="h1" className="text-lg font-semibold leading-none tracking-tight">Opmerkingen</Heading>
-                        <Text key={"hoi"} className={"text-gray-500 text-sm border border-black border-solid p-2 rounded"}>
-                            [Meegegeven opmerking]
+                        <Text>
+                            <b>Factuuradres:</b>: {delAddress}, {delPostalCode} {delCity}
                         </Text>
                     </Row>
                 </Section>
+            </Container>
+            <Container>
+                <Heading as="h1" className="text-lg font-semibold leading-none tracking-tight">Opmerkingen</Heading>
+                <Text className={"text-gray-500 text-sm border border-black border-solid p-2 rounded"}>
+                    {remarks}
+                </Text>
             </Container>
         </Tailwind>
     </Html>
