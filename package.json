@@ -30,7 +30,7 @@
   "type": "module",
   "engineStrict": true,
   "engines": {
-    "node": "^22.2.0",
+    "node": "^22.0.0",
     "vscode": "^1.22.0"
   },
   "scripts": {
