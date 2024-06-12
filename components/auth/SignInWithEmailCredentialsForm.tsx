@@ -54,7 +54,7 @@ const SignInWithEmailCredentialsForm = () => {
                         <FormItem>
                             <FormLabel>Wachtwoord</FormLabel>
                             <FormControl>
-                                <Input {...field} type="password" />
+                                <Input {...field} type="password" autoComplete="current-password" />
                             </FormControl>
                             <FormDescription>Voer jouw wachtwoord in.</FormDescription>
                             <FormMessage/>

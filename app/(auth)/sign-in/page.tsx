@@ -1,6 +1,6 @@
 import SignInWithEmailCredentialsForm from "@/components/auth/SignInWithEmailCredentialsForm";
 
-export default function LoginPage() {
+export default function Page() {
     return <>
         <SignInWithEmailCredentialsForm />
     </>
