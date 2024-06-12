@@ -8,7 +8,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-import { login } from '@/actions/auth'
+import { SignInWithCredentials } from '@/actions/auth/signIn'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        mutationFn: login,
+        mutationFn: SignInWithCredentials,
         onSuccess: () => {
             toast.success("Je bent ingelogd!")
         },
