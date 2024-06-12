@@ -1,10 +1,7 @@
-import { login, signup } from '@/actions/auth'
-import LoginForm from '@/components/auth/LoginForm'
+import SignInWithEmailCredentialsForm from "@/components/auth/SignInWithEmailCredentialsForm";
 
 export default function LoginPage() {
-    return (
-        <>
-            <LoginForm />
-        </>
-    )
+    return <>
+        <SignInWithEmailCredentialsForm />
+    </>
 }
