@@ -1,6 +1,4 @@
 import SignInWithEmailCredentialsForm from "@/components/auth/SignInWithEmailCredentialsForm";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/utils/tailwindcss/twMergeCN";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,10 +21,10 @@ export default function Page() {
                     </blockquote>
                 </div>
             </div>
-            <div className="lg:p-8">
+            <div className="py-4 lg:p-8">
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                     <div className="flex flex-col space-y-2 text-center">
-                        <h1 className="text-2xl font-semibold tracking-tight">
+                        <h1 className="text-2xl font-semibold tracking-tight text-balance">
                             Log in jouw account
                         </h1>
                         <p className="text-sm text-muted-foreground text-balance">

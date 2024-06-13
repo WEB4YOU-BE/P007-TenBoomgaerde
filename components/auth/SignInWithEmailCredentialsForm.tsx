@@ -33,7 +33,7 @@ const SignInWithEmailCredentialsForm = () => {
 
     return <>
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
                 <FormField
                     name="username"
                     control={form.control}
@@ -43,7 +43,6 @@ const SignInWithEmailCredentialsForm = () => {
                             <FormControl>
                                 <Input {...field} type="email" />
                             </FormControl>
-                            <FormDescription>Voer jouw emailadres in.</FormDescription>
                             <FormMessage/>
                         </FormItem>
                     )}
@@ -57,7 +56,6 @@ const SignInWithEmailCredentialsForm = () => {
                             <FormControl>
                                 <Input {...field} type="password" autoComplete="current-password" />
                             </FormControl>
-                            <FormDescription>Voer jouw wachtwoord in.</FormDescription>
                             <FormMessage/>
                         </FormItem>
                     )}
