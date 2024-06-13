@@ -16,6 +16,6 @@ export const formSchema = z.object({
 })
 .refine((data) => data.password === data.passwordConfirmation, {
     message: "Wachtwoorden komen niet overeen!",
-    path: ["confirmPassword"]
+    path: ["passwordConfirmation"]
 })
 ;
