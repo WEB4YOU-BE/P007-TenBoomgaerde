@@ -16,6 +16,7 @@ import { Button } from "../ui/button";
 const SignInWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => { mutate({ ...formData, email: formData.username }) }
     const { mutate, isPending } = useMutation({
+        mutationKey: ["SignInWithEmailCredentials"],
         mutationFn: SignInWithCredentials,
         networkMode: "online",
         retry: false,
