@@ -63,6 +63,12 @@ const SignInWithEmailCredentialsForm = () => {
                     )}
                 />
                 <Button type="submit" disabled={isPending}>Log in</Button>
+                <Link
+                    href="/recover"
+                    className={buttonVariants({ variant: "link" })}
+                >
+                    Wachtwoord vergeten
+                </Link>
             </form>
         </Form>
         <div className="relative">
