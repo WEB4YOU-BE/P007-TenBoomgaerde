@@ -14,16 +14,22 @@ import { Input } from "../ui/input";
 import { Button, buttonVariants } from "../ui/button";
 
 import Link from "next/link";
+import { useEffect } from "react";
+import { redirect, RedirectType } from "next/navigation";
 
 const SignInWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => { mutate({ ...formData, email: formData.username }) }
-    const { mutate, isPending } = useMutation({
+    const { mutate, isPending, isSuccess } = useMutation({
         mutationKey: ["SignInWithEmailCredentials"],
         mutationFn: SignInWithCredentials,
         networkMode: "online",
         retry: false,
     })
-    {/* TODO: Add error states */}
+    {/* TODO: Add error states */ }
+
+    useEffect(() => {
+        if (isSuccess) redirect("/", RedirectType.replace)
+    }, [isSuccess])
 
     const form = useForm<z.infer<typeof formSchema>>
         ({

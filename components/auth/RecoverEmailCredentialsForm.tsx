@@ -1,12 +1,14 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+
 import { z } from "zod";
 import { formSchema } from "@/schemas/auth/recoverEmailCredentials";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useMutation } from "@tanstack/react-query";
 import { resetPasswordForEmail } from "@/actions/auth/recover";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
