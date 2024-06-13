@@ -72,7 +72,7 @@ const SignUpWithEmailCredentialsForm = () => {
                             <FormControl>
                                 <Input {...field} type="password" autoComplete="new-password" />
                             </FormControl>
-                            <FormDescription>Herhaal jouw nieuw wachtwoord in.</FormDescription>
+                            <FormDescription>Herhaal jouw nieuw wachtwoord.</FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
