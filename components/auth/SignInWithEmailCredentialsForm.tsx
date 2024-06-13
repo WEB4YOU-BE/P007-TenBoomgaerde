@@ -8,14 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useMutation } from "@tanstack/react-query";
 import { SignInWithCredentials } from "@/actions/auth/signIn";
+import { redirect, RedirectType } from "next/navigation";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button, buttonVariants } from "../ui/button";
 
 import Link from "next/link";
-import { useEffect } from "react";
-import { redirect, RedirectType } from "next/navigation";
 
 const SignInWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => { mutate({ ...formData, email: formData.username }) }
@@ -24,8 +25,18 @@ const SignInWithEmailCredentialsForm = () => {
         mutationFn: SignInWithCredentials,
         networkMode: "online",
         retry: false,
+        onError: ({ name, message }) => {
+            toast.error(name, {
+                description: message
+            })
+        },
+        onSuccess: ({ weakPassword }) => {
+            toast.success("Je bent ingelogd!")
+            if (weakPassword) toast.warning("Zwak wachtwoord!", {
+                description: weakPassword.message
+            })
+        }
     })
-    {/* TODO: Add error states */ }
 
     useEffect(() => {
         if (isSuccess) redirect("/", RedirectType.replace)

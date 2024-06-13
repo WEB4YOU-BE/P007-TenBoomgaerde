@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useMutation } from "@tanstack/react-query"
 import { SignUpWithCredentials } from "@/actions/auth/signUp"
+import { toast } from "sonner";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
@@ -22,8 +23,12 @@ const SignUpWithEmailCredentialsForm = () => {
         mutationFn: SignUpWithCredentials,
         networkMode: "online",
         retry: false,
+        onError: ({ name, message }) => {
+            toast.error(name, {
+                description: message
+            })
+        },
     })
-    {/* TODO: Add error states */}
 
     const form = useForm<z.infer<typeof formSchema>>
         ({
