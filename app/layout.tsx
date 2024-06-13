@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { VercelToolbar } from '@vercel/toolbar/next';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,12 +16,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const shouldInjectToolbar = process.env.NODE_ENV === 'development';
   return (
     <html lang="nl-BE">
       <body className={inter.className}>
         <Providers>
           <main>{children}</main>
         </Providers>
+        {shouldInjectToolbar && <VercelToolbar />}
       </body>
     </html>
   );
