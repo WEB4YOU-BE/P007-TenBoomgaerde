@@ -14,8 +14,7 @@ export const formSchema = z.object({
       message: "Wachtwoorden zijn minstens 8 karakters lang.",
     }),
 })
-.refine((data) => data.password === data.passwordConfirmation, {
+  .refine((data) => data.password === data.passwordConfirmation, {
     message: "Wachtwoorden komen niet overeen!",
-    path: ["passwordConfirmation"]
-})
-;
+    path: ["passwordConfirmation"],
+  });
