@@ -36,9 +36,9 @@ const UpdatePasswordCredentialsForm = () => {
                 <FormField
                     name="password"
                     control={form.control}
-                    render={(field) => (
+                    render={({ field }) => (
                         <FormItem>
-                            <FormLabel>New password</FormLabel>
+                            <FormLabel>Nieuw wachtwoord</FormLabel>
                             <FormControl>
                                 <Input {...field} type="password" autoComplete="new-password" />
                             </FormControl>
