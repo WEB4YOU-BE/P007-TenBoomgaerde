@@ -1,23 +1,22 @@
-"use client"
+"use client";
 
-import type { ReactNode } from "react"
-
-import { Toaster as ShadCNToaster } from "@/components/ui/toaster";
-import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+import { Suspense, type ReactNode } from "react"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const Providers = ({ children }: { children: ReactNode }) => {
-    const queryClient = new QueryClient()
+interface ProvidersProps {
+    children: ReactNode
+}
+
+const Providers = ({ children }: ProvidersProps) => {
+    const queryClient = new QueryClient();
 
     return <>
         <QueryClientProvider client={queryClient}>
-            {children}
-            <ReactQueryDevtools />
+            <Suspense>
+                {children}
+            </Suspense>
         </QueryClientProvider>
-        <ShadCNToaster />
-        <SonnerToaster />
     </>
 }
 

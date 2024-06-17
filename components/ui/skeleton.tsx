@@ -1,4 +1,4 @@
-import { cn } from "@/utils/tailwindcss/twMergeCN"
+import { cn } from "@/utils/tailwindcss/MergeCN"
 
 function Skeleton({
   className,
