@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Log in via SSO",
+  title: "Herstel uw account",
   alternates: {
-    canonical: "/authentication/sign-in/SAML/",
+    canonical: "/authentication/recover/",
   },
 };
 
