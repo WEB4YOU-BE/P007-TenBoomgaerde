@@ -5,7 +5,6 @@ const nextConfig = {
     trailingSlash: true,
     experimental: {
         instrumentationHook: true,
-        typedRoutes: true,
     }
 };
 
