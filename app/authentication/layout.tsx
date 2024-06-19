@@ -6,27 +6,36 @@ import { cn } from "@/utils/tailwindcss/MergeCN";
 import { buttonVariants } from "@/components/ui/button";
 
 export default function Layout({ children }: { children: ReactNode }) {
-    return <>
-        <div className="container relative h-[100dvh] flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-            <div className="relative hidden h-full flex-col p-10 bg-muted text-muted-foreground lg:flex">
-                <div className="absolute inset-0" />
-                <Link href={"/"} className={cn(buttonVariants({ variant: "link" }), "relative z-20 flex items-center ps-0 justify-start text-lg font-medium w-fit")}>
-                    <Image src={"/images/Logo Ten Boomgaerde.PNG"} alt={"Logo"} width={40} height={40}
-                        className={"aspect-square mr-2 h-8 w-8 rounded-full"} />
-                    VZW Ten Boomgaerde Lichtervelde
-                </Link>
-                <div className="relative z-20 mt-auto">
-                    <blockquote className="space-y-2">
-                        <p className="text-lg text-balance">
-                            &ldquo;Deze website maakt het ons vele malen makkelijker om een reservering te ontvangen, verwerken en accepteren.&rdquo;
-                        </p>
-                        <footer className="text-sm">Guy Beeusaert</footer>
-                    </blockquote>
-                </div>
-            </div>
-            <div className="py-4 lg:p-8">
-                {children}
-            </div>
-        </div>
-    </>
+  return (
+    <div className="grid h-[100dvh] grid-cols-1 lg:grid-cols-2">
+      <div className="container hidden bg-muted text-muted-foreground lg:flex lg:flex-col lg:justify-between lg:p-8">
+        <Link
+          href={"/"}
+          className={cn(
+            buttonVariants({ variant: "link" }),
+            "w-fit ps-0 text-lg",
+          )}
+        >
+          <Image
+            src={"/images/Logo Ten Boomgaerde.PNG"}
+            alt={"Logo"}
+            width={32}
+            height={32}
+            className={"mr-2 aspect-square h-8 w-8 rounded-full"}
+          />
+          VZW Ten Boomgaerde Lichtervelde
+        </Link>
+        <blockquote className="space-y-2">
+          <p className="text-balance text-lg">
+            &ldquo;Deze website maakt het ons vele malen makkelijker om een
+            reservering te ontvangen, verwerken en accepteren.&rdquo;
+          </p>
+          <footer className="text-sm">Guy Beeusaert</footer>
+        </blockquote>
+      </div>
+      <div className="container flex items-center justify-center p-8">
+        {children}
+      </div>
+    </div>
+  );
 }
