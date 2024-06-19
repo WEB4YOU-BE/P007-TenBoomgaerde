@@ -23,28 +23,42 @@ export default async function Page() {
         className={cn(buttonVariants(), "justify-start")}
       >
         <Mail className="mr-4 h-4 w-4" />
-        met email
+        Email
       </Link>
       <Link
         href={"/authentication/sign-in/Phone/"}
         className={cn(buttonVariants({ variant: "outline" }), "justify-start")}
       >
         <Phone className="mr-4 h-4 w-4" />
-        met telefoon
+        Telefoon
       </Link>
       <Link
         href={"/authentication/sign-in/OAuth/"}
         className={cn(buttonVariants({ variant: "outline" }), "justify-start")}
       >
         <SiGoogle className="mr-4 h-4 w-4" />
-        met sociale media
+        Ander account
       </Link>
       <Link
         href={"/authentication/sign-in/SAML/"}
         className={cn(buttonVariants({ variant: "outline" }), "justify-start")}
       >
         <Building className="mr-4 h-4 w-4" />
-        met SAML
+        SAML
+      </Link>
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background p-2 text-muted-foreground">Of</span>
+        </div>
+      </div>
+      <Link
+        href={"/authentication/sign-up/"}
+        className={cn(buttonVariants({ variant: "outline" }), "justify-start")}
+      >
+        Maak account
       </Link>
     </>
   );
