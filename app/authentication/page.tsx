@@ -24,7 +24,7 @@ export default async function Page() {
       <Card>
         <CardHeader>
           <CardTitle>Welkom</CardTitle>
-          <CardDescription>Gebruik of maak uw account.</CardDescription>
+          <CardDescription>Gebruik of maak uw account</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           <Link
