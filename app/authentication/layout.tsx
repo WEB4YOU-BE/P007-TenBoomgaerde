@@ -5,7 +5,7 @@ import Link from "next/link";
 import { cn } from "@/utils/tailwindcss/MergeCN";
 import { buttonVariants } from "@/components/ui/button";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="grid h-[100dvh] grid-cols-1 lg:grid-cols-2">
       <div className="container hidden bg-muted text-muted-foreground lg:flex lg:flex-col lg:justify-between lg:p-8">

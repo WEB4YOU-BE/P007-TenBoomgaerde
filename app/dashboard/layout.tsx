@@ -15,6 +15,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
   return children;
 }
