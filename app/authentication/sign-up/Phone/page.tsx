@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export const metadata: Metadata = {
   title: "Meld aan met telefoon",
@@ -8,6 +9,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-    return <>
+  return (
+    <>
+      <Alert>
+        <AlertTitle>Komt binnenkort!</AlertTitle>
+        <AlertDescription>
+          Deze functie is nog niet beschikbaar.
+        </AlertDescription>
+      </Alert>
     </>
+  );
 }

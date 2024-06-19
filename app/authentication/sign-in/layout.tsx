@@ -16,16 +16,16 @@ import { cn } from "@/utils/tailwindcss/MergeCN";
 export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <>
-      <Card>
+      <Card className="w-[350px] max-w-[100dvw]">
         <CardHeader>
-          <CardTitle>Welkom</CardTitle>
-          <CardDescription>Gebruik uw account</CardDescription>
+          <CardTitle>Log in</CardTitle>
+          <CardDescription>Ga verder met &hellip;</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">{children}</CardContent>
         <CardFooter>
           <Link
             href={"/authentication/recover/"}
-            className={cn(buttonVariants({ variant: "link" }))}
+            className={cn(buttonVariants({ variant: "link" }), "text-balance")}
           >
             Ik kan me niet aanmelden
           </Link>
