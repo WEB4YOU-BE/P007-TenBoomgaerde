@@ -1,8 +1,11 @@
+import { Metadata } from "next";
+
+import Link from "next/link";
+
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils/tailwindcss/MergeCN";
+
 import { Building, Mail, Phone } from "lucide-react";
-import { Metadata } from "next";
-import Link from "next/link";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 
 export const metadata: Metadata = {
