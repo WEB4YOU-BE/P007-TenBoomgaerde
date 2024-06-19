@@ -29,13 +29,13 @@ export default async function Page() {
         <CardContent className="flex flex-col gap-2">
           <Link
             href={"/authentication/sign-in/"}
-            className={cn(buttonVariants({ variant: "outline" }))}
+            className={cn(buttonVariants(), "justify-start")}
           >
             Log in
           </Link>
           <Link
             href={"/authentication/sign-up/"}
-            className={cn(buttonVariants({ variant: "outline" }))}
+            className={cn(buttonVariants({ variant: "outline" }), "justify-start")}
           >
             Maak account
           </Link>
