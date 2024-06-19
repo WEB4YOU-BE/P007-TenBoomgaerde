@@ -17,6 +17,7 @@ export function createClient() {
           cookieStore.set({ name: key, value: "", ...options });
         },
       },
+      auth: { flowType: "pkce" },
     },
   );
 }
