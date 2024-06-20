@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <>
-      <Card>
+      <Card className="w-[350px] max-w-[100dvw]">
         <CardHeader>
           <CardTitle>Welkom</CardTitle>
           <CardDescription>Gebruik of maak uw account</CardDescription>
