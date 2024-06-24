@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 import Link from "next/link";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, LoaderPinwheel } from "lucide-react";
 
 const formSchema = z
   .object({
@@ -125,7 +125,7 @@ const SignUpWithEmailCredentialsForm = () => {
             )}
           />
           <Button type="submit" disabled={isPending}>
-            {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+            {isPending && <LoaderPinwheel className="h-4 w-4 animate-spin" />}
             {!isPending && "Maak account"}
           </Button>
         </form>
