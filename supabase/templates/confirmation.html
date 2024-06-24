@@ -194,12 +194,12 @@
                       <tr>
                         <td align="center">
                           <div>
-                            <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup" style="height:45px;v-text-anchor:middle;width:200px;" arcsize="7%" stroke="f" fill="t">
+                            <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .SiteURL }}/authentication/confirm?token={{ .TokenHash }}&type=signup" style="height:45px;v-text-anchor:middle;width:200px;" arcsize="7%" stroke="f" fill="t">
                             <v:fill type="tile" color="#414EF9" />
                             <w:anchorlock/>
                             <center style="color:#ffffff;font-family:sans-serif;font-size:15px;">Verifieer email</center>
                           </v:roundrect><![endif]-->
-                            <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup" class="button button--blue">Verifieer email</a>
+                            <a href="{{ .SiteURL }}/authentication/confirm?token={{ .TokenHash }}&type=signup" class="button button--blue">Verifieer email</a>
                           </div>
                         </td>
                       </tr>
@@ -211,7 +211,7 @@
                         <td>
                           <p class="sub">Als je problemen hebt met het klikken op de knop, kopieer en plak dan de onderstaande URL in je webbrowser.
                           </p>
-                          <p class="sub"><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup">{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup</a></p>
+                          <p class="sub"><a href="{{ .SiteURL }}/authentication/confirm?token={{ .TokenHash }}&type=signup">{{ .SiteURL }}/authentication/confirm?token={{ .TokenHash }}&type=signup</a></p>
                         </td>
                       </tr>
                     </table>
