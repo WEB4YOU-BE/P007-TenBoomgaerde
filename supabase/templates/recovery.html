@@ -221,7 +221,7 @@
                                 ]><v:roundrect
                                   xmlns:v="urn:schemas-microsoft-com:vml"
                                   xmlns:w="urn:schemas-microsoft-com:office:word"
-                                  href="{{ .SiteURL }}/authentication/confirm?token={{ .TokenHash }}&type=recovery"
+                                  href="{{ .SiteURL }}/authentication/confirm?type=recovery&token={{ .TokenHash }}&redirect={{ .RedirectTo }}"
                                   style="
                                     height: 45px;
                                     v-text-anchor: middle;
@@ -245,7 +245,7 @@
                                 </v:roundrect><!
                               [endif]-->
                               <a
-                                href="{{ .SiteURL }}/authentication/confirm?token={{ .TokenHash }}&type=recovery"
+                                href="{{ .SiteURL }}/authentication/confirm?type=recovery&token={{ .TokenHash }}&redirect={{ .RedirectTo }}"
                                 class="button button--red"
                               >
                                 Wachtwoord opnieuw instellen
@@ -272,10 +272,10 @@
                             </p>
                             <p class="sub">
                               <a
-                                href="{{ .SiteURL }}/authentication/confirm?token={{ .TokenHash }}&type=recovery"
-                                >{{ .SiteURL }}/authentication/confirm?token={{
-                                .TokenHash }}&type=recovery</a
-                              >
+                                href="{{ .SiteURL }}/authentication/confirm?type=recovery&token={{ .TokenHash }}&redirect={{ .RedirectTo }}"
+                                >
+                                {{ .SiteURL }}/authentication/confirm?type=recovery&token={{ .TokenHash }}&redirect={{ .RedirectTo }}
+                                </a>
                             </p>
                           </td>
                         </tr>
