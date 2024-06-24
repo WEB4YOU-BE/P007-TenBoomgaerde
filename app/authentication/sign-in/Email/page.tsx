@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import SignInWithEmailCredentialsForm from "./form";
 
 export const metadata: Metadata = {
   title: "Log in via email",
@@ -8,6 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-    return <>
-    </>
+  return <SignInWithEmailCredentialsForm />;
 }
