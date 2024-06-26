@@ -1,5 +1,5 @@
 import type { MiddlewareFactory } from "@/types/middleware/middlewareFactory";
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createClient } from "@/utils/supabase/middleware";
 import {
   NextResponse,
   type NextFetchEvent,
@@ -9,7 +9,6 @@ import {
 export const withSupabaseAuth: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
-
     if (["/_next"].some((regex) => pathname.startsWith(regex)))
       return next(request, _next);
 
@@ -19,24 +18,7 @@ export const withSupabaseAuth: MiddlewareFactory = (next) => {
       },
     });
 
-    const supabase = createServerClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get: (key) => request.cookies.get(key)?.value,
-          set: (key: string, value: string, options: CookieOptions) => {
-            request.cookies.set({ key, value, ...options });
-            response.cookies.set({ key, value, ...options });
-          },
-          remove: (key: string, options: CookieOptions) => {
-            request.cookies.set({ key, value: "", ...options });
-            response.cookies.set({ key, value: "", ...options });
-          },
-        },
-      },
-    );
-
+    const supabase = createClient(request, response);
     const { data } = await supabase.auth.getUser();
 
     if (!!data.user)
