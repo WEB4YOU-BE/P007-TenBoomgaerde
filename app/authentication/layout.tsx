@@ -6,14 +6,13 @@ import Link from "next/link";
 import { cn } from "@/utils/tailwindcss/MergeCN";
 import { buttonVariants } from "@/components/ui/button";
 
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-
+/**
+ * This layout is not available in when logged in.
+ * Change this behavour in the Supabase middleware.
+ * @param children The children to be displayed
+ * @returns Promise<JSX.Element>
+ */
 export default async function Layout({ children }: { children: ReactNode }) {
-  const supabase = createClient();
-  const { data } = await supabase.auth.getUser();
-  if (!!data.user) return redirect("/");
-
   return (
     <div className="grid h-[100dvh] grid-cols-1 lg:grid-cols-2">
       <div className="container hidden bg-muted text-muted-foreground lg:flex lg:flex-col lg:justify-between lg:p-8">

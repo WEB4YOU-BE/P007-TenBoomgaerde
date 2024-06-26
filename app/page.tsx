@@ -22,11 +22,11 @@ export default async function Page() {
         </CardHeader>
         <CardContent>user: {data.user?.email}</CardContent>
         <CardContent>error: {JSON.stringify(error, null, 2)}</CardContent>
-        {!data?.user && (
+        
           <CardFooter>
             <Link href={"/authentication/"}>Sign in</Link>
           </CardFooter>
-        )}
+        
       </Card>
     </>
   );

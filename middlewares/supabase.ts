@@ -10,11 +10,7 @@ export const withSupabaseAuth: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
 
-    if (
-      [
-        "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-      ].some((regex) => pathname.match(regex))
-    )
+    if (["/_next"].some((regex) => pathname.startsWith(regex)))
       return next(request, _next);
 
     let response = NextResponse.next({
@@ -28,48 +24,31 @@ export const withSupabaseAuth: MiddlewareFactory = (next) => {
       process.env.SUPABASE_ANON_KEY!,
       {
         cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
+          get: (key) => request.cookies.get(key)?.value,
+          set: (key: string, value: string, options: CookieOptions) => {
+            request.cookies.set({ key, value, ...options });
+            response.cookies.set({ key, value, ...options });
           },
-          set(name: string, value: string, options: CookieOptions) {
-            request.cookies.set({
-              name,
-              value,
-              ...options,
-            });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set({
-              name,
-              value,
-              ...options,
-            });
-          },
-          remove(name: string, options: CookieOptions) {
-            request.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
+          remove: (key: string, options: CookieOptions) => {
+            request.cookies.set({ key, value: "", ...options });
+            response.cookies.set({ key, value: "", ...options });
           },
         },
       },
     );
 
-    await supabase.auth.getUser();
+    const { data } = await supabase.auth.getUser();
+
+    if (!!data.user)
+      if (
+        ["/authentication/"].some((regex) =>
+          request.nextUrl.pathname.startsWith(regex),
+        )
+      ) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/";
+        return NextResponse.redirect(url);
+      }
 
     return response;
   };
