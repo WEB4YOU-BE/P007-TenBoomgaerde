@@ -32,6 +32,17 @@ export const withSupabaseAuth: MiddlewareFactory = (next) => {
         return NextResponse.redirect(url);
       }
 
+    if (!data.user)
+      if (
+        ["/account/", "/dashboard/"].some((regex) =>
+          request.nextUrl.pathname.startsWith(regex),
+        )
+      ) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/authentication/";
+        return NextResponse.redirect(url);
+      }
+
     return response;
   };
 };
