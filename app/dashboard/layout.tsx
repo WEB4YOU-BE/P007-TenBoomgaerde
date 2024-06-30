@@ -2,19 +2,11 @@ import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import { toast } from "sonner";
 
 export const metadata: Metadata = {
   title: {
-    default: "Dashboard | VZW Ten Boomgaerde Lichtervelde",
-    template: "%s | Dashboard | VZW Ten Boomgaerde Lichtervelde",
-  },
-
-  robots: {
-    index: false,
-    follow: false,
-    noarchive: true,
-    noimageindex: true,
+    default: "Dashboard",
+    template: "%s | Dashboard",
   },
 };
 

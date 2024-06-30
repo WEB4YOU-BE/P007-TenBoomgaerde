@@ -16,7 +16,34 @@ export const metadata: Metadata = {
   applicationName: "VZW Ten Boomgaerde Lichtervelde",
   keywords: ["Ten Boomgaerde", "Lichtervelde", "Zaal verhuur"],
 
+  appleWebApp: {
+    title: "VZW Ten Boomgaerde Lichtervelde",
+    statusBarStyle: "default",
+  },
+
   referrer: "strict-origin-when-cross-origin",
+
+  formatDetection: {
+    url: false,
+    email: false,
+    telephone: false,
+    address: false,
+    date: false,
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 
   generator: "Next.js",
   creator: "WEB4YOU",
