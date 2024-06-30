@@ -1,5 +1,4 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Card } from "@/components/ui/card";
 import { Metadata } from "next";
 import Image from "next/image";
 
@@ -85,6 +84,12 @@ export default async function Page() {
         Extra glazen kunnen aangevraagd worden bij reservering van de zaal. Alle
         andere benodigdheden dienen zelf meegebracht te worden.
       </p>
+      <Alert variant={"destructive"} className="[&:not(:first-child)]:mt-6">
+        <AlertDescription>
+          Uit respect voor de nachtrust van de buurtbewoners kunnen er geen
+          feesten met muziekinstallaties plaats vinden na 22u00.
+        </AlertDescription>
+      </Alert>
 
       <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
         Bereikbaarheid
