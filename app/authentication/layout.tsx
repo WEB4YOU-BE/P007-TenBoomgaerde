@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import Link from "next/link";
 import { cn } from "@/utils/tailwindcss/MergeCN";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/atoms/button";
 
 /**
  * This layout is not available in when logged in.

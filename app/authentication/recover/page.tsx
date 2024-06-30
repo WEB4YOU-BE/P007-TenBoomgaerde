@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/atoms/card";
 import { Metadata } from "next";
 import ResetWithEmailCredentialsForm from "./form";
 

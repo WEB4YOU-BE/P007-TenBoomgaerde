@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/atoms/alert";
 import { Metadata } from "next";
 import Image from "next/image";
 

@@ -9,8 +9,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
+} from "@/components/atoms/card";
+import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/MergeCN";
 
 export default async function Layout({ children }: { children: ReactNode }) {

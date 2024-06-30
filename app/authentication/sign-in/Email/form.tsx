@@ -19,9 +19,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button, buttonVariants } from "@/components/ui/button";
+} from "@/components/atoms/form";
+import { Input } from "@/components/atoms/input";
+import { Button, buttonVariants } from "@/components/atoms/button";
 
 import Link from "next/link";
 import { ArrowLeft, LoaderPinwheel } from "lucide-react";

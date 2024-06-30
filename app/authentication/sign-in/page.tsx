@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 import Link from "next/link";
 
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/MergeCN";
 
 import { Building, Mail, Phone } from "lucide-react";

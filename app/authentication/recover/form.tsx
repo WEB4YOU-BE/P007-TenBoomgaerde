@@ -16,9 +16,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@/components/atoms/form";
+import { Input } from "@/components/atoms/input";
+import { Button } from "@/components/atoms/button";
 
 const formSchema = z.object({
   email: z.string().email(),

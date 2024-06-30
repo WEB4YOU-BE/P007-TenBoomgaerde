@@ -1,4 +1,4 @@
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/atoms/separator";
 import { ReactNode } from "react";
 
 export default async function Layout({ children }: { children: ReactNode }) {

@@ -1,5 +1,5 @@
-import { Toaster as ShadCNToaster } from "@/components/ui/toaster";
-import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+import { Toaster as ShadCNToaster } from "@/components/atoms/toaster";
+import { Toaster as SonnerToaster } from "@/components/atoms/sonner";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
