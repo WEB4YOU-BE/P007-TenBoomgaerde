@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "VZW Ten Boomgaerde Lichtervelde",
+  title: "Reserveren",
   alternates: {
-    canonical: "/",
+    canonical: "/reservate/",
   },
 };
 
