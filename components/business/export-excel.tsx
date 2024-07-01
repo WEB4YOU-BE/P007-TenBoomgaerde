@@ -1,9 +1,8 @@
 "use client"
-import {Tables} from "@/lib/database.types";
 import {Sheet} from "lucide-react";
 import { cn } from "@/utils/tailwindcss/MergeCN";
 import {buttonVariants} from "@/components/atoms/button";
-import * as XLSX from "xlsx";
+import { Tables } from "@/types/supabase/database.types";
 
 interface ReservationsProps {
     reservations: Tables<"reservations">[];
@@ -24,8 +23,8 @@ export default function ExportExcel({reservations}: ReservationsProps) {
                 month: "2-digit",
                 year: "numeric"
             }),
-            Startuur: reservation.start_hour.start_hour,
-            Einduur: reservation.end_hour.end_hour,
+            Startuur: reservation.start_hour,
+            Einduur: reservation.end_hour,
             Zaal: reservation.rooms.name,
             Reserveerder: reservation.users.firstname === null ? "" : reservation.users.firstname + " " + reservation.users.lastname,
             Organisatie: reservation.organizations === undefined || reservation.organizations === null ? "" : reservation.organizations.name,

@@ -1,8 +1,8 @@
 "use client"
-import {Tables} from "@/lib/database.types";
 import {useEffect, useState} from "react";
 import {Document, Page, PDFViewer, StyleSheet, Text, View} from "@react-pdf/renderer";
 import PdfReservationRecordIndex from "@/components/pdf/pdf-record";
+import { Tables } from "@/types/supabase/database.types";
 
 interface pdfProps {
     reservations: Tables<"reservations">[];
