@@ -12,9 +12,5 @@ export const metadata: Metadata = {
 export default async function Page() {
   const users = await fetchUsers();
 
-  return (
-    <>
-      <DataTable columns={columns} data={users} />
-    </>
-  );
+  return <DataTable columns={columns} data={users} />;
 }
