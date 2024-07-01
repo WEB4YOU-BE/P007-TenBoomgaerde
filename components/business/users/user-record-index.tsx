@@ -55,7 +55,7 @@ interface UserRecordIndexActionsProps {
 
 async function UserRecordIndexActions({id}: UserRecordIndexActionsProps) {
     return <div className={"flex flex-row gap-2 flex-shrink-0"}>
-        <Link href={`/dashboard/gebruikers/${id}`}
+        <Link href={`/dashboard/users/${id}`}
               className={cn(buttonVariants({variant: "default"}), "flex flex-row gap-2 flex-shrink-0")}><Info
             size={16}/><span className={"max-sm:hidden"}>Info</span></Link>
     </div>

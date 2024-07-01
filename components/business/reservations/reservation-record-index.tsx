@@ -3,7 +3,7 @@ import { cn } from "@/utils/tailwindcss/MergeCN";
 import {Info} from "lucide-react";
 import React from "react";
 import Link from "next/link";
-import {Badge} from "@/components/atoms/Badge";
+import {Badge} from "@/components/atoms/badge";
 import ChangeFacturatie from "@/components/business/reservations/change-facturatie";
 
 interface ReservationRecordIndexProps {

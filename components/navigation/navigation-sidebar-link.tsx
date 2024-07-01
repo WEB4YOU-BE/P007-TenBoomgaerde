@@ -14,7 +14,7 @@ interface NavigationSidebarLinkProps {
 
 export default async function NavigationSidebarLink({href, target, children}: NavigationSidebarLinkProps) {
     return <Link href={href} target={target}
-                 className={cn(buttonVariants({variant: "green"}), "justify-start flex-shrink-0 gap-2 text-base")}>
+                 className={cn(buttonVariants({variant: "ghost"}), "justify-start flex-shrink-0 gap-2 text-base")}>
         {children}
     </Link>
 }

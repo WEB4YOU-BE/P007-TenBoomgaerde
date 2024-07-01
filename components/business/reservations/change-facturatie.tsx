@@ -1,5 +1,5 @@
 "use client"
-import {Switch} from "@/components/atoms/Switch";
+import {Switch} from "@/components/atoms/switch";
 import React from "react";
 import {UpdateFacturatie} from "@/components/business/reservations/update-facturatie";
 
