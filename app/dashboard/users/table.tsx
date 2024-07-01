@@ -56,6 +56,10 @@ export const columns: ColumnDef<Tables<"users">>[] = [
   },
   {
     accessorKey: "phone",
+    accessorFn: ({ phone }) => {
+      if (!phone) return "Geen telefoonnummer";
+      return phone;
+    },
     header: ({ column }) => {
       return (
         <Button
@@ -70,6 +74,10 @@ export const columns: ColumnDef<Tables<"users">>[] = [
   },
   {
     id: "address",
+    accessorFn: ({ street, postcode, city }) => {
+      if (!street || !postcode || !city) return "Geen of onvolledig adres";
+      return `${street}, ${postcode} ${city}`;
+    },
     header: ({ column }) => {
       return (
         <Button
@@ -81,11 +89,22 @@ export const columns: ColumnDef<Tables<"users">>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const user = row.original;
-      if (!user.street || !user.postcode || !user.city)
-        return "Geen of onvolledig adres";
-      return `${user.street}, ${user.postcode} ${user.city}`;
+  },
+  {
+    id: "admin",
+    accessorFn: ({ is_admin }) => {
+      return is_admin ? "Ja" : "Nee";
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Is administrator
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
   },
 ];

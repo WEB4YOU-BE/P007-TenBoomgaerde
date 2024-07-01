@@ -13,7 +13,7 @@ const Sidebar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
           className={cn(className, "h-[100dvh] p-2 max-md:hidden sticky top-0")}
           {...props}
         >
-          <div className="flex h-full flex-col gap-2 rounded bg-muted text-muted-foreground p-2">
+          <div className="flex h-full flex-col gap-2 rounded-lg border border-muted p-2">
             {children}
           </div>
         </aside>
