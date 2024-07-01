@@ -1,23 +1,21 @@
 "use client";
 
-import { Suspense, type ReactNode } from "react"
+import { type ReactNode } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface ProvidersProps {
-    children: ReactNode
+  children: ReactNode;
 }
 
 const Providers = ({ children }: ProvidersProps) => {
-    const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
-    return <>
-        <QueryClientProvider client={queryClient}>
-            <Suspense>
-                {children}
-            </Suspense>
-        </QueryClientProvider>
+  return (
+    <>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </>
-}
+  );
+};
 
-export default Providers
+export default Providers;

@@ -10,7 +10,7 @@ const Sidebar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       <TooltipProvider>
         <aside
           ref={ref}
-          className={cn(className, "h-[100dvh] p-2 max-md:hidden")}
+          className={cn(className, "h-[100dvh] p-2 max-md:hidden sticky top-0")}
           {...props}
         >
           <div className="flex h-full flex-col gap-2 rounded bg-muted text-muted-foreground p-2">

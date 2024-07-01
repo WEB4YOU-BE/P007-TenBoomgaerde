@@ -22,7 +22,7 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = {
   title: {
     default: "Dashboard",
-    template: "%s | Dashboard",
+    template: "%s | Dashboard | VZW Ten Boomgaerde Lichtervelde",
   },
 };
 
@@ -40,7 +40,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   if (!is_admin) return redirect("/");
 
   return (
-    <div className="flex flex-row">
+    <div className="relative flex h-[100dvh] w-[100dvw] flex-row overflow-auto">
       <Sidebar>
         <SidebarNavigation
           links={[
@@ -143,7 +143,9 @@ export default async function Layout({ children }: { children: ReactNode }) {
           ]}
         />
       </Sidebar>
-      {children}
+      <div className="h-full w-full py-2 pe-2">
+        <div className="h-full w-full">{children}</div>
+      </div>
     </div>
   );
 }
