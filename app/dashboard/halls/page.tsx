@@ -3,9 +3,9 @@ import { fetchHalls } from "./actions";
 import { columns, DataTable } from "./table";
 
 export const metadata: Metadata = {
-  title: "Users",
+  title: "Zalen",
   alternates: {
-    canonical: "/dashboard/users/",
+    canonical: "/dashboard/halls/",
   },
 };
 

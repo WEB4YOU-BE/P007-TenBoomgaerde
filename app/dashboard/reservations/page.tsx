@@ -3,9 +3,9 @@ import { fetchReservations } from "./actions";
 import { columns, DataTable } from "./table";
 
 export const metadata: Metadata = {
-  title: "Users",
+  title: "Reserveringen",
   alternates: {
-    canonical: "/dashboard/users/",
+    canonical: "/dashboard/reservations/",
   },
 };
 
