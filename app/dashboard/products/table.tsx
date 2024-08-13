@@ -21,13 +21,10 @@ import {
 import { ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 
-export const columns: ColumnDef<Tables<"users">>[] = [
+export const columns: ColumnDef<Tables<"products">>[] = [
   {
     id: "name",
-    accessorFn: ({ firstname, lastname }) => {
-      if (!firstname && !lastname) return "Geen naam";
-      return `${firstname || "(geen voornaam)"} ${lastname || "(geen achternaam)"}`;
-    },
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -41,24 +38,28 @@ export const columns: ColumnDef<Tables<"users">>[] = [
     },
   },
   {
-    accessorKey: "email",
+    id: "price",
+    accessorFn: ({ price }) => {
+      if (!price) return "Gratis";
+      return price;
+    },
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Prijs
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "phone",
-    accessorFn: ({ phone }) => {
-      if (!phone) return "Geen telefoonnummer";
-      return phone;
+    id: "price",
+    accessorFn: ({ categorie_id }) => {
+      if (!categorie_id) return "geen categorie";
+      return categorie_id;
     },
     header: ({ column }) => {
       return (
@@ -66,17 +67,17 @@ export const columns: ColumnDef<Tables<"users">>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Telefoonnummer
+          Categorie
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    id: "address",
-    accessorFn: ({ street, postcode, city }) => {
-      if (!street || !postcode || !city) return "Geen of onvolledig adres";
-      return `${street}, ${postcode} ${city}`;
+    id: "price",
+    accessorFn: ({ for_sale }) => {
+      if (!for_sale) return "te huur";
+      return for_sale;
     },
     header: ({ column }) => {
       return (
@@ -84,24 +85,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Adres
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    id: "admin",
-    accessorFn: ({ is_admin }) => {
-      return is_admin ? "Ja" : "Nee";
-    },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Is administrator
+          Kopen of huren
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
