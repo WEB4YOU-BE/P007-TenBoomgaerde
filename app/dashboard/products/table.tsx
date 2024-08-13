@@ -24,7 +24,10 @@ import { useState } from "react";
 export const columns: ColumnDef<Tables<"products">>[] = [
   {
     id: "name",
-    accessorKey: "name",
+    accessorFn: ({ name }) => {
+      if (!name) return "naamloos";
+      return name;
+    },
     header: ({ column }) => {
       return (
         <Button

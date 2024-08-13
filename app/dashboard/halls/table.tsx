@@ -21,12 +21,12 @@ import {
 import { ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 
-export const columns: ColumnDef<Tables<"users">>[] = [
+export const columns: ColumnDef<Tables<"rooms">>[] = [
   {
     id: "name",
-    accessorFn: ({ firstname, lastname }) => {
-      if (!firstname && !lastname) return "Geen naam";
-      return `${firstname || "(geen voornaam)"} ${lastname || "(geen achternaam)"}`;
+    accessorFn: ({ name }) => {
+      if (!name) return "naamloos";
+      return name;
     },
     header: ({ column }) => {
       return (
@@ -41,24 +41,28 @@ export const columns: ColumnDef<Tables<"users">>[] = [
     },
   },
   {
-    accessorKey: "email",
+    id: "allowance",
+    accessorFn: ({ private: is_private }) => {
+      if (!is_private) return "nee";
+      return !!is_private ? "ja" : "nee";
+    },
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Is privé
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "phone",
-    accessorFn: ({ phone }) => {
-      if (!phone) return "Geen telefoonnummer";
-      return phone;
+    id: "price_for_one_day",
+    accessorFn: ({ day_price }) => {
+      if (!day_price) return "onbekend";
+      return `€${day_price}`;
     },
     header: ({ column }) => {
       return (
@@ -66,17 +70,17 @@ export const columns: ColumnDef<Tables<"users">>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Telefoonnummer
+          Normale prijs
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    id: "address",
-    accessorFn: ({ street, postcode, city }) => {
-      if (!street || !postcode || !city) return "Geen of onvolledig adres";
-      return `${street}, ${postcode} ${city}`;
+    id: "price_for_multiple_days",
+    accessorFn: ({ day_price2 }) => {
+      if (!day_price2) return "onbekend";
+      return `€${day_price2}`;
     },
     header: ({ column }) => {
       return (
@@ -84,24 +88,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Adres
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    id: "admin",
-    accessorFn: ({ is_admin }) => {
-      return is_admin ? "Ja" : "Nee";
-    },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Is administrator
+          Prijs voor meerdere blokken
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
