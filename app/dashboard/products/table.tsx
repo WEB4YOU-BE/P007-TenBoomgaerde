@@ -56,7 +56,7 @@ export const columns: ColumnDef<Tables<"products">>[] = [
     },
   },
   {
-    id: "price",
+    id: "category",
     accessorFn: ({ categorie_id }) => {
       if (!categorie_id) return "geen categorie";
       return categorie_id;
@@ -74,7 +74,7 @@ export const columns: ColumnDef<Tables<"products">>[] = [
     },
   },
   {
-    id: "price",
+    id: "for_sale",
     accessorFn: ({ for_sale }) => {
       if (!for_sale) return "te huur";
       return for_sale;
