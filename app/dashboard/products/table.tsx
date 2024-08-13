@@ -80,7 +80,7 @@ export const columns: ColumnDef<Tables<"products">>[] = [
     id: "for_sale",
     accessorFn: ({ for_sale }) => {
       if (!for_sale) return "te huur";
-      return for_sale;
+      return for_sale ? "te koop" : "te huur";
     },
     header: ({ column }) => {
       return (
