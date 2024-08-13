@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { fetchUsers } from "./actions";
 import { columns, DataTable } from "./table";
+import { fetchOrganizations } from "./actions";
 
 export const metadata: Metadata = {
   title: "Users",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const users = await fetchUsers();
+  const organizations = await fetchOrganizations();
 
-  return <DataTable columns={columns} data={users} />;
+  return <DataTable columns={columns} data={organizations} />;
 }

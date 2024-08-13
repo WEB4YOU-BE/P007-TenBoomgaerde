@@ -21,12 +21,12 @@ import {
 import { ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 
-export const columns: ColumnDef<Tables<"users">>[] = [
+export const columns: ColumnDef<Tables<"organizations">>[] = [
   {
     id: "name",
-    accessorFn: ({ firstname, lastname }) => {
-      if (!firstname && !lastname) return "Geen naam";
-      return `${firstname || "(geen voornaam)"} ${lastname || "(geen achternaam)"}`;
+    accessorFn: ({ name }) => {
+      if (!name) return "naamloos";
+      return name;
     },
     header: ({ column }) => {
       return (
@@ -41,24 +41,10 @@ export const columns: ColumnDef<Tables<"users">>[] = [
     },
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "phone",
-    accessorFn: ({ phone }) => {
-      if (!phone) return "Geen telefoonnummer";
-      return phone;
+    id: "btw_number",
+    accessorFn: ({ btw_number }) => {
+      if (!btw_number) return "geen BTW-nummer";
+      return btw_number;
     },
     header: ({ column }) => {
       return (
@@ -66,42 +52,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Telefoonnummer
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    id: "address",
-    accessorFn: ({ street, postcode, city }) => {
-      if (!street || !postcode || !city) return "Geen of onvolledig adres";
-      return `${street}, ${postcode} ${city}`;
-    },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Adres
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    id: "admin",
-    accessorFn: ({ is_admin }) => {
-      return is_admin ? "Ja" : "Nee";
-    },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Is administrator
+          BTW-nummer
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
