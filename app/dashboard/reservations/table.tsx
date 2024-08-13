@@ -94,6 +94,78 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
       );
     },
   },
+  {
+    id: "status",
+    accessorFn: ({ status }) => {
+      if (!status) return "onbekend";
+      return status;
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    id: "renter",
+    accessorFn: ({ user_id }) => {
+      if (!user_id) return "onbekend";
+      return user_id;
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Reserveerder
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    id: "organization",
+    accessorFn: ({ organizations_id }) => {
+      if (!organizations_id) return "onbekend";
+      return organizations_id;
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Via organisatie
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    id: "billed",
+    accessorFn: ({ gefactureerd }) => {
+      if (!gefactureerd) return "onbekend";
+      return gefactureerd;
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Gefactureerd
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
 ];
 
 interface TableProps<TData, TValue> {
