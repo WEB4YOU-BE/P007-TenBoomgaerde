@@ -40,7 +40,7 @@ export const withSupabaseAuth: MiddlewareFactory = (next) => {
       ) {
         const url = request.nextUrl.clone();
         url.pathname = "/authentication/";
-        return NextResponse.redirect(url, { status: 401 });
+        return NextResponse.redirect(url);
       }
 
     return response;
