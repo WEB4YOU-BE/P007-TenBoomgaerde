@@ -93,7 +93,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
               title: "Tijdsblokken",
               label: "",
               icon: Clock,
-              url: "/dashboard/halls/timeslots/",
+              url: "/dashboard/timeslots/",
             },
           ]}
         />
@@ -104,7 +104,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
               title: "Categorieën",
               label: "",
               icon: Tag,
-              url: "/dashboard/products/categories/",
+              url: "/dashboard/categories/",
             },
             {
               title: "Producten",
