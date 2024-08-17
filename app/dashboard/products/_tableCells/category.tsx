@@ -5,17 +5,15 @@ import { getCategoryById } from "./actions";
 import { LoaderPinwheel } from "lucide-react";
 
 interface CategoryCellProps {
-  id?: string | null;
+  id: string;
 }
 const CategoryCell = ({ id }: CategoryCellProps) => {
   const { data, isPending } = useQuery({
     queryKey: ["category", id],
-    queryFn: () => getCategoryById(id || ""),
+    queryFn: () => getCategoryById(id),
     networkMode: "online",
     retry: true,
   });
-
-  if (!id) return "geen categorie";
 
   return !isPending ? (
     data?.[0]?.name
