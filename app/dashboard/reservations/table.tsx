@@ -20,6 +20,10 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { useState } from "react";
+import TimeslotsCell from "./_tableCells/Timeslots";
+import RenterCell from "./_tableCells/Renter";
+import HallCell from "./_tableCells/Hall";
+import OrganisationCell from "./_tableCells/Organization";
 
 export const columns: ColumnDef<Tables<"reservations">>[] = [
   {
@@ -60,6 +64,15 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
   },
   {
     id: "timeframes",
+    cell: ({ row }) =>
+      row.original.start_hour && row.original.end_hour ? (
+        <TimeslotsCell
+          startHourID={row.original.start_hour}
+          endHourID={row.original.end_hour}
+        />
+      ) : (
+        "Geen data ingevoerd"
+      ),
     accessorFn: ({ start_hour, end_hour }) => {
       if (!start_hour || !end_hour) return "Geen data ingevoerd";
       return `${start_hour}${start_hour === end_hour ? "" : " tot " + end_hour}`;
@@ -82,6 +95,12 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
       if (!room_id) return "Geen zaal geselecteerd";
       return room_id;
     },
+    cell: ({ row }) =>
+      row.original.room_id ? (
+        <HallCell id={row.original.room_id} />
+      ) : (
+        "Geen ruimte geselecteerd"
+      ),
     header: ({ column }) => {
       return (
         <Button
@@ -118,6 +137,12 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
       if (!user_id) return "onbekend";
       return user_id;
     },
+    cell: ({ row }) =>
+      row.original.user_id ? (
+        <RenterCell id={row.original.user_id} />
+      ) : (
+        "Gebruiker reeds verwijderd"
+      ),
     header: ({ column }) => {
       return (
         <Button
@@ -136,6 +161,12 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
       if (!organizations_id) return "onbekend";
       return organizations_id;
     },
+    cell: ({ row }) =>
+      row.original.organizations_id ? (
+        <OrganisationCell id={row.original.organizations_id} />
+      ) : (
+        "Geen organisatie geselecteerd"
+      ),
     header: ({ column }) => {
       return (
         <Button
