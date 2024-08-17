@@ -182,8 +182,8 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
   {
     id: "billed",
     accessorFn: ({ gefactureerd }) => {
-      if (!gefactureerd) return "onbekend";
-      return gefactureerd;
+      if (gefactureerd === undefined) return "onbekend";
+      return gefactureerd ? "ja" : "nee";
     },
     header: ({ column }) => {
       return (
