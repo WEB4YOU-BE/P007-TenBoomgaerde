@@ -13,6 +13,7 @@ const CategoryCell = ({ id }: CategoryCellProps) => {
     queryFn: () => getCategoryById(id),
     networkMode: "online",
     retry: true,
+    staleTime: 1000 * 60, // 1 minute
   });
 
   return !isPending ? (
