@@ -20,6 +20,7 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { useState } from "react";
+import CategoryCell from "./_tableCells/category";
 
 export const columns: ColumnDef<Tables<"products">>[] = [
   {
@@ -75,6 +76,7 @@ export const columns: ColumnDef<Tables<"products">>[] = [
         </Button>
       );
     },
+    cell: ({ cell }) => <CategoryCell id={cell.row.original.categorie_id || ""} />,
   },
   {
     id: "for_sale",
