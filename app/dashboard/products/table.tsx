@@ -61,8 +61,8 @@ export const columns: ColumnDef<Tables<"products">>[] = [
   },
   {
     id: "category",
-    cell: ({ cell }) => (
-      <CategoryCell id={cell.row.original.categorie_id} />
+    cell: ({ row }) => (
+      <CategoryCell id={row.original.categorie_id} />
     ),
     header: ({ column }) => {
       return (
