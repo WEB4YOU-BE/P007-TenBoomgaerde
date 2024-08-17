@@ -61,10 +61,9 @@ export const columns: ColumnDef<Tables<"products">>[] = [
   },
   {
     id: "category",
-    accessorFn: ({ categorie_id }) => {
-      if (!categorie_id) return "geen categorie";
-      return categorie_id;
-    },
+    cell: ({ cell }) => (
+      <CategoryCell id={cell.row.original.categorie_id} />
+    ),
     header: ({ column }) => {
       return (
         <Button
@@ -76,7 +75,6 @@ export const columns: ColumnDef<Tables<"products">>[] = [
         </Button>
       );
     },
-    cell: ({ cell }) => <CategoryCell id={cell.row.original.categorie_id || ""} />,
   },
   {
     id: "for_sale",
