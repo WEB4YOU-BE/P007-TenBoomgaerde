@@ -34,17 +34,20 @@
         "npm": ">=10"
     },
     "scripts": {
-        "predev": "supabase start",
+        "predev": "npm run -s supabase:start",
         "dev": "next dev",
-        "postdev": "supabase stop --no-backup",
+        "postdev": "npm run -s supabase:stop",
         "build": "next build",
+        "prestart": "npm run -s build",
         "start": "next start",
         "prepare": "husky",
         "lint": "next lint",
         "lint-staged": "lint-staged",
         "commitlint": "commitlint --strict --edit",
         "format": "prettier --check --ignore-path .gitignore .",
-        "format:fix": "prettier --write --ignore-path .gitignore ."
+        "format:fix": "prettier --write --ignore-path .gitignore .",
+        "supabase:start": "supabase start",
+        "supabase:stop": "supabase stop --no-backup"
     },
     "dependencies": {
         "next": "14.2.6",
