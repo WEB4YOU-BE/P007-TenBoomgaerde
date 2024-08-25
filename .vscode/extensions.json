@@ -5,6 +5,7 @@
         "ecmel.vscode-html-css",
         "ms-vscode.vscode-typescript-next",
         "dbaeumer.vscode-eslint",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+        "supabase.vscode-supabase-extension"
     ]
 }
