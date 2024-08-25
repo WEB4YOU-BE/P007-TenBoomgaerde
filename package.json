@@ -1,68 +1,73 @@
 {
-  "name": "vzwtenboomgaerdelichtervelde",
-  "description": "The website. Nothing more, nothing less.",
-  "homepage": "https://vzwtenboomgaerdelichtervelde.be/",
-  "repository": {
-    "type": "github",
-    "url": "https://github.com/WEB4YOU-BE/P007-TenBoomgaerde.git"
-  },
-  "bugs": {
-    "email": "info@web-4-you.be"
-  },
-  "author": {
-    "name": "Jens Penneman",
-    "email": "jenspenneman26@gmail.com",
-    "url": "https://jenspenneman.com"
-  },
-  "contributors": [
-    {
-      "name": "Jens Penneman",
-      "email": "jenspenneman26@gmail.com",
-      "url": "https://jenspenneman.com"
+    "name": "vzwtenboomgaerdelichtervelde",
+    "description": "The website. Nothing more, nothing less.",
+    "homepage": "https://vzwtenboomgaerdelichtervelde.be/",
+    "repository": {
+        "type": "github",
+        "url": "https://github.com/WEB4YOU-BE/P007-TenBoomgaerde.git"
     },
-    {
-      "name": "Tiebe Deweerdt",
-      "email": "tiebe.dw1@gmail.com"
+    "bugs": {
+        "email": "info@web-4-you.be"
+    },
+    "author": {
+        "name": "Jens Penneman",
+        "email": "jenspenneman26@gmail.com",
+        "url": "https://jenspenneman.com"
+    },
+    "contributors": [
+        {
+            "name": "Jens Penneman",
+            "email": "jenspenneman26@gmail.com",
+            "url": "https://jenspenneman.com"
+        },
+        {
+            "name": "Tiebe Deweerdt",
+            "email": "tiebe.dw1@gmail.com"
+        }
+    ],
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "engineStrict": true,
+    "engines": {
+        "node": ">=20 <=22",
+        "npm": ">=10"
+    },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "prepare": "husky",
+        "lint": "next lint",
+        "lint-staged": "lint-staged",
+        "commitlint": "commitlint --strict --edit",
+        "format": "prettier --check --ignore-path .gitignore .",
+        "format:fix": "prettier --write --ignore-path .gitignore ."
+    },
+    "dependencies": {
+        "next": "14.2.6",
+        "react": "^18",
+        "react-dom": "^18"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.4.0",
+        "@commitlint/config-conventional": "^19.2.2",
+        "@commitlint/types": "^19.0.3",
+        "@eslint/js": "^9.9.1",
+        "@types/eslint__js": "^8.42.3",
+        "@types/node": "^22",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.2.6",
+        "eslint-config-prettier": "^9.1.0",
+        "husky": "^9.1.5",
+        "lint-staged": "^15.2.9",
+        "postcss": "^8",
+        "prettier": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.6",
+        "tailwindcss": "^3.4.10",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^8.2.0"
     }
-  ],
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "engineStrict": true,
-  "engines": {
-    "node": ">=20 <=22",
-    "npm": ">=10"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "prepare": "husky",
-    "lint": "next lint",
-    "lint-staged": "lint-staged",
-    "commitlint": "commitlint --strict --edit"
-  },
-  "dependencies": {
-    "next": "14.2.6",
-    "react": "^18",
-    "react-dom": "^18"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^19.4.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@commitlint/types": "^19.0.3",
-    "@eslint/js": "^9.9.1",
-    "@types/eslint__js": "^8.42.3",
-    "@types/node": "^22",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.6",
-    "husky": "^9.1.5",
-    "lint-staged": "^15.2.9",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.10",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0"
-  }
 }
