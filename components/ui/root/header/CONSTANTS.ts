@@ -29,7 +29,7 @@ export const userItems: NavigationItem[] = [
   },
   {
     title: "Sign out",
-    href: "/sign-out",
+    href: "/authentication/sign-out",
     isPrimairy: true,
   },
 ];

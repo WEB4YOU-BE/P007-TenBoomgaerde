@@ -21,7 +21,16 @@ export const withSupabaseAuth: MiddlewareFactory = (next) => {
     const supabase = createClient(request, response);
     const { data } = await supabase.auth.getUser();
 
-    if (!!data.user)
+    console.log(request.nextUrl.pathname);
+
+    if (!!data.user) {
+      if (request.nextUrl.pathname === "/authentication/sign-out/") {
+        console.log("signout");
+        await supabase.auth.signOut();
+        const url = request.nextUrl.clone();
+        url.pathname = "/authentication/";
+        return NextResponse.redirect(url);
+      }
       if (
         ["/authentication/"].some((regex) =>
           request.nextUrl.pathname.startsWith(regex),
@@ -31,6 +40,7 @@ export const withSupabaseAuth: MiddlewareFactory = (next) => {
         url.pathname = "/";
         return NextResponse.redirect(url);
       }
+    }
 
     if (!data.user)
       if (
