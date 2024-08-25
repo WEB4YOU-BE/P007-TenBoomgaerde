@@ -1,7 +1,38 @@
 {
-  "name": "ten-boomgaerde",
-  "version": "0.1.0",
+  "name": "vzwtenboomgaerdelichtervelde",
+  "description": "The website. Nothing more, nothing less.",
+  "homepage": "https://vzwtenboomgaerdelichtervelde.be/",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/WEB4YOU-BE/P007-TenBoomgaerde.git"
+  },
+  "bugs": {
+    "email": "info@web-4-you.be"
+  },
+  "author": {
+    "name": "Jens Penneman",
+    "email": "jenspenneman26@gmail.com",
+    "url": "https://jenspenneman.com"
+  },
+  "contributors": [
+    {
+      "name": "Jens Penneman",
+      "email": "jenspenneman26@gmail.com",
+      "url": "https://jenspenneman.com"
+    },
+    {
+      "name": "Tiebe Deweerdt",
+      "email": "tiebe.dw1@gmail.com"
+    }
+  ],
+  "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20 <=22",
+    "npm": ">=10"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,6 +46,8 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@types/eslint__js": "^8.42.3",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -23,6 +56,7 @@
     "husky": "^9.1.5",
     "postcss": "^8",
     "tailwindcss": "^3.4.10",
-    "typescript": "^5"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0"
   }
 }
