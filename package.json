@@ -39,7 +39,8 @@
     "start": "next start",
     "lint": "next lint",
     "supabase:start": "supabase start",
-    "supabase:stop": "supabase stop --no-backup"
+    "supabase:stop": "supabase stop --no-backup",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
