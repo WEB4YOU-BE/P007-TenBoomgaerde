@@ -7,4 +7,4 @@ export interface StackProps {
     request: NextRequest;
     event: NextFetchEvent;
 }
-export type Stack = (props: StackProps) => Promise<NextMiddlewareResult>;
+export type Stack = (props: StackProps) => Promise<NextMiddleware>;
