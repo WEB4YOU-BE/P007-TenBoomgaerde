@@ -3,7 +3,9 @@ import type { NextMiddleware } from "next/server";
 import stack from "./middlewares/stack";
 
 const middleware: NextMiddleware = async (request, event) =>
-    stack({ plugins: [], request, event });
+    await (
+        await stack({ plugins: [], request, event })
+    )(request, event);
 export default middleware;
 
 export const config = {

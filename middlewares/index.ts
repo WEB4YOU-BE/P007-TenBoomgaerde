@@ -1,3 +1,3 @@
 export { default as stack } from "./stack";
 
-export { default as pluginEmpty } from "./plugins/_emptyPlugin";
+export { default as pluginDefault } from "./plugins/_pluginDefault";
