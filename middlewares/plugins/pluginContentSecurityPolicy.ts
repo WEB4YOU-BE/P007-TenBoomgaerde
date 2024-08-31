@@ -5,7 +5,11 @@ import type { Plugin } from "@/types/middleware/plugin";
 
 import { getCSP } from "csp-header";
 import {
+    presetGoogleTagManager,
+    presetGoogleTagManagerPreview,
     presetNextJS,
+    presetNextJSPreview,
+    presetVercelSpeedInsights,
     presetVercelToolbar,
 } from "@/utils/contentSecurityPolicy";
 
@@ -17,7 +21,18 @@ const plugin: Plugin =
     ): Promise<NextMiddlewareResult> => {
         const hash = Buffer.from(crypto.randomUUID()).toString("base64");
         const csp = getCSP({
-            presets: [presetNextJS, presetVercelToolbar(hash)],
+            presets: [
+                presetNextJS,
+                ...(process.env.NODE_ENV === "development"
+                    ? [presetNextJSPreview(hash)]
+                    : []),
+                presetVercelToolbar(hash),
+                presetVercelSpeedInsights(hash),
+                presetGoogleTagManager(hash),
+                ...(process.env.NODE_ENV === "development"
+                    ? [presetGoogleTagManagerPreview(hash)]
+                    : []),
+            ],
         });
 
         request.headers.set("Content-Security-Policy", csp);
