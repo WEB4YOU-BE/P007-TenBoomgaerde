@@ -1,8 +1,13 @@
 import type { NextFetchEvent, NextRequest } from "next/server";
-import { getCSP } from "csp-header";
+import type { NextMiddlewareResult } from "next/dist/server/web/types";
 
 import type { Plugin } from "@/types/middleware/plugin";
-import { NextMiddlewareResult } from "next/dist/server/web/types";
+
+import { getCSP } from "csp-header";
+import {
+    presetNextJS,
+    presetVercelToolbar,
+} from "@/utils/contentSecurityPolicy";
 
 const plugin: Plugin =
     (next) =>
@@ -11,7 +16,9 @@ const plugin: Plugin =
         event: NextFetchEvent
     ): Promise<NextMiddlewareResult> => {
         const hash = Buffer.from(crypto.randomUUID()).toString("base64");
-        const csp = getCSP({});
+        const csp = getCSP({
+            presets: [presetNextJS, presetVercelToolbar],
+        });
 
         request.headers.set("Content-Security-Policy", csp);
         request.headers.set("x-nonce", hash);
