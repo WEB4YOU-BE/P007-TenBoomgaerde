@@ -1,4 +1,4 @@
-import { CSPDirectives, SELF, UNSAFE_INLINE } from "csp-header";
+import { CSPDirectives, DATA, SELF, UNSAFE_INLINE } from "csp-header";
 
 const preset: Partial<CSPDirectives> = {
     "default-src": [SELF],
@@ -9,6 +9,7 @@ const preset: Partial<CSPDirectives> = {
 
     "img-src": [SELF],
     "media-src": [SELF],
+    "object-src": [SELF, DATA],
 
     "connect-src": [SELF],
 };

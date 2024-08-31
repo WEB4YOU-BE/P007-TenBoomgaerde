@@ -10,6 +10,8 @@ const preset: (hash: string) => Partial<CSPDirectives> = (hash) => ({
     "img-src": [SELF],
     "media-src": [SELF],
 
-    "connect-src": [SELF, "http://localhost:43214"],
+    "connect-src": [SELF, "http://localhost:43214", "https://localhost:43214"],
+
+    "upgrade-insecure-requests": true,
 });
 export default preset;

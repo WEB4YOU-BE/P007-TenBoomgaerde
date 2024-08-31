@@ -5,7 +5,7 @@ const preset: (hash: string) => Partial<CSPDirectives> = (hash) => ({
     "connect-src": ["https://vercel.live", "wss://ws-us3.pusher.com"],
     "img-src": ["https://vercel.live", "https://vercel.com", DATA, BLOB],
     "frame-src": ["https://vercel.live"],
-    "style-src": ["https://vercel.live", UNSAFE_INLINE, nonce(hash)],
+    "style-src": ["https://vercel.live", UNSAFE_INLINE /* , nonce(hash) */],
     "font-src": ["https://vercel.live", "https://assets.vercel.com"],
 });
 export default preset;
