@@ -17,7 +17,7 @@ const plugin: Plugin =
     ): Promise<NextMiddlewareResult> => {
         const hash = Buffer.from(crypto.randomUUID()).toString("base64");
         const csp = getCSP({
-            presets: [presetNextJS, presetVercelToolbar],
+            presets: [presetNextJS, presetVercelToolbar(hash)],
         });
 
         request.headers.set("Content-Security-Policy", csp);
