@@ -1,6 +1,6 @@
 import { nonce, type CSPDirectives } from "csp-header";
 
-const preset: (hash: string) => Partial<CSPDirectives> = (hash) => ({
-    "script-src": ["https://va.vercel-scripts.com", nonce(hash)],
-});
+const preset: Partial<CSPDirectives> = {
+    "script-src": ["https://va.vercel-scripts.com"],
+};
 export default preset;

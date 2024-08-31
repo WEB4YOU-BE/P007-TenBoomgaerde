@@ -35,7 +35,7 @@
     },
     "scripts": {
         "predev": "npm run -s supabase:start",
-        "dev": "next dev --turbo --experimental-https",
+        "dev": "next dev --turbo",
         "postdev": "npm run -s supabase:stop",
         "build": "next build",
         "prestart": "npm run -s build",

@@ -3,12 +3,10 @@ import type { NextMiddlewareResult } from "next/dist/server/web/types";
 
 import type { Plugin } from "@/types/middleware/plugin";
 
-import { getCSP } from "csp-header";
+import { BLOB, DATA, getCSP, SELF, UNSAFE_INLINE } from "csp-header";
 import {
+    presetGoogleAnalytics,
     presetGoogleTagManager,
-    presetGoogleTagManagerPreview,
-    presetNextJS,
-    presetNextJSPreview,
     presetVercelSpeedInsights,
     presetVercelToolbar,
 } from "@/utils/contentSecurityPolicy";
@@ -21,17 +19,32 @@ const plugin: Plugin =
     ): Promise<NextMiddlewareResult> => {
         const hash = Buffer.from(crypto.randomUUID()).toString("base64");
         const csp = getCSP({
+            directives: {
+                "default-src": [SELF],
+
+                "style-src": [SELF, UNSAFE_INLINE],
+                "font-src": [SELF],
+
+                "script-src": [SELF, UNSAFE_INLINE],
+                "connect-src": [
+                    SELF,
+                    ...(process.env.NODE_ENV === "development"
+                        ? ["http://localhost:43214"]
+                        : []),
+                ],
+
+                "img-src": [SELF, DATA, BLOB],
+                "frame-src": [SELF],
+
+                "block-all-mixed-content": true,
+                "upgrade-insecure-requests":
+                    process.env.NODE_ENV === "production",
+            },
             presets: [
-                presetNextJS,
-                ...(process.env.NODE_ENV === "development"
-                    ? [presetNextJSPreview(hash)]
-                    : []),
-                presetVercelToolbar(hash),
-                presetVercelSpeedInsights(hash),
-                presetGoogleTagManager(hash),
-                ...(process.env.NODE_ENV === "development"
-                    ? [presetGoogleTagManagerPreview(hash)]
-                    : []),
+                presetVercelToolbar,
+                presetVercelSpeedInsights,
+                presetGoogleTagManager,
+                presetGoogleAnalytics,
             ],
         });
 
