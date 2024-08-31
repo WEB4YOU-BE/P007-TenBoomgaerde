@@ -1,15 +1,5 @@
 import type { NextFetchEvent, NextRequest } from "next/server";
-import {
-    ALLOW,
-    DATA,
-    getCSP,
-    nonce,
-    NONE,
-    SELF,
-    STRICT_DYNAMIC,
-    UNSAFE_EVAL,
-    UNSAFE_INLINE,
-} from "csp-header";
+import { getCSP } from "csp-header";
 
 import type { Plugin } from "@/types/middleware/plugin";
 import { NextMiddlewareResult } from "next/dist/server/web/types";
