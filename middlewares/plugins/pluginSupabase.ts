@@ -16,6 +16,9 @@ const plugin: Plugin =
         request: NextRequest,
         event: NextFetchEvent
     ): Promise<NextMiddlewareResult> => {
+        const userNotAllowedRegex =
+            /(\/authentication\/(sign-in|sign-up|recover|confirm)\/)|(\/authentication\/$)/g;
+
         const supabase = createServerClient<Database>(
             process.env.SUPABASE_URL,
             process.env.SUPABASE_ANON_KEY,
@@ -33,26 +36,13 @@ const plugin: Plugin =
         const {
             data: { user },
         } = await supabase.auth.getUser();
-
         if (!!user) {
-            if (request.nextUrl.pathname === "/authentication/sign-out/") {
-                console.log("signout");
-                await supabase.auth.signOut();
-                const url = request.nextUrl.clone();
-                url.pathname = "/authentication/";
-                return NextResponse.redirect(url);
-            }
-            if (
-                ["/authentication/"].some((regex) =>
-                    request.nextUrl.pathname.startsWith(regex)
-                )
-            ) {
+            if (userNotAllowedRegex.test(request.nextUrl.pathname)) {
                 const url = request.nextUrl.clone();
                 url.pathname = "/";
                 return NextResponse.redirect(url);
             }
         }
-
         if (!user)
             if (
                 ["/account/", "/dashboard/"].some((regex) =>
