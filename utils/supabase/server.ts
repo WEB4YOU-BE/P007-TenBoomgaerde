@@ -11,7 +11,4 @@ const createClient: () => SupabaseClient<Database> = () =>
         process.env.SUPABASE_ANON_KEY,
         { cookies: cookies() }
     );
-const supabaseClient = createClient();
-
-export default supabaseClient;
-export { createClient };
+export default createClient;
