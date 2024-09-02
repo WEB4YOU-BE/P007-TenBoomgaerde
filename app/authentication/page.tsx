@@ -1,4 +1,8 @@
-import { Button, buttonVariants } from "@/components/atoms/button";
+import { Metadata } from "next";
+import Link from "next/link";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { buttonVariants } from "@/components/atoms/button";
 import {
     Card,
     CardContent,
@@ -7,9 +11,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/atoms/card";
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Authenticeren",

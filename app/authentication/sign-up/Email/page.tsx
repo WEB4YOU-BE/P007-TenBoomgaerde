@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import SignUpWithEmailCredentialsForm from "./form";
 
 export const metadata: Metadata = {

@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
+import Link from "next/link";
 import Image from "next/image";
 
-import Link from "next/link";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { buttonVariants } from "@/components/atoms/button";
 

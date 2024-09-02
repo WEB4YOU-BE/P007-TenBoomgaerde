@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/atoms/alert";
 
 export const metadata: Metadata = {
