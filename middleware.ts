@@ -1,10 +1,13 @@
 import type { NextMiddleware } from "next/server";
 
 import { default as pluginStack } from "./middlewares/stack";
-import { pluginContentSecurityPolicy as CSP } from "./middlewares";
+import {
+    pluginContentSecurityPolicy as CSP,
+    pluginSupabase as SB,
+} from "./middlewares";
 
 const middleware: NextMiddleware = async (request, event) => {
-    const plugins = [CSP];
+    const plugins = [CSP, SB];
     const stack = await pluginStack({ plugins, request, event });
     return await stack(request, event);
 };
