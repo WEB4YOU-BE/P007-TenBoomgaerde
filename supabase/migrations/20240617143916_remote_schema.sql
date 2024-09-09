@@ -1,5 +1,4 @@
 set check_function_bodies = off;
-
 CREATE OR REPLACE FUNCTION public.update_access_code_trigger()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -40,7 +39,4 @@ BEGIN
     
     RETURN NEW;
 END;
-$function$
-;
-
-
+$function$;

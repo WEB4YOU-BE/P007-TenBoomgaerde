@@ -1,8 +1,5 @@
 CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION handle_new_user();
-
-
 set check_function_bodies = off;
-
 CREATE OR REPLACE FUNCTION storage.extension(name text)
  RETURNS text
  LANGUAGE plpgsql
@@ -16,9 +13,7 @@ BEGIN
     -- @todo return the last part instead of 2
     return split_part(_filename, '.', 2);
 END
-$function$
-;
-
+$function$;
 CREATE OR REPLACE FUNCTION storage.filename(name text)
  RETURNS text
  LANGUAGE plpgsql
@@ -29,9 +24,7 @@ BEGIN
     select string_to_array(name, '/') into _parts;
     return _parts[array_length(_parts,1)];
 END
-$function$
-;
-
+$function$;
 CREATE OR REPLACE FUNCTION storage.foldername(name text)
  RETURNS text[]
  LANGUAGE plpgsql
@@ -42,7 +35,4 @@ BEGIN
     select string_to_array(name, '/') into _parts;
     return _parts[1:array_length(_parts,1)-1];
 END
-$function$
-;
-
-
+$function$;
