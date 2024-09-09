@@ -1,11 +1,12 @@
-import { Metadata } from "next";
 import { Alert, AlertDescription, AlertTitle } from "@/components/atoms/alert";
+import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-    title: "Log in via SSO",
     alternates: {
         canonical: "/authentication/sign-in/SAML/",
     },
+    title: "Log in via SSO",
 };
 
 export default async function Page() {

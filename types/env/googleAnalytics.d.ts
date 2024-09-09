@@ -1,4 +1,4 @@
-declare namespace NodeJS {
+declare module NodeJS {
     export interface ProcessEnv {
         NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: string;
     }

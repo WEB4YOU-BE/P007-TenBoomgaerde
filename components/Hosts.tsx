@@ -1,12 +1,10 @@
-import { FC } from "react";
-
-import { Toaster as ShadCNToaster } from "@/components/atoms/toaster";
 import { Toaster as SonnerToaster } from "@/components/atoms/sonner";
-
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/react";
-
+import { Toaster as ShadCNToaster } from "@/components/atoms/toaster";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import React from "react";
+import { FC } from "react";
 
 const Hosts: FC = () => (
     <>

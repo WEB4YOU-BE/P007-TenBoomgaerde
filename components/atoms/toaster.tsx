@@ -9,6 +9,7 @@ import {
     ToastViewport,
 } from "@/components/atoms/toast";
 import { useToast } from "@/components/atoms/use-toast";
+import React from "react";
 
 export function Toaster() {
     const { toasts } = useToast();
@@ -16,10 +17,10 @@ export function Toaster() {
     return (
         <ToastProvider>
             {toasts.map(function ({
+                action,
+                description,
                 id,
                 title,
-                description,
-                action,
                 ...props
             }) {
                 return (

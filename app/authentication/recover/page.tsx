@@ -6,13 +6,15 @@ import {
     CardTitle,
 } from "@/components/atoms/card";
 import { Metadata } from "next";
+import React from "react";
+
 import ResetWithEmailCredentialsForm from "./form";
 
 export const metadata: Metadata = {
-    title: "Herstel uw account",
     alternates: {
         canonical: "/authentication/recover/",
     },
+    title: "Herstel uw account",
 };
 
 export default async function Page() {

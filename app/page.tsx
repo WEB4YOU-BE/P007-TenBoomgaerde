@@ -1,10 +1,10 @@
 import { NextPage } from "next";
+import React from "react";
 
-interface PageProps {}
-const Page: NextPage<PageProps> = async ({}) => {
+const Page: NextPage = async () => {
     return (
         <>
-            <button type="button" className="bg-green-400">
+            <button className="bg-green-400" type="button">
                 Hey
             </button>
         </>

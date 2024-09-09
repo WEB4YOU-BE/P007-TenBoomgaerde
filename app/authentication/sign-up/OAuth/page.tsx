@@ -1,12 +1,12 @@
-import { Metadata } from "next";
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/atoms/alert";
+import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-    title: "Meld aan met derde partij",
     alternates: {
         canonical: "/authentication/sign-up/OAuth/",
     },
+    title: "Meld aan met derde partij",
 };
 
 export default async function Page() {

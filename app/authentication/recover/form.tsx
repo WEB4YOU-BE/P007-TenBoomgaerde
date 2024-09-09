@@ -1,14 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useMutation } from "@tanstack/react-query";
-import { resetPasswordForEmail } from "./actions";
-import { toast } from "sonner";
-
+import { Button } from "@/components/atoms/button";
 import {
     Form,
     FormControl,
@@ -18,7 +10,14 @@ import {
     FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
-import { Button } from "@/components/atoms/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { resetPasswordForEmail } from "./actions";
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -28,11 +27,10 @@ const ResetWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
         mutate(formData.email);
     };
-    const { mutate, isPending } = useMutation({
-        mutationKey: ["ResetPasswordForEmail"],
+    const { isPending, mutate } = useMutation({
         mutationFn: resetPasswordForEmail,
+        mutationKey: ["ResetPasswordForEmail"],
         networkMode: "online",
-        retry: false,
         onError: (error) => {
             toast.error(error.name, {
                 description: error.message,
@@ -42,10 +40,11 @@ const ResetWithEmailCredentialsForm = () => {
             form.reset({ email: "" });
             toast.success("Ga verder in jouw mailbox!", {
                 description: `Je hebt een mail gehad op ${variables}`,
-                important: true,
                 duration: Infinity,
+                important: true,
             });
         },
+        retry: false,
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -56,12 +55,12 @@ const ResetWithEmailCredentialsForm = () => {
         <>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-2"
+                    onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <FormField
-                        name="email"
                         control={form.control}
+                        name="email"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
@@ -72,7 +71,7 @@ const ResetWithEmailCredentialsForm = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" disabled={isPending}>
+                    <Button disabled={isPending} type="submit">
                         Herstel
                     </Button>
                 </form>

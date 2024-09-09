@@ -1,14 +1,13 @@
-import {
-    NextResponse,
-    type NextFetchEvent,
-    type NextRequest,
-} from "next/server";
-import type { NextMiddlewareResult } from "next/dist/server/web/types";
-
 import type { Plugin } from "@/types/middleware/plugin";
 import type { Database } from "@/types/supabase/database";
+import type { NextMiddlewareResult } from "next/dist/server/web/types";
 
 import { createServerClient } from "@supabase/ssr";
+import {
+    type NextFetchEvent,
+    type NextRequest,
+    NextResponse,
+} from "next/server";
 
 const plugin: Plugin =
     (next) =>
@@ -36,7 +35,7 @@ const plugin: Plugin =
         const {
             data: { user },
         } = await supabase.auth.getUser();
-        if (!!user) {
+        if (user) {
             if (userNotAllowedRegex.test(request.nextUrl.pathname)) {
                 const url = request.nextUrl.clone();
                 url.pathname = "/";

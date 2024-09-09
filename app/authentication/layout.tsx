@@ -1,10 +1,9 @@
-import { ReactNode } from "react";
-
-import Link from "next/link";
-import Image from "next/image";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { buttonVariants } from "@/components/atoms/button";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { ReactNode } from "react";
 
 /**
  * This layout is not available in when logged in.
@@ -17,18 +16,18 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <div className="grid h-[100dvh] grid-cols-1 lg:grid-cols-2">
             <div className="container hidden bg-muted text-muted-foreground lg:flex lg:flex-col lg:justify-between lg:p-8">
                 <Link
-                    href={"/"}
                     className={cn(
                         buttonVariants({ variant: "link" }),
                         "w-fit ps-0 text-lg"
                     )}
+                    href={"/"}
                 >
                     <Image
-                        src={"/images/Logo Ten Boomgaerde.PNG"}
                         alt={"Logo"}
-                        width={32}
-                        height={32}
                         className={"mr-2 aspect-square h-8 w-8 rounded-full"}
+                        height={32}
+                        src={"/images/Logo Ten Boomgaerde.PNG"}
+                        width={32}
                     />
                     VZW Ten Boomgaerde Lichtervelde
                 </Link>

@@ -1,26 +1,19 @@
 "use client";
 
+import type { ToastActionElement, ToastProps } from "@/components/atoms/toast";
+
 // Inspired by react-hot-toast library
 import * as React from "react";
-
-import type { ToastActionElement, ToastProps } from "@/components/atoms/toast";
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
-type ToasterToast = ToastProps & {
+type ToasterToast = {
+    action?: ToastActionElement;
+    description?: React.ReactNode;
     id: string;
     title?: React.ReactNode;
-    description?: React.ReactNode;
-    action?: ToastActionElement;
-};
-
-const actionTypes = {
-    ADD_TOAST: "ADD_TOAST",
-    UPDATE_TOAST: "UPDATE_TOAST",
-    DISMISS_TOAST: "DISMISS_TOAST",
-    REMOVE_TOAST: "REMOVE_TOAST",
-} as const;
+} & ToastProps;
 
 let count = 0;
 
@@ -29,24 +22,29 @@ function genId() {
     return count.toString();
 }
 
-type ActionType = typeof actionTypes;
+type ActionType = {
+    ADD_TOAST: "ADD_TOAST";
+    DISMISS_TOAST: "DISMISS_TOAST";
+    REMOVE_TOAST: "REMOVE_TOAST";
+    UPDATE_TOAST: "UPDATE_TOAST";
+};
 
 type Action =
     | {
-          type: ActionType["ADD_TOAST"];
-          toast: ToasterToast;
-      }
-    | {
-          type: ActionType["UPDATE_TOAST"];
           toast: Partial<ToasterToast>;
+          type: ActionType["UPDATE_TOAST"];
       }
     | {
+          toast: ToasterToast;
+          type: ActionType["ADD_TOAST"];
+      }
+    | {
+          toastId?: ToasterToast["id"];
           type: ActionType["DISMISS_TOAST"];
-          toastId?: ToasterToast["id"];
       }
     | {
-          type: ActionType["REMOVE_TOAST"];
           toastId?: ToasterToast["id"];
+          type: ActionType["REMOVE_TOAST"];
       };
 
 interface State {
@@ -63,8 +61,8 @@ const addToRemoveQueue = (toastId: string) => {
     const timeout = setTimeout(() => {
         toastTimeouts.delete(toastId);
         dispatch({
-            type: "REMOVE_TOAST",
             toastId: toastId,
+            type: "REMOVE_TOAST",
         });
     }, TOAST_REMOVE_DELAY);
 
@@ -144,26 +142,26 @@ function toast({ ...props }: Toast) {
 
     const update = (props: ToasterToast) =>
         dispatch({
-            type: "UPDATE_TOAST",
             toast: { ...props, id },
+            type: "UPDATE_TOAST",
         });
-    const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
+    const dismiss = () => dispatch({ toastId: id, type: "DISMISS_TOAST" });
 
     dispatch({
-        type: "ADD_TOAST",
         toast: {
             ...props,
             id,
-            open: true,
             onOpenChange: (open) => {
                 if (!open) dismiss();
             },
+            open: true,
         },
+        type: "ADD_TOAST",
     });
 
     return {
-        id: id,
         dismiss,
+        id: id,
         update,
     };
 }
@@ -183,10 +181,10 @@ function useToast() {
 
     return {
         ...state,
-        toast,
         dismiss: (toastId?: string) =>
-            dispatch({ type: "DISMISS_TOAST", toastId }),
+            dispatch({ toastId, type: "DISMISS_TOAST" }),
+        toast,
     };
 }
 
-export { useToast, toast };
+export { toast, useToast };

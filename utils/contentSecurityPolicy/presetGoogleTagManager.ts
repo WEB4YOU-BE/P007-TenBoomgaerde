@@ -1,8 +1,8 @@
-import { CSPDirectives, nonce } from "csp-header";
+import { CSPDirectives } from "csp-header";
 
 const preset: Partial<CSPDirectives> = {
-    "script-src": ["https://www.googletagmanager.com"],
     "connect-src": ["www.googletagmanager.com"],
     "img-src": ["www.googletagmanager.com"],
+    "script-src": ["https://www.googletagmanager.com"],
 };
 export default preset;

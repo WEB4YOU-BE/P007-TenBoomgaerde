@@ -1,15 +1,14 @@
-import type { NextFetchEvent, NextRequest } from "next/server";
-import type { NextMiddlewareResult } from "next/dist/server/web/types";
-
 import type { Plugin } from "@/types/middleware/plugin";
+import type { NextMiddlewareResult } from "next/dist/server/web/types";
+import type { NextFetchEvent, NextRequest } from "next/server";
 
-import { BLOB, DATA, getCSP, SELF, UNSAFE_INLINE } from "csp-header";
 import {
     presetGoogleAnalytics,
     presetGoogleTagManager,
     presetVercelSpeedInsights,
     presetVercelToolbar,
 } from "@/utils/contentSecurityPolicy";
+import { BLOB, DATA, getCSP, SELF, UNSAFE_INLINE } from "csp-header";
 
 const plugin: Plugin =
     (next) =>
@@ -20,23 +19,23 @@ const plugin: Plugin =
         const hash = Buffer.from(crypto.randomUUID()).toString("base64");
         const csp = getCSP({
             directives: {
-                "default-src": [SELF],
+                "block-all-mixed-content": true,
 
-                "style-src": [SELF, UNSAFE_INLINE],
-                "font-src": [SELF],
-
-                "script-src": [SELF, UNSAFE_INLINE],
                 "connect-src": [
                     SELF,
                     ...(process.env.NODE_ENV === "development"
                         ? ["http://localhost:43214"]
                         : []),
                 ],
+                "default-src": [SELF],
 
-                "img-src": [SELF, DATA, BLOB],
+                "font-src": [SELF],
                 "frame-src": [SELF],
 
-                "block-all-mixed-content": true,
+                "img-src": [SELF, DATA, BLOB],
+                "script-src": [SELF, UNSAFE_INLINE],
+
+                "style-src": [SELF, UNSAFE_INLINE],
                 "upgrade-insecure-requests":
                     process.env.NODE_ENV === "production",
             },

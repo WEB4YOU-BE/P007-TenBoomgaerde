@@ -1,7 +1,4 @@
-import { ReactNode } from "react";
-
-import Link from "next/link";
-
+import { buttonVariants } from "@/components/atoms/button";
 import {
     Card,
     CardContent,
@@ -10,8 +7,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/atoms/card";
-import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import Link from "next/link";
+import React from "react";
+import { ReactNode } from "react";
 
 export default async function Layout({ children }: { children: ReactNode }) {
     return (
@@ -26,11 +25,11 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 </CardContent>
                 <CardFooter>
                     <Link
-                        href={"/authentication/recover/"}
                         className={cn(
                             buttonVariants({ variant: "link" }),
                             "text-balance"
                         )}
+                        href={"/authentication/recover/"}
                     >
                         Ik kan me niet aanmelden
                     </Link>

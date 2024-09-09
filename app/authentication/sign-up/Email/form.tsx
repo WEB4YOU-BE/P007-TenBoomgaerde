@@ -1,17 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useMutation } from "@tanstack/react-query";
-import { signUpWithEmailCredentials } from "./actions";
-import { toast } from "sonner";
-
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
-
+import { Button, buttonVariants } from "@/components/atoms/button";
 import {
     Form,
     FormControl,
@@ -21,10 +10,18 @@ import {
     FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
-import { Button, buttonVariants } from "@/components/atoms/button";
-
-import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { ArrowLeft, LoaderPinwheel } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import React from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { signUpWithEmailCredentials } from "./actions";
 
 const formSchema = z
     .object({
@@ -45,11 +42,10 @@ const SignUpWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
         mutate(formData);
     };
-    const { mutate, isPending, isSuccess } = useMutation({
-        mutationKey: ["SignUpWithEmailCredentials"],
+    const { isPending, isSuccess, mutate } = useMutation({
         mutationFn: signUpWithEmailCredentials,
+        mutationKey: ["SignUpWithEmailCredentials"],
         networkMode: "online",
-        retry: false,
         onError: (error) => {
             toast.error(error.name, {
                 description: error.message,
@@ -60,6 +56,7 @@ const SignUpWithEmailCredentialsForm = () => {
                 description: `${data.user?.email || "Je"} kreeg een email. Klik de link om jouw emailadres te verifiëren.`,
             });
         },
+        retry: false,
     });
 
     useEffect(() => {
@@ -74,20 +71,20 @@ const SignUpWithEmailCredentialsForm = () => {
         <>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-2"
+                    onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <FormField
-                        name="email"
                         control={form.control}
+                        name="email"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        type="email"
                                         autoComplete="username"
+                                        type="email"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -95,16 +92,16 @@ const SignUpWithEmailCredentialsForm = () => {
                         )}
                     />
                     <FormField
-                        name="password"
                         control={form.control}
+                        name="password"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Nieuw wachtwoord</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        type="password"
                                         autoComplete="new-password"
+                                        type="password"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -112,23 +109,23 @@ const SignUpWithEmailCredentialsForm = () => {
                         )}
                     />
                     <FormField
-                        name="passwordConfirmation"
                         control={form.control}
+                        name="passwordConfirmation"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Herhaal wachtwoord</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        type="password"
                                         autoComplete="new-password"
+                                        type="password"
                                     />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" disabled={isPending}>
+                    <Button disabled={isPending} type="submit">
                         {isPending && (
                             <LoaderPinwheel className="h-4 w-4 animate-spin" />
                         )}
@@ -137,8 +134,8 @@ const SignUpWithEmailCredentialsForm = () => {
                 </form>
             </Form>
             <Link
-                href="/authentication/sign-up/"
                 className={buttonVariants({ variant: "outline" })}
+                href="/authentication/sign-up/"
             >
                 <ArrowLeft className="mr-4 h-4 w-4" />
                 Ga terug

@@ -3,11 +3,11 @@
  * @type {import("prettier").Config}
  */
 const config = {
-    trailingComma: "es5",
-    tabWidth: 4,
+    doubleQuote: true,
     semi: true,
     singleQuote: false,
-    doubleQuote: true,
+    tabWidth: 4,
+    trailingComma: "es5",
 };
 
 export default config;

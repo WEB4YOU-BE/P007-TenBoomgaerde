@@ -1,7 +1,3 @@
-import { Metadata } from "next";
-import Link from "next/link";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { buttonVariants } from "@/components/atoms/button";
 import {
     Card,
@@ -11,12 +7,16 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/atoms/card";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { Metadata } from "next";
+import Link from "next/link";
+import React from "react";
 
 export const metadata: Metadata = {
-    title: "Authenticeren",
     alternates: {
         canonical: "/authentication/",
     },
+    title: "Authenticeren",
 };
 
 export default async function Page() {
@@ -31,25 +31,25 @@ export default async function Page() {
                 </CardHeader>
                 <CardContent className="flex flex-col gap-2">
                     <Link
-                        href={"/authentication/sign-in/"}
                         className={cn(buttonVariants(), "justify-start")}
+                        href={"/authentication/sign-in/"}
                     >
                         Log in
                     </Link>
                     <Link
-                        href={"/authentication/sign-up/"}
                         className={cn(
                             buttonVariants({ variant: "outline" }),
                             "justify-start"
                         )}
+                        href={"/authentication/sign-up/"}
                     >
                         Maak account
                     </Link>
                 </CardContent>
                 <CardFooter>
                     <Link
-                        href={"/authentication/recover/"}
                         className={cn(buttonVariants({ variant: "link" }))}
+                        href={"/authentication/recover/"}
                     >
                         Ik kan me niet aanmelden
                     </Link>

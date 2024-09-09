@@ -1,18 +1,16 @@
-import { Metadata } from "next";
-
-import Link from "next/link";
-
 import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-
-import { Building, Mail, Phone } from "lucide-react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
+import { Building, Mail, Phone } from "lucide-react";
+import { Metadata } from "next";
+import Link from "next/link";
+import React from "react";
 
 export const metadata: Metadata = {
-    title: "Meld aan",
     alternates: {
         canonical: "/authentication/sign-up/",
     },
+    title: "Meld aan",
 };
 
 export default async function Page() {
@@ -20,8 +18,8 @@ export default async function Page() {
         <>
             {!!process.env.ALLOW_EMAIL && (
                 <Link
-                    href={"/authentication/sign-up/Email/"}
                     className={cn(buttonVariants(), "justify-start")}
+                    href={"/authentication/sign-up/Email/"}
                 >
                     <Mail className="mr-4 h-4 w-4" />
                     Email
@@ -29,11 +27,11 @@ export default async function Page() {
             )}
             {!!process.env.ALLOW_PHONE && (
                 <Link
-                    href={"/authentication/sign-up/Phone/"}
                     className={cn(
                         buttonVariants({ variant: "outline" }),
                         "justify-start"
                     )}
+                    href={"/authentication/sign-up/Phone/"}
                 >
                     <Phone className="mr-4 h-4 w-4" />
                     Telefoon
@@ -41,11 +39,11 @@ export default async function Page() {
             )}
             {!!process.env.ALLOW_OAUTH && (
                 <Link
-                    href={"/authentication/sign-up/OAuth/"}
                     className={cn(
                         buttonVariants({ variant: "outline" }),
                         "justify-start"
                     )}
+                    href={"/authentication/sign-up/OAuth/"}
                 >
                     <SiGoogle className="mr-4 h-4 w-4" />
                     Ander account
@@ -53,11 +51,11 @@ export default async function Page() {
             )}
             {!!process.env.ALLOW_SAML && (
                 <Link
-                    href={"/authentication/sign-up/SAML/"}
                     className={cn(
                         buttonVariants({ variant: "outline" }),
                         "justify-start"
                     )}
+                    href={"/authentication/sign-up/SAML/"}
                 >
                     <Building className="mr-4 h-4 w-4" />
                     SAML
@@ -74,11 +72,11 @@ export default async function Page() {
                 </div>
             </div>
             <Link
-                href={"/authentication/sign-in/"}
                 className={cn(
                     buttonVariants({ variant: "outline" }),
                     "justify-start"
                 )}
+                href={"/authentication/sign-in/"}
             >
                 Log in
             </Link>

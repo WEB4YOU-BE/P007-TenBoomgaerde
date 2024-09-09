@@ -1,17 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useMutation } from "@tanstack/react-query";
-import { signInWithEmailCredentials } from "./actions";
-import { toast } from "sonner";
-
-import { useEffect } from "react";
-import { redirect, RedirectType } from "next/navigation";
-
+import { Button, buttonVariants } from "@/components/atoms/button";
 import {
     Form,
     FormControl,
@@ -21,27 +10,34 @@ import {
     FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
-import { Button, buttonVariants } from "@/components/atoms/button";
-
-import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { ArrowLeft, LoaderPinwheel } from "lucide-react";
+import Link from "next/link";
+import { redirect, RedirectType } from "next/navigation";
+import React from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { signInWithEmailCredentials } from "./actions";
 
 const formSchema = z.object({
-    username: z.string().email(),
     password: z.string().min(8, {
         message: "Wachtwoorden zijn minstens 8 karakters lang.",
     }),
+    username: z.string().email(),
 });
 
 const SignInWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
         mutate({ ...formData, email: formData.username });
     };
-    const { mutate, isPending, isSuccess } = useMutation({
-        mutationKey: ["SignInWithEmailCredentials"],
+    const { isPending, isSuccess, mutate } = useMutation({
         mutationFn: signInWithEmailCredentials,
+        mutationKey: ["SignInWithEmailCredentials"],
         networkMode: "online",
-        retry: false,
         onError: (error) => {
             toast.error(error.name, {
                 description: error.message,
@@ -52,6 +48,7 @@ const SignInWithEmailCredentialsForm = () => {
                 description: `${data.user?.email} is aangemeld.`,
             });
         },
+        retry: false,
     });
 
     useEffect(() => {
@@ -66,12 +63,12 @@ const SignInWithEmailCredentialsForm = () => {
         <>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-2"
+                    onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <FormField
-                        name="username"
                         control={form.control}
+                        name="username"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
@@ -83,23 +80,23 @@ const SignInWithEmailCredentialsForm = () => {
                         )}
                     />
                     <FormField
-                        name="password"
                         control={form.control}
+                        name="password"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Wachtwoord</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        type="password"
                                         autoComplete="current-password"
+                                        type="password"
                                     />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" disabled={isPending}>
+                    <Button disabled={isPending} type="submit">
                         {isPending && (
                             <LoaderPinwheel className="h-4 w-4 animate-spin" />
                         )}
@@ -108,8 +105,8 @@ const SignInWithEmailCredentialsForm = () => {
                 </form>
             </Form>
             <Link
-                href="/authentication/sign-in/"
                 className={buttonVariants({ variant: "outline" })}
+                href="/authentication/sign-in/"
             >
                 <ArrowLeft className="mr-4 h-4 w-4" />
                 Ga terug
