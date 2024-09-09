@@ -1,4 +1,4 @@
-declare module NodeJS {
+declare namespace NodeJS {
     export interface ProcessEnv {
         ALLOW_EMAIL: string;
         ALLOW_OAUTH: string;

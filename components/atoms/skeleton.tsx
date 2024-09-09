@@ -1,4 +1,5 @@
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import React from "react";
 
 function Skeleton({
     className,

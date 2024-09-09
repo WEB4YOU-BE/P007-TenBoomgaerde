@@ -1,4 +1,4 @@
-declare module NodeJS {
+declare namespace NodeJS {
     export interface ProcessEnv {
         NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
         NEXT_PUBLIC_SUPABASE_URL: string;

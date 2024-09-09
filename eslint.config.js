@@ -8,6 +8,15 @@ import tseslint from "typescript-eslint";
 
 export default [
     { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
+    {
+        ignores: [
+            "**/node_modules/**",
+            "**/.next/**",
+            "**/.vercel/**",
+            "**/supabase/.branches/**",
+            "**/supabase/.temp/**",
+        ],
+    },
     { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
     jseslint.configs.recommended,
     ...tseslint.configs.recommended,
@@ -38,6 +47,9 @@ export default [
                 ignoreCase: true,
                 order: "asc",
                 type: "natural",
+            },
+            react: {
+                version: "detect",
             },
         },
     },
