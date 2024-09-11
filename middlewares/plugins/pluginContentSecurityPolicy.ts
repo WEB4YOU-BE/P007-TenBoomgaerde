@@ -25,7 +25,7 @@ const plugin: Plugin =
                     SELF,
                     ...(process.env.NODE_ENV === "development"
                         ? ["http://localhost:43214", "http://localhost:54321"]
-                        : []),
+                        : ["https://*.supabase.co"]),
                 ],
                 "default-src": [SELF],
 
