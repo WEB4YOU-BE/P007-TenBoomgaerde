@@ -24,7 +24,7 @@ const plugin: Plugin =
                 "connect-src": [
                     SELF,
                     ...(process.env.NODE_ENV === "development"
-                        ? ["http://localhost:43214"]
+                        ? ["http://localhost:43214", "http://localhost:54321"]
                         : []),
                 ],
                 "default-src": [SELF],

@@ -17,6 +17,8 @@ const plugin: Plugin =
     ): Promise<NextMiddlewareResult> => {
         const userNotAllowedRegex =
             /(\/authentication\/(sign-in|sign-up|recover|confirm)\/)|(\/authentication\/$)/g;
+        const publicNotAllowedRegex =
+            /(\/authentication\/sign-out\/)|(\/account\/$)|(\/dashboard\/.*)/g;
 
         const supabase = createServerClient<Database>(
             process.env.SUPABASE_URL,
@@ -43,11 +45,7 @@ const plugin: Plugin =
             }
         }
         if (!user)
-            if (
-                ["/account/", "/dashboard/"].some((regex) =>
-                    request.nextUrl.pathname.startsWith(regex)
-                )
-            ) {
+            if (publicNotAllowedRegex.test(request.nextUrl.pathname)) {
                 const url = request.nextUrl.clone();
                 url.pathname = "/authentication/";
                 return NextResponse.redirect(url);
