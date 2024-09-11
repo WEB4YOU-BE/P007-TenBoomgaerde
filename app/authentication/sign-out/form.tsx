@@ -54,7 +54,10 @@ const SignOutForm = () => {
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <Button disabled={isPending} type="submit">
-                        {isPending ? <LoaderPinwheel /> : "Log uit"}
+                        {isPending && (
+                            <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        )}
+                        {!isPending && "Log uit"}
                     </Button>
                 </form>
             </Form>
