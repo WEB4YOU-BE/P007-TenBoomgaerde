@@ -40,7 +40,7 @@ const SignOutForm = () => {
 
     useEffect(() => {
         if (isSuccess) router.replace("/authentication/sign-in/");
-    }, [isSuccess]);
+    }, [isSuccess, router]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
