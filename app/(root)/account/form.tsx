@@ -82,8 +82,30 @@ const UpdateProfileForm = () => {
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
+        defaultValues: {
+            city: "",
+            email: "",
+            firstname: "",
+            lastname: "",
+            phone: "",
+            postcode: "",
+            street: "",
+        },
         resolver: zodResolver(formSchema),
     });
+
+    useEffect(() => {
+        if (profile)
+            form.reset({
+                city: profile.city ?? "",
+                email: profile.email,
+                firstname: profile.firstname ?? "",
+                lastname: profile.lastname ?? "",
+                phone: profile.phone ?? "",
+                postcode: profile.postcode ?? "",
+                street: profile.street ?? "",
+            });
+    }, [profile, form]);
 
     return (
         <>
@@ -99,10 +121,7 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Voornaam</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        defaultValue={profile?.firstname ?? ""}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -114,10 +133,7 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Achternaam</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        defaultValue={profile?.lastname ?? ""}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -129,10 +145,7 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        defaultValue={profile?.email ?? ""}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -144,10 +157,7 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Telefoonnummer</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        defaultValue={profile?.phone ?? ""}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -159,10 +169,7 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Straat</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        defaultValue={profile?.street ?? ""}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -174,10 +181,7 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Postcode</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        defaultValue={profile?.postcode ?? ""}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -189,10 +193,7 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Stad</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        defaultValue={profile?.city ?? ""}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
