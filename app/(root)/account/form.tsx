@@ -73,7 +73,7 @@ const UpdateProfileForm = () => {
         <>
             <Form {...form}>
                 <form
-                    className="flex flex-col gap-2"
+                    className="flex flex-col gap-2 mx-auto"
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <FormField
