@@ -9,6 +9,7 @@ import {
     FormLabel,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
+import { Tables } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type User } from "@supabase/supabase-js";
@@ -33,6 +34,7 @@ const formSchema = z.object({
 });
 const UpdateProfileForm = () => {
     const [account, setAccount] = React.useState<null | User>(null);
+    const [profile, setProfile] = React.useState<null | Tables<"users">>(null);
 
     useEffect(() => {
         const fetchAccount = async () => {
@@ -43,6 +45,20 @@ const UpdateProfileForm = () => {
         };
         fetchAccount();
     }, [setAccount]);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const supabase = createClient();
+            const { data, error } = await supabase
+                .from("users")
+                .select("*")
+                .eq("id", account?.id ?? "")
+                .single();
+            if (error) throw error;
+            setProfile(data);
+        };
+        fetchProfile();
+    }, [setProfile, account]);
 
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
         if (!account)
@@ -83,7 +99,10 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Voornaam</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={profile?.firstname ?? ""}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -95,7 +114,10 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Achternaam</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={profile?.lastname ?? ""}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -107,7 +129,10 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={profile?.email ?? ""}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -119,7 +144,10 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Telefoonnummer</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={profile?.phone ?? ""}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -131,7 +159,10 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Straat</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={profile?.street ?? ""}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -143,7 +174,10 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Postcode</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={profile?.postcode ?? ""}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -155,7 +189,10 @@ const UpdateProfileForm = () => {
                             <FormItem>
                                 <FormLabel>Stad</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={profile?.city ?? ""}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
