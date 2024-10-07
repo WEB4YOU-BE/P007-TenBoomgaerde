@@ -8,7 +8,8 @@ export const fetchReservationsToBeReviewed = async () => {
     const { data, error } = await supabase
         .from("reservations")
         .select()
-        .eq("status", "in afwachting");
+        .eq("status", "in afwachting")
+        .order("start_date", { ascending: true });
     if (error) throw error;
     return data;
 };
@@ -18,7 +19,8 @@ export const fetchReservationsToBeInvoiced = async () => {
         .from("reservations")
         .select()
         .eq("status", "goedgekeurd")
-        .eq("gefactureerd", "FALSE");
+        .eq("gefactureerd", "FALSE")
+        .order("start_date", { ascending: true });
     if (error) throw error;
     return data;
 };
@@ -49,7 +51,8 @@ export const fetchReservationsThisWeek = async () => {
         .from("reservations")
         .select()
         .gte("start_date", new Date().toISOString())
-        .lte("end_date", add(new Date(), { days: 7 }).toISOString());
+        .lte("end_date", add(new Date(), { days: 7 }).toISOString())
+        .order("start_date", { ascending: true });
     if (error) throw error;
     return data;
 };
@@ -59,7 +62,8 @@ export const fetchReservationsThisMonth = async () => {
         .from("reservations")
         .select()
         .gte("start_date", new Date().toISOString())
-        .lte("end_date", add(new Date(), { months: 1 }).toISOString());
+        .lte("end_date", add(new Date(), { months: 1 }).toISOString())
+        .order("start_date", { ascending: true });
     if (error) throw error;
     return data;
 };
