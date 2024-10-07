@@ -25,6 +25,6 @@ export const GET = async (request: NextRequest) => {
         type,
     });
     if (error) throw error;
-    to.pathname = redirect || "/";
+    to.pathname = redirect || "/account/";
     return NextResponse.redirect(to);
 };
