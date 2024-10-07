@@ -1,6 +1,6 @@
 import type { Stack } from "@/types/middleware/stack";
 
-import { pluginDefault } from ".";
+import { pluginDefault } from "@/middlewares/plugins";
 
 const stack: Stack = async ({ event, plugins, request }) => {
     if (plugins.length === 0) return pluginDefault(() => {});
