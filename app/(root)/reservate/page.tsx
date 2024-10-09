@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import React from "react";
 
+import AddReservationForm from "./form";
+
 export const metadata: Metadata = {
     alternates: {
         canonical: "/reservate/",
@@ -11,5 +13,11 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-    return <></>;
+    return (
+        <>
+            <main className={"container mx-auto max-w-screen-lg p-2"}>
+                <AddReservationForm />
+            </main>
+        </>
+    );
 }
