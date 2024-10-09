@@ -23,6 +23,8 @@ import {
 } from "./actions";
 import { columns, DataTable } from "./reservations/table";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
     const reservationsThisWeek = await fetchReservationsThisWeek();
     const reservationsThisMonth = await fetchReservationsThisMonth();

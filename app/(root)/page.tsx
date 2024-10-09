@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: "VZW Ten Boomgaerde Lichtervelde",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
     return (
         <div className="container mx-auto max-w-screen-lg my-8">

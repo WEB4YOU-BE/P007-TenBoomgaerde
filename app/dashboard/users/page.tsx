@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     title: "Users",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
     const users = await fetchUsers();
 
