@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import isMobilePhone from "validator/es/lib/isMobilePhone";
 import { z } from "zod";
 
-import { updateUser } from "./action";
+import { updateUser } from "./actions";
 
 const formSchema = z.object({
     city: z.string().min(1),
