@@ -18,7 +18,8 @@ import {
     type SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, InfoIcon } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import React from "react";
 
@@ -42,6 +43,18 @@ export const columns: ColumnDef<Tables<"categories">>[] = [
             );
         },
         id: "name",
+    },
+    {
+        accessorKey: "id",
+        cell: ({ row }) => (
+            <Link href={`/dashboard/categories/${row.original.id}`}>
+                <InfoIcon className="h-6 w-6" />
+            </Link>
+        ),
+        header: () => {
+            return <p>Acties</p>;
+        },
+        id: "actions",
     },
 ];
 

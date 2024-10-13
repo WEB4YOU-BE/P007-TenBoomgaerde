@@ -63,7 +63,7 @@ const AddReservationForm = () => {
             console.log(value);
         });
         return () => unsubscribe();
-    }, [form.watch]);
+    }, [form, form.watch]);
 
     return (
         <>

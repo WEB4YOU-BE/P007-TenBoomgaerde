@@ -3,7 +3,8 @@
 import { Button } from "@/components/atoms/button";
 import { Tables } from "@/types/supabase/database";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, InfoIcon } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export const columns: ColumnDef<Tables<"users">>[] = [
@@ -102,6 +103,18 @@ export const columns: ColumnDef<Tables<"users">>[] = [
             );
         },
         id: "admin",
+    },
+    {
+        accessorKey: "id",
+        cell: ({ row }) => (
+            <Link href={`/dashboard/users/${row.original.id}`}>
+                <InfoIcon className="h-6 w-6" />
+            </Link>
+        ),
+        header: () => {
+            return <p>Acties</p>;
+        },
+        id: "actions",
     },
 ];
 
