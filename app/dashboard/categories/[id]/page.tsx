@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import React from "react";
 
-// import UpdateCategoryForm from "./form";
+import UpdateCategoryForm from "./form";
 
 export const metadata: Metadata = {
     alternates: {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function Page(/*{ params }: { params: { id: string } }*/) {
+export default async function Page({ params }: { params: { id: string } }) {
     return (
         <main className={"mx-auto md:max-w-screen-sm p-2 flex flex-col gap-2"}>
             <h1
@@ -22,7 +22,7 @@ export default async function Page(/*{ params }: { params: { id: string } }*/) {
             >
                 Categorie wijzigen
             </h1>
-            {/* <UpdateCategoryForm id={params.id} /> */}
+            <UpdateCategoryForm id={params.id} />
         </main>
     );
 }
