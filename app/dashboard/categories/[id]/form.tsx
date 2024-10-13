@@ -77,7 +77,7 @@ const UpdateCategoryForm = ({ id }: Props) => {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Stad</FormLabel>
+                                    <FormLabel>Naam</FormLabel>
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
