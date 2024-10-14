@@ -34,7 +34,7 @@ export default async function Page() {
     return (
         <div className={"flex flex-row gap-2 h-full"}>
             <Tabs className="grow" defaultValue="Deze week">
-                <TabsList className={"flex flex-wrap sticky top-0"}>
+                <TabsList className={"flex flex-wrap sticky top-2"}>
                     <TabsTrigger value={"Deze week"}>Deze week</TabsTrigger>
                     <TabsTrigger value={"Deze maand"}>Deze maand</TabsTrigger>
                     <TabsTrigger value={"Te controleren"}>
@@ -63,7 +63,7 @@ export default async function Page() {
                     />
                 </TabsContent>
             </Tabs>
-            <div className={"flex flex-col gap-4 h-full sticky top-0"}>
+            <div className={"flex flex-col gap-4 sticky top-0"}>
                 <div className={"flex flex-row lg:flex-col gap-4 flex-grow"}>
                     <div
                         className={
