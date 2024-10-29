@@ -47,6 +47,7 @@ const UpdateProfileForm = () => {
     }, [setAccount]);
 
     useEffect(() => {
+        if (!account) return;
         const fetchProfile = async () => {
             const supabase = createClient();
             const { data, error } = await supabase

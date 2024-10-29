@@ -48,6 +48,9 @@ const ResetWithEmailCredentialsForm = () => {
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
+        defaultValues: {
+            email: "",
+        },
         resolver: zodResolver(formSchema),
     });
 

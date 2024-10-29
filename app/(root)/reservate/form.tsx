@@ -55,6 +55,19 @@ const AddReservationForm = () => {
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
+        defaultValues: {
+            access_code: 0,
+            end_date: "",
+            end_hour: "",
+            gefactureerd: false,
+            id: "",
+            reservation_number: 0,
+            reservation_year: "",
+            room_id: "",
+            start_date: "",
+            start_hour: "",
+            user_id: "",
+        },
         resolver: zodResolver(formSchema),
     });
 

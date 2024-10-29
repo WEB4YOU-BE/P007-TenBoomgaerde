@@ -56,6 +56,10 @@ const SignInWithEmailCredentialsForm = () => {
     }, [isSuccess]);
 
     const form = useForm<z.infer<typeof formSchema>>({
+        defaultValues: {
+            password: "",
+            username: "",
+        },
         resolver: zodResolver(formSchema),
     });
 

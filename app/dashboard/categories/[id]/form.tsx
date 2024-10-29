@@ -57,6 +57,9 @@ const UpdateCategoryForm = ({ id }: Props) => {
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
+        defaultValues: {
+            name: "",
+        },
         resolver: zodResolver(formSchema),
     });
 
