@@ -7,10 +7,12 @@ import {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
+import { Tables } from "@/types/supabase/database";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LoaderPinwheel } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -24,9 +26,13 @@ const formSchema = z.object({
 });
 interface Props {
     id: string;
+    initialData?: Tables<"categories">;
 }
-const UpdateCategoryForm = ({ id }: Props) => {
+const UpdateCategoryForm = ({ id, initialData }: Props) => {
+    const queryClient = useQueryClient();
+
     const { data: category, isPending: isPendingCategory } = useQuery({
+        initialData,
         networkMode: "online",
         queryFn: () => getCategoryById(id),
         queryKey: ["category", id],
@@ -40,7 +46,6 @@ const UpdateCategoryForm = ({ id }: Props) => {
     const {
         isError,
         isPending: isPendingUpdate,
-        isSuccess,
         mutate,
     } = useMutation({
         mutationFn: updateCategoryById,
@@ -53,6 +58,7 @@ const UpdateCategoryForm = ({ id }: Props) => {
         },
         onSuccess: () => {
             toast.success("De categorië is bijgewerkt!");
+            queryClient.invalidateQueries({ queryKey: ["category", id] });
         },
     });
 
@@ -60,6 +66,7 @@ const UpdateCategoryForm = ({ id }: Props) => {
         defaultValues: {
             name: "",
         },
+        disabled: isPendingCategory || isPendingUpdate,
         resolver: zodResolver(formSchema),
     });
 
@@ -84,23 +91,19 @@ const UpdateCategoryForm = ({ id }: Props) => {
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <Button
-                            disabled={isPendingCategory && isPendingUpdate}
+                            disabled={isPendingCategory || isPendingUpdate}
                             type="submit"
-                            variant={
-                                isSuccess
-                                    ? "outline"
-                                    : isError
-                                      ? "destructive"
-                                      : "default"
-                            }
+                            variant={isError ? "destructive" : "default"}
                         >
-                            {isPendingCategory && isPendingUpdate && (
-                                <LoaderPinwheel className="h-4 w-4 animate-spin" />
-                            )}
+                            {isPendingCategory ||
+                                (isPendingUpdate && (
+                                    <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                                ))}
                             {!isPendingCategory &&
                                 !isPendingUpdate &&
                                 "Bijwerken"}

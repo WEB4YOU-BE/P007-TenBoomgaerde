@@ -14,48 +14,65 @@ import {
     FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/atoms/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LoaderPinwheel } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { getHallById, updateHallById } from "./actions";
+import { fetchCategories } from "../../categories/actions";
+import { getProductById, updateProductById } from "./actions";
 
 const formSchema = z.object({
-    day_price: z.number(),
-    day_price2: z.number(),
+    categorie_id: z.string(),
+    for_sale: z.boolean(),
     name: z.string(),
-    private: z.boolean(),
+    price: z.number(),
 });
 interface Props {
     id: string;
-    initialData?: Tables<"rooms">;
+    initialData?: Tables<"products">;
 }
-const UpdateHallForm = ({ id, initialData }: Props) => {
+const UpdateProductForm = ({ id, initialData }: Props) => {
     const queryClient = useQueryClient();
 
-    const { data: hall, isPending: isPendingHall } = useQuery({
+    const { data: product, isPending: isPendingProduct } = useQuery({
         initialData,
         networkMode: "online",
-        queryFn: () => getHallById(id),
-        queryKey: ["hall", id],
+        queryFn: () => getProductById(id),
+        queryKey: ["product", id],
+        retry: true,
+        staleTime: 1000 * 60, // 1 minute
+    });
+
+    const { data: categories } = useQuery({
+        networkMode: "online",
+        queryFn: () => fetchCategories(),
+        queryKey: ["categories"],
         retry: true,
         staleTime: 1000 * 60, // 1 minute
     });
 
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
-        mutate({ hall: formData, id: id });
+        mutate({ id: id, product: formData });
     };
     const {
         isError,
         isPending: isPendingUpdate,
         mutate,
     } = useMutation({
-        mutationFn: updateHallById,
-        mutationKey: ["UpdateHall"],
+        mutationFn: updateProductById,
+        mutationKey: ["UpdateProduct"],
         networkMode: "online",
         onError: (error) => {
             toast.error(error.name, {
@@ -63,31 +80,31 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
             });
         },
         onSuccess: () => {
-            toast.success("De zaal is bijgewerkt!");
-            queryClient.invalidateQueries({ queryKey: ["hall", id] });
+            toast.success("Het product is bijgewerkt!");
+            queryClient.invalidateQueries({ queryKey: ["product", id] });
         },
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
-            day_price: 0,
-            day_price2: 0,
-            name: "",
-            private: false,
+            categorie_id: product?.categorie_id ?? "",
+            for_sale: product?.for_sale ?? false,
+            name: product?.name ?? "",
+            price: product?.price ?? 0,
         },
-        disabled: isPendingHall || isPendingUpdate,
+        disabled: isPendingProduct || isPendingUpdate,
         resolver: zodResolver(formSchema),
     });
 
     useEffect(() => {
-        if (hall)
+        if (product)
             form.reset({
-                day_price: hall.day_price || 0,
-                day_price2: hall.day_price2 || 0,
-                name: hall.name || "",
-                private: hall.private || false,
+                categorie_id: product.categorie_id ?? "",
+                for_sale: product.for_sale ?? false,
+                name: product.name,
+                price: product.price ?? 0,
             });
-    }, [hall, form]);
+    }, [product, form]);
 
     return (
         <>
@@ -109,16 +126,16 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
                         />
                         <FormField
                             control={form.control}
-                            name="day_price"
+                            name="price"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Prijs per blok</FormLabel>
+                                    <FormLabel>Prijs</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
                                             onChange={(e) =>
                                                 field.onChange(
-                                                    Number(e.target.value)
+                                                    e.target.valueAsNumber
                                                 )
                                             }
                                             type="number"
@@ -130,28 +147,44 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
                         />
                         <FormField
                             control={form.control}
-                            name="day_price2"
+                            name="categorie_id"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Prijs per 2 blokken</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            onChange={(e) =>
-                                                field.onChange(
-                                                    Number(e.target.value)
-                                                )
-                                            }
-                                            type="number"
-                                        />
-                                    </FormControl>
+                                    <FormLabel>Categorie</FormLabel>
+                                    <Select
+                                        defaultValue={field.value}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Kies een categorie" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {categories?.map((category) => (
+                                                <SelectItem
+                                                    key={category.id}
+                                                    value={category.id}
+                                                >
+                                                    {category.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormDescription>
+                                        Wijzig de categorieën in de{" "}
+                                        <Link href="/dashboard/categories/">
+                                            Categorie-instellingen
+                                        </Link>
+                                        .
+                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="private"
+                            name="for_sale"
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                     <FormControl>
@@ -162,26 +195,27 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
                                         />
                                     </FormControl>
                                     <div className="space-y-1 leading-none">
-                                        <FormLabel>Privaat</FormLabel>
+                                        <FormLabel>Te koop</FormLabel>
                                         <FormDescription>
-                                            De zaal is privaat en dus enkel
-                                            toegankelijk voor leden van Ten
-                                            Boomgaerde.
+                                            Dit item is enkel te koop, in plaats
+                                            van te huur.
                                         </FormDescription>
                                     </div>
                                 </FormItem>
                             )}
                         />
                         <Button
-                            disabled={isPendingHall || isPendingUpdate}
+                            disabled={isPendingProduct || isPendingUpdate}
                             type="submit"
                             variant={isError ? "destructive" : "default"}
                         >
-                            {isPendingHall ||
+                            {isPendingProduct ||
                                 (isPendingUpdate && (
                                     <LoaderPinwheel className="h-4 w-4 animate-spin" />
                                 ))}
-                            {!isPendingHall && !isPendingUpdate && "Bijwerken"}
+                            {!isPendingProduct &&
+                                !isPendingUpdate &&
+                                "Bijwerken"}
                         </Button>
                     </div>
                 </form>
@@ -190,4 +224,4 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
     );
 };
 
-export default UpdateHallForm;
+export default UpdateProductForm;

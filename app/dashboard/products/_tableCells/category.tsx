@@ -18,11 +18,8 @@ const CategoryCell = ({ id }: CategoryCellProps) => {
         staleTime: 1000 * 60, // 1 minute
     });
 
-    return !isPending ? (
-        data?.[0]?.name
-    ) : (
-        <LoaderPinwheel className="h-4 w-4 animate-spin" />
-    );
+    if (isPending) return <LoaderPinwheel className="h-4 w-4 animate-spin" />;
+    return data?.[0]?.name;
 };
 
 export default CategoryCell;

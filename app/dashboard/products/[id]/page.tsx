@@ -11,15 +11,15 @@ import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 
-import { getCategoryById } from "./actions";
+import { getProductById } from "./actions";
 import CurrentState from "./currentState";
-import UpdateCategoryForm from "./form";
+import UpdateProductForm from "./form";
 
 export const metadata: Metadata = {
     alternates: {
-        canonical: "/dashboard/categories/",
+        canonical: "/dashboard/products/",
     },
-    title: "Categorieën",
+    title: "Producten",
 };
 
 export const dynamic = "force-dynamic";
@@ -30,7 +30,7 @@ export default async function Page({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    const category = await getCategoryById(id);
+    const product = await getProductById(id);
 
     return (
         <div className="flex flex-row gap-2 h-full">
@@ -38,16 +38,16 @@ export default async function Page({
                 <CardHeader>
                     <CardTitle>Huidige versie</CardTitle>
                     <CardDescription>
-                        Dit is de huidige versie van de categorie.
+                        Dit is de huidige versie van het product.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                    <CurrentState id={id} initialData={category} />
+                    <CurrentState id={id} initialData={product} />
                 </CardContent>
                 <CardFooter>
                     <Link
                         className={buttonVariants({ variant: "outline" })}
-                        href="/dashboard/categories"
+                        href="/dashboard/products"
                     >
                         Terug
                     </Link>
@@ -55,13 +55,13 @@ export default async function Page({
             </Card>
             <Card>
                 <CardHeader>
-                    <CardTitle>Categorie aanpassen</CardTitle>
+                    <CardTitle>Product aanpassen</CardTitle>
                     <CardDescription>
-                        Vul de nieuwe gegevens van deze categorie in.
+                        Vul de nieuwe gegevens van deze zaal in.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <UpdateCategoryForm id={id} initialData={category} />
+                    <UpdateProductForm id={id} initialData={product} />
                 </CardContent>
             </Card>
         </div>
