@@ -12,7 +12,12 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const { id } = await params;
     return (
         <main className={"mx-auto md:max-w-screen-sm p-2 flex flex-col gap-2"}>
             <h1
@@ -22,7 +27,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             >
                 Categorie wijzigen
             </h1>
-            <UpdateCategoryForm id={params.id} />
+            <UpdateCategoryForm id={id} />
         </main>
     );
 }

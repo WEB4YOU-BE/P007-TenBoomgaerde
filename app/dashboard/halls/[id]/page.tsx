@@ -24,8 +24,13 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: { params: { id: string } }) {
-    const hall = await getHallById(params.id);
+export default async function Page({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const { id } = await params;
+    const hall = await getHallById(id);
 
     return (
         <div className="flex flex-row gap-2 h-full">
@@ -37,7 +42,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                    <CurrentState id={params.id} initialData={hall} />
+                    <CurrentState id={id} initialData={hall} />
                 </CardContent>
                 <CardFooter>
                     <Link
@@ -56,7 +61,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <UpdateCategoryForm id={params.id} initialData={hall} />
+                    <UpdateCategoryForm id={id} initialData={hall} />
                 </CardContent>
             </Card>
         </div>

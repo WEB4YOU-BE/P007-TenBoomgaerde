@@ -10,10 +10,12 @@ const createClient: () => SupabaseClient<Database> = () =>
         process.env.SUPABASE_ANON_KEY,
         {
             cookies: {
-                getAll: () => cookies().getAll(),
+                getAll: async () => (await cookies()).getAll(),
                 setAll: (cookiesToSet) => {
                     try {
-                        cookiesToSet.forEach((cookie) => cookies().set(cookie));
+                        cookiesToSet.forEach(async (cookie) =>
+                            (await cookies()).set(cookie)
+                        );
                     } catch (error) {
                         console.error(error);
                     }

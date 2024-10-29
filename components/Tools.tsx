@@ -5,8 +5,8 @@ import React from "react";
 import { FC } from "react";
 
 const development = process.env.NODE_ENV === "development";
-const Tools: FC = () => {
-    const nonce = headers().get("x-nonce") ?? undefined;
+const Tools: FC = async () => {
+    const nonce = (await headers()).get("x-nonce") ?? undefined;
     return (
         <>
             <ReactQueryDevtools styleNonce={nonce} />

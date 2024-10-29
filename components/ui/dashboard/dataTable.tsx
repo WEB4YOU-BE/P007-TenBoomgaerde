@@ -16,6 +16,7 @@ import {
     SortingState,
     useReactTable,
 } from "@tanstack/react-table";
+import React from "react";
 import { useState } from "react";
 
 interface TableProps<TData, TValue> {
