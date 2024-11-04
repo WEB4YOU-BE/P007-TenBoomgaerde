@@ -18,7 +18,7 @@ const plugin: Plugin =
         const userNotAllowedRegex =
             /(\/authentication\/(sign-in|sign-up|recover|confirm)\/)|(\/authentication\/$)/g;
         const publicNotAllowedRegex =
-            /(\/authentication\/sign-out\/)|(\/account\/$)|(\/dashboard\/.*)/g;
+            /(\/authentication\/(sign-out|change-password)\/)|(\/account\/$)|(\/dashboard\/.*)/g;
 
         const supabase = createServerClient<Database>(
             process.env.SUPABASE_URL,
