@@ -41,7 +41,6 @@ const ResetWithEmailCredentialsForm = () => {
             toast.success("Ga verder in jouw mailbox!", {
                 description: `Je hebt een mail gehad op ${variables}`,
                 duration: Infinity,
-                important: true,
             });
         },
         retry: false,
