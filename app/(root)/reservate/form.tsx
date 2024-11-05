@@ -1,10 +1,22 @@
 "use client";
 
+import { Alert } from "@/components/atoms/alert";
 import { Button, buttonVariants } from "@/components/atoms/button";
 import { Calendar } from "@/components/atoms/calendar";
+import { Checkbox } from "@/components/atoms/checkbox";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/atoms/dialog";
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -16,35 +28,60 @@ import {
     PopoverTrigger,
 } from "@/components/atoms/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/atoms/radio-group";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/atoms/select";
+import { Textarea } from "@/components/atoms/textarea";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import { CalendarIcon, LoaderPinwheel } from "lucide-react";
-import React, { useEffect, useMemo } from "react";
+import Link from "next/link";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { addReservation, fetchAllHalls, fetchAllTimeframes } from "./actions";
+import {
+    addReservation,
+    fetchAllHalls,
+    fetchAllOrganizations,
+    fetchAllReservations,
+    fetchAllTimeframes,
+} from "./actions";
 
 const formSchema = z.object({
+    acceptRegulations: z
+        .boolean({ message: "Je moet akkoord gaan met het regelement" })
+        .refine((value) => value === true, {
+            message: "Je moet akkoord gaan met het regelement",
+        }),
     end_date: z
         .date({ message: "Einddatum is verplicht" })
         .refine((value) => value > new Date(), {
             message: "Einddatum moet in de toekomst liggen",
         }),
-    end_hour: z.string().uuid({ message: "Einduur is verplicht" }),
+    end_hour: z
+        .string({ message: "Startuur is verplicht" })
+        .uuid({ message: "Einduur is verplicht" }),
     id: z.string().optional(),
-    organizations_id: z.string().uuid({ message: "Ongeldige UUID" }).optional(),
+    organizations_id: z.string().uuid().nullable(),
+    remarks: z.string().optional(),
     room_id: z.string().uuid({ message: "Zaal is verplicht" }),
     start_date: z
         .date({ message: "Startdatum is verplicht" })
         .refine((value) => value > new Date(), {
             message: "Startdatum moet in de toekomst liggen",
         }),
-    start_hour: z.string().uuid({ message: "Startuur is verplicht" }),
+    start_hour: z
+        .string({ message: "Startuur is verplicht" })
+        .uuid({ message: "Startuur is verplicht" }),
 });
 
 const AddReservationForm = () => {
@@ -59,6 +96,13 @@ const AddReservationForm = () => {
         networkMode: "online",
         queryFn: () => fetchAllTimeframes(),
         queryKey: ["timeframes"],
+        retry: false,
+        staleTime: 1000 * 60, // 1 minute
+    });
+    const { data: organizations } = useQuery({
+        networkMode: "online",
+        queryFn: () => fetchAllOrganizations(),
+        queryKey: ["organizations"],
         retry: false,
         staleTime: 1000 * 60, // 1 minute
     });
@@ -88,6 +132,8 @@ const AddReservationForm = () => {
         },
         onSuccess: () => {
             toast.success("Jouw reservering is aangevraagd!");
+            form.reset();
+            setIsOpenDialog(false);
         },
     });
 
@@ -96,37 +142,71 @@ const AddReservationForm = () => {
             end_date: undefined,
             end_hour: "",
             id: "",
+            organizations_id: null,
+            remarks: "",
             room_id: "",
             start_date: undefined,
             start_hour: "",
         },
+        mode: "all",
         resolver: zodResolver(formSchema),
     });
-
-    useEffect(() => {
-        const { unsubscribe } = form.watch((value) => {
-            console.log(value);
-        });
-        return () => unsubscribe();
-    }, [form, form.watch]);
 
     const selectedHall = form.watch("room_id");
     const selectedStartDate = form.watch("start_date");
     const selectedStartHour = form.watch("start_hour");
     const selectedEndDate = form.watch("end_date");
 
-    const isDisabledStartDate = useMemo(() => {
-        return !selectedHall;
-    }, [selectedHall]);
-    const isDisabledStartHour = useMemo(() => {
-        return !selectedStartDate;
-    }, [selectedStartDate]);
-    const isDisabledEndDate = useMemo(() => {
-        return !selectedStartDate || !selectedStartHour;
-    }, [selectedStartDate, selectedStartHour]);
-    const isDisabledEndHour = useMemo(() => {
-        return !selectedStartDate || !selectedStartHour || !selectedEndDate;
-    }, [selectedStartDate, selectedStartHour, selectedEndDate]);
+    const isDisabledStartDate = useMemo(
+        () => !selectedHall || isPendingHalls,
+        [selectedHall, isPendingHalls]
+    );
+    const isDisabledStartHour = useMemo(
+        () => !selectedStartDate || isDisabledStartDate,
+        [selectedStartDate, isDisabledStartDate]
+    );
+    const isDisabledEndDate = useMemo(
+        () => !selectedStartHour || isDisabledStartHour,
+        [selectedStartHour, isDisabledStartHour]
+    );
+    const isDisabledEndHour = useMemo(
+        () => !selectedEndDate || isDisabledEndDate,
+        [selectedEndDate, isDisabledEndDate]
+    );
+
+    const { data: reservations, isPending: isPendingReservations } = useQuery({
+        networkMode: "online",
+        queryFn: () => fetchAllReservations(),
+        queryKey: ["reservations"],
+        retry: false,
+        staleTime: 1000 * 60, // 1 minute
+    });
+    const reservationsByHall = useMemo(() => {
+        if (reservations && !isPendingReservations)
+            return reservations
+                .filter((reservation) => reservation.room_id === selectedHall)
+                .filter((reservation) => reservation.status !== "geweigerd");
+        return [];
+    }, [reservations, isPendingReservations, selectedHall]);
+
+    useEffect(() => {
+        if (reservationsByHall.length > 0)
+            console.log("reservationsByHall", reservationsByHall);
+    }, [reservationsByHall]);
+
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+    const onOpenModal = async () => {
+        if (
+            await form.trigger([
+                "room_id",
+                "start_date",
+                "start_hour",
+                "end_date",
+                "end_hour",
+            ])
+        )
+            setIsOpenDialog(true);
+    };
 
     return (
         <>
@@ -187,6 +267,14 @@ const AddReservationForm = () => {
                                         ))}
                                     </RadioGroup>
                                     <FormMessage />
+                                    <FormDescription className="text-balance">
+                                        Voor een feestje is het verplicht om de
+                                        grote zaal en kleine zaal tesamen te
+                                        reserveren. Binnenkort kunnen meerdere
+                                        zalen tegelijk worden geselecteerd. Voor
+                                        nu kan je zelf twee nieuwe reserveringen
+                                        maken.
+                                    </FormDescription>
                                 </FormItem>
                             )}
                         />
@@ -202,11 +290,6 @@ const AddReservationForm = () => {
                                     <PopoverTrigger asChild>
                                         <FormControl>
                                             <Button
-                                                className={cn(
-                                                    "w-[240px] pl-3 text-left font-normal",
-                                                    !field.value &&
-                                                        "text-muted-foreground"
-                                                )}
                                                 disabled={isDisabledStartDate}
                                                 variant={"outline"}
                                             >
@@ -315,11 +398,6 @@ const AddReservationForm = () => {
                                     <PopoverTrigger asChild>
                                         <FormControl>
                                             <Button
-                                                className={cn(
-                                                    "w-[240px] pl-3 text-left font-normal",
-                                                    !field.value &&
-                                                        "text-muted-foreground"
-                                                )}
                                                 disabled={isDisabledEndDate}
                                                 variant={"outline"}
                                             >
@@ -419,20 +497,137 @@ const AddReservationForm = () => {
                     )}
                     <Button
                         disabled={isPending}
-                        type="submit"
-                        variant={
-                            isSuccess
-                                ? "outline"
-                                : isError
-                                  ? "destructive"
-                                  : "default"
-                        }
+                        onClick={onOpenModal}
+                        type="button"
+                        variant="default"
                     >
-                        {isPending && (
-                            <LoaderPinwheel className="h-4 w-4 animate-spin" />
-                        )}
-                        {!isPending && "Vraag aan"}
+                        Revalidate
                     </Button>
+                    <Dialog onOpenChange={setIsOpenDialog} open={isOpenDialog}>
+                        <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                                <DialogTitle>Overzicht</DialogTitle>
+                                <DialogDescription>
+                                    Hieronder vind je een overzicht van jouw
+                                    reservering. Controleer of alles correct is.
+                                </DialogDescription>
+                            </DialogHeader>
+                            {/* Selection for the organisation: */}
+                            <FormField
+                                control={form.control}
+                                name="organizations_id"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Organisatie (optioneel)
+                                        </FormLabel>
+                                        <Select
+                                            defaultValue={
+                                                field.value ?? undefined
+                                            }
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Selecteer jouw organisatie" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {organizations?.map(
+                                                    (organization) => (
+                                                        <SelectItem
+                                                            key={
+                                                                organization.id
+                                                            }
+                                                            value={
+                                                                organization.id
+                                                            }
+                                                        >
+                                                            {organization.name}
+                                                        </SelectItem>
+                                                    )
+                                                )}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="remarks"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Opmerkingen</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                className="resize-none"
+                                                placeholder="Geef een korte beschrijving van jouw activiteit of stel een vraag..."
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Alert variant={"destructive"}>
+                                Let op, kijk goed bovenstaande gegevens na. Je
+                                reservatie is hierna definitief, en kan niet
+                                meer aangepast worden.
+                            </Alert>
+                            <FormField
+                                control={form.control}
+                                name="acceptRegulations"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel>
+                                                Ga akkoord met het regelement
+                                                voor de vergaderzalen
+                                            </FormLabel>
+                                            <FormDescription>
+                                                Je kan het{" "}
+                                                <Link href="/examples/forms">
+                                                    regelement vergaderzalen
+                                                </Link>{" "}
+                                                bekijken door erop te klikken.
+                                            </FormDescription>
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                            <DialogFooter className="sm:flex-row">
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary">
+                                        Bewerk
+                                    </Button>
+                                </DialogClose>
+                                <Button
+                                    disabled={isPending}
+                                    onClick={form.handleSubmit(onSubmit)}
+                                    type="submit"
+                                    variant={
+                                        isSuccess
+                                            ? "outline"
+                                            : isError
+                                              ? "destructive"
+                                              : "default"
+                                    }
+                                >
+                                    {isPending && (
+                                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                                    )}
+                                    {!isPending && "Vraag aan"}
+                                </Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </form>
             </Form>
         </>
