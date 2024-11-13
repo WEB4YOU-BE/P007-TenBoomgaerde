@@ -3,6 +3,24 @@
 import createClient from "@/utils/supabase/server";
 import { add } from "date-fns";
 
+export const fetchUser = async () => {
+    const supabase = createClient();
+    const {
+        data: { user },
+        error,
+    } = await supabase.auth.getUser();
+    if (error) throw error;
+    return user;
+};
+export const fetchIsAdmin = async (userID: string) => {
+    const supabase = createClient();
+    const { data, error } = await supabase.rpc("is_admin", {
+        user_id: userID,
+    });
+    if (error) throw error;
+    return data;
+};
+
 export const fetchReservationsToBeReviewed = async () => {
     const supabase = createClient();
     const { data, error } = await supabase

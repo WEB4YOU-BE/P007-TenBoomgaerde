@@ -1,6 +1,12 @@
 "use client";
 
-import { Button } from "@/components/atoms/button";
+import { Button, buttonVariants } from "@/components/atoms/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/atoms/dropdown-menu";
 import {
     Table,
     TableBody,
@@ -10,6 +16,7 @@ import {
     TableRow,
 } from "@/components/atoms/table";
 import { Tables } from "@/types/supabase/database";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import {
     ColumnDef,
     flexRender,
@@ -18,7 +25,7 @@ import {
     type SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, InfoIcon } from "lucide-react";
+import { ArrowUpDown, InfoIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import React from "react";
@@ -52,7 +59,27 @@ export const columns: ColumnDef<Tables<"categories">>[] = [
             </Link>
         ),
         header: () => {
-            return <p>Acties</p>;
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost">Acties</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                        <DropdownMenuLabel asChild>
+                            <Link
+                                className={cn(
+                                    "flex flex-row gap-2 items-center",
+                                    buttonVariants({ variant: "ghost" })
+                                )}
+                                href="/dashboard/categories/new"
+                            >
+                                <PlusIcon />
+                                <span>Toevoegen</span>
+                            </Link>
+                        </DropdownMenuLabel>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
         },
         id: "actions",
     },

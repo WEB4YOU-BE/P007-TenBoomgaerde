@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { Separator } from "@/components/atoms/separator";
 import Sidebar from "@/components/ui/dashboard/sidebar";
 import SidebarNavigation from "@/components/ui/dashboard/sidebarNavigation";
-import createClient from "@/utils/supabase/server";
 import {
     Box,
     Building2,
@@ -21,6 +20,8 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import { fetchIsAdmin, fetchUser } from "./actions";
+
 export const metadata: Metadata = {
     title: {
         default: "Dashboard",
@@ -29,17 +30,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Layout({ children }: { children: ReactNode }) {
-    const supabase = createClient();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    const user = await fetchUser();
     if (!user) return redirect("/authentication/");
 
-    const { data: is_admin } = await supabase.rpc("is_admin", {
-        user_id: user.id,
-    });
-    if (!is_admin) return redirect("/");
+    const isAdmin = await fetchIsAdmin(user.id);
+    if (!isAdmin) return redirect("/");
 
     return (
         <div className="relative flex h-[100dvh] w-[100dvw] flex-row overflow-auto">
