@@ -35,12 +35,12 @@ function useChart() {
 
 const ChartContainer = React.forwardRef<
     HTMLDivElement,
-    {
+    React.ComponentProps<"div"> & {
         children: React.ComponentProps<
             typeof RechartsPrimitive.ResponsiveContainer
         >["children"];
         config: ChartConfig;
-    } & React.ComponentProps<"div">
+    }
 >(({ children, className, config, id, ...props }, ref) => {
     const uniqueId = React.useId();
     const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
@@ -103,14 +103,14 @@ const ChartTooltip = RechartsPrimitive.Tooltip;
 
 const ChartTooltipContent = React.forwardRef<
     HTMLDivElement,
-    {
-        hideIndicator?: boolean;
-        hideLabel?: boolean;
-        indicator?: "dashed" | "dot" | "line";
-        labelKey?: string;
-        nameKey?: string;
-    } & React.ComponentProps<"div"> &
-        React.ComponentProps<typeof RechartsPrimitive.Tooltip>
+    React.ComponentProps<"div"> &
+        React.ComponentProps<typeof RechartsPrimitive.Tooltip> & {
+            hideIndicator?: boolean;
+            hideLabel?: boolean;
+            indicator?: "dashed" | "dot" | "line";
+            labelKey?: string;
+            nameKey?: string;
+        }
 >(
     (
         {
@@ -289,11 +289,11 @@ const ChartLegend = RechartsPrimitive.Legend;
 
 const ChartLegendContent = React.forwardRef<
     HTMLDivElement,
-    {
-        hideIcon?: boolean;
-        nameKey?: string;
-    } & Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> &
-        React.ComponentProps<"div">
+    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> &
+        React.ComponentProps<"div"> & {
+            hideIcon?: boolean;
+            nameKey?: string;
+        }
 >(
     (
         {

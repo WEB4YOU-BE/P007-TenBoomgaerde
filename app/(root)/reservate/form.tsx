@@ -39,11 +39,11 @@ import { Textarea } from "@/components/atoms/textarea";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { compareAsc, eachDayOfInterval, format } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import { CalendarIcon, LoaderPinwheel } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -189,10 +189,63 @@ const AddReservationForm = () => {
         return [];
     }, [reservations, isPendingReservations, selectedHall]);
 
-    useEffect(() => {
-        if (reservationsByHall.length > 0)
-            console.log("reservationsByHall", reservationsByHall);
+    const datesWithReservations = useMemo(() => {
+        if (reservationsByHall.length === 0) return [];
+        return reservationsByHall.flatMap((reservation) =>
+            eachDayOfInterval({
+                end: reservation.end_date
+                    ? new Date(reservation.end_date)
+                    : new Date(),
+                start: reservation.start_date
+                    ? new Date(reservation.start_date)
+                    : new Date(),
+            })
+        );
     }, [reservationsByHall]);
+    const uniqueDatesWithReservations = useMemo(() => {
+        if (datesWithReservations.length === 0) return [];
+        return Array.from(new Set(datesWithReservations));
+    }, [datesWithReservations]);
+    const datesWithReservationsSortedByDate = useMemo(() => {
+        if (uniqueDatesWithReservations.length === 0) return [];
+        return uniqueDatesWithReservations.sort((a, b) => compareAsc(a, b));
+    }, [uniqueDatesWithReservations]);
+
+    // const unavailableTimeframesPerDate = useMemo(() => {
+    //     if (datesWithReservationsSortedByDate.length === 0) return [];
+    //     return datesWithReservationsSortedByDate.map((date) => {
+    //         const timeframes: string[] = [];
+    //         reservationsByHall.forEach((reservation) => {
+    //             eachDayOfInterval({
+    //                 end: reservation.end_date ? new Date(reservation.end_date) : new Date(),
+    //                 start: reservation.start_date ? new Date(reservation.start_date) : new Date(),
+    //             }).forEach((reservationDate) => {
+    //                 const normalizedReservationDate = format(reservationDate, "yyyy-MM-dd");
+    //                 if (format(date, "yyyy-MM-dd") === normalizedReservationDate) {
+    //                     if (normalizedReservationDate !== reservation.start_date && normalizedReservationDate !== reservation.end_date) {
+    //                         timeframes.push(...timeframes);
+    //                     }
+    //                     if (normalizedReservationDate === reservation.start_date && normalizedReservationDate !== reservation.end_date) {
+    //                         timeframes.push(...timeframes.filter((tf) => tf.start_hour.substring(0, 2) >= reservation.start_hour.substring(0, 2)));
+    //                     }
+    //                     if (normalizedReservationDate !== reservation.start_date && normalizedReservationDate === reservation.end_date) {
+    //                         timeframes.push(...timeframes.filter((tf) => tf.end_hour.substring(0, 2) <= reservation.end_hour.substring(0, 2)));
+    //                     }
+    //                     if (normalizedReservationDate === reservation.start_date && normalizedReservationDate === reservation.end_date) {
+    //                         timeframes.push(...timeframes.filter((tf) => tf.start_hour.substring(0, 2) >= reservation.start_hour.substring(0, 2) && tf.end_hour.substring(0, 2) <= reservation.end_hour.substring(0, 2)));
+    //                     }
+    //                 }
+    //             });
+    //         });
+    //         return { date, timeframes };
+    //     });
+    // }, [datesWithReservationsSortedByDate, reservationsByHall]);
+
+    const unavailableDates = useMemo(() => {
+        if (datesWithReservationsSortedByDate.length === 0) return [];
+        // Filter out the dates where NO timeframe is available
+        return datesWithReservationsSortedByDate;
+    }, [datesWithReservationsSortedByDate]);
 
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const onOpenModal = async () => {
@@ -313,6 +366,7 @@ const AddReservationForm = () => {
                                         className="w-auto p-0"
                                     >
                                         <Calendar
+                                            disabled={unavailableDates}
                                             mode="single"
                                             onSelect={field.onChange}
                                             selected={
@@ -376,7 +430,8 @@ const AddReservationForm = () => {
                                                             "w-full"
                                                         )}
                                                     >
-                                                        {`${timeframe.start_hour.split(":")[0]}:${timeframe.start_hour.split(":")[1]}`}
+                                                        {`${timeframe.start_hour.split(":")[0]}:${timeframe.start_hour.split(":")[1]}`}{" "}
+                                                        ({timeframe.name})
                                                     </FormLabel>
                                                 </FormItem>
                                             </div>
@@ -484,7 +539,8 @@ const AddReservationForm = () => {
                                                             "w-full"
                                                         )}
                                                     >
-                                                        {`${timeframe.end_hour.split(":")[0]}:${timeframe.end_hour.split(":")[1]}`}
+                                                        {`${timeframe.end_hour.split(":")[0]}:${timeframe.end_hour.split(":")[1]}`}{" "}
+                                                        ({timeframe.name})
                                                     </FormLabel>
                                                 </FormItem>
                                             </div>
@@ -501,7 +557,7 @@ const AddReservationForm = () => {
                         type="button"
                         variant="default"
                     >
-                        Revalidate
+                        Volgende
                     </Button>
                     <Dialog onOpenChange={setIsOpenDialog} open={isOpenDialog}>
                         <DialogContent className="sm:max-w-md">

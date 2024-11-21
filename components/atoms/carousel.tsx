@@ -9,7 +9,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
 
 type CarouselApi = UseEmblaCarouselType[1];
-type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
+type CarouselContextProps = CarouselProps & {
+    api: ReturnType<typeof useEmblaCarousel>[1];
+    canScrollNext: boolean;
+    canScrollPrev: boolean;
+    carouselRef: ReturnType<typeof useEmblaCarousel>[0];
+    scrollNext: () => void;
+    scrollPrev: () => void;
+};
 type CarouselOptions = UseCarouselParameters[0];
 type CarouselPlugin = UseCarouselParameters[1];
 
@@ -20,14 +27,7 @@ type CarouselProps = {
     setApi?: (api: CarouselApi) => void;
 };
 
-type CarouselContextProps = {
-    api: ReturnType<typeof useEmblaCarousel>[1];
-    canScrollNext: boolean;
-    canScrollPrev: boolean;
-    carouselRef: ReturnType<typeof useEmblaCarousel>[0];
-    scrollNext: () => void;
-    scrollPrev: () => void;
-} & CarouselProps;
+type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 

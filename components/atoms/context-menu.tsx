@@ -19,9 +19,9 @@ const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
 
 const ContextMenuSubTrigger = React.forwardRef<
     React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>,
-    {
+    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger> & {
         inset?: boolean;
-    } & React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger>
+    }
 >(({ children, className, inset, ...props }, ref) => (
     <ContextMenuPrimitive.SubTrigger
         className={cn(
@@ -72,9 +72,9 @@ ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName;
 
 const ContextMenuItem = React.forwardRef<
     React.ElementRef<typeof ContextMenuPrimitive.Item>,
-    {
+    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item> & {
         inset?: boolean;
-    } & React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item>
+    }
 >(({ className, inset, ...props }, ref) => (
     <ContextMenuPrimitive.Item
         className={cn(
@@ -136,9 +136,9 @@ ContextMenuRadioItem.displayName = ContextMenuPrimitive.RadioItem.displayName;
 
 const ContextMenuLabel = React.forwardRef<
     React.ElementRef<typeof ContextMenuPrimitive.Label>,
-    {
+    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label> & {
         inset?: boolean;
-    } & React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label>
+    }
 >(({ className, inset, ...props }, ref) => (
     <ContextMenuPrimitive.Label
         className={cn(
