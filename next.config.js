@@ -1,8 +1,23 @@
-import withVercelToolbar from "@vercel/toolbar/plugins/next";
+import NextBundleAnalyzer from "@next/bundle-analyzer";
+import VercelToolbar from "@vercel/toolbar/plugins/next";
 
 /** @type {import("next").NextConfig} */
-const nextConfig = {
+const config = {
+    experimental: {
+        turbo: {},
+    },
     trailingSlash: true,
 };
 
-export default withVercelToolbar()(nextConfig);
+const withVercelToolbar = VercelToolbar();
+const withBundleAnalyzer = NextBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+});
+
+const plugins = [withVercelToolbar, withBundleAnalyzer];
+const pluginAppliedConfig = plugins.reduce(
+    (config, plugin) => plugin(config),
+    config
+);
+
+export default pluginAppliedConfig;
