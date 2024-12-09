@@ -48,7 +48,8 @@
         "format": "prettier --check --ignore-path .gitignore .",
         "format:fix": "prettier --write --ignore-path .gitignore .",
         "supabase:start": "supabase start",
-        "supabase:stop": "supabase stop --no-backup"
+        "supabase:stop": "supabase stop --no-backup",
+        "knip": "knip"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.9.1",
@@ -124,7 +125,7 @@
         "@eslint/js": "^9.16.0",
         "@tanstack/eslint-plugin-query": "^5.62.1",
         "@types/eslint__js": "^8.42.3",
-        "@types/node": "^22",
+        "@types/node": "^22.10.1",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@types/validator": "^13.12.2",
@@ -136,6 +137,7 @@
         "eslint-plugin-react": "^7.37.2",
         "globals": "^15.13.0",
         "husky": "^9.1.7",
+        "knip": "^5.39.2",
         "lint-staged": "^15.2.10",
         "postcss": "^8",
         "prettier": "^3.4.2",
