@@ -106,7 +106,7 @@ const UpdateProfileForm = () => {
                 postcode: profile.postcode ?? "",
                 street: profile.street ?? "",
             });
-    }, [profile, form]);
+    }, [profile, form.reset]);
 
     return (
         <>
