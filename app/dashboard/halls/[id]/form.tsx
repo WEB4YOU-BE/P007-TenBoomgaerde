@@ -87,7 +87,7 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
                 name: hall.name || "",
                 private: hall.private || false,
             });
-    }, [hall, form]);
+    }, [hall, form.reset]);
 
     return (
         <>

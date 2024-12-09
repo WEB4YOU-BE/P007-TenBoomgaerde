@@ -40,7 +40,7 @@ const CreateCategoryForm = () => {
             });
         },
         onSuccess: () => {
-            toast.success("De categorië is aangemaakt!");
+            toast.success("De categorie is aangemaakt!");
             queryClient.invalidateQueries({ queryKey: ["categories"] });
         },
     });

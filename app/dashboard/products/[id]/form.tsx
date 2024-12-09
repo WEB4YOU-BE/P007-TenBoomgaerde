@@ -104,7 +104,7 @@ const UpdateProductForm = ({ id, initialData }: Props) => {
                 name: product.name,
                 price: product.price ?? 0,
             });
-    }, [product, form]);
+    }, [product, form.reset]);
 
     return (
         <>

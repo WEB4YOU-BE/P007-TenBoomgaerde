@@ -57,7 +57,7 @@ const UpdateCategoryForm = ({ id, initialData }: Props) => {
             });
         },
         onSuccess: () => {
-            toast.success("De categorië is bijgewerkt!");
+            toast.success("De categorie is bijgewerkt!");
             queryClient.invalidateQueries({ queryKey: ["category", id] });
         },
     });
@@ -75,7 +75,7 @@ const UpdateCategoryForm = ({ id, initialData }: Props) => {
             form.reset({
                 name: category.name,
             });
-    }, [category, form]);
+    }, [category, form.reset]);
 
     return (
         <>
