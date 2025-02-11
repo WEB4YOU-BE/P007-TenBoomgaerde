@@ -127,7 +127,7 @@
         "@tailwindcss/postcss": "^4.0.6",
         "@tanstack/eslint-plugin-query": "^5.66.1",
         "@types/eslint__js": "^8.42.3",
-        "@types/node": "^22.10.2",
+        "@types/node": "^22.13.1",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@types/validator": "^13.12.2",
