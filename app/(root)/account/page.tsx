@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function page() {
     return (
-        <main className={"container max-w-screen-xl mx-auto p-2 px-4"}>
+        <main className={"container max-w-(--breakpoint-xl) mx-auto p-2 px-4"}>
             <h1 className={"text-4xl font-bold text-center mb-8"}>
                 Gebruikersinformatie
             </h1>

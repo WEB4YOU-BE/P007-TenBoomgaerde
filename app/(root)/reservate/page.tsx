@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 export default async function Page() {
     return (
         <>
-            <main className={"container mx-auto max-w-screen-lg p-2"}>
+            <main className={"container mx-auto max-w-(--breakpoint-lg) p-2"}>
                 <AddReservationForm />
             </main>
         </>

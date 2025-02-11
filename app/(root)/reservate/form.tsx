@@ -267,7 +267,7 @@ const AddReservationForm = () => {
                 <h1 className={"text-3xl font-bold"}>Reservatie</h1>
                 <form
                     className={
-                        "rounded-lg bg-gray-100 shadow-sm p-4 flex flex-col gap-4"
+                        "rounded-lg bg-gray-100 shadow-xs p-4 flex flex-col gap-4"
                     }
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
@@ -289,10 +289,7 @@ const AddReservationForm = () => {
                                         onValueChange={field.onChange}
                                     >
                                         {halls?.map((hall) => (
-                                            <div
-                                                className="flex-grow"
-                                                key={hall.id}
-                                            >
+                                            <div className="grow" key={hall.id}>
                                                 <FormItem>
                                                     <FormControl>
                                                         <RadioGroupItem
@@ -404,7 +401,7 @@ const AddReservationForm = () => {
                                     >
                                         {timeframes?.map((timeframe) => (
                                             <div
-                                                className="flex-grow"
+                                                className="grow"
                                                 key={timeframe.id}
                                             >
                                                 <FormItem>
@@ -510,7 +507,7 @@ const AddReservationForm = () => {
                                     >
                                         {timeframes?.map((timeframe) => (
                                             <div
-                                                className="flex-grow"
+                                                className="grow"
                                                 key={timeframe.id}
                                             >
                                                 <FormItem>

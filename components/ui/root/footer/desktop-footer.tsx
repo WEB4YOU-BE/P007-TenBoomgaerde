@@ -27,7 +27,7 @@ const DesktopFooter = forwardRef<HTMLDivElement, DesktopFooterProps>(
         ];
         return (
             <div className={cn("w-screen", className)} ref={ref} {...props}>
-                <div className="container max-w-screen-lg p-2">
+                <div className="container max-w-(--breakpoint-lg) p-2">
                     <div className="flex w-full flex-row gap-2 rounded-lg bg-secondary p-2 text-secondary-foreground">
                         <Image
                             alt={"Logo"}

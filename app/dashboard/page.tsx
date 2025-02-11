@@ -64,10 +64,10 @@ export default async function Page() {
                 </TabsContent>
             </Tabs>
             <div className={"flex flex-col gap-4 sticky top-0"}>
-                <div className={"flex flex-row lg:flex-col gap-4 flex-grow"}>
+                <div className={"flex flex-row lg:flex-col gap-4 grow"}>
                     <div
                         className={
-                            "p-2 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 flex-1"
+                            "p-2 bg-white border border-gray-200 rounded-lg shadow-xs sm:p-6 flex-1"
                         }
                     >
                         <HoverCard>
@@ -94,7 +94,7 @@ export default async function Page() {
                     </div>
                     <div
                         className={
-                            "p-2 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 flex-1"
+                            "p-2 bg-white border border-gray-200 rounded-lg shadow-xs sm:p-6 flex-1"
                         }
                     >
                         <HoverCard>
@@ -120,10 +120,10 @@ export default async function Page() {
                         </p>
                     </div>
                 </div>
-                <div className={"flex flex-row lg:flex-col gap-4 flex-grow"}>
+                <div className={"flex flex-row lg:flex-col gap-4 grow"}>
                     <div
                         className={
-                            "p-2 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 flex-1"
+                            "p-2 bg-white border border-gray-200 rounded-lg shadow-xs sm:p-6 flex-1"
                         }
                     >
                         <HoverCard>
@@ -153,7 +153,7 @@ export default async function Page() {
                     </div>
                     <div
                         className={
-                            "p-2 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 flex-1"
+                            "p-2 bg-white border border-gray-200 rounded-lg shadow-xs sm:p-6 flex-1"
                         }
                     >
                         <HoverCard>
