@@ -37,7 +37,7 @@ export const fetchReservationsToBeInvoiced = async () => {
         .from("reservations")
         .select()
         .eq("status", "goedgekeurd")
-        .eq("gefactureerd", "FALSE")
+        .eq("gefactureerd", false)
         .order("start_date", { ascending: true });
     if (error) throw error;
     return data;
@@ -58,7 +58,7 @@ export const fetchReservationsToBeInvoicedCount = async () => {
         .from("reservations")
         .select("id", { count: "exact" })
         .eq("status", "goedgekeurd")
-        .eq("gefactureerd", "FALSE");
+        .eq("gefactureerd", false);
     if (error) throw error;
     return count ?? 0;
 };
