@@ -1,12 +1,23 @@
 // @ts-check
 
+import { FlatCompat } from "@eslint/eslintrc";
 import jseslint from "@eslint/js";
 import perfectionist from "eslint-plugin-perfectionist";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
+import { dirname } from "path";
 import tseslint from "typescript-eslint";
+import { fileURLToPath } from "url";
 
-export default [
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+    baseDirectory: __dirname,
+});
+
+const config = [
+    ...compat.extends("next/core-web-vitals", "next/typescript"),
     { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
     {
         ignores: [
@@ -59,3 +70,5 @@ export default [
         },
     },
 ];
+
+export default config;
