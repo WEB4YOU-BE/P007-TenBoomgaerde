@@ -75,7 +75,7 @@ const UpdateCategoryForm = ({ id, initialData }: Props) => {
             form.reset({
                 name: category.name,
             });
-    }, [category, form.reset]);
+    }, [category, form]);
 
     return (
         <>
