@@ -53,7 +53,7 @@
     },
     "dependencies": {
         "@e965/xlsx": "^0.20.3",
-        "@hookform/resolvers": "^3.9.1",
+        "@hookform/resolvers": "^4.0.0",
         "@icons-pack/react-simple-icons": "^10.2.0",
         "@next/bundle-analyzer": "^15.1.7",
         "@next/third-parties": "^15.1.7",
