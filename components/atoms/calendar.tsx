@@ -8,8 +8,14 @@ import {
     ChevronRightIcon,
     ChevronUpIcon,
 } from "lucide-react";
-import * as React from "react";
-import { DayFlag, DayPicker, SelectionState, UI } from "react-day-picker";
+import React from "react";
+import {
+    type ChevronProps,
+    DayFlag,
+    DayPicker,
+    SelectionState,
+    UI,
+} from "react-day-picker";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -58,16 +64,14 @@ export const Calendar = ({
                 [UI.Weekdays]: "flex",
                 ...classNames,
             }}
-            components={{
-                Chevron: ({ ...props }) => <Chevron {...props} />,
-            }}
+            components={{ Chevron: ({ ...props }) => <Chevron {...props} /> }}
             showOutsideDays={showOutsideDays}
             {...props}
         />
     );
 };
 
-const Chevron = ({ orientation = "left" }) => {
+const Chevron = ({ orientation = "left" }: ChevronProps) => {
     switch (orientation) {
         case "down":
             return <ChevronDownIcon className="h-4 w-4" />;

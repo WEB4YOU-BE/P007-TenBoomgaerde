@@ -10,18 +10,16 @@ import React from "react";
 
 import "./globals.css";
 
-const RootLayout: NextPage<NextLayout> = async ({ children }) => {
-    return (
-        <html lang="nl-BE">
-            <body className={cn(inter.variable)}>
-                <Providers>
-                    {children}
-                    <Hosts />
-                    <Tools />
-                </Providers>
-            </body>
-        </html>
-    );
-};
+const RootLayout: NextPage<NextLayout> = async ({ children }: NextLayout) => (
+    <html lang="nl-BE">
+        <body className={cn(inter.variable)}>
+            <Providers>
+                {children}
+                <Hosts />
+                <Tools />
+            </Providers>
+        </body>
+    </html>
+);
 
 export default RootLayout;

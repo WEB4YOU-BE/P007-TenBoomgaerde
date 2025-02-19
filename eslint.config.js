@@ -64,11 +64,6 @@ const config = [
             },
         },
     },
-    {
-        rules: {
-            "react/prop-types": ["off"],
-        },
-    },
 ];
 
 export default config;
