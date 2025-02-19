@@ -1,16 +1,17 @@
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import React from "react";
+import React, { ComponentPropsWithoutRef, FC } from "react";
 
-function Skeleton({
+const Skeleton: FC<ComponentPropsWithoutRef<"div">> = ({
     className,
     ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}) => {
     return (
         <div
-            className={cn("animate-pulse rounded-md bg-muted", className)}
+            className={cn("bg-primary/10 animate-pulse rounded-md", className)}
+            data-slot="skeleton"
             {...props}
         />
     );
-}
+};
 
 export { Skeleton };

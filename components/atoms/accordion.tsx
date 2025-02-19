@@ -2,56 +2,64 @@
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
-import React from "react";
+import { ChevronDownIcon } from "lucide-react";
+import React, { type ComponentPropsWithoutRef } from "react";
 
-const Accordion = AccordionPrimitive.Root;
+const Accordion = ({
+    ...props
+}: ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>) => {
+    return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
+};
 
-const AccordionItem = React.forwardRef<
-    React.ComponentRef<typeof AccordionPrimitive.Item>,
-    React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-    <AccordionPrimitive.Item
-        className={cn("border-b", className)}
-        ref={ref}
-        {...props}
-    />
-));
-AccordionItem.displayName = "AccordionItem";
-
-const AccordionTrigger = React.forwardRef<
-    React.ComponentRef<typeof AccordionPrimitive.Trigger>,
-    React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ children, className, ...props }, ref) => (
-    <AccordionPrimitive.Header className="flex">
-        <AccordionPrimitive.Trigger
-            className={cn(
-                "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
-                className
-            )}
-            ref={ref}
+const AccordionContent = ({
+    children,
+    className,
+    ...props
+}: ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>) => {
+    return (
+        <AccordionPrimitive.Content
+            className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm"
+            data-slot="accordion-content"
             {...props}
         >
-            {children}
-            <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-        </AccordionPrimitive.Trigger>
-    </AccordionPrimitive.Header>
-));
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+            <div className={cn("pt-0 pb-4", className)}>{children}</div>
+        </AccordionPrimitive.Content>
+    );
+};
 
-const AccordionContent = React.forwardRef<
-    React.ComponentRef<typeof AccordionPrimitive.Content>,
-    React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ children, className, ...props }, ref) => (
-    <AccordionPrimitive.Content
-        className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-        ref={ref}
-        {...props}
-    >
-        <div className={cn("pb-4 pt-0", className)}>{children}</div>
-    </AccordionPrimitive.Content>
-));
+const AccordionItem = ({
+    className,
+    ...props
+}: ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>) => {
+    return (
+        <AccordionPrimitive.Item
+            className={cn("border-b last:border-b-0", className)}
+            data-slot="accordion-item"
+            {...props}
+        />
+    );
+};
 
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+const AccordionTrigger = ({
+    children,
+    className,
+    ...props
+}: ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>) => {
+    return (
+        <AccordionPrimitive.Header className="flex">
+            <AccordionPrimitive.Trigger
+                className={cn(
+                    "ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all hover:underline focus-visible:ring-4 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+                    className
+                )}
+                data-slot="accordion-trigger"
+                {...props}
+            >
+                {children}
+                <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+            </AccordionPrimitive.Trigger>
+        </AccordionPrimitive.Header>
+    );
+};
 
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

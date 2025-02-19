@@ -1,147 +1,113 @@
+"use client";
+
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import React, {
-    type DetailedHTMLProps,
-    type HTMLAttributes,
-    type TableHTMLAttributes,
-    type TdHTMLAttributes,
-    type ThHTMLAttributes,
-} from "react";
+import React, { ComponentPropsWithoutRef } from "react";
 
-const Table = ({
-    children,
-    className,
-    ...props
-}: DetailedHTMLProps<
-    TableHTMLAttributes<HTMLTableElement>,
-    HTMLTableElement
->) => (
-    <div className="relative w-full overflow-auto">
-        <table
-            className={cn("w-full caption-bottom text-sm", className)}
-            {...props}
-        >
-            {children}
-        </table>
-    </div>
-);
-
-const TableHeader = ({
-    children,
-    className,
-    ...props
-}: DetailedHTMLProps<
-    HTMLAttributes<HTMLTableSectionElement>,
-    HTMLTableSectionElement
->) => (
-    <thead className={cn("[&_tr]:border-b", className)} {...props}>
-        {children}
-    </thead>
-);
+const Table = ({ className, ...props }: ComponentPropsWithoutRef<"table">) => {
+    return (
+        <div className="relative w-full overflow-auto">
+            <table
+                className={cn("w-full caption-bottom text-sm", className)}
+                data-slot="table"
+                {...props}
+            />
+        </div>
+    );
+};
 
 const TableBody = ({
-    children,
     className,
     ...props
-}: DetailedHTMLProps<
-    HTMLAttributes<HTMLTableSectionElement>,
-    HTMLTableSectionElement
->) => (
-    <tbody className={cn("[&_tr:last-child]:border-0", className)} {...props}>
-        {children}
-    </tbody>
-);
-
-const TableFooter = ({
-    children,
-    className,
-    ...props
-}: DetailedHTMLProps<
-    HTMLAttributes<HTMLTableSectionElement>,
-    HTMLTableSectionElement
->) => (
-    <tfoot
-        className={cn(
-            "border-t bg-muted/50 font-medium last:[&>tr]:border-b-0",
-            className
-        )}
-        {...props}
-    >
-        {children}
-    </tfoot>
-);
-
-const TableRow = ({
-    children,
-    className,
-    ...props
-}: DetailedHTMLProps<
-    HTMLAttributes<HTMLTableRowElement>,
-    HTMLTableRowElement
->) => (
-    <tr
-        className={cn(
-            "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-            className
-        )}
-        {...props}
-    >
-        {children}
-    </tr>
-);
-
-const TableHead = ({
-    children,
-    className,
-    ...props
-}: DetailedHTMLProps<
-    ThHTMLAttributes<HTMLTableCellElement>,
-    HTMLTableCellElement
->) => (
-    <th
-        className={cn(
-            "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-            className
-        )}
-        {...props}
-    >
-        {children}
-    </th>
-);
-
-const TableCell = ({
-    children,
-    className,
-    ...props
-}: DetailedHTMLProps<
-    TdHTMLAttributes<HTMLTableCellElement>,
-    HTMLTableCellElement
->) => (
-    <td
-        className={cn(
-            "p-4 align-middle [&:has([role=checkbox])]:pr-0",
-            className
-        )}
-        {...props}
-    >
-        {children}
-    </td>
-);
+}: ComponentPropsWithoutRef<"tbody">) => {
+    return (
+        <tbody
+            className={cn("[&_tr:last-child]:border-0", className)}
+            data-slot="table-body"
+            {...props}
+        />
+    );
+};
 
 const TableCaption = ({
-    children,
     className,
     ...props
-}: DetailedHTMLProps<
-    HTMLAttributes<HTMLTableCaptionElement>,
-    HTMLTableCaptionElement
->) => (
-    <caption
-        className={cn("mt-4 text-sm text-muted-foreground", className)}
-        {...props}
-    >
-        {children}
-    </caption>
-);
+}: ComponentPropsWithoutRef<"caption">) => {
+    return (
+        <caption
+            className={cn("text-muted-foreground mt-4 text-sm", className)}
+            data-slot="table-caption"
+            {...props}
+        />
+    );
+};
+
+const TableCell = ({ className, ...props }: ComponentPropsWithoutRef<"td">) => {
+    return (
+        <td
+            className={cn(
+                "p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+                className
+            )}
+            data-slot="table-cell"
+            {...props}
+        />
+    );
+};
+
+const TableFooter = ({
+    className,
+    ...props
+}: ComponentPropsWithoutRef<"tfoot">) => {
+    return (
+        <tfoot
+            className={cn(
+                "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
+                className
+            )}
+            data-slot="table-footer"
+            {...props}
+        />
+    );
+};
+
+const TableHead = ({ className, ...props }: ComponentPropsWithoutRef<"th">) => {
+    return (
+        <th
+            className={cn(
+                "text-muted-foreground h-10 px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+                className
+            )}
+            data-slot="table-head"
+            {...props}
+        />
+    );
+};
+
+const TableHeader = ({
+    className,
+    ...props
+}: ComponentPropsWithoutRef<"thead">) => {
+    return (
+        <thead
+            className={cn("[&_tr]:border-b", className)}
+            data-slot="table-header"
+            {...props}
+        />
+    );
+};
+
+const TableRow = ({ className, ...props }: ComponentPropsWithoutRef<"tr">) => {
+    return (
+        <tr
+            className={cn(
+                "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+                className
+            )}
+            data-slot="table-row"
+            {...props}
+        />
+    );
+};
 
 export {
     Table,

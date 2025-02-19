@@ -2,24 +2,22 @@
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as LabelPrimitive from "@radix-ui/react-label";
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import React, { ComponentPropsWithoutRef } from "react";
 
-const labelVariants = cva(
-    "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-);
-
-const Label = React.forwardRef<
-    React.ComponentRef<typeof LabelPrimitive.Root>,
-    React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
-        VariantProps<typeof labelVariants>
->(({ className, ...props }, ref) => (
-    <LabelPrimitive.Root
-        className={cn(labelVariants(), className)}
-        ref={ref}
-        {...props}
-    />
-));
-Label.displayName = LabelPrimitive.Root.displayName;
+const Label = ({
+    className,
+    ...props
+}: ComponentPropsWithoutRef<typeof LabelPrimitive.Root>) => {
+    return (
+        <LabelPrimitive.Root
+            className={cn(
+                "text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+                className
+            )}
+            data-slot="label"
+            {...props}
+        />
+    );
+};
 
 export { Label };

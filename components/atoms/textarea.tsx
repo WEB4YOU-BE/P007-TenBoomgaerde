@@ -1,25 +1,20 @@
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import React, {
-    type DetailedHTMLProps,
-    type TextareaHTMLAttributes,
-} from "react";
+import React, { type ComponentPropsWithoutRef, type FC } from "react";
 
-export type TextareaProps = DetailedHTMLProps<
-    TextareaHTMLAttributes<HTMLTextAreaElement>,
-    HTMLTextAreaElement
->;
-const Textarea = ({ className, ...props }: TextareaProps) => {
+const Textarea: FC<ComponentPropsWithoutRef<"textarea">> = ({
+    className,
+    ...props
+}) => {
     return (
         <textarea
             className={cn(
-                "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                "border-input placeholder:text-muted-foreground ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 aria-invalid:outline-destructive/60 dark:aria-invalid:outline-destructive dark:aria-invalid:ring-destructive/40 aria-invalid:ring-destructive/20 aria-invalid:border-destructive/60 dark:aria-invalid:border-destructive flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:focus-visible:ring-[3px] aria-invalid:focus-visible:outline-none md:text-sm dark:aria-invalid:focus-visible:ring-4",
                 className
             )}
+            data-slot="textarea"
             {...props}
         />
     );
 };
-
-Textarea.displayName = "Textarea";
 
 export { Textarea };
