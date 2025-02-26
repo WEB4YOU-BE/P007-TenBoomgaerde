@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atoms/button";
+import Button from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import useEmblaCarousel, {

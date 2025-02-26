@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atoms/button";
+import Button from "@/components/atoms/button";
 import { Input } from "@/components/atoms/input";
 import { Separator } from "@/components/atoms/separator";
 import {

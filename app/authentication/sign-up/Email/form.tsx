@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/atoms/button";
+import Button from "@/components/atoms/button";
 import {
     Form,
     FormControl,
@@ -10,6 +10,7 @@ import {
     FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation } from "@tanstack/react-query";

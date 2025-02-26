@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/atoms/button";
+import Button from "@/components/atoms/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -17,6 +17,7 @@ import {
 } from "@/components/atoms/table";
 import { Tables } from "@/types/supabase/database";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { ArrowsDownUp, Info, Plus } from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,

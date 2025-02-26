@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert } from "@/components/atoms/alert";
-import { Button, buttonVariants } from "@/components/atoms/button";
+import Button from "@/components/atoms/button";
 import { Calendar } from "@/components/atoms/calendar";
 import { Checkbox } from "@/components/atoms/checkbox";
 import {
@@ -37,6 +37,7 @@ import {
 } from "@/components/atoms/select";
 import { Textarea } from "@/components/atoms/textarea";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarBlank, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery } from "@tanstack/react-query";

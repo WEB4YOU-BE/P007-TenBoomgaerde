@@ -1,4 +1,3 @@
-import { buttonVariants } from "@/components/atoms/button";
 import {
     Card,
     CardContent,
@@ -8,6 +7,7 @@ import {
     CardTitle,
 } from "@/components/atoms/card";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";

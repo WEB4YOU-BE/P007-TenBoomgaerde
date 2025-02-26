@@ -1,5 +1,5 @@
-import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import Image from "next/image";
 import Link from "next/link";
 import { forwardRef, HTMLAttributes } from "react";

@@ -1,5 +1,5 @@
-import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { Action } from "@radix-ui/react-alert-dialog";
 import React, { type ComponentPropsWithoutRef } from "react";
 

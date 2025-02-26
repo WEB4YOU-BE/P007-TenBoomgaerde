@@ -2,7 +2,7 @@
 
 import type { Tables } from "@/types/supabase/database";
 
-import { Button } from "@/components/atoms/button";
+import Button from "@/components/atoms/button";
 import { Checkbox } from "@/components/atoms/checkbox";
 import {
     Form,

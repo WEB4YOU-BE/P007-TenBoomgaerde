@@ -1,16 +1,17 @@
 "use client";
 
-import { toggleVariants } from "@/components/atoms/toggle";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import toggleVariants, {
+    ToggleVariantProps,
+} from "@/utils/tailwindcss/variants/toggleVariants";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
-import { type VariantProps } from "class-variance-authority";
 import React, {
     ComponentPropsWithoutRef,
     createContext,
     useContext,
 } from "react";
 
-const ToggleGroupContext = createContext<VariantProps<typeof toggleVariants>>({
+const ToggleGroupContext = createContext<ToggleVariantProps>({
     size: "default",
     variant: "default",
 });
@@ -22,7 +23,7 @@ const ToggleGroup = ({
     variant,
     ...props
 }: ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root> &
-    VariantProps<typeof toggleVariants>) => {
+    ToggleVariantProps) => {
     return (
         <ToggleGroupPrimitive.Root
             className={cn(
@@ -48,7 +49,7 @@ const ToggleGroupItem = ({
     variant,
     ...props
 }: ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> &
-    VariantProps<typeof toggleVariants>) => {
+    ToggleVariantProps) => {
     const context = useContext(ToggleGroupContext);
 
     return (

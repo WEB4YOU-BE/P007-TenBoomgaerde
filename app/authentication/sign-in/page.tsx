@@ -1,5 +1,5 @@
-import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import { Building, Envelope, Phone } from "@phosphor-icons/react/dist/ssr";
 import { Metadata } from "next";

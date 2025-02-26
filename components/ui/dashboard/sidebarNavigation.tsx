@@ -1,10 +1,10 @@
-import { buttonVariants } from "@/components/atoms/button";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from "@/components/atoms/tooltip";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { Icon } from "@phosphor-icons/react/dist/lib/types";
 import Link from "next/link";
 import React from "react";

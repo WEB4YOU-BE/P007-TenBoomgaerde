@@ -1,8 +1,8 @@
 /* eslint-disable perfectionist/sort-objects */
 "use client";
 
-import { buttonVariants } from "@/components/atoms/button";
 import { Tables } from "@/types/supabase/database";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import * as XLSX from "@e965/xlsx";
 import Link from "next/link";
 import React, { FC } from "react";
