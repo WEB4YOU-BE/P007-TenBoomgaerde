@@ -10,7 +10,7 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/atoms/sheet";
-import { Skeleton } from "@/components/atoms/skeleton";
+import Skeleton from "@/components/atoms/skeleton";
 import {
     Tooltip,
     TooltipContent,

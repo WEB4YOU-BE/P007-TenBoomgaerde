@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/atoms/skeleton";
+import Skeleton from "@/components/atoms/skeleton";
 import React from "react";
 
 export default async function Loading() {
