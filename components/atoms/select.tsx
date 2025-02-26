@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { CaretDown, CaretUp, Check } from "@phosphor-icons/react/dist/ssr";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import React, { type ComponentPropsWithoutRef } from "react";
 
 const Select = ({
@@ -68,7 +68,7 @@ const SelectItem = ({
         >
             <span className="absolute right-2 flex size-3.5 items-center justify-center">
                 <SelectPrimitive.ItemIndicator>
-                    <CheckIcon className="size-4" />
+                    <Check className="size-4" />
                 </SelectPrimitive.ItemIndicator>
             </span>
             <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -102,7 +102,7 @@ const SelectScrollDownButton = ({
             data-slot="select-scroll-down-button"
             {...props}
         >
-            <ChevronDownIcon className="size-4" />
+            <CaretDown className="size-4" />
         </SelectPrimitive.ScrollDownButton>
     );
 };
@@ -120,7 +120,7 @@ const SelectScrollUpButton = ({
             data-slot="select-scroll-up-button"
             {...props}
         >
-            <ChevronUpIcon className="size-4" />
+            <CaretUp className="size-4" />
         </SelectPrimitive.ScrollUpButton>
     );
 };
@@ -157,7 +157,7 @@ const SelectTrigger = ({
         >
             {children}
             <SelectPrimitive.Icon asChild>
-                <ChevronDownIcon className="size-4 opacity-50" />
+                <CaretDown className="size-4 opacity-50" />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );

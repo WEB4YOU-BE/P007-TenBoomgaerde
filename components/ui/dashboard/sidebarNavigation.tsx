@@ -5,14 +5,14 @@ import {
     TooltipTrigger,
 } from "@/components/atoms/tooltip";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import { type LucideIcon } from "lucide-react";
+import { Icon } from "@phosphor-icons/react/dist/lib/types";
 import Link from "next/link";
 import React from "react";
 import { forwardRef, type HTMLAttributes } from "react";
 
 interface NavigationProperties extends HTMLAttributes<HTMLDivElement> {
     links: {
-        icon: LucideIcon;
+        icon: Icon;
         label?: string;
         title: string;
         url: string;

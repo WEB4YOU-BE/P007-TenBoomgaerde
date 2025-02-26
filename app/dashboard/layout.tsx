@@ -4,18 +4,18 @@ import { Separator } from "@/components/atoms/separator";
 import Sidebar from "@/components/ui/dashboard/sidebar";
 import SidebarNavigation from "@/components/ui/dashboard/sidebarNavigation";
 import {
-    Box,
-    Building2,
+    Barcode,
+    BuildingOffice,
+    CalendarCheck,
+    ChartPie,
     Clock,
-    Home,
-    LayoutDashboard,
-    List,
-    PackageOpen,
-    PieChart,
+    Door,
+    House,
+    Layout as LayoutIcon,
     Tag,
     UserCircle,
     Users,
-} from "lucide-react";
+} from "@phosphor-icons/react/dist/ssr";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -42,7 +42,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: Home,
+                            icon: House,
                             label: "",
                             title: "Ten Boomgaerde",
                             url: "/",
@@ -53,7 +53,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: LayoutDashboard,
+                            icon: LayoutIcon,
                             label: "",
                             title: "Dashboard",
                             url: "/dashboard/",
@@ -64,13 +64,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: List,
+                            icon: CalendarCheck,
                             label: "",
                             title: "Reservaties",
                             url: "/dashboard/reservations/",
                         },
                         {
-                            icon: PieChart,
+                            icon: ChartPie,
                             label: "",
                             title: "Analyses",
                             url: "/dashboard/analysis/",
@@ -81,7 +81,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: Box,
+                            icon: Door,
                             label: "",
                             title: "Zalen",
                             url: "/dashboard/halls/",
@@ -104,7 +104,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                             url: "/dashboard/categories/",
                         },
                         {
-                            icon: PackageOpen,
+                            icon: Barcode,
                             label: "",
                             title: "Producten",
                             url: "/dashboard/products/",
@@ -115,7 +115,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: Building2,
+                            icon: BuildingOffice,
                             label: "",
                             title: "Organisaties",
                             url: "/dashboard/organisations/",

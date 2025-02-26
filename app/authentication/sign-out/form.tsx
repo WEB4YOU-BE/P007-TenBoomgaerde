@@ -3,8 +3,8 @@
 import { Button } from "@/components/atoms/button";
 import { Form } from "@/components/atoms/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useEffect } from "react";
@@ -55,7 +55,7 @@ const SignOutForm = () => {
                 >
                     <Button disabled={isPending} type="submit">
                         {isPending && (
-                            <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                            <SpinnerBall className="size-4 animate-spin" />
                         )}
                         {!isPending && "Log uit"}
                     </Button>

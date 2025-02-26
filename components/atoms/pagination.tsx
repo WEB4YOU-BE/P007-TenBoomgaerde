@@ -1,10 +1,10 @@
 import { Button, buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    MoreHorizontalIcon,
-} from "lucide-react";
+    CaretLeft,
+    CaretRight,
+    DotsThree,
+} from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 
 type PaginationLinkProps = ComponentPropsWithoutRef<"a"> &
@@ -46,7 +46,7 @@ const PaginationEllipsis = ({
         data-slot="pagination-ellipsis"
         {...props}
     >
-        <MoreHorizontalIcon className="size-4" />
+        <DotsThree className="size-4" />
         <span className="sr-only">More pages</span>
     </span>
 );
@@ -87,7 +87,7 @@ const PaginationNext = ({
         {...props}
     >
         <span className="hidden sm:block">Next</span>
-        <ChevronRightIcon />
+        <CaretRight />
     </PaginationLink>
 );
 
@@ -101,7 +101,7 @@ const PaginationPrevious = ({
         size="default"
         {...props}
     >
-        <ChevronLeftIcon />
+        <CaretLeft />
         <span className="hidden sm:block">Previous</span>
     </PaginationLink>
 );

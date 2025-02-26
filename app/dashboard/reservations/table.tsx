@@ -10,6 +10,7 @@ import {
     TableRow,
 } from "@/components/atoms/table";
 import { Tables } from "@/types/supabase/database";
+import { ArrowsDownUp, Info } from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
     flexRender,
@@ -18,7 +19,6 @@ import {
     type SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, InfoIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import React from "react";
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     RES-Nr
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -66,7 +66,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     Data
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -95,7 +95,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     Uren
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -121,7 +121,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     Zaal
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -141,7 +141,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     Status
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -167,7 +167,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     Reserveerder
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -193,7 +193,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     Via organisatie
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -213,7 +213,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     variant="ghost"
                 >
                     Gefactureerd
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -223,7 +223,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         accessorKey: "id",
         cell: ({ row }) => (
             <Link href={`/dashboard/reservations/${row.original.id}`}>
-                <InfoIcon className="h-6 w-6" />
+                <Info className="size-6" />
             </Link>
         ),
         header: () => {

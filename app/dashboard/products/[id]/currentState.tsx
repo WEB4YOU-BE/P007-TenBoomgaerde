@@ -3,8 +3,8 @@
 import type { Tables } from "@/types/supabase/database";
 
 import { Checkbox } from "@/components/atoms/checkbox";
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import React from "react";
 
 import CategoryCell from "../_tableCells/category";
@@ -30,13 +30,13 @@ const CurrentState = ({ id, initialData }: Props) => {
 
     return (
         <>
-            {isPending && <LoaderPinwheel className="h-4 w-4 animate-spin" />}
+            {isPending && <SpinnerBall className="size-4 animate-spin" />}
             {!isPending && !product && <span>Hall not found</span>}
             <div className="flex flex-col gap-2">
                 <span className="text-sm font-semibold">Naam</span>
                 <span className="text-sm">
                     {isRefetching ? (
-                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        <SpinnerBall className="size-4 animate-spin" />
                     ) : (
                         product?.name
                     )}
@@ -48,7 +48,7 @@ const CurrentState = ({ id, initialData }: Props) => {
                 </span>
                 <span className="text-sm">
                     {isRefetching ? (
-                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        <SpinnerBall className="size-4 animate-spin" />
                     ) : (
                         product?.price
                     )}
@@ -58,7 +58,7 @@ const CurrentState = ({ id, initialData }: Props) => {
                 <span className="text-sm font-semibold">Categorie</span>
                 <span className="text-sm">
                     {isRefetching ? (
-                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        <SpinnerBall className="size-4 animate-spin" />
                     ) : (
                         <CategoryCell id={product?.categorie_id || ""} />
                     )}
@@ -68,7 +68,7 @@ const CurrentState = ({ id, initialData }: Props) => {
                 <span className="text-sm font-semibold">
                     <span className="text-sm flex flex-row gap-2 shrink-0">
                         {isRefetching ? (
-                            <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                            <SpinnerBall className="size-4 animate-spin" />
                         ) : (
                             <Checkbox
                                 checked={product?.for_sale ?? false}

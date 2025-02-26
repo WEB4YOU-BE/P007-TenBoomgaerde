@@ -11,8 +11,8 @@ import {
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation } from "@tanstack/react-query";
-import { ArrowLeft, LoaderPinwheel } from "lucide-react";
 import Link from "next/link";
 import { redirect, RedirectType } from "next/navigation";
 import React from "react";
@@ -102,7 +102,7 @@ const SignInWithEmailCredentialsForm = () => {
                     />
                     <Button disabled={isPending} type="submit">
                         {isPending && (
-                            <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                            <SpinnerBall className="size-4 animate-spin" />
                         )}
                         {!isPending && "Log in"}
                     </Button>
@@ -112,7 +112,7 @@ const SignInWithEmailCredentialsForm = () => {
                 className={buttonVariants({ variant: "outline" })}
                 href="/authentication/sign-in/"
             >
-                <ArrowLeft className="mr-4 h-4 w-4" />
+                <ArrowLeft className="mr-4 size-4" />
                 Ga terug
             </Link>
         </>

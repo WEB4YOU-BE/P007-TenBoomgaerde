@@ -17,6 +17,7 @@ import {
 } from "@/components/atoms/table";
 import { Tables } from "@/types/supabase/database";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { ArrowsDownUp, Info, Plus } from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
     flexRender,
@@ -25,7 +26,6 @@ import {
     type SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, InfoIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import React from "react";
@@ -45,7 +45,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Naam
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -65,7 +65,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Is privé
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -85,7 +85,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Normale prijs
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -105,7 +105,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Prijs voor meerdere blokken
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowsDownUp className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -115,7 +115,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
         accessorKey: "id",
         cell: ({ row }) => (
             <Link href={`/dashboard/halls/${row.original.id}`}>
-                <InfoIcon className="h-6 w-6" />
+                <Info className="size-6" />
             </Link>
         ),
         header: () => {
@@ -133,7 +133,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                                 )}
                                 href="/dashboard/halls/new"
                             >
-                                <PlusIcon />
+                                <Plus />
                                 <span>Toevoegen</span>
                             </Link>
                         </DropdownMenuLabel>

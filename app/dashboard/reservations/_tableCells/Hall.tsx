@@ -1,7 +1,7 @@
 "use client";
 
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import React from "react";
 
 import { getHallById } from "./actions";
@@ -21,7 +21,7 @@ const HallCell = ({ id }: HallCellProps) => {
     return !isPending ? (
         `${data?.[0].name || "geen naam"}`
     ) : (
-        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+        <SpinnerBall className="size-4 animate-spin" />
     );
 };
 

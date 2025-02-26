@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import { GripVerticalIcon } from "lucide-react";
+import { DotsSixVertical } from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 import * as ResizablePrimitive from "react-resizable-panels";
 
@@ -23,7 +23,7 @@ const ResizableHandle = ({
         >
             {withHandle && (
                 <div className="bg-border z-10 flex h-4 w-3 items-center justify-center rounded-xs border">
-                    <GripVerticalIcon className="size-2.5" />
+                    <DotsSixVertical className="size-2.5" />
                 </div>
             )}
         </ResizablePrimitive.PanelResizeHandle>

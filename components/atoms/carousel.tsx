@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import useEmblaCarousel, {
     type UseEmblaCarouselType,
 } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, {
     ComponentPropsWithoutRef,
     createContext,

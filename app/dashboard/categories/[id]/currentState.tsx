@@ -2,8 +2,8 @@
 
 import type { Tables } from "@/types/supabase/database";
 
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import React from "react";
 
 import { getCategoryById } from "./actions";
@@ -28,13 +28,13 @@ const CurrentState = ({ id, initialData }: Props) => {
 
     return (
         <>
-            {isPending && <LoaderPinwheel className="h-4 w-4 animate-spin" />}
+            {isPending && <SpinnerBall className="size-4 animate-spin" />}
             {!isPending && !category && <span>Hall not found</span>}
             <div className="flex flex-col gap-2">
                 <span className="text-sm font-semibold">Naam</span>
                 <span className="text-sm">
                     {isRefetching ? (
-                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        <SpinnerBall className="size-4 animate-spin" />
                     ) : (
                         category?.name
                     )}

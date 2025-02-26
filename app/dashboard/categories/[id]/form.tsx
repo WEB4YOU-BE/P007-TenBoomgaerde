@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/atoms/input";
 import { Tables } from "@/types/supabase/database";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -102,7 +102,7 @@ const UpdateCategoryForm = ({ id, initialData }: Props) => {
                         >
                             {isPendingCategory ||
                                 (isPendingUpdate && (
-                                    <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                                    <SpinnerBall className="size-4 animate-spin" />
                                 ))}
                             {!isPendingCategory &&
                                 !isPendingUpdate &&

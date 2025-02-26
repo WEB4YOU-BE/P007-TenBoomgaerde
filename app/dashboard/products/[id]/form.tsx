@@ -22,8 +22,8 @@ import {
     SelectValue,
 } from "@/components/atoms/select";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -211,7 +211,7 @@ const UpdateProductForm = ({ id, initialData }: Props) => {
                         >
                             {isPendingProduct ||
                                 (isPendingUpdate && (
-                                    <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                                    <SpinnerBall className="size-4 animate-spin" />
                                 ))}
                             {!isPendingProduct &&
                                 !isPendingUpdate &&

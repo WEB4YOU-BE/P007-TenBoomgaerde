@@ -19,9 +19,9 @@ import {
 } from "@/components/atoms/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { Sidebar as SidebarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
-import { PanelLeftIcon } from "lucide-react";
 import React, {
     ComponentPropsWithoutRef,
     ComponentPropsWithRef,
@@ -523,7 +523,7 @@ function SidebarTrigger({
             variant="ghost"
             {...props}
         >
-            <PanelLeftIcon />
+            <SidebarIcon />
             <span className="sr-only">Toggle Sidebar</span>
         </Button>
     );

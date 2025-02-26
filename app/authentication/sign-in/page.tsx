@@ -1,7 +1,7 @@
 import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
-import { Building, Mail, Phone } from "lucide-react";
+import { Building, Envelope, Phone } from "@phosphor-icons/react/dist/ssr";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
@@ -21,7 +21,7 @@ export default async function Page() {
                     className={cn(buttonVariants(), "justify-start")}
                     href={"/authentication/sign-in/Email/"}
                 >
-                    <Mail className="mr-4 h-4 w-4" />
+                    <Envelope className="mr-4 size-4" />
                     Email
                 </Link>
             )}
@@ -33,7 +33,7 @@ export default async function Page() {
                     )}
                     href={"/authentication/sign-in/Phone/"}
                 >
-                    <Phone className="mr-4 h-4 w-4" />
+                    <Phone className="mr-4 size-4" />
                     Telefoon
                 </Link>
             )}
@@ -45,7 +45,7 @@ export default async function Page() {
                     )}
                     href={"/authentication/sign-in/OAuth/"}
                 >
-                    <SiGoogle className="mr-4 h-4 w-4" />
+                    <SiGoogle className="mr-4 size-4" />
                     Ander account
                 </Link>
             )}
@@ -57,7 +57,7 @@ export default async function Page() {
                     )}
                     href={"/authentication/sign-in/SAML/"}
                 >
-                    <Building className="mr-4 h-4 w-4" />
+                    <Building className="mr-4 size-4" />
                     SAML
                 </Link>
             )}

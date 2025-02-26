@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { Minus } from "@phosphor-icons/react/dist/ssr";
 import { OTPInput, OTPInputContext } from "input-otp";
-import { MinusIcon } from "lucide-react";
 import React, { ComponentPropsWithoutRef, useContext } from "react";
 
 const InputOTP = ({
@@ -41,7 +41,7 @@ const InputOTPGroup = ({
 const InputOTPSeparator = ({ ...props }: ComponentPropsWithoutRef<"div">) => {
     return (
         <div data-slot="input-otp-separator" role="separator" {...props}>
-            <MinusIcon />
+            <Minus />
         </div>
     );
 };

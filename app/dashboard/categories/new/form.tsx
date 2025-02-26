@@ -11,8 +11,8 @@ import {
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -81,7 +81,7 @@ const CreateCategoryForm = () => {
                             variant={isError ? "destructive" : "default"}
                         >
                             {isPending && (
-                                <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                                <SpinnerBall className="size-4 animate-spin" />
                             )}
                             {!isPending && "Toevoegen"}
                         </Button>

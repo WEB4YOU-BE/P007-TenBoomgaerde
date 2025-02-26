@@ -1,7 +1,7 @@
 "use client";
 
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import React from "react";
 
 import { getTimeslotById } from "./actions";
@@ -30,7 +30,7 @@ const TimeslotsCell = ({ endHourID, startHourID }: TimeslotsCellProps) => {
     return !(isPendingStartHour || isPendingEndHour) ? (
         `${start_hour?.[0].start_hour}${start_hour?.[0].start_hour === end_hour?.[0].end_hour ? "" : " tot " + end_hour?.[0].end_hour}`
     ) : (
-        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+        <SpinnerBall className="size-4 animate-spin" />
     );
 };
 

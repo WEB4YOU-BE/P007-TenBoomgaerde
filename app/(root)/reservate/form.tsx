@@ -38,10 +38,10 @@ import {
 import { Textarea } from "@/components/atoms/textarea";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarBlank, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { compareAsc, eachDayOfInterval, format } from "date-fns";
 import { nlBE } from "date-fns/locale";
-import { CalendarIcon, LoaderPinwheel } from "lucide-react";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -272,7 +272,7 @@ const AddReservationForm = () => {
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     {isPendingHalls && (
-                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        <SpinnerBall className="size-4 animate-spin" />
                     )}
                     {!isPendingHalls && (
                         <FormField
@@ -354,7 +354,7 @@ const AddReservationForm = () => {
                                                         Selecteer de startdatum
                                                     </span>
                                                 )}
-                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                <CalendarBlank className="ml-auto size-4 opacity-50" />
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -379,7 +379,7 @@ const AddReservationForm = () => {
                         )}
                     />
                     {isPendingTimeframes && (
-                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        <SpinnerBall className="size-4 animate-spin" />
                     )}
                     {!isPendingTimeframes && (
                         <FormField
@@ -464,7 +464,7 @@ const AddReservationForm = () => {
                                                         Selecteer de einddatum
                                                     </span>
                                                 )}
-                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                <CalendarBlank className="ml-auto size-4 opacity-50" />
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -488,7 +488,7 @@ const AddReservationForm = () => {
                         )}
                     />
                     {isPendingTimeframes && (
-                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                        <SpinnerBall className="size-4 animate-spin" />
                     )}
                     {!isPendingTimeframes && (
                         <FormField
@@ -674,7 +674,7 @@ const AddReservationForm = () => {
                                     }
                                 >
                                     {isPending && (
-                                        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                                        <SpinnerBall className="size-4 animate-spin" />
                                     )}
                                     {!isPending && "Vraag aan"}
                                 </Button>

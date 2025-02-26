@@ -3,11 +3,11 @@
 import { buttonVariants } from "@/components/atoms/button";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import {
-    ChevronDownIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    ChevronUpIcon,
-} from "lucide-react";
+    CaretDown,
+    CaretLeft,
+    CaretRight,
+    CaretUp,
+} from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 import { ChevronProps, DayPicker } from "react-day-picker";
 
@@ -71,13 +71,13 @@ const Calendar = ({
 const Chevron = ({ orientation = "left" }: ChevronProps) => {
     switch (orientation) {
         case "down":
-            return <ChevronDownIcon className="h-4 w-4" />;
+            return <CaretDown className="size-4" />;
         case "left":
-            return <ChevronLeftIcon className="h-4 w-4" />;
+            return <CaretLeft className="size-4" />;
         case "right":
-            return <ChevronRightIcon className="h-4 w-4" />;
+            return <CaretRight className="size-4" />;
         case "up":
-            return <ChevronUpIcon className="h-4 w-4" />;
+            return <CaretUp className="size-4" />;
         default:
             return null;
     }

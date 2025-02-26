@@ -1,6 +1,6 @@
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { Header, Trigger } from "@radix-ui/react-accordion";
-import { ChevronDownIcon } from "lucide-react";
 import React, { type ComponentPropsWithoutRef } from "react";
 
 const AccordionTrigger = ({
@@ -18,7 +18,7 @@ const AccordionTrigger = ({
             {...props}
         >
             {children}
-            <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+            <CaretDown className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
         </Trigger>
     </Header>
 );

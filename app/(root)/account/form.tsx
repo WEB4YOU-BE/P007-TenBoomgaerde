@@ -12,9 +12,9 @@ import { Input } from "@/components/atoms/input";
 import { Tables } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { type User } from "@supabase/supabase-js";
 import { useMutation } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -211,7 +211,7 @@ const UpdateProfileForm = () => {
                         }
                     >
                         {isPending && (
-                            <LoaderPinwheel className="h-4 w-4 animate-spin" />
+                            <SpinnerBall className="size-4 animate-spin" />
                         )}
                         {!isPending && "Bijwerken"}
                     </Button>

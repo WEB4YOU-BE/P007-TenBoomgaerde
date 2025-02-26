@@ -1,7 +1,7 @@
 "use client";
 
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
-import { LoaderPinwheel } from "lucide-react";
 import React from "react";
 
 import { getRenterById } from "./actions";
@@ -21,7 +21,7 @@ const RenterCell = ({ id }: RenterCellProps) => {
     return !isPending ? (
         `${data?.[0]?.firstname || "(geen voornaam)"} ${data?.[0]?.lastname || "(geen achternaam)"}`
     ) : (
-        <LoaderPinwheel className="h-4 w-4 animate-spin" />
+        <SpinnerBall className="size-4 animate-spin" />
     );
 };
 

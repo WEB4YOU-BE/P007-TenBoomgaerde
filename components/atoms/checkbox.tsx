@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { Check } from "@phosphor-icons/react/dist/ssr";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { CheckIcon } from "lucide-react";
 import React, { type ComponentPropsWithoutRef } from "react";
 
 const Checkbox = ({
@@ -22,7 +22,7 @@ const Checkbox = ({
                 className="flex items-center justify-center text-current"
                 data-slot="checkbox-indicator"
             >
-                <CheckIcon className="size-3.5" />
+                <Check className="size-3.5" />
             </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
     );

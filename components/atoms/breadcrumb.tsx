@@ -1,6 +1,6 @@
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { CaretRight, DotsThree } from "@phosphor-icons/react/dist/ssr";
 import { Slot } from "@radix-ui/react-slot";
-import { ChevronRight, MoreHorizontal } from "lucide-react";
 import React, { type ComponentPropsWithoutRef } from "react";
 
 const Breadcrumb = ({ ...props }: ComponentPropsWithoutRef<"nav">) => {
@@ -19,7 +19,7 @@ const BreadcrumbEllipsis = ({
             role="presentation"
             {...props}
         >
-            <MoreHorizontal className="size-4" />
+            <DotsThree className="size-4" />
             <span className="sr-only">More</span>
         </span>
     );
@@ -99,7 +99,7 @@ const BreadcrumbSeparator = ({
             role="presentation"
             {...props}
         >
-            {children ?? <ChevronRight />}
+            {children ?? <CaretRight />}
         </li>
     );
 };
