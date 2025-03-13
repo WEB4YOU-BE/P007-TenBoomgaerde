@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/atoms/alert";
+import Alert, { AlertDescription, AlertTitle } from "@/components/atoms/Alert";
 import { Metadata } from "next";
 import React from "react";
 

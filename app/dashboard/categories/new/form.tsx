@@ -1,8 +1,7 @@
 "use client";
 
 import Button from "@/components/atoms/button";
-import {
-    Form,
+import Form, {
     FormControl,
     FormField,
     FormItem,

@@ -1,4 +1,4 @@
-import { Alert } from "@/components/atoms/alert";
+import Alert from "@/components/atoms/Alert";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { forwardRef, HTMLAttributes } from "react";
 import React from "react";

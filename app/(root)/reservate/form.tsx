@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert } from "@/components/atoms/alert";
+import Alert from "@/components/atoms/Alert";
 import Button from "@/components/atoms/button";
 import { Calendar } from "@/components/atoms/calendar";
 import { Checkbox } from "@/components/atoms/checkbox";
@@ -13,8 +13,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/atoms/dialog";
-import {
-    Form,
+import Form, {
     FormControl,
     FormDescription,
     FormField,

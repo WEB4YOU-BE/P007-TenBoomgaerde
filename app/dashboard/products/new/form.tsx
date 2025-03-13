@@ -2,8 +2,7 @@
 
 import Button from "@/components/atoms/button";
 import { Checkbox } from "@/components/atoms/checkbox";
-import {
-    Form,
+import Form, {
     FormControl,
     FormDescription,
     FormField,
