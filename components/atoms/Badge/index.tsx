@@ -17,10 +17,10 @@ const Badge: FC<BadgeProps> = ({
     variant,
     ...props
 }) => {
-    const Comp = asChild ? Slot : "span";
+    const Component = asChild ? Slot : "span";
 
     return (
-        <Comp
+        <Component
             className={cn(badgeVariants({ variant }), className)}
             data-slot="badge"
             {...props}
