@@ -1,15 +1,13 @@
-"use client";
-
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import * as LabelPrimitive from "@radix-ui/react-label";
-import React, { ComponentPropsWithoutRef } from "react";
+import { Root } from "@radix-ui/react-label";
+import React, { type ComponentPropsWithoutRef } from "react";
 
 const Label = ({
     className,
     ...props
-}: ComponentPropsWithoutRef<typeof LabelPrimitive.Root>) => {
+}: ComponentPropsWithoutRef<typeof Root>) => {
     return (
-        <LabelPrimitive.Root
+        <Root
             className={cn(
                 "text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
                 className
@@ -20,4 +18,4 @@ const Label = ({
     );
 };
 
-export { Label };
+export default Label;

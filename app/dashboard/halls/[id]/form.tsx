@@ -12,7 +12,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/atoms/form";
+} from "@/components/atoms/Form";
 import { Input } from "@/components/atoms/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";

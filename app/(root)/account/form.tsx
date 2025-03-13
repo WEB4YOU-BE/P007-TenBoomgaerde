@@ -7,7 +7,7 @@ import {
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/atoms/form";
+} from "@/components/atoms/Form";
 import { Input } from "@/components/atoms/input";
 import { Tables } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/client";

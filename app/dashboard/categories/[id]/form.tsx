@@ -8,7 +8,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/atoms/form";
+} from "@/components/atoms/Form";
 import { Input } from "@/components/atoms/input";
 import { Tables } from "@/types/supabase/database";
 import { zodResolver } from "@hookform/resolvers/zod";

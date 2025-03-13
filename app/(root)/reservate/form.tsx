@@ -21,7 +21,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/atoms/form";
+} from "@/components/atoms/Form";
 import {
     Popover,
     PopoverContent,

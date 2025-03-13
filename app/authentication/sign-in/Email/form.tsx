@@ -8,7 +8,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/atoms/form";
+} from "@/components/atoms/Form";
 import { Input } from "@/components/atoms/input";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import { zodResolver } from "@hookform/resolvers/zod";
