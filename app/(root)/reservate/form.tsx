@@ -2,7 +2,7 @@
 
 import Alert from "@/components/atoms/Alert";
 import Button from "@/components/atoms/button";
-import { Calendar } from "@/components/atoms/calendar";
+import Calendar from "@/components/atoms/Calendar";
 import { Checkbox } from "@/components/atoms/checkbox";
 import {
     Dialog,
