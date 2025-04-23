@@ -3,10 +3,8 @@ import VercelToolbar from "@vercel/toolbar/plugins/next";
 
 /** @type {import("next").NextConfig} */
 const config = {
-    experimental: {
-        turbo: {},
-    },
     trailingSlash: true,
+    turbopack: {},
 };
 
 const withVercelToolbar = VercelToolbar();

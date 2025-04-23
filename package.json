@@ -35,7 +35,7 @@
     },
     "scripts": {
         "predev": "npm run -s supabase:start",
-        "dev": "next dev --turbo",
+        "dev": "next dev",
         "postdev": "npm run -s supabase:stop",
         "build": "next build",
         "analyze": "ANALYZE=true next build",
