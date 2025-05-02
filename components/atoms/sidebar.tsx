@@ -17,7 +17,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/atoms/tooltip";
-import { useIsMobile } from "@/hooks/use-mobile";
+import useIsMobile from "@/hooks/use-mobile";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { Sidebar as SidebarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Slot } from "@radix-ui/react-slot";
