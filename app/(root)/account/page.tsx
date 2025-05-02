@@ -1,18 +1,20 @@
+import type { NextPage } from "next";
+
+import UpdateProfileForm from "@/app/(root)/account/form";
 import React from "react";
 
-import UpdateProfileForm from "./form";
+const dynamic = "force-dynamic";
 
-export const dynamic = "force-dynamic";
+const Page: NextPage = async () => (
+    <main className={"container max-w-(--breakpoint-xl) mx-auto p-2 px-4"}>
+        <h1 className={"text-4xl font-bold text-center mb-8"}>
+            Gebruikersinformatie
+        </h1>
+        <div className={"w-full flex"}>
+            <UpdateProfileForm />
+        </div>
+    </main>
+);
 
-export default async function page() {
-    return (
-        <main className={"container max-w-(--breakpoint-xl) mx-auto p-2 px-4"}>
-            <h1 className={"text-4xl font-bold text-center mb-8"}>
-                Gebruikersinformatie
-            </h1>
-            <div className={"w-full flex"}>
-                <UpdateProfileForm />
-            </div>
-        </main>
-    );
-}
+export default Page;
+export { dynamic };

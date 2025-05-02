@@ -1,17 +1,13 @@
 import { Header } from "@/components/ui/root";
 import { Footer } from "@/components/ui/root";
-import React from "react";
+import React, { type PropsWithChildren } from "react";
 
-export default async function PublicNavigationLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    return (
-        <>
-            <Header />
-            {children}
-            <Footer />
-        </>
-    );
-}
+const Layout = async ({ children }: PropsWithChildren) => (
+    <>
+        <Header />
+        {children}
+        <Footer />
+    </>
+);
+
+export default Layout;
