@@ -1,11 +1,10 @@
-import {
-    Card,
+import Card, {
     CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/atoms/card";
+} from "@/components/atoms/Card";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import Link from "next/link";

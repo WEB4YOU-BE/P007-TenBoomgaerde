@@ -1,10 +1,9 @@
-import {
-    Card,
+import Card, {
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/atoms/card";
+} from "@/components/atoms/Card";
 import React from "react";
 import { ReactNode } from "react";
 
