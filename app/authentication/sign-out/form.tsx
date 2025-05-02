@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/atoms/button";
+import Button from "@/components/atoms/Button";
 import Form from "@/components/atoms/Form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";

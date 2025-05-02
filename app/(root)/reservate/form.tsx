@@ -1,7 +1,7 @@
 "use client";
 
 import Alert from "@/components/atoms/Alert";
-import Button from "@/components/atoms/button";
+import Button from "@/components/atoms/Button";
 import Calendar from "@/components/atoms/Calendar";
 import { Checkbox } from "@/components/atoms/checkbox";
 import {
