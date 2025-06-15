@@ -1,6 +1,12 @@
 "use client";
 
 import Button from "@/components/atoms/Button";
+import { Input } from "@/components/atoms/input";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/atoms/popover";
 import {
     Table,
     TableBody,
@@ -10,7 +16,7 @@ import {
     TableRow,
 } from "@/components/atoms/table";
 import { Tables } from "@/types/supabase/database";
-import { ArrowsDownUp, Info } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsDownUp, Funnel, Info } from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -41,15 +47,28 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         },
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    RES-Nr
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>RES-NR</div>
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button size="icon" variant="ghost">
+                                <Funnel className="" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <Input placeholder="Filter reservatienummers" />
+                        </PopoverContent>
+                    </Popover>
+                </div>
             );
         },
         id: "reservationNumber",
@@ -61,15 +80,22 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         },
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Data
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>Data</div>
+
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                    <Button size="icon" variant="ghost">
+                        <Funnel className="" />
+                    </Button>
+                </div>
             );
         },
         id: "dates",
@@ -90,15 +116,18 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
             ),
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Uren
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>Uren</div>
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                </div>
             );
         },
         id: "timeframes",
@@ -116,15 +145,18 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
             ),
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Zaal
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>Zaal</div>
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                </div>
             );
         },
         id: "hall",
@@ -136,15 +168,21 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         },
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Status
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>Status</div>
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                    <Button size="icon" variant="ghost">
+                        <Funnel className="" />
+                    </Button>
+                </div>
             );
         },
         id: "status",
@@ -162,15 +200,21 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
             ),
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Reserveerder
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>Reserveerder</div>
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                    <Button size="icon" variant="ghost">
+                        <Funnel className="" />
+                    </Button>
+                </div>
             );
         },
         id: "renter",
@@ -188,15 +232,21 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
             ),
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Via organisatie
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>Organisatie</div>
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                    <Button size="icon" variant="ghost">
+                        <Funnel className="" />
+                    </Button>
+                </div>
             );
         },
         id: "organization",
@@ -208,15 +258,21 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         },
         header: ({ column }) => {
             return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Gefactureerd
-                    <ArrowsDownUp className="ml-2 size-4" />
-                </Button>
+                <div className="flex flex-row gap-1 items-center">
+                    <div>Gefactureerd</div>
+                    <Button
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowsDownUp className="" />
+                    </Button>
+                    <Button size="icon" variant="ghost">
+                        <Funnel className="" />
+                    </Button>
+                </div>
             );
         },
         id: "billed",
