@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import React, { ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Popover = ({
     ...props

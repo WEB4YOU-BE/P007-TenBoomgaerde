@@ -1,6 +1,5 @@
 import type { ChevronProps } from "react-day-picker";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import {
     CaretDown,
     CaretLeft,
@@ -8,6 +7,8 @@ import {
     CaretUp,
 } from "@phosphor-icons/react/dist/ssr";
 import React, { memo, useMemo } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const CalendarChevron = memo(
     ({ className, disabled, orientation = "left", size }: ChevronProps) => {

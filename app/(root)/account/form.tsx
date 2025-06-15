@@ -1,5 +1,15 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { type User } from "@supabase/supabase-js";
+import { useMutation } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import isMobilePhone from "validator/es/lib/isMobilePhone";
+import { z } from "zod";
+
 import Button from "@/components/atoms/Button";
 import Form, {
     FormControl,
@@ -10,15 +20,6 @@ import Form, {
 import { Input } from "@/components/atoms/input";
 import { Tables } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
-import { type User } from "@supabase/supabase-js";
-import { useMutation } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import isMobilePhone from "validator/es/lib/isMobilePhone";
-import { z } from "zod";
 
 import { updateUser } from "./actions";
 

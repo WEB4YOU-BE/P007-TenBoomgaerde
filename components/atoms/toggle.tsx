@@ -1,11 +1,12 @@
 "use client";
 
+import * as TogglePrimitive from "@radix-ui/react-toggle";
+import React, { type ComponentPropsWithoutRef, type FC } from "react";
+
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import toggleVariants, {
     type ToggleVariantProps,
 } from "@/utils/tailwindcss/variants/toggleVariants";
-import * as TogglePrimitive from "@radix-ui/react-toggle";
-import React, { type ComponentPropsWithoutRef, type FC } from "react";
 
 type ToggleProps = ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
     ToggleVariantProps;

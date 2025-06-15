@@ -1,11 +1,12 @@
 "use client";
 
-import Button from "@/components/atoms/Button";
-import { Tables } from "@/types/supabase/database";
 import { ArrowsDownUp, Info } from "@phosphor-icons/react/dist/ssr";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import React from "react";
+
+import Button from "@/components/atoms/Button";
+import { Tables } from "@/types/supabase/database";
 
 export const columns: ColumnDef<Tables<"users">>[] = [
     {

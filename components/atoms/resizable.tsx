@@ -1,9 +1,10 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { DotsSixVertical } from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 import * as ResizablePrimitive from "react-resizable-panels";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const ResizableHandle = ({
     className,

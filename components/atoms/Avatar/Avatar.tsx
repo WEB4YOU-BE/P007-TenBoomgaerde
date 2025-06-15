@@ -1,6 +1,7 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { Root } from "@radix-ui/react-avatar";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Avatar = ({
     className,

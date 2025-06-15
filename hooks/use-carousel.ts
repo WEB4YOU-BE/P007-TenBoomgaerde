@@ -1,5 +1,6 @@
-import CarouselContext from "@/components/atoms/Carousel/CarouselContext";
 import { useContext } from "react";
+
+import CarouselContext from "@/components/atoms/Carousel/CarouselContext";
 
 const useCarousel = () => {
     const context = useContext(CarouselContext);

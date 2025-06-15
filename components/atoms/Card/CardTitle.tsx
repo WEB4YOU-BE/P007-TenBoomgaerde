@@ -1,5 +1,6 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import React, { type ComponentPropsWithoutRef, type FC } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const CardTitle: FC<ComponentPropsWithoutRef<"div">> = ({
     className,

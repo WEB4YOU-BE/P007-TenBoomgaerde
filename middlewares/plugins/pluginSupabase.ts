@@ -1,5 +1,3 @@
-import type { Plugin } from "@/types/middleware/plugin";
-import type { Database } from "@/types/supabase/database";
 import type { NextMiddlewareResult } from "next/dist/server/web/types";
 
 import { createServerClient } from "@supabase/ssr";
@@ -8,6 +6,9 @@ import {
     type NextRequest,
     NextResponse,
 } from "next/server";
+
+import type { Plugin } from "@/types/middleware/plugin";
+import type { Database } from "@/types/supabase/database";
 
 const plugin: Plugin =
     (next) =>

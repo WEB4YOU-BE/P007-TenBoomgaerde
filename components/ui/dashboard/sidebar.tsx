@@ -1,9 +1,10 @@
 "use client";
 
-import { TooltipProvider } from "@/components/atoms/tooltip";
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import React from "react";
 import { forwardRef, type HTMLAttributes } from "react";
+
+import { TooltipProvider } from "@/components/atoms/tooltip";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Sidebar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     ({ children, className, ...props }, ref) => {

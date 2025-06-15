@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import React, { ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Tooltip = ({
     ...props

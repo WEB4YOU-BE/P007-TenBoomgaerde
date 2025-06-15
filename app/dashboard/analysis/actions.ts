@@ -1,7 +1,8 @@
 "use server";
 
-import createClient from "@/utils/supabase/server";
 import { endOfWeek, startOfWeek } from "date-fns";
+
+import createClient from "@/utils/supabase/server";
 
 const getDatesForThisWeek = () => {
     const today = new Date();

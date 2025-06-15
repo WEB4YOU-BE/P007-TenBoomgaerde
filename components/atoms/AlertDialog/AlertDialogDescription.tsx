@@ -1,6 +1,7 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { Description } from "@radix-ui/react-alert-dialog";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const AlertDialogDescription = ({
     className,

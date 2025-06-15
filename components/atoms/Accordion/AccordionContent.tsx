@@ -1,6 +1,7 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { Content } from "@radix-ui/react-accordion";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const AccordionContent = ({
     children,

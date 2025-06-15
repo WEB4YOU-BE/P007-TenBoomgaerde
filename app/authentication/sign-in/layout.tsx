@@ -1,3 +1,7 @@
+import Link from "next/link";
+import React from "react";
+import { ReactNode } from "react";
+
 import Card, {
     CardContent,
     CardDescription,
@@ -7,9 +11,6 @@ import Card, {
 } from "@/components/atoms/Card";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
-import Link from "next/link";
-import React from "react";
-import { ReactNode } from "react";
 
 export default async function Layout({ children }: { children: ReactNode }) {
     return (

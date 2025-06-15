@@ -1,8 +1,9 @@
+import React, { type ComponentPropsWithoutRef } from "react";
+
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import alertVariants, {
     type AlertVariantProps,
 } from "@/utils/tailwindcss/variants/alertVariants";
-import React, { type ComponentPropsWithoutRef } from "react";
 
 const Alert = ({
     className,

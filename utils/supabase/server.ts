@@ -1,9 +1,11 @@
 import "server-only";
-import type { Database } from "@/types/supabase/database";
+
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+
+import type { Database } from "@/types/supabase/database";
 
 const createClient: () => SupabaseClient<Database> = () =>
     createServerClient<Database>(

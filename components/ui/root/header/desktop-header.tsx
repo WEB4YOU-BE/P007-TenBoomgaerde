@@ -1,9 +1,10 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import Image from "next/image";
 import Link from "next/link";
 import { forwardRef, HTMLAttributes } from "react";
 import React from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 interface DesktopHeaderProps extends HTMLAttributes<HTMLDivElement> {
     authItems: NavigationItem[];

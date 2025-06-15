@@ -1,6 +1,7 @@
-import Alert, { AlertDescription, AlertTitle } from "@/components/atoms/Alert";
 import { Metadata } from "next";
 import React from "react";
+
+import Alert, { AlertDescription, AlertTitle } from "@/components/atoms/Alert";
 
 export const metadata: Metadata = {
     alternates: {

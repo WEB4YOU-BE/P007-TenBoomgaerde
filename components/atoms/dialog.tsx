@@ -1,9 +1,10 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { X } from "@phosphor-icons/react/dist/ssr";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import React, { ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Dialog = ({
     ...props

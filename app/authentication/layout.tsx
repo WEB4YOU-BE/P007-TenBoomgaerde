@@ -1,9 +1,10 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { ReactNode } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 /**
  * This layout is not available in when logged in.

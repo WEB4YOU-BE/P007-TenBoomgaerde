@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import React, {
     ComponentPropsWithRef,
     ComponentType,
@@ -13,6 +12,8 @@ import React, {
     useMemo,
 } from "react";
 import * as RechartsPrimitive from "recharts";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { dark: ".dark", light: "" } as const;

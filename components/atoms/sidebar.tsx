@@ -1,5 +1,21 @@
 "use client";
 
+import { Sidebar as SidebarIcon } from "@phosphor-icons/react/dist/ssr";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, VariantProps } from "class-variance-authority";
+import React, {
+    ComponentPropsWithoutRef,
+    ComponentPropsWithRef,
+    createContext,
+    CSSProperties,
+    forwardRef,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
+
 import Button from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/input";
 import { Separator } from "@/components/atoms/separator";
@@ -19,21 +35,6 @@ import {
 } from "@/components/atoms/tooltip";
 import useIsMobile from "@/hooks/use-mobile";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import { Sidebar as SidebarIcon } from "@phosphor-icons/react/dist/ssr";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, VariantProps } from "class-variance-authority";
-import React, {
-    ComponentPropsWithoutRef,
-    ComponentPropsWithRef,
-    createContext,
-    CSSProperties,
-    forwardRef,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

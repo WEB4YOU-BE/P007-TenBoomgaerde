@@ -1,6 +1,6 @@
-import type { CarouselProps } from "@/types/components/carousel/CarouselProps";
-
 import useEmblaCarousel from "embla-carousel-react";
+
+import type { CarouselProps } from "@/types/components/carousel/CarouselProps";
 
 interface CarouselContextProps extends CarouselProps {
     api: ReturnType<typeof useEmblaCarousel>[1];
