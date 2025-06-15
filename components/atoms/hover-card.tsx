@@ -1,9 +1,8 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import React, { ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const HoverCard = ({
     ...props

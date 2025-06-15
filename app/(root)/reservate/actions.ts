@@ -1,9 +1,8 @@
 "use server";
 
-import { formatISO } from "date-fns";
-
 import { TablesInsert } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/server";
+import { formatISO } from "date-fns";
 
 export const fetchAllHalls = async () => {
     const supabase = createClient();

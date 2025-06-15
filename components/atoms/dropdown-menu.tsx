@@ -1,10 +1,9 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { CaretRight, Check, Circle } from "@phosphor-icons/react/dist/ssr";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import React, { ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const DropdownMenu = ({
     ...props

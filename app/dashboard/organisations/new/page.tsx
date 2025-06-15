@@ -10,10 +10,10 @@ import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 
-import CreateProductForm from "./form";
+import CreateCategoryForm from "./form";
 
 export const metadata: Metadata = {
-    title: "Nieuw product",
+    title: "Nieuwe organisatie",
 };
 
 export const dynamic = "force-dynamic";
@@ -23,18 +23,18 @@ export default async function Page() {
         <div className="flex flex-row gap-2 h-full">
             <Card>
                 <CardHeader>
-                    <CardTitle>Product toevoegen</CardTitle>
+                    <CardTitle>Organisatie toevoegen</CardTitle>
                     <CardDescription>
-                        Vul de nieuwe gegevens van dit product in.
+                        Vul de nieuwe gegevens van deze organisatie in.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <CreateProductForm />
+                    <CreateCategoryForm />
                 </CardContent>
                 <CardFooter>
                     <Link
                         className={buttonVariants({ variant: "outline" })}
-                        href="/dashboard/products"
+                        href="/dashboard/organisations"
                     >
                         Terug
                     </Link>

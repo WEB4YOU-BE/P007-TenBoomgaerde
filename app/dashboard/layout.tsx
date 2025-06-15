@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
 
+import { Separator } from "@/components/atoms/separator";
+import Sidebar from "@/components/ui/dashboard/sidebar";
+import SidebarNavigation from "@/components/ui/dashboard/sidebarNavigation";
 import {
     Barcode,
     BuildingOffice,
@@ -17,10 +20,6 @@ import {
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
-
-import { Separator } from "@/components/atoms/separator";
-import Sidebar from "@/components/ui/dashboard/sidebar";
-import SidebarNavigation from "@/components/ui/dashboard/sidebarNavigation";
 
 import { fetchIsAdmin, fetchUser } from "./actions";
 

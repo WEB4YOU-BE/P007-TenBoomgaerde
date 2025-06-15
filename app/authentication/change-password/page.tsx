@@ -1,12 +1,11 @@
-import { Metadata } from "next";
-import React from "react";
-
 import Card, {
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/atoms/Card";
+import { Metadata } from "next";
+import React from "react";
 
 import ChangePasswordForm from "./form";
 

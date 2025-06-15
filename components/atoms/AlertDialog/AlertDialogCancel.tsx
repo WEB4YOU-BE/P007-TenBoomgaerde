@@ -1,8 +1,7 @@
-import { Cancel } from "@radix-ui/react-alert-dialog";
-import React, { type ComponentPropsWithoutRef } from "react";
-
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
+import { Cancel } from "@radix-ui/react-alert-dialog";
+import React, { type ComponentPropsWithoutRef } from "react";
 
 const AlertDialogCancel = ({
     className,

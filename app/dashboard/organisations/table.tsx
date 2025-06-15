@@ -1,18 +1,5 @@
 "use client";
 
-import { ArrowsDownUp, Info, Plus } from "@phosphor-icons/react/dist/ssr";
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getSortedRowModel,
-    type SortingState,
-    useReactTable,
-} from "@tanstack/react-table";
-import Link from "next/link";
-import { useState } from "react";
-import React from "react";
-
 import Button from "@/components/atoms/Button";
 import {
     DropdownMenu,
@@ -31,6 +18,18 @@ import {
 import { Tables } from "@/types/supabase/database";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
+import { ArrowsDownUp, Info, Plus } from "@phosphor-icons/react/dist/ssr";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    getSortedRowModel,
+    type SortingState,
+    useReactTable,
+} from "@tanstack/react-table";
+import Link from "next/link";
+import { useState } from "react";
+import React from "react";
 
 export const columns: ColumnDef<Tables<"organizations">>[] = [
     {

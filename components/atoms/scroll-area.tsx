@@ -1,9 +1,8 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import React, { ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const ScrollArea = ({
     children,

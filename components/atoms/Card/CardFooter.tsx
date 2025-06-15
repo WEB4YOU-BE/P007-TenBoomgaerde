@@ -1,6 +1,5 @@
-import React, { type ComponentPropsWithoutRef, type FC } from "react";
-
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import React, { type ComponentPropsWithoutRef, type FC } from "react";
 
 const CardFooter: FC<ComponentPropsWithoutRef<"div">> = ({
     className,

@@ -18,20 +18,21 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { createCategory } from "./actions";
+import { createOrganisation } from "./actions";
 
 const formSchema = z.object({
+    btw_number: z.string(),
     name: z.string(),
 });
-const CreateCategoryForm = () => {
+const CreateOrganisationForm = () => {
     const queryClient = useQueryClient();
 
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
-        mutate({ category: formData });
+        mutate({ organisation: formData });
     };
     const { isError, isPending, isSuccess, mutate } = useMutation({
-        mutationFn: createCategory,
-        mutationKey: ["CreateCategory"],
+        mutationFn: createOrganisation,
+        mutationKey: ["CreateOrganisation"],
         networkMode: "online",
         onError: (error) => {
             toast.error(error.name, {
@@ -39,13 +40,14 @@ const CreateCategoryForm = () => {
             });
         },
         onSuccess: () => {
-            toast.success("De categorie is aangemaakt!");
-            queryClient.invalidateQueries({ queryKey: ["categories"] });
+            toast.success("De organisatie is aangemaakt!");
+            queryClient.invalidateQueries({ queryKey: ["organisations"] });
         },
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
+            btw_number: "",
             name: "",
         },
         disabled: isPending,
@@ -53,7 +55,7 @@ const CreateCategoryForm = () => {
     });
 
     useEffect(() => {
-        if (isSuccess) return redirect("/dashboard/categories");
+        if (isSuccess) return redirect("/dashboard/organisations");
     }, [isSuccess]);
 
     return (
@@ -67,6 +69,19 @@ const CreateCategoryForm = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Naam</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="btw_number"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>BTW-nummer</FormLabel>
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
@@ -91,4 +106,4 @@ const CreateCategoryForm = () => {
     );
 };
 
-export default CreateCategoryForm;
+export default CreateOrganisationForm;

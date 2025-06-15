@@ -1,16 +1,15 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import toggleVariants, {
+    ToggleVariantProps,
+} from "@/utils/tailwindcss/variants/toggleVariants";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import React, {
     ComponentPropsWithoutRef,
     createContext,
     useContext,
 } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import toggleVariants, {
-    ToggleVariantProps,
-} from "@/utils/tailwindcss/variants/toggleVariants";
 
 const ToggleGroupContext = createContext<ToggleVariantProps>({
     size: "default",

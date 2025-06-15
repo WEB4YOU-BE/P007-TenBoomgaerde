@@ -1,7 +1,3 @@
-import { Metadata } from "next";
-import Link from "next/link";
-import React from "react";
-
 import Card, {
     CardContent,
     CardDescription,
@@ -10,6 +6,9 @@ import Card, {
     CardTitle,
 } from "@/components/atoms/Card";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
+import { Metadata } from "next";
+import Link from "next/link";
+import React from "react";
 
 import { getCategoryById } from "./actions";
 import CurrentState from "./currentState";

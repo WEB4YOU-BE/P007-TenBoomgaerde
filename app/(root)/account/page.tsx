@@ -1,8 +1,7 @@
 import type { NextPage } from "next";
 
-import React from "react";
-
 import UpdateProfileForm from "@/app/(root)/account/form";
+import React from "react";
 
 const dynamic = "force-dynamic";
 

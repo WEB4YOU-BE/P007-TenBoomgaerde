@@ -1,9 +1,8 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
 import React, { ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Separator = ({
     className,

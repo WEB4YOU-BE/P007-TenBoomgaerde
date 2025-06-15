@@ -1,9 +1,8 @@
 "use client";
 
-import React, { type ComponentPropsWithoutRef } from "react";
-
 import useCarousel from "@/hooks/use-carousel";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import React, { type ComponentPropsWithoutRef } from "react";
 
 const CarouselContent = ({
     className,

@@ -1,11 +1,10 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { cva } from "class-variance-authority";
 import React, { type ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const NavigationMenu = ({
     children,

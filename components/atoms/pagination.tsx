@@ -1,13 +1,12 @@
+import Button from "@/components/atoms/Button";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import {
     CaretLeft,
     CaretRight,
     DotsThree,
 } from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
-
-import Button from "@/components/atoms/Button";
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 type PaginationLinkProps = ComponentPropsWithoutRef<"a"> &
     Pick<ComponentPropsWithoutRef<typeof Button>, "size"> & {

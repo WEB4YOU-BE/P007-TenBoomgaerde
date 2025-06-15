@@ -1,12 +1,11 @@
-import React from "react";
-import { ReactNode } from "react";
-
 import Card, {
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/atoms/Card";
+import React from "react";
+import { ReactNode } from "react";
 
 export default async function Layout({ children }: { children: ReactNode }) {
     return (

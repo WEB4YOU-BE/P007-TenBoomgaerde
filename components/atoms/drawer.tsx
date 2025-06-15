@@ -1,9 +1,8 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import React, { ComponentPropsWithoutRef } from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Drawer = ({
     ...props
