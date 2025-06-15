@@ -7,6 +7,7 @@ import {
     Barcode,
     BuildingOffice,
     CalendarCheck,
+    CalendarDots,
     ChartPie,
     Clock,
     Door,
@@ -68,6 +69,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
                             label: "",
                             title: "Reservaties",
                             url: "/dashboard/reservations/",
+                        },
+                        {
+                            icon: CalendarDots,
+                            label: "",
+                            title: "Agenda",
+                            url: "/dashboard/calender/",
                         },
                         {
                             icon: ChartPie,

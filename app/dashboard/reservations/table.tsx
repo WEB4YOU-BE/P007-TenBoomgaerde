@@ -13,8 +13,10 @@ import { Tables } from "@/types/supabase/database";
 import { ArrowsDownUp, Info } from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
+    ColumnFiltersState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getSortedRowModel,
     type SortingState,
     useReactTable,
@@ -243,14 +245,18 @@ export function DataTable<TData, TValue>({
     data,
 }: TableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] =
+        React.useState<ColumnFiltersState>([]);
 
     const table = useReactTable({
         columns,
         data,
         getCoreRowModel: getCoreRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        onColumnFiltersChange: setColumnFilters,
         onSortingChange: setSorting,
-        state: { sorting },
+        state: { columnFilters, sorting },
     });
 
     return (
