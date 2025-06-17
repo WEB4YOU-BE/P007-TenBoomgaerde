@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import Button from "@/components/atoms/Button";
-import { Checkbox } from "@/components/atoms/checkbox";
+import Checkbox from "@/components/atoms/Checkbox";
 import Form, {
     FormControl,
     FormDescription,

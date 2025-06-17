@@ -14,7 +14,7 @@ import { z } from "zod";
 import Alert from "@/components/atoms/Alert";
 import Button from "@/components/atoms/Button";
 import Calendar from "@/components/atoms/Calendar";
-import { Checkbox } from "@/components/atoms/checkbox";
+import Checkbox from "@/components/atoms/Checkbox";
 import {
     Dialog,
     DialogClose,

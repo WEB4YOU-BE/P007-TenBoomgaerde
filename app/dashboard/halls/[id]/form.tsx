@@ -11,7 +11,7 @@ import { z } from "zod";
 import type { Tables } from "@/types/supabase/database";
 
 import Button from "@/components/atoms/Button";
-import { Checkbox } from "@/components/atoms/checkbox";
+import Checkbox from "@/components/atoms/Checkbox";
 import Form, {
     FormControl,
     FormDescription,

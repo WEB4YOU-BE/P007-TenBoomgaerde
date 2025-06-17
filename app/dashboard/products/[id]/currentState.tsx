@@ -6,7 +6,7 @@ import React from "react";
 
 import type { Tables } from "@/types/supabase/database";
 
-import { Checkbox } from "@/components/atoms/checkbox";
+import Checkbox from "@/components/atoms/Checkbox";
 
 import CategoryCell from "../_tableCells/category";
 import { getProductById } from "./actions";
