@@ -1,7 +1,6 @@
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { Fallback } from "@radix-ui/react-avatar";
 import React, { type ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const AvatarFallback = ({
     className,

@@ -1,5 +1,10 @@
 "use client";
 
+import type { CarouselApi } from "@/types/components/carousel/CarouselApi";
+import type { CarouselProps } from "@/types/components/carousel/CarouselProps";
+
+import CarouselContext from "@/components/atoms/Carousel/CarouselContext";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import useEmblaCarousel from "embla-carousel-react";
 import React, {
     type ComponentPropsWithoutRef,
@@ -9,12 +14,6 @@ import React, {
     useEffect,
     useState,
 } from "react";
-
-import type { CarouselApi } from "@/types/components/carousel/CarouselApi";
-import type { CarouselProps } from "@/types/components/carousel/CarouselProps";
-
-import CarouselContext from "@/components/atoms/Carousel/CarouselContext";
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Carousel: FC<CarouselProps & ComponentPropsWithoutRef<"div">> = ({
     children,

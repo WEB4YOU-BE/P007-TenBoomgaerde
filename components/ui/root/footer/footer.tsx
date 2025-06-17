@@ -1,7 +1,6 @@
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { forwardRef, HTMLAttributes } from "react";
 import React from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 import DesktopFooter from "./desktop-footer";
 import MobileFooter from "./mobile-footer";

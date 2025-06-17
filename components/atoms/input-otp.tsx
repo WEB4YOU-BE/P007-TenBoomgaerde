@@ -1,10 +1,9 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { Minus } from "@phosphor-icons/react/dist/ssr";
 import { OTPInput, OTPInputContext } from "input-otp";
 import React, { ComponentPropsWithoutRef, useContext } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const InputOTP = ({
     className,

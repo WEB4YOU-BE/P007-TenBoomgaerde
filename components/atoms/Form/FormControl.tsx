@@ -1,7 +1,6 @@
+import useFormField from "@/hooks/use-form-field";
 import { Slot } from "@radix-ui/react-slot";
 import React, { type ComponentPropsWithoutRef } from "react";
-
-import useFormField from "@/hooks/use-form-field";
 
 const FormControl = ({ ...props }: ComponentPropsWithoutRef<typeof Slot>) => {
     const { error, formDescriptionId, formItemId, formMessageId } =

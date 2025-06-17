@@ -1,8 +1,7 @@
 "use server";
 
-import { add } from "date-fns";
-
 import createClient from "@/utils/supabase/server";
+import { add } from "date-fns";
 
 export const fetchUser = async () => {
     const supabase = createClient();

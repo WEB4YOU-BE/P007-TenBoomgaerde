@@ -1,8 +1,7 @@
 "use client";
 
-import React, { ComponentPropsWithoutRef } from "react";
-
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import React, { ComponentPropsWithoutRef } from "react";
 
 const Table = ({ className, ...props }: ComponentPropsWithoutRef<"table">) => {
     return (

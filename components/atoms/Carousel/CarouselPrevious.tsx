@@ -1,9 +1,8 @@
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
-import React, { type ComponentPropsWithoutRef, type FC } from "react";
-
 import Button from "@/components/atoms/Button";
 import useCarousel from "@/hooks/use-carousel";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import React, { type ComponentPropsWithoutRef, type FC } from "react";
 
 const CarouselPrevious: FC<ComponentPropsWithoutRef<typeof Button>> = ({
     className,

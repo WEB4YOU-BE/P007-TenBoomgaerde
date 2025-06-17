@@ -1,9 +1,8 @@
 import type { Metadata, NextPage } from "next";
 
+import Alert, { AlertDescription } from "@/components/atoms/Alert";
 import Image from "next/image";
 import React from "react";
-
-import Alert, { AlertDescription } from "@/components/atoms/Alert";
 
 const dynamic = "force-dynamic";
 

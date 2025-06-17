@@ -1,12 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
 import Button from "@/components/atoms/Button";
 import Form, {
     FormControl,
@@ -16,6 +9,12 @@ import Form, {
     FormMessage,
 } from "@/components/atoms/Form";
 import { Input } from "@/components/atoms/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 import { resetPasswordForEmail } from "./actions";
 

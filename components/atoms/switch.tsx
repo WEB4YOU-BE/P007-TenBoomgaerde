@@ -1,9 +1,8 @@
 "use client";
 
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import React, { ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Switch = ({
     className,

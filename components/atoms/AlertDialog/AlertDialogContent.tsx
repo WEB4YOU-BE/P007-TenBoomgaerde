@@ -1,11 +1,10 @@
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import {
     AlertDialogOverlay,
     Content,
     Portal,
 } from "@radix-ui/react-alert-dialog";
 import React, { type ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const AlertDialogContent = ({
     className,

@@ -1,12 +1,11 @@
 /* eslint-disable perfectionist/sort-objects */
 "use client";
 
+import { Tables } from "@/types/supabase/database";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 import * as XLSX from "@e965/xlsx";
 import Link from "next/link";
 import React, { FC } from "react";
-
-import { Tables } from "@/types/supabase/database";
-import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 import { getHallById } from "../reservations/_tableCells/actions";
 

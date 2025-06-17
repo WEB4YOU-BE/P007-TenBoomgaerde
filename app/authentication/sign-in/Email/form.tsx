@@ -1,16 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
-import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
-import { redirect, RedirectType } from "next/navigation";
-import React from "react";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
 import Button from "@/components/atoms/Button";
 import Form, {
     FormControl,
@@ -21,6 +10,16 @@ import Form, {
 } from "@/components/atoms/Form";
 import { Input } from "@/components/atoms/input";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
+import { redirect, RedirectType } from "next/navigation";
+import React from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 import { signInWithEmailCredentials } from "./actions";
 

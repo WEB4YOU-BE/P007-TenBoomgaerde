@@ -1,9 +1,8 @@
-import React, { type ComponentPropsWithoutRef } from "react";
-import { DayPicker } from "react-day-picker";
-
 import CalendarChevron from "@/components/atoms/Calendar/CalendarChevron";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
+import React, { type ComponentPropsWithoutRef } from "react";
+import { DayPicker } from "react-day-picker";
 
 const Calendar = ({
     className,
