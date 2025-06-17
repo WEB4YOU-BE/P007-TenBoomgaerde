@@ -60,7 +60,9 @@ const UpdateOrganisationForm = ({ id, initialData }: Props) => {
         },
         onSuccess: () => {
             toast.success("De organisatie is bijgewerkt!");
-            queryClient.invalidateQueries({ queryKey: ["Organisation", id] });
+            void queryClient.invalidateQueries({
+                queryKey: ["Organisation", id],
+            });
         },
     });
 
@@ -84,7 +86,7 @@ const UpdateOrganisationForm = ({ id, initialData }: Props) => {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
                     <div className="flex flex-col gap-2">
                         <FormField
                             control={form.control}

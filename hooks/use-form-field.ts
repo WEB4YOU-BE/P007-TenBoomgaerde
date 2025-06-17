@@ -5,7 +5,7 @@ import FormFieldContext from "@/components/atoms/Form/FormFieldContext";
 import FormItemContext from "@/components/atoms/Form/FormItemContext";
 
 const useFormField = () => {
-    const fieldContext = useContext(FormFieldContext);
+    const fieldContext = useContext<{ name: string }>(FormFieldContext);
     const itemContext = useContext(FormItemContext);
     const { getFieldState } = useFormContext();
     const formState = useFormState({ name: fieldContext.name });

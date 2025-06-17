@@ -52,7 +52,7 @@ const SignOutForm = () => {
             <Form {...form}>
                 <form
                     className="flex flex-col gap-2"
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
                 >
                     <Button disabled={isPending} type="submit">
                         {isPending && (

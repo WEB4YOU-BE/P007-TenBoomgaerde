@@ -64,7 +64,7 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
         },
         onSuccess: () => {
             toast.success("De zaal is bijgewerkt!");
-            queryClient.invalidateQueries({ queryKey: ["hall", id] });
+            void queryClient.invalidateQueries({ queryKey: ["hall", id] });
         },
     });
 
@@ -92,7 +92,7 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
                     <div className="flex flex-col gap-2">
                         <FormField
                             control={form.control}

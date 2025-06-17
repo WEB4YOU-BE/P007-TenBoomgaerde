@@ -28,17 +28,28 @@ const config = [
             "**/supabase/.temp/**",
         ],
     },
-    { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+    {
+        languageOptions: {
+            globals: { ...globals.browser, ...globals.node },
+            parserOptions: {
+                projectService: { allowDefaultProject: ["*.config.js"] },
+                sourceType: "module",
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
     jseslint.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...tseslint.configs.recommendedTypeChecked,
     pluginReact.configs.flat.recommended,
     perfectionist.configs["recommended-natural"],
     {
         rules: {
+            "@typescript-eslint/no-deprecated": ["error"],
             "perfectionist/sort-array-includes": ["error"],
             "perfectionist/sort-classes": ["error"],
             "perfectionist/sort-enums": ["error"],
             "perfectionist/sort-exports": ["error"],
+            "perfectionist/sort-heritage-clauses": ["error"],
             "perfectionist/sort-imports": ["error"],
             "perfectionist/sort-interfaces": ["error"],
             "perfectionist/sort-intersection-types": ["error"],

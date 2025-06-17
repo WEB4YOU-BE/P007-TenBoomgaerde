@@ -6,7 +6,8 @@ import type { Database } from "@/types/supabase/database";
 
 const createClient: () => SupabaseClient<Database> = () =>
     createBrowserClient<Database>(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
+
 export default createClient;

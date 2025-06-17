@@ -46,7 +46,7 @@ const CreateHallForm = () => {
         },
         onSuccess: () => {
             toast.success("De zaal is aangemaakt!");
-            queryClient.invalidateQueries({ queryKey: ["halls"] });
+            void queryClient.invalidateQueries({ queryKey: ["halls"] });
         },
     });
 
@@ -68,7 +68,7 @@ const CreateHallForm = () => {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
                     <div className="flex flex-col gap-2">
                         <FormField
                             control={form.control}

@@ -273,7 +273,7 @@ const AddReservationForm = () => {
                     className={
                         "rounded-lg bg-gray-100 shadow-xs p-4 flex flex-col gap-4"
                     }
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
                 >
                     {isPendingHalls && (
                         <SpinnerBallIcon className="size-4 animate-spin" />
@@ -554,7 +554,7 @@ const AddReservationForm = () => {
                     )}
                     <Button
                         disabled={isPending}
-                        onClick={onOpenModal}
+                        onClick={() => void onOpenModal()}
                         type="button"
                         variant="default"
                     >
@@ -667,7 +667,9 @@ const AddReservationForm = () => {
                                 </DialogClose>
                                 <Button
                                     disabled={isPending}
-                                    onClick={form.handleSubmit(onSubmit)}
+                                    onClick={(e) =>
+                                        void form.handleSubmit(onSubmit)(e)
+                                    }
                                     type="submit"
                                     variant={
                                         isSuccess

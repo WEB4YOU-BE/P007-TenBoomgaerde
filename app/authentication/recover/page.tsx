@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+import type { Metadata, NextPage } from "next";
+
 import React from "react";
 
 import Card, {
@@ -17,20 +18,18 @@ export const metadata: Metadata = {
     title: "Herstel uw account",
 };
 
-export default async function Page() {
-    return (
-        <>
-            <Card className="w-[350px] max-w-[100dvw]">
-                <CardHeader>
-                    <CardTitle>Herstel uw account</CardTitle>
-                    <CardDescription>
-                        Gebruik hiervoor uw email.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ResetWithEmailCredentialsForm />
-                </CardContent>
-            </Card>
-        </>
-    );
-}
+const Page: NextPage = () => (
+    <>
+        <Card className="w-[350px] max-w-[100dvw]">
+            <CardHeader>
+                <CardTitle>Herstel uw account</CardTitle>
+                <CardDescription>Gebruik hiervoor uw email.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <ResetWithEmailCredentialsForm />
+            </CardContent>
+        </Card>
+    </>
+);
+
+export default Page;

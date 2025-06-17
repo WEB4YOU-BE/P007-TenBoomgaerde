@@ -5,7 +5,8 @@ import { default as pluginStack } from "@/middlewares/stack";
 
 const middleware: NextMiddleware = async (request, event) => {
     const plugins = [SB];
-    const stack = await pluginStack({ event, plugins, request });
+    const stackFactory = pluginStack({ event, plugins, request });
+    const stack = (await stackFactory) as NextMiddleware;
     return await stack(request, event);
 };
 export default middleware;

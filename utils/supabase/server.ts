@@ -14,11 +14,10 @@ const createClient: () => SupabaseClient<Database> = () =>
         {
             cookies: {
                 getAll: async () => (await cookies()).getAll(),
-                setAll: (cookiesToSet) => {
+                setAll: async (cookiesToSet) => {
                     try {
-                        cookiesToSet.forEach(async (cookie) =>
-                            (await cookies()).set(cookie)
-                        );
+                        for (const cookie of cookiesToSet)
+                            (await cookies()).set(cookie);
                     } catch (error) {
                         console.error(error);
                     }
@@ -26,4 +25,5 @@ const createClient: () => SupabaseClient<Database> = () =>
             },
         }
     );
+
 export default createClient;

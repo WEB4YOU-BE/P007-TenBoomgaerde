@@ -63,7 +63,7 @@ const CreateCategoryForm = () => {
         },
         onSuccess: () => {
             toast.success("Het product is aangemaakt!");
-            queryClient.invalidateQueries({ queryKey: ["products"] });
+            void queryClient.invalidateQueries({ queryKey: ["products"] });
         },
     });
 
@@ -85,7 +85,7 @@ const CreateCategoryForm = () => {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
                     <div className="flex flex-col gap-2">
                         <FormField
                             control={form.control}

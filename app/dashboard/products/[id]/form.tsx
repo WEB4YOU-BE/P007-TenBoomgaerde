@@ -81,7 +81,7 @@ const UpdateProductForm = ({ id, initialData }: Props) => {
         },
         onSuccess: () => {
             toast.success("Het product is bijgewerkt!");
-            queryClient.invalidateQueries({ queryKey: ["product", id] });
+            void queryClient.invalidateQueries({ queryKey: ["product", id] });
         },
     });
 
@@ -109,7 +109,7 @@ const UpdateProductForm = ({ id, initialData }: Props) => {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
                     <div className="flex flex-col gap-2">
                         <FormField
                             control={form.control}

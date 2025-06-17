@@ -58,7 +58,7 @@ const ResetWithEmailCredentialsForm = () => {
             <Form {...form}>
                 <form
                     className="flex flex-col gap-2"
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
                 >
                     <FormField
                         control={form.control}

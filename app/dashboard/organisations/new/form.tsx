@@ -42,7 +42,7 @@ const CreateOrganisationForm = () => {
         },
         onSuccess: () => {
             toast.success("De organisatie is aangemaakt!");
-            queryClient.invalidateQueries({ queryKey: ["organisations"] });
+            void queryClient.invalidateQueries({ queryKey: ["organisations"] });
         },
     });
 
@@ -62,7 +62,7 @@ const CreateOrganisationForm = () => {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
                     <div className="flex flex-col gap-2">
                         <FormField
                             control={form.control}

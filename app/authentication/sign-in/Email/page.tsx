@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+import type { Metadata, NextPage } from "next";
+
 import React from "react";
 
 import SignInWithEmailCredentialsForm from "./form";
@@ -10,6 +11,6 @@ export const metadata: Metadata = {
     title: "Log in via email",
 };
 
-export default async function Page() {
-    return <SignInWithEmailCredentialsForm />;
-}
+const Page: NextPage = () => <SignInWithEmailCredentialsForm />;
+
+export default Page;

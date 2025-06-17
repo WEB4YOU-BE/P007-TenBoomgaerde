@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export type Database = {
     graphql_public: {
         CompositeTypes: {

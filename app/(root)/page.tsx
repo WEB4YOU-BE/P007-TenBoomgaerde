@@ -14,7 +14,7 @@ const metadata: Metadata = {
     title: "VZW Ten Boomgaerde Lichtervelde",
 };
 
-const Page: NextPage = async () => (
+const Page: NextPage = () => (
     <div className="container mx-auto max-w-(--breakpoint-lg) my-8">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
             Ten Boomgaerde

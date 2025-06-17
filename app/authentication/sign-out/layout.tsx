@@ -1,4 +1,8 @@
+import type { NextPage } from "next";
+
 import React from "react";
+
+import type NextLayout from "@/types/next/layout";
 
 import Card, {
     CardContent,
@@ -7,11 +11,7 @@ import Card, {
     CardTitle,
 } from "@/components/atoms/Card";
 
-export default async function Layout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+const Layout: NextPage<NextLayout> = ({ children }: NextLayout) => {
     return (
         <>
             <Card className="w-[350px] max-w-[100dvw]">
@@ -27,4 +27,6 @@ export default async function Layout({
             </Card>
         </>
     );
-}
+};
+
+export default Layout;

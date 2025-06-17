@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+import type { Metadata, NextPage } from "next";
+
 import React from "react";
 
 import Alert, { AlertDescription, AlertTitle } from "@/components/atoms/Alert";
@@ -10,15 +11,15 @@ export const metadata: Metadata = {
     title: "Log in via derde partij",
 };
 
-export default async function Page() {
-    return (
-        <>
-            <Alert>
-                <AlertTitle>Komt binnenkort!</AlertTitle>
-                <AlertDescription>
-                    Deze functie is nog niet beschikbaar.
-                </AlertDescription>
-            </Alert>
-        </>
-    );
-}
+const Page: NextPage = () => (
+    <>
+        <Alert>
+            <AlertTitle>Komt binnenkort!</AlertTitle>
+            <AlertDescription>
+                Deze functie is nog niet beschikbaar.
+            </AlertDescription>
+        </Alert>
+    </>
+);
+
+export default Page;

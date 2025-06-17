@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+import type { Metadata, NextPage } from "next";
+
 import React from "react";
 
 import Card, {
@@ -17,20 +18,18 @@ export const metadata: Metadata = {
     title: "Wijzig uw wachtwoord",
 };
 
-export default async function Page() {
-    return (
-        <>
-            <Card className="w-[350px] max-w-[100dvw]">
-                <CardHeader>
-                    <CardTitle>Nieuw wachtwoord</CardTitle>
-                    <CardDescription>
-                        Voer een nieuw wachtwoord in.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ChangePasswordForm />
-                </CardContent>
-            </Card>
-        </>
-    );
-}
+const Page: NextPage = () => (
+    <>
+        <Card className="w-[350px] max-w-[100dvw]">
+            <CardHeader>
+                <CardTitle>Nieuw wachtwoord</CardTitle>
+                <CardDescription>Voer een nieuw wachtwoord in.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <ChangePasswordForm />
+            </CardContent>
+        </Card>
+    </>
+);
+
+export default Page;

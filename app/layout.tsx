@@ -12,7 +12,7 @@ import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 import "./globals.css";
 
-const RootLayout: NextPage<NextLayout> = async ({ children }: NextLayout) => (
+const RootLayout: NextPage<NextLayout> = ({ children }: NextLayout) => (
     <html lang="nl-BE">
         <body className={cn(inter.variable)}>
             <Providers>

@@ -15,7 +15,7 @@ interface Props {
     text: string;
 }
 const DownloadComponent: FC<Props> = ({ reservations, text }) => {
-    const handleDownloadExcel = async () => {
+    const handleDownloadExcel = () => {
         const rows = reservations.map(async (reservation) => {
             return {
                 Reservatienummer:

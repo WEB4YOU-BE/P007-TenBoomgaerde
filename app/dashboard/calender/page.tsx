@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+import type { Metadata, NextPage } from "next";
+
 import React from "react";
 
 export const metadata: Metadata = {
@@ -10,6 +11,6 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function Page() {
-    return <div>Calender</div>;
-}
+const Page: NextPage = () => <div>Calender</div>;
+
+export default Page;

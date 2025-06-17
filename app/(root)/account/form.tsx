@@ -43,7 +43,7 @@ const UpdateProfileForm = () => {
             if (error) throw error;
             setAccount(data.user);
         };
-        fetchAccount();
+        void fetchAccount();
     }, [setAccount]);
 
     useEffect(() => {
@@ -58,7 +58,7 @@ const UpdateProfileForm = () => {
             if (error) throw error;
             setProfile(data);
         };
-        fetchProfile();
+        void fetchProfile();
     }, [setProfile, account]);
 
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
@@ -113,7 +113,7 @@ const UpdateProfileForm = () => {
             <Form {...form}>
                 <form
                     className="flex flex-col gap-2 mx-auto"
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
                 >
                     <FormField
                         control={form.control}

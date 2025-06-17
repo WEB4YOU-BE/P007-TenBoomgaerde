@@ -6,7 +6,7 @@ import UpdateProfileForm from "@/app/(root)/account/form";
 
 const dynamic = "force-dynamic";
 
-const Page: NextPage = async () => (
+const Page: NextPage = () => (
     <main className={"container max-w-(--breakpoint-xl) mx-auto p-2 px-4"}>
         <h1 className={"text-4xl font-bold text-center mb-8"}>
             Gebruikersinformatie

@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+import type { Metadata, NextPage } from "next";
+
 import React from "react";
 
 import SignOutForm from "./form";
@@ -10,6 +11,6 @@ export const metadata: Metadata = {
     title: "Log uit",
 };
 
-export default async function Page() {
-    return <SignOutForm />;
-}
+const Page: NextPage = () => <SignOutForm />;
+
+export default Page;
