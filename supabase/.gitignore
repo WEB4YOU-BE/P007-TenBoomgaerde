@@ -1,4 +1,5 @@
 # Supabase
 .branches
+.seeds
 .temp
 .env
