@@ -1,9 +1,10 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { Check } from "@phosphor-icons/react/dist/ssr";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Checkbox = ({
     className,

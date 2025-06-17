@@ -1,7 +1,8 @@
-import Alert from "@/components/atoms/Alert";
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { ComponentPropsWithRef, FC } from "react";
 import React from "react";
+
+import Alert from "@/components/atoms/Alert";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface MobileHeaderProps extends ComponentPropsWithRef<"div"> {
     items: NavigationItem[];

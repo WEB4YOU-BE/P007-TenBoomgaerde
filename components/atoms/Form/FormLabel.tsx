@@ -1,9 +1,10 @@
 import type { Root } from "@radix-ui/react-label";
 
+import React, { type ComponentPropsWithoutRef } from "react";
+
 import Label from "@/components/atoms/Label";
 import useFormField from "@/hooks/use-form-field";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import React, { type ComponentPropsWithoutRef } from "react";
 
 const FormLabel = ({
     className,

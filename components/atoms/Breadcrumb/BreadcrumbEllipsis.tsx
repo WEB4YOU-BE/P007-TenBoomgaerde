@@ -1,6 +1,7 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { DotsThree } from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const BreadcrumbEllipsis = ({
     className,

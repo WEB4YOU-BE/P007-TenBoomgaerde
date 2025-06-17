@@ -1,3 +1,7 @@
+import { Metadata } from "next";
+import Link from "next/link";
+import React from "react";
+
 import Card, {
     CardContent,
     CardDescription,
@@ -7,9 +11,6 @@ import Card, {
 } from "@/components/atoms/Card";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
-import { Metadata } from "next";
-import Link from "next/link";
-import React from "react";
 
 export const metadata: Metadata = {
     alternates: {

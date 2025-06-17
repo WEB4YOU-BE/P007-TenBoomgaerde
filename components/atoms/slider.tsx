@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import React, { type ComponentPropsWithoutRef, useMemo } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 function Slider({
     className,

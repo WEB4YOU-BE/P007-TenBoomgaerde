@@ -1,11 +1,12 @@
 "use client";
 
-import type { Tables } from "@/types/supabase/database";
-
-import { Checkbox } from "@/components/atoms/checkbox";
 import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+
+import type { Tables } from "@/types/supabase/database";
+
+import { Checkbox } from "@/components/atoms/checkbox";
 
 import CategoryCell from "../_tableCells/category";
 import { getProductById } from "./actions";

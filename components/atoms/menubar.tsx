@@ -1,9 +1,10 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { CaretRight, Check, Circle } from "@phosphor-icons/react/dist/ssr";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 function Menubar({
     className,

@@ -1,3 +1,8 @@
+import { Icon } from "@phosphor-icons/react/dist/lib/types";
+import Link from "next/link";
+import React from "react";
+import { forwardRef, type HTMLAttributes } from "react";
+
 import {
     Tooltip,
     TooltipContent,
@@ -5,10 +10,6 @@ import {
 } from "@/components/atoms/tooltip";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
-import { Icon } from "@phosphor-icons/react/dist/lib/types";
-import Link from "next/link";
-import React from "react";
-import { forwardRef, type HTMLAttributes } from "react";
 
 interface NavigationProperties extends HTMLAttributes<HTMLDivElement> {
     links: {

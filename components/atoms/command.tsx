@@ -1,5 +1,9 @@
 "use client";
 
+import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
+import { Command as CommandPrimitive } from "cmdk";
+import React, { ComponentPropsWithoutRef } from "react";
+
 import {
     Dialog,
     DialogContent,
@@ -8,9 +12,6 @@ import {
     DialogTitle,
 } from "@/components/atoms/dialog";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
-import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
-import { Command as CommandPrimitive } from "cmdk";
-import React, { ComponentPropsWithoutRef } from "react";
 
 const Command = ({
     className,

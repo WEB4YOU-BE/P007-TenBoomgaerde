@@ -1,7 +1,8 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { Header, Trigger } from "@radix-ui/react-accordion";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const AccordionTrigger = ({
     children,

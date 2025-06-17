@@ -1,5 +1,6 @@
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const AlertDialogFooter = ({
     className,

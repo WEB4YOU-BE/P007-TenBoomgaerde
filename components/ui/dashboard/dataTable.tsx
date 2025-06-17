@@ -1,14 +1,6 @@
 "use client";
 
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/atoms/table";
-import {
     ColumnDef,
     flexRender,
     getCoreRowModel,
@@ -18,6 +10,15 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 import { useState } from "react";
+
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/atoms/table";
 
 interface TableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];

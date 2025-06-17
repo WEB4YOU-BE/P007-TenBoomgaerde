@@ -1,7 +1,8 @@
 "use server";
 
-import createClient from "@/utils/supabase/server";
 import { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
+
+import createClient from "@/utils/supabase/server";
 
 export const signUpWithEmailCredentials = async (
     credentials: SignUpWithPasswordCredentials

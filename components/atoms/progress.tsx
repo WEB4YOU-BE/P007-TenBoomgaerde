@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import React, { type ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const Progress = ({
     className,

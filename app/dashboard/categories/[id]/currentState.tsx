@@ -1,10 +1,10 @@
 "use client";
 
-import type { Tables } from "@/types/supabase/database";
-
 import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+
+import type { Tables } from "@/types/supabase/database";
 
 import { getCategoryById } from "./actions";
 

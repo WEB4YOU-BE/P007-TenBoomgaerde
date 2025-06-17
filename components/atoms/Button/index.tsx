@@ -1,9 +1,10 @@
+import { Slot } from "@radix-ui/react-slot";
+import React, { type ComponentPropsWithoutRef, type FC } from "react";
+
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants, {
     type ButtonVariantProps,
 } from "@/utils/tailwindcss/variants/buttonVariants";
-import { Slot } from "@radix-ui/react-slot";
-import React, { type ComponentPropsWithoutRef, type FC } from "react";
 
 interface ButtonProps
     extends ButtonVariantProps,
