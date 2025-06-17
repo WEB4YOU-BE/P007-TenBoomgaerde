@@ -1,7 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarBlank, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import {
+    CalendarBlankIcon,
+    SpinnerBallIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { compareAsc, eachDayOfInterval, format } from "date-fns";
 import { nlBE } from "date-fns/locale";
@@ -273,7 +276,7 @@ const AddReservationForm = () => {
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     {isPendingHalls && (
-                        <SpinnerBall className="size-4 animate-spin" />
+                        <SpinnerBallIcon className="size-4 animate-spin" />
                     )}
                     {!isPendingHalls && (
                         <FormField
@@ -355,7 +358,7 @@ const AddReservationForm = () => {
                                                         Selecteer de startdatum
                                                     </span>
                                                 )}
-                                                <CalendarBlank className="ml-auto size-4 opacity-50" />
+                                                <CalendarBlankIcon className="ml-auto size-4 opacity-50" />
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -380,7 +383,7 @@ const AddReservationForm = () => {
                         )}
                     />
                     {isPendingTimeframes && (
-                        <SpinnerBall className="size-4 animate-spin" />
+                        <SpinnerBallIcon className="size-4 animate-spin" />
                     )}
                     {!isPendingTimeframes && (
                         <FormField
@@ -465,7 +468,7 @@ const AddReservationForm = () => {
                                                         Selecteer de einddatum
                                                     </span>
                                                 )}
-                                                <CalendarBlank className="ml-auto size-4 opacity-50" />
+                                                <CalendarBlankIcon className="ml-auto size-4 opacity-50" />
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -489,7 +492,7 @@ const AddReservationForm = () => {
                         )}
                     />
                     {isPendingTimeframes && (
-                        <SpinnerBall className="size-4 animate-spin" />
+                        <SpinnerBallIcon className="size-4 animate-spin" />
                     )}
                     {!isPendingTimeframes && (
                         <FormField
@@ -675,7 +678,7 @@ const AddReservationForm = () => {
                                     }
                                 >
                                     {isPending && (
-                                        <SpinnerBall className="size-4 animate-spin" />
+                                        <SpinnerBallIcon className="size-4 animate-spin" />
                                     )}
                                     {!isPending && "Vraag aan"}
                                 </Button>

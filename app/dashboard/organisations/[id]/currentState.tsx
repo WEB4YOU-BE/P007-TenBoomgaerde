@@ -1,6 +1,6 @@
 "use client";
 
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -28,13 +28,13 @@ const CurrentState = ({ id, initialData }: Props) => {
 
     return (
         <>
-            {isPending && <SpinnerBall className="size-4 animate-spin" />}
+            {isPending && <SpinnerBallIcon className="size-4 animate-spin" />}
             {!isPending && !organisation && <span>Organisation not found</span>}
             <div className="flex flex-col gap-2">
                 <span className="text-sm font-semibold">Naam</span>
                 <span className="text-sm">
                     {isRefetching ? (
-                        <SpinnerBall className="size-4 animate-spin" />
+                        <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : (
                         organisation?.name
                     )}
@@ -44,7 +44,7 @@ const CurrentState = ({ id, initialData }: Props) => {
                 <span className="text-sm font-semibold">Naam</span>
                 <span className="text-sm">
                     {isRefetching ? (
-                        <SpinnerBall className="size-4 animate-spin" />
+                        <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : (
                         organisation?.btw_number
                     )}

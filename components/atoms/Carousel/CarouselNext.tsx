@@ -1,4 +1,4 @@
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import React, { type ComponentPropsWithoutRef, type FC } from "react";
 
 import Button from "@/components/atoms/Button";
@@ -29,7 +29,7 @@ const CarouselNext: FC<ComponentPropsWithoutRef<typeof Button>> = ({
             variant={variant}
             {...props}
         >
-            <ArrowRight />
+            <ArrowRightIcon />
             <span className="sr-only">Next slide</span>
         </Button>
     );

@@ -1,4 +1,4 @@
-import { CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { CaretRightIcon } from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
@@ -15,7 +15,7 @@ const BreadcrumbSeparator = ({
         role="presentation"
         {...props}
     >
-        {children ?? <CaretRight />}
+        {children ?? <CaretRightIcon />}
     </li>
 );
 

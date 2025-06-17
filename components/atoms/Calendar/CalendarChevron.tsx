@@ -1,10 +1,10 @@
 import type { ChevronProps } from "react-day-picker";
 
 import {
-    CaretDown,
-    CaretLeft,
-    CaretRight,
-    CaretUp,
+    CaretDownIcon,
+    CaretLeftIcon,
+    CaretRightIcon,
+    CaretUpIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import React, { memo, useMemo } from "react";
 
@@ -20,18 +20,29 @@ const CalendarChevron = memo(
         switch (orientation) {
             case "down":
                 return (
-                    <CaretDown className={calculatedClassName} size={size} />
+                    <CaretDownIcon
+                        className={calculatedClassName}
+                        size={size}
+                    />
                 );
             case "left":
                 return (
-                    <CaretLeft className={calculatedClassName} size={size} />
+                    <CaretLeftIcon
+                        className={calculatedClassName}
+                        size={size}
+                    />
                 );
             case "right":
                 return (
-                    <CaretRight className={calculatedClassName} size={size} />
+                    <CaretRightIcon
+                        className={calculatedClassName}
+                        size={size}
+                    />
                 );
             case "up":
-                return <CaretUp className={calculatedClassName} size={size} />;
+                return (
+                    <CaretUpIcon className={calculatedClassName} size={size} />
+                );
         }
     }
 );

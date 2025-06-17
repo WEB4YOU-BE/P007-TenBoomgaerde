@@ -1,6 +1,10 @@
 "use client";
 
-import { CaretDown, CaretUp, Check } from "@phosphor-icons/react/dist/ssr";
+import {
+    CaretDownIcon,
+    CaretUpIcon,
+    CheckIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import React, { type ComponentPropsWithoutRef } from "react";
 
@@ -69,7 +73,7 @@ const SelectItem = ({
         >
             <span className="absolute right-2 flex size-3.5 items-center justify-center">
                 <SelectPrimitive.ItemIndicator>
-                    <Check className="size-4" />
+                    <CheckIcon className="size-4" />
                 </SelectPrimitive.ItemIndicator>
             </span>
             <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -103,7 +107,7 @@ const SelectScrollDownButton = ({
             data-slot="select-scroll-down-button"
             {...props}
         >
-            <CaretDown className="size-4" />
+            <CaretDownIcon className="size-4" />
         </SelectPrimitive.ScrollDownButton>
     );
 };
@@ -121,7 +125,7 @@ const SelectScrollUpButton = ({
             data-slot="select-scroll-up-button"
             {...props}
         >
-            <CaretUp className="size-4" />
+            <CaretUpIcon className="size-4" />
         </SelectPrimitive.ScrollUpButton>
     );
 };
@@ -158,7 +162,7 @@ const SelectTrigger = ({
         >
             {children}
             <SelectPrimitive.Icon asChild>
-                <CaretDown className="size-4 opacity-50" />
+                <CaretDownIcon className="size-4 opacity-50" />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );

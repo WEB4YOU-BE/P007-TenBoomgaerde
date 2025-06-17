@@ -1,6 +1,10 @@
 "use client";
 
-import { ArrowsDownUp, Info, Plus } from "@phosphor-icons/react/dist/ssr";
+import {
+    ArrowsDownUpIcon,
+    InfoIcon,
+    PlusIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
     flexRender,
@@ -47,7 +51,7 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
                     variant="ghost"
                 >
                     Naam
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -67,7 +71,7 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
                     variant="ghost"
                 >
                     Startuur
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -87,7 +91,7 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
                     variant="ghost"
                 >
                     Einduur
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -97,7 +101,7 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
         accessorKey: "id",
         cell: ({ row }) => (
             <Link href={`/dashboard/timeslots/${row.original.id}`}>
-                <Info className="size-6" />
+                <InfoIcon className="size-6" />
             </Link>
         ),
         header: () => {
@@ -115,7 +119,7 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
                                 )}
                                 href="/dashboard/timeslots/new"
                             >
-                                <Plus />
+                                <PlusIcon />
                                 <span>Toevoegen</span>
                             </Link>
                         </DropdownMenuLabel>

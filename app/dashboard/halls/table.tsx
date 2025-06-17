@@ -1,6 +1,10 @@
 "use client";
 
-import { ArrowsDownUp, Info, Plus } from "@phosphor-icons/react/dist/ssr";
+import {
+    ArrowsDownUpIcon,
+    InfoIcon,
+    PlusIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
     flexRender,
@@ -47,7 +51,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Naam
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -67,7 +71,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Is privé
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -87,7 +91,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Normale prijs
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -107,7 +111,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                     variant="ghost"
                 >
                     Prijs voor meerdere blokken
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -117,7 +121,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
         accessorKey: "id",
         cell: ({ row }) => (
             <Link href={`/dashboard/halls/${row.original.id}`}>
-                <Info className="size-6" />
+                <InfoIcon className="size-6" />
             </Link>
         ),
         header: () => {
@@ -135,7 +139,7 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                                 )}
                                 href="/dashboard/halls/new"
                             >
-                                <Plus />
+                                <PlusIcon />
                                 <span>Toevoegen</span>
                             </Link>
                         </DropdownMenuLabel>

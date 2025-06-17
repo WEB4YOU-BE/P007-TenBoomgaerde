@@ -1,6 +1,10 @@
 "use client";
 
-import { ArrowsDownUp, Info, Plus } from "@phosphor-icons/react/dist/ssr";
+import {
+    ArrowsDownUpIcon,
+    InfoIcon,
+    PlusIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
     flexRender,
@@ -47,7 +51,7 @@ export const columns: ColumnDef<Tables<"organizations">>[] = [
                     variant="ghost"
                 >
                     Naam
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -67,7 +71,7 @@ export const columns: ColumnDef<Tables<"organizations">>[] = [
                     variant="ghost"
                 >
                     BTW-nummer
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -77,7 +81,7 @@ export const columns: ColumnDef<Tables<"organizations">>[] = [
         accessorKey: "id",
         cell: ({ row }) => (
             <Link href={`/dashboard/organisations/${row.original.id}`}>
-                <Info className="size-6" />
+                <InfoIcon className="size-6" />
             </Link>
         ),
         header: () => {
@@ -95,7 +99,7 @@ export const columns: ColumnDef<Tables<"organizations">>[] = [
                                 )}
                                 href="/dashboard/organisations/new"
                             >
-                                <Plus />
+                                <PlusIcon />
                                 <span>Toevoegen</span>
                             </Link>
                         </DropdownMenuLabel>

@@ -1,6 +1,10 @@
 "use client";
 
-import { CaretRight, Check, Circle } from "@phosphor-icons/react/dist/ssr";
+import {
+    CaretRightIcon,
+    CheckIcon,
+    CircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import React, { type ComponentPropsWithoutRef } from "react";
 
@@ -40,7 +44,7 @@ function MenubarCheckboxItem({
         >
             <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
                 <MenubarPrimitive.ItemIndicator>
-                    <Check className="size-4" />
+                    <CheckIcon className="size-4" />
                 </MenubarPrimitive.ItemIndicator>
             </span>
             {children}
@@ -160,7 +164,7 @@ function MenubarRadioItem({
         >
             <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
                 <MenubarPrimitive.ItemIndicator>
-                    <Circle className="size-2 fill-current" />
+                    <CircleIcon className="size-2 fill-current" />
                 </MenubarPrimitive.ItemIndicator>
             </span>
             {children}
@@ -238,7 +242,7 @@ function MenubarSubTrigger({
             {...props}
         >
             {children}
-            <CaretRight className="ml-auto size-4" />
+            <CaretRightIcon className="ml-auto size-4" />
         </MenubarPrimitive.SubTrigger>
     );
 }

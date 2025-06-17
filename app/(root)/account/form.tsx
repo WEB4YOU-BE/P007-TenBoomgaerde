@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { type User } from "@supabase/supabase-js";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect } from "react";
@@ -211,7 +211,7 @@ const UpdateProfileForm = () => {
                         }
                     >
                         {isPending && (
-                            <SpinnerBall className="size-4 animate-spin" />
+                            <SpinnerBallIcon className="size-4 animate-spin" />
                         )}
                         {!isPending && "Bijwerken"}
                     </Button>

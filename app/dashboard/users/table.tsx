@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowsDownUp, Info } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsDownUpIcon, InfoIcon } from "@phosphor-icons/react/dist/ssr";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import React from "react";
@@ -23,7 +23,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
                     variant="ghost"
                 >
                     Naam
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -40,7 +40,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
                     variant="ghost"
                 >
                     Email
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -60,7 +60,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
                     variant="ghost"
                 >
                     Telefoonnummer
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -80,7 +80,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
                     variant="ghost"
                 >
                     Adres
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -99,7 +99,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
                     variant="ghost"
                 >
                     Is administrator
-                    <ArrowsDownUp className="ml-2 size-4" />
+                    <ArrowsDownUpIcon className="ml-2 size-4" />
                 </Button>
             );
         },
@@ -109,7 +109,7 @@ export const columns: ColumnDef<Tables<"users">>[] = [
         accessorKey: "id",
         cell: ({ row }) => (
             <Link href={`/dashboard/users/${row.original.id}`}>
-                <Info className="size-6" />
+                <InfoIcon className="size-6" />
             </Link>
         ),
         header: () => {

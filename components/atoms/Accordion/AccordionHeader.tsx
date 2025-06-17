@@ -1,4 +1,4 @@
-import { CaretDown } from "@phosphor-icons/react/dist/ssr";
+import { CaretDownIcon } from "@phosphor-icons/react/dist/ssr";
 import { Header, Trigger } from "@radix-ui/react-accordion";
 import React, { type ComponentPropsWithoutRef } from "react";
 
@@ -19,7 +19,7 @@ const AccordionTrigger = ({
             {...props}
         >
             {children}
-            <CaretDown className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+            <CaretDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
         </Trigger>
     </Header>
 );

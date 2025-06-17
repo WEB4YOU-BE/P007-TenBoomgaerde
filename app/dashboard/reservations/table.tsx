@@ -1,6 +1,10 @@
 "use client";
 
-import { ArrowsDownUp, Funnel, Info } from "@phosphor-icons/react/dist/ssr";
+import {
+    ArrowsDownUpIcon,
+    FunnelIcon,
+    InfoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -57,12 +61,12 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button size="icon" variant="ghost">
-                                <Funnel className="" />
+                                <FunnelIcon className="" />
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
@@ -91,10 +95,10 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                     <Button size="icon" variant="ghost">
-                        <Funnel className="" />
+                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
@@ -126,7 +130,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                 </div>
             );
@@ -155,7 +159,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                 </div>
             );
@@ -178,10 +182,10 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                     <Button size="icon" variant="ghost">
-                        <Funnel className="" />
+                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
@@ -210,10 +214,10 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                     <Button size="icon" variant="ghost">
-                        <Funnel className="" />
+                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
@@ -242,10 +246,10 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                     <Button size="icon" variant="ghost">
-                        <Funnel className="" />
+                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
@@ -268,10 +272,10 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         size="icon"
                         variant="ghost"
                     >
-                        <ArrowsDownUp className="" />
+                        <ArrowsDownUpIcon className="" />
                     </Button>
                     <Button size="icon" variant="ghost">
-                        <Funnel className="" />
+                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
@@ -282,7 +286,7 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         accessorKey: "id",
         cell: ({ row }) => (
             <Link href={`/dashboard/reservations/${row.original.id}`}>
-                <Info className="size-6" />
+                <InfoIcon className="size-6" />
             </Link>
         ),
         header: () => {

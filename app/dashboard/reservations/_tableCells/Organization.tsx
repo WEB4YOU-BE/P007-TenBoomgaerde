@@ -1,6 +1,6 @@
 "use client";
 
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -21,7 +21,7 @@ const OrganisationCell = ({ id }: OrganisationCellProps) => {
     return !isPending ? (
         `${data?.[0].name || "geen naam"}`
     ) : (
-        <SpinnerBall className="size-4 animate-spin" />
+        <SpinnerBallIcon className="size-4 animate-spin" />
     );
 };
 

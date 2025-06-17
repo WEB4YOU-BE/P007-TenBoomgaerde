@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -102,7 +102,7 @@ const UpdateCategoryForm = ({ id, initialData }: Props) => {
                         >
                             {isPendingCategory ||
                                 (isPendingUpdate && (
-                                    <SpinnerBall className="size-4 animate-spin" />
+                                    <SpinnerBallIcon className="size-4 animate-spin" />
                                 ))}
                             {!isPendingCategory &&
                                 !isPendingUpdate &&

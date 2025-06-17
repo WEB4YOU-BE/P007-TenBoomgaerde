@@ -1,18 +1,18 @@
 import type { ReactNode } from "react";
 
 import {
-    Barcode,
-    BuildingOffice,
-    CalendarCheck,
-    CalendarDots,
-    ChartPie,
-    Clock,
-    Door,
-    House,
-    Layout as LayoutIcon,
-    Tag,
-    UserCircle,
-    Users,
+    BarcodeIcon,
+    BuildingOfficeIcon,
+    CalendarCheckIcon,
+    CalendarDotsIcon,
+    ChartPieIcon,
+    ClockIcon,
+    DoorIcon,
+    HouseIcon,
+    LayoutIcon,
+    TagIcon,
+    UserCircleIcon,
+    UsersIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -44,7 +44,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: House,
+                            icon: HouseIcon,
                             label: "",
                             title: "Ten Boomgaerde",
                             url: "/",
@@ -66,19 +66,19 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: CalendarCheck,
+                            icon: CalendarCheckIcon,
                             label: "",
                             title: "Reservaties",
                             url: "/dashboard/reservations/",
                         },
                         {
-                            icon: CalendarDots,
+                            icon: CalendarDotsIcon,
                             label: "",
                             title: "Agenda",
                             url: "/dashboard/calender/",
                         },
                         {
-                            icon: ChartPie,
+                            icon: ChartPieIcon,
                             label: "",
                             title: "Analyses",
                             url: "/dashboard/analysis/",
@@ -89,13 +89,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: Door,
+                            icon: DoorIcon,
                             label: "",
                             title: "Zalen",
                             url: "/dashboard/halls/",
                         },
                         {
-                            icon: Clock,
+                            icon: ClockIcon,
                             label: "",
                             title: "Tijdsblokken",
                             url: "/dashboard/timeslots/",
@@ -106,13 +106,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: Tag,
+                            icon: TagIcon,
                             label: "",
                             title: "Categorieën",
                             url: "/dashboard/categories/",
                         },
                         {
-                            icon: Barcode,
+                            icon: BarcodeIcon,
                             label: "",
                             title: "Producten",
                             url: "/dashboard/products/",
@@ -123,13 +123,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: BuildingOffice,
+                            icon: BuildingOfficeIcon,
                             label: "",
                             title: "Organisaties",
                             url: "/dashboard/organisations/",
                         },
                         {
-                            icon: Users,
+                            icon: UsersIcon,
                             label: "",
                             title: "Gebruikers",
                             url: "/dashboard/users/",
@@ -140,7 +140,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <SidebarNavigation
                     links={[
                         {
-                            icon: UserCircle,
+                            icon: UserCircleIcon,
                             label: "",
                             title: "Account",
                             url: "/account/",

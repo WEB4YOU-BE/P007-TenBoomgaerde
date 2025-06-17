@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -56,7 +56,7 @@ const SignOutForm = () => {
                 >
                     <Button disabled={isPending} type="submit">
                         {isPending && (
-                            <SpinnerBall className="size-4 animate-spin" />
+                            <SpinnerBallIcon className="size-4 animate-spin" />
                         )}
                         {!isPending && "Log uit"}
                     </Button>

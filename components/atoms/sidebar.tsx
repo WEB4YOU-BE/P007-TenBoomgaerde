@@ -1,6 +1,6 @@
 "use client";
 
-import { Sidebar as SidebarIcon } from "@phosphor-icons/react/dist/ssr";
+import { SidebarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 import React, {

@@ -1,6 +1,6 @@
 "use client";
 
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -18,7 +18,7 @@ const CategoryCell = ({ id }: CategoryCellProps) => {
         staleTime: 1000 * 60, // 1 minute
     });
 
-    if (isPending) return <SpinnerBall className="size-4 animate-spin" />;
+    if (isPending) return <SpinnerBallIcon className="size-4 animate-spin" />;
     return data?.[0]?.name;
 };
 

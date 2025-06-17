@@ -1,6 +1,6 @@
 "use client";
 
-import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr";
 import { Command as CommandPrimitive } from "cmdk";
 import React, { ComponentPropsWithoutRef } from "react";
 
@@ -81,7 +81,7 @@ const CommandInput = ({
         className="flex h-9 items-center gap-2 border-b px-3"
         data-slot="command-input-wrapper"
     >
-        <MagnifyingGlass className="size-4 shrink-0 opacity-50" />
+        <MagnifyingGlassIcon className="size-4 shrink-0 opacity-50" />
         <CommandPrimitive.Input
             className={cn(
                 "placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",

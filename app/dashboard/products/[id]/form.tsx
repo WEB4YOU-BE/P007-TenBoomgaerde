@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useEffect } from "react";
@@ -211,7 +211,7 @@ const UpdateProductForm = ({ id, initialData }: Props) => {
                         >
                             {isPendingProduct ||
                                 (isPendingUpdate && (
-                                    <SpinnerBall className="size-4 animate-spin" />
+                                    <SpinnerBallIcon className="size-4 animate-spin" />
                                 ))}
                             {!isPendingProduct &&
                                 !isPendingUpdate &&

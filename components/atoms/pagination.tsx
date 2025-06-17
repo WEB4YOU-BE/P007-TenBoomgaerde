@@ -1,7 +1,7 @@
 import {
-    CaretLeft,
-    CaretRight,
-    DotsThree,
+    CaretLeftIcon,
+    CaretRightIcon,
+    DotsThreeIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 
@@ -48,7 +48,7 @@ const PaginationEllipsis = ({
         data-slot="pagination-ellipsis"
         {...props}
     >
-        <DotsThree className="size-4" />
+        <DotsThreeIcon className="size-4" />
         <span className="sr-only">More pages</span>
     </span>
 );
@@ -89,7 +89,7 @@ const PaginationNext = ({
         {...props}
     >
         <span className="hidden sm:block">Next</span>
-        <CaretRight />
+        <CaretRightIcon />
     </PaginationLink>
 );
 
@@ -103,7 +103,7 @@ const PaginationPrevious = ({
         size="default"
         {...props}
     >
-        <CaretLeft />
+        <CaretLeftIcon />
         <span className="hidden sm:block">Previous</span>
     </PaginationLink>
 );

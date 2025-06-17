@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, SpinnerBall } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon, SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { redirect, RedirectType } from "next/navigation";
@@ -103,7 +103,7 @@ const SignInWithEmailCredentialsForm = () => {
                     />
                     <Button disabled={isPending} type="submit">
                         {isPending && (
-                            <SpinnerBall className="size-4 animate-spin" />
+                            <SpinnerBallIcon className="size-4 animate-spin" />
                         )}
                         {!isPending && "Log in"}
                     </Button>
@@ -113,7 +113,7 @@ const SignInWithEmailCredentialsForm = () => {
                 className={buttonVariants({ variant: "outline" })}
                 href="/authentication/sign-in/"
             >
-                <ArrowLeft className="mr-4 size-4" />
+                <ArrowLeftIcon className="mr-4 size-4" />
                 Ga terug
             </Link>
         </>

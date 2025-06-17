@@ -1,4 +1,4 @@
-import { DotsThree } from "@phosphor-icons/react/dist/ssr";
+import { DotsThreeIcon } from "@phosphor-icons/react/dist/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
@@ -14,7 +14,7 @@ const BreadcrumbEllipsis = ({
         role="presentation"
         {...props}
     >
-        <DotsThree className="size-4" />
+        <DotsThreeIcon className="size-4" />
         <span className="sr-only">More</span>
     </span>
 );

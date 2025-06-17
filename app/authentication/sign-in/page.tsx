@@ -1,5 +1,9 @@
 import { SiGoogle } from "@icons-pack/react-simple-icons";
-import { Building, Envelope, Phone } from "@phosphor-icons/react/dist/ssr";
+import {
+    BuildingIcon,
+    Envelope,
+    PhoneIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
@@ -34,7 +38,7 @@ export default async function Page() {
                     )}
                     href={"/authentication/sign-in/Phone/"}
                 >
-                    <Phone className="mr-4 size-4" />
+                    <PhoneIcon className="mr-4 size-4" />
                     Telefoon
                 </Link>
             )}
@@ -58,7 +62,7 @@ export default async function Page() {
                     )}
                     href={"/authentication/sign-in/SAML/"}
                 >
-                    <Building className="mr-4 size-4" />
+                    <BuildingIcon className="mr-4 size-4" />
                     SAML
                 </Link>
             )}
