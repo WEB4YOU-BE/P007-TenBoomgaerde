@@ -3,7 +3,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarBlankIcon, SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import {
+    addYears,
+    compareAsc,
+    eachDayOfInterval,
+    format,
+    formatISO,
+    isBefore,
+    subDays,
+} from "date-fns";
 import { nlBE } from "date-fns/locale";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
@@ -46,6 +54,8 @@ import {
     SelectValue,
 } from "@/components/atoms/select";
 import { Textarea } from "@/components/atoms/textarea";
+import { Tables } from "@/types/supabase/database";
+import createClient from "@/utils/supabase/client";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
@@ -196,6 +206,337 @@ const AddReservationForm = () => {
             setIsOpenDialog(true);
     };
 
+    // =======================
+    // OLD RESERVATIONS SYSTEM
+    // =======================
+    const oldToday = new Date();
+    const oldSupabase = createClient();
+    const { data: oldReservations } = useQuery({
+        queryFn: async () =>
+            await oldSupabase
+                .from("reservations")
+                .select(
+                    `id, reservation_year, reservation_number, users(id, firstname, lastname), rooms(id), start_hour:bloks!start_hour(start_hour), end_hour:bloks!end_hour(end_hour), start_date, end_date, products(name), access_code, status, gefactureerd, organizations(name), remarks`
+                )
+                .gte(
+                    "start_date",
+                    formatISO(new Date(), { representation: "date" })
+                )
+                .order("start_date"),
+        queryKey: ["oldReservations"],
+    });
+    const { data: oldTimeframes } = useQuery({
+        queryFn: async () => await oldSupabase.from("bloks").select(),
+        queryKey: ["oldTimeframes"],
+    });
+
+    // NORMALIZE VALUES
+    const normalizedReservations = oldReservations?.data || [];
+    const sortedReservations = normalizedReservations.sort((res1, res2) =>
+        compareAsc(
+            new Date(res1.start_date ?? 0),
+            new Date(res2.start_date ?? 0)
+        )
+    );
+    const normalizedTimeframes = oldTimeframes?.data || [];
+    const sortTimeframesFn = (tf1: Tables<"bloks">, tf2: Tables<"bloks">) =>
+        compareAsc(
+            new Date(Date.parse("2000-01-01T" + tf1.start_hour)),
+            new Date(Date.parse("2000-01-01T" + tf2.start_hour))
+        );
+    const sortedTimeframes = normalizedTimeframes.sort(sortTimeframesFn);
+
+    // FILTER -- BASED ON ROOM SELECTION
+    const filteredByRoom = sortedReservations
+        .filter((reservation) => reservation.rooms?.id === selectedHall)
+        .filter((reservation) => reservation.status !== "geweigerd");
+
+    // MAPPED -- ALL TIMEFRAMES IN A GIVEN DAY, WHICH ARE NOT AVAILABLE ANYMORE
+    const listedByDate = filteredByRoom.flatMap(
+        (reservation): { date: string; timeframes: Tables<"bloks">[] }[] =>
+            eachDayOfInterval({
+                end: new Date(reservation.end_date ?? 0),
+                start: new Date(reservation.start_date ?? 0),
+            }).flatMap(
+                (
+                    reservationDate
+                ): { date: string; timeframes: Tables<"bloks">[] } => {
+                    return {
+                        date: formatISO(reservationDate, {
+                            representation: "date",
+                        }),
+                        timeframes: [],
+                    };
+                }
+            )
+    );
+    const listedAndSortedByDate = listedByDate.sort((day1, day2) =>
+        compareAsc(new Date(day1.date), new Date(day2.date))
+    );
+    const filteredByUniqueDate = listedAndSortedByDate.filter(
+        (value, index, array) =>
+            index === array.findIndex((value1) => value1.date === value.date)
+    );
+    const addedTimeFramesToDate = filteredByUniqueDate.map((date) => {
+        return {
+            date: date.date,
+            timeframes: getTimeframesFromDate(date.date),
+        };
+    });
+
+    function getTimeframesFromDate(date: string): Tables<"bloks">[] {
+        const tfs: Tables<"bloks">[] = [];
+
+        filteredByRoom.forEach((reservation) => {
+            eachDayOfInterval({
+                end: new Date(reservation.end_date ?? 0),
+                start: new Date(reservation.start_date ?? 0),
+            }).forEach((reservationDate) => {
+                const normalizedReservationDate = formatISO(reservationDate, {
+                    representation: "date",
+                });
+                if (date === normalizedReservationDate) {
+                    if (
+                        normalizedReservationDate !== reservation.start_date &&
+                        normalizedReservationDate !== reservation.end_date
+                    )
+                        tfs.push(...sortedTimeframes);
+                    if (
+                        normalizedReservationDate === reservation.start_date &&
+                        normalizedReservationDate !== reservation.end_date
+                    )
+                        tfs.push(
+                            ...sortedTimeframes.filter(
+                                (tf) =>
+                                    reservation.start_hour &&
+                                    tf.start_hour.substring(0, 2) >=
+                                        reservation.start_hour.start_hour.substring(
+                                            0,
+                                            2
+                                        )
+                            )
+                        );
+                    if (
+                        normalizedReservationDate !== reservation.start_date &&
+                        normalizedReservationDate === reservation.end_date
+                    )
+                        tfs.push(
+                            ...sortedTimeframes.filter(
+                                (tf) =>
+                                    tf.end_hour.substring(0, 2) <=
+                                    (reservation.end_hour &&
+                                    reservation.end_hour.end_hour
+                                        ? reservation.end_hour.end_hour.substring(
+                                              0,
+                                              2
+                                          )
+                                        : "")
+                            )
+                        );
+                    if (
+                        normalizedReservationDate === reservation.start_date &&
+                        normalizedReservationDate === reservation.end_date
+                    )
+                        tfs.push(
+                            ...sortedTimeframes.filter(
+                                (tf) =>
+                                    tf.start_hour.substring(0, 2) >=
+                                        (reservation.start_hour?.start_hour.substring(
+                                            0,
+                                            2
+                                        ) || "") &&
+                                    tf.end_hour.substring(0, 2) <=
+                                        (reservation.end_hour?.end_hour.substring(
+                                            0,
+                                            2
+                                        ) || "")
+                            )
+                        );
+                }
+            });
+        });
+
+        return tfs;
+    }
+
+    function timeframeDisabledStart(timeframeId: string, day?: Date): boolean {
+        if (day === undefined) return false;
+        return (
+            addedTimeFramesToDate
+                .filter(
+                    (bookedTFD) =>
+                        bookedTFD.date ===
+                        formatISO(day, { representation: "date" })
+                )
+                .filter((bookedTFD) =>
+                    bookedTFD.timeframes
+                        .map((tf) => tf.id)
+                        .includes(timeframeId)
+                ).length > 0
+        );
+    }
+
+    function findNextFirstReservationDate(): Date {
+        if (!selectedStartDate || !selectedStartHour) return new Date();
+        const fSelectedStartDate = formatISO(selectedStartDate, {
+            representation: "date",
+        });
+        const sTFObject = sortedTimeframes.find(
+            (tf) => tf.id === selectedStartHour
+        );
+        if (!sTFObject) return new Date();
+
+        const datesAfterOrEqStartDate = addedTimeFramesToDate.filter(
+            (value) => !isBefore(new Date(value.date), selectedStartDate)
+        );
+
+        if (
+            datesAfterOrEqStartDate.find((_, index) => index === 0)?.date ===
+            fSelectedStartDate
+        ) {
+            const resTFOnStartDate =
+                datesAfterOrEqStartDate.find((_, index) => index === 0)
+                    ?.timeframes || [];
+            const tfsAfterSTF = resTFOnStartDate.filter(
+                (tf) =>
+                    tf.start_hour.substring(0, 2) >
+                    sTFObject.start_hour.substring(0, 2)
+            );
+            if (tfsAfterSTF.length !== 0) return selectedStartDate;
+        }
+
+        const datesAfterStartDate = datesAfterOrEqStartDate.filter(
+            (_, index) =>
+                !(
+                    datesAfterOrEqStartDate.find((_, index) => index === 0)
+                        ?.date === fSelectedStartDate
+                ) || index !== 0
+        );
+        if (!datesAfterStartDate.find((_, index) => index === 0))
+            return addYears(oldToday, 3);
+
+        if (
+            datesAfterStartDate.find((_, index) => index === 0)!.timeframes[0]
+                .id === sortedTimeframes[0].id
+        )
+            return subDays(
+                new Date(
+                    datesAfterStartDate.find((_, index) => index === 0)!.date
+                ),
+                1
+            );
+
+        return new Date(
+            datesAfterStartDate.find((_, index) => index === 0)!.date
+        );
+    }
+
+    function isDisabledEndTF(timeframeId: string) {
+        if (!selectedStartDate) return true;
+        if (!selectedEndDate) return true;
+        const { fSelectedEndDate, fSelectedStartDate } = {
+            fSelectedEndDate: formatISO(selectedEndDate, {
+                representation: "date",
+            }),
+            fSelectedStartDate: formatISO(selectedStartDate, {
+                representation: "date",
+            }),
+        };
+        if (!selectedStartHour) return true;
+        const sTFObject = sortedTimeframes.find(
+            (tf) => tf.id === selectedStartHour
+        );
+        if (!sTFObject) return true;
+
+        if (fSelectedStartDate === fSelectedEndDate) {
+            const resTFOnStartDate =
+                addedTimeFramesToDate.find(
+                    (date) => date.date === fSelectedStartDate
+                )?.timeframes || [];
+
+            const tfsAfterSTF = resTFOnStartDate.filter(
+                (tf) =>
+                    tf.start_hour.substring(0, 2) >
+                    sTFObject.start_hour.substring(0, 2)
+            );
+            const firstResTFAfterSTF = tfsAfterSTF.find(
+                (_, index) => index === 0
+            );
+
+            const availableAfterSTF = sortedTimeframes.filter(
+                (value) =>
+                    value.start_hour.substring(0, 2) >
+                        sTFObject.start_hour.substring(0, 2) &&
+                    (firstResTFAfterSTF === undefined ||
+                        value.start_hour.substring(0, 2) <
+                            firstResTFAfterSTF.start_hour.substring(0, 2))
+            );
+
+            const availableTFs = [];
+            availableTFs.push(sTFObject);
+            availableTFs.push(...availableAfterSTF);
+
+            if (availableTFs.some((tf) => tf.id === timeframeId)) return false;
+        }
+
+        if (fSelectedStartDate !== fSelectedEndDate) {
+            const resTFOnEndDate =
+                addedTimeFramesToDate.find(
+                    (date) => date.date === fSelectedEndDate
+                )?.timeframes || [];
+
+            const firstResTF = resTFOnEndDate.find((_, index) => index === 0);
+            const availableTFs = sortedTimeframes.filter(
+                (value) =>
+                    firstResTF === undefined ||
+                    value.start_hour.substring(0, 2) <
+                        firstResTF.start_hour.substring(0, 2)
+            );
+
+            if (availableTFs.some((tf) => tf.id === timeframeId)) return false;
+        }
+
+        return true;
+    }
+
+    // MAPPED -- Not available days -- start day
+    const notAvailableDays = addedTimeFramesToDate
+        .filter((date) => date.timeframes.length === sortedTimeframes.length)
+        .map((date) => new Date(date.date));
+    // MAPPED -- Partially available days -- start day
+    const partiallyAvailableDays = addedTimeFramesToDate
+        .filter(
+            (date) =>
+                date.timeframes.length < sortedTimeframes.length &&
+                date.timeframes.length > 0
+        )
+        .map((date) => new Date(date.date));
+    // MAPPED -- Fully available days -- start day until 5 years from today
+    const fullyAvailableDays: Date[] = eachDayOfInterval({
+        end: addYears(oldToday, 3),
+        start: oldToday,
+    }).filter(
+        (date) =>
+            !partiallyAvailableDays
+                .map((date) => formatISO(date, { representation: "date" }))
+                .includes(formatISO(date, { representation: "date" })) &&
+            !notAvailableDays
+                .map((date) => formatISO(date, { representation: "date" }))
+                .includes(formatISO(date, { representation: "date" }))
+    );
+
+    // Add classnames to the correct days
+    const modifiedClassnames = {
+        available: "text-green-700 bg-green-300",
+        notAvailable: "text-red-700 bg-red-300",
+        partiallyAvailable: "text-amber-700 bg-amber-300",
+    };
+    const modifierDays = {
+        available: fullyAvailableDays,
+        notAvailable: notAvailableDays,
+        partiallyAvailable: partiallyAvailableDays,
+    };
+
     return (
         <>
             <Form {...form}>
@@ -290,8 +631,18 @@ const AddReservationForm = () => {
                                         className="w-auto p-0"
                                     >
                                         <Calendar
+                                            disabled={notAvailableDays}
+                                            fixedWeeks
+                                            hidden={{
+                                                after: addYears(oldToday, 3),
+                                                before: oldToday,
+                                            }}
                                             locale={nlBE}
                                             mode="single"
+                                            modifiers={modifierDays}
+                                            modifiersClassNames={
+                                                modifiedClassnames
+                                            }
                                             onSelect={field.onChange}
                                             selected={
                                                 field.value
@@ -334,7 +685,11 @@ const AddReservationForm = () => {
                                                 <FormItem>
                                                     <FormControl>
                                                         <RadioGroupItem
-                                                            className="hidden"
+                                                            className="peer hidden"
+                                                            disabled={timeframeDisabledStart(
+                                                                timeframe.id,
+                                                                selectedStartDate
+                                                            )}
                                                             value={timeframe.id}
                                                         />
                                                     </FormControl>
@@ -351,7 +706,8 @@ const AddReservationForm = () => {
                                                                 timeframe.id
                                                                 ? "border-green-400 bg-green-100"
                                                                 : undefined,
-                                                            "w-full"
+                                                            "w-full",
+                                                            "peer-disabled:invisible"
                                                         )}
                                                     >
                                                         {`${timeframe.start_hour.split(":")[0]}:${timeframe.start_hour.split(":")[1]}`}{" "}
@@ -400,8 +756,20 @@ const AddReservationForm = () => {
                                         className="w-auto p-0"
                                     >
                                         <Calendar
+                                            disabled={notAvailableDays}
+                                            fixedWeeks
+                                            hidden={{
+                                                after:
+                                                    findNextFirstReservationDate() ||
+                                                    addYears(oldToday, 3),
+                                                before: selectedStartDate,
+                                            }}
                                             locale={nlBE}
                                             mode="single"
+                                            modifiers={modifierDays}
+                                            modifiersClassNames={
+                                                modifiedClassnames
+                                            }
                                             onSelect={field.onChange}
                                             selected={
                                                 field.value
@@ -441,10 +809,10 @@ const AddReservationForm = () => {
                                                 <FormItem>
                                                     <FormControl>
                                                         <RadioGroupItem
-                                                            className="hidden"
-                                                            disabled={
-                                                                isDisabledEndHour
-                                                            }
+                                                            className="peer hidden"
+                                                            disabled={isDisabledEndTF(
+                                                                timeframe.id
+                                                            )}
                                                             value={timeframe.id}
                                                         />
                                                     </FormControl>
@@ -461,7 +829,8 @@ const AddReservationForm = () => {
                                                                 timeframe.id
                                                                 ? "border-green-400 bg-green-100"
                                                                 : undefined,
-                                                            "w-full"
+                                                            "w-full",
+                                                            "peer-disabled:invisible"
                                                         )}
                                                     >
                                                         {`${timeframe.end_hour.split(":")[0]}:${timeframe.end_hour.split(":")[1]}`}{" "}
