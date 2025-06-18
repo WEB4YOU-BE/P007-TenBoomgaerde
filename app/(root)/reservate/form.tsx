@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarBlankIcon, SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { compareAsc, eachDayOfInterval, format } from "date-fns";
+import { format } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
@@ -53,7 +53,7 @@ import {
     addReservation,
     fetchAllHalls,
     fetchAllOrganizations,
-    fetchAllReservations,
+    // fetchAllReservations,
     fetchAllTimeframes,
 } from "./actions";
 
@@ -107,6 +107,13 @@ const AddReservationForm = () => {
         retry: false,
         staleTime: 1000 * 60, // 1 minute
     });
+    // const { data: reservations, isPending: isPendingReservations } = useQuery({
+    //     networkMode: "online",
+    //     queryFn: () => fetchAllReservations(),
+    //     queryKey: ["reservations"],
+    //     retry: false,
+    //     staleTime: 1000 * 60, // 1 minute
+    // });
 
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
         mutate({
@@ -174,79 +181,6 @@ const AddReservationForm = () => {
         () => !selectedEndDate || isDisabledEndDate,
         [selectedEndDate, isDisabledEndDate]
     );
-
-    const { data: reservations, isPending: isPendingReservations } = useQuery({
-        networkMode: "online",
-        queryFn: () => fetchAllReservations(),
-        queryKey: ["reservations"],
-        retry: false,
-        staleTime: 1000 * 60, // 1 minute
-    });
-    const reservationsByHall = useMemo(() => {
-        if (reservations && !isPendingReservations)
-            return reservations
-                .filter((reservation) => reservation.room_id === selectedHall)
-                .filter((reservation) => reservation.status !== "geweigerd");
-        return [];
-    }, [reservations, isPendingReservations, selectedHall]);
-
-    const datesWithReservations = useMemo(() => {
-        if (reservationsByHall.length === 0) return [];
-        return reservationsByHall.flatMap((reservation) =>
-            eachDayOfInterval({
-                end: reservation.end_date
-                    ? new Date(reservation.end_date)
-                    : new Date(),
-                start: reservation.start_date
-                    ? new Date(reservation.start_date)
-                    : new Date(),
-            })
-        );
-    }, [reservationsByHall]);
-    const uniqueDatesWithReservations = useMemo(() => {
-        if (datesWithReservations.length === 0) return [];
-        return Array.from(new Set(datesWithReservations));
-    }, [datesWithReservations]);
-    const datesWithReservationsSortedByDate = useMemo(() => {
-        if (uniqueDatesWithReservations.length === 0) return [];
-        return uniqueDatesWithReservations.sort((a, b) => compareAsc(a, b));
-    }, [uniqueDatesWithReservations]);
-
-    // const unavailableTimeframesPerDate = useMemo(() => {
-    //     if (datesWithReservationsSortedByDate.length === 0) return [];
-    //     return datesWithReservationsSortedByDate.map((date) => {
-    //         const timeframes: string[] = [];
-    //         reservationsByHall.forEach((reservation) => {
-    //             eachDayOfInterval({
-    //                 end: reservation.end_date ? new Date(reservation.end_date) : new Date(),
-    //                 start: reservation.start_date ? new Date(reservation.start_date) : new Date(),
-    //             }).forEach((reservationDate) => {
-    //                 const normalizedReservationDate = format(reservationDate, "yyyy-MM-dd");
-    //                 if (format(date, "yyyy-MM-dd") === normalizedReservationDate) {
-    //                     if (normalizedReservationDate !== reservation.start_date && normalizedReservationDate !== reservation.end_date) {
-    //                         timeframes.push(...timeframes);
-    //                     }
-    //                     if (normalizedReservationDate === reservation.start_date && normalizedReservationDate !== reservation.end_date) {
-    //                         timeframes.push(...timeframes.filter((tf) => tf.start_hour.substring(0, 2) >= reservation.start_hour.substring(0, 2)));
-    //                     }
-    //                     if (normalizedReservationDate !== reservation.start_date && normalizedReservationDate === reservation.end_date) {
-    //                         timeframes.push(...timeframes.filter((tf) => tf.end_hour.substring(0, 2) <= reservation.end_hour.substring(0, 2)));
-    //                     }
-    //                     if (normalizedReservationDate === reservation.start_date && normalizedReservationDate === reservation.end_date) {
-    //                         timeframes.push(...timeframes.filter((tf) => tf.start_hour.substring(0, 2) >= reservation.start_hour.substring(0, 2) && tf.end_hour.substring(0, 2) <= reservation.end_hour.substring(0, 2)));
-    //                     }
-    //                 }
-    //             });
-    //         });
-    //         return { date, timeframes };
-    //     });
-    // }, [datesWithReservationsSortedByDate, reservationsByHall]);
-
-    const unavailableDates = useMemo(() => {
-        if (datesWithReservationsSortedByDate.length === 0) return [];
-        // Filter out the dates where NO timeframe is available
-        return datesWithReservationsSortedByDate;
-    }, [datesWithReservationsSortedByDate]);
 
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const onOpenModal = async () => {
@@ -318,14 +252,6 @@ const AddReservationForm = () => {
                                         ))}
                                     </RadioGroup>
                                     <FormMessage />
-                                    {/* <FormDescription className="text-balance">
-                                        Voor een feestje is het verplicht om de
-                                        grote zaal en kleine zaal tesamen te
-                                        reserveren. Binnenkort kunnen meerdere
-                                        zalen tegelijk worden geselecteerd. Voor
-                                        nu kan je zelf twee nieuwe reserveringen
-                                        maken.
-                                    </FormDescription> */}
                                 </FormItem>
                             )}
                         />
@@ -364,7 +290,7 @@ const AddReservationForm = () => {
                                         className="w-auto p-0"
                                     >
                                         <Calendar
-                                            disabled={unavailableDates}
+                                            locale={nlBE}
                                             mode="single"
                                             onSelect={field.onChange}
                                             selected={
@@ -474,6 +400,7 @@ const AddReservationForm = () => {
                                         className="w-auto p-0"
                                     >
                                         <Calendar
+                                            locale={nlBE}
                                             mode="single"
                                             onSelect={field.onChange}
                                             selected={

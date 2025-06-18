@@ -1,5 +1,5 @@
 import { Slot } from "@radix-ui/react-slot";
-import React, { type ComponentPropsWithoutRef, type FC } from "react";
+import React, { type ComponentPropsWithRef, type FC } from "react";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants, {
@@ -8,7 +8,7 @@ import buttonVariants, {
 
 interface ButtonProps
     extends ButtonVariantProps,
-        ComponentPropsWithoutRef<"button"> {
+        ComponentPropsWithRef<"button"> {
     asChild?: boolean;
 }
 
