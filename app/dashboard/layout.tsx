@@ -4,7 +4,6 @@ import {
     BarcodeIcon,
     BuildingOfficeIcon,
     CalendarCheckIcon,
-    CalendarDotsIcon,
     ChartPieIcon,
     ClockIcon,
     DoorIcon,
@@ -70,12 +69,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
                             label: "",
                             title: "Reservaties",
                             url: "/dashboard/reservations/",
-                        },
-                        {
-                            icon: CalendarDotsIcon,
-                            label: "",
-                            title: "Agenda",
-                            url: "/dashboard/calender/",
                         },
                         {
                             icon: ChartPieIcon,
