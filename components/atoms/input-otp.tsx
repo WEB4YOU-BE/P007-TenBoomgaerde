@@ -1,6 +1,6 @@
 "use client";
 
-import { MinusIcon } from "@phosphor-icons/react/dist/ssr";
+import { MinusIcon } from "@phosphor-icons/react/ssr";
 import { OTPInput, OTPInputContext } from "input-otp";
 import React, { ComponentPropsWithoutRef, useContext } from "react";
 

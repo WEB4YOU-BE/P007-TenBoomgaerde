@@ -1,6 +1,6 @@
 "use client";
 
-import { DotsSixVerticalIcon } from "@phosphor-icons/react/dist/ssr";
+import { DotsSixVerticalIcon } from "@phosphor-icons/react/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 import * as ResizablePrimitive from "react-resizable-panels";
 

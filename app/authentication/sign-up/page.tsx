@@ -3,7 +3,7 @@ import {
     BuildingIcon,
     EnvelopeIcon,
     PhoneIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import { Metadata, NextPage } from "next";
 import Link from "next/link";
 import React from "react";

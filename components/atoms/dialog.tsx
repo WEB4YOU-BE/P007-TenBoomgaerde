@@ -1,6 +1,6 @@
 "use client";
 
-import { XIcon } from "@phosphor-icons/react/dist/ssr";
+import { XIcon } from "@phosphor-icons/react/ssr";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import React, { ComponentPropsWithoutRef } from "react";
 

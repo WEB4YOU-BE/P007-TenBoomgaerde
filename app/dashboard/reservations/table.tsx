@@ -4,7 +4,7 @@ import {
     ArrowsDownUpIcon,
     FunnelIcon,
     InfoIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import {
     ColumnDef,
     ColumnFiltersState,

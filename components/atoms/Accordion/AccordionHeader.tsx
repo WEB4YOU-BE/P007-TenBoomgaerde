@@ -1,4 +1,4 @@
-import { CaretDownIcon } from "@phosphor-icons/react/dist/ssr";
+import { CaretDownIcon } from "@phosphor-icons/react/ssr";
 import { Header, Trigger } from "@radix-ui/react-accordion";
 import React, { type ComponentPropsWithoutRef } from "react";
 

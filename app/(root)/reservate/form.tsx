@@ -1,10 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    CalendarBlankIcon,
-    SpinnerBallIcon,
-} from "@phosphor-icons/react/dist/ssr";
+import { CalendarBlankIcon, SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { compareAsc, eachDayOfInterval, format } from "date-fns";
 import { nlBE } from "date-fns/locale";

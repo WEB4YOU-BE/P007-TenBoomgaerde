@@ -2,7 +2,7 @@ import {
     CaretLeftIcon,
     CaretRightIcon,
     DotsThreeIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 
 import Button from "@/components/atoms/Button";

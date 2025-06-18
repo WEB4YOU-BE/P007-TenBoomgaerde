@@ -4,7 +4,7 @@ import {
     CaretRightIcon,
     CheckIcon,
     CircleIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import React, { type ComponentPropsWithoutRef } from "react";
 

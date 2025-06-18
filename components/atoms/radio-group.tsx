@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleIcon } from "@phosphor-icons/react/dist/ssr";
+import { CircleIcon } from "@phosphor-icons/react/ssr";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import React, { ComponentPropsWithoutRef } from "react";
 

@@ -1,4 +1,4 @@
-import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon } from "@phosphor-icons/react/ssr";
 import React, { type ComponentPropsWithoutRef, type FC } from "react";
 
 import Button from "@/components/atoms/Button";

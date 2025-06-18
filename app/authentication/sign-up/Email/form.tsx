@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeftIcon, SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon, SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { redirect } from "next/navigation";

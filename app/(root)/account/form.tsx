@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { type User } from "@supabase/supabase-js";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect } from "react";

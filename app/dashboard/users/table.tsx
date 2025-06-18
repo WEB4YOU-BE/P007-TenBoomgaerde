@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowsDownUpIcon, InfoIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsDownUpIcon, InfoIcon } from "@phosphor-icons/react/ssr";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import React from "react";

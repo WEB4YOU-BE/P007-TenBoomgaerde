@@ -5,7 +5,7 @@ import {
     CaretLeftIcon,
     CaretRightIcon,
     CaretUpIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import React, { memo, useMemo } from "react";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";

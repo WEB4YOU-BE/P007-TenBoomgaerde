@@ -4,7 +4,7 @@ import {
     CaretRightIcon,
     CheckIcon,
     CircleIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import React, { ComponentPropsWithoutRef } from "react";
 

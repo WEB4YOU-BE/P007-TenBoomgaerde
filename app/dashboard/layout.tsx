@@ -13,7 +13,7 @@ import {
     TagIcon,
     UserCircleIcon,
     UsersIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";

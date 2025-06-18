@@ -3,6 +3,7 @@ import VercelToolbar from "@vercel/toolbar/plugins/next";
 
 /** @type {import("next").NextConfig} */
 const config = {
+    experimental: { optimizePackageImports: ["@phosphor-icons/react/ssr"] },
     trailingSlash: true,
     turbopack: {},
 };

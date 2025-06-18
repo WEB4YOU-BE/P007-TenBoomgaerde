@@ -4,7 +4,7 @@ import {
     CaretDownIcon,
     CaretUpIcon,
     CheckIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import React, { type ComponentPropsWithoutRef } from "react";
 

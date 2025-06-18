@@ -1,6 +1,6 @@
 "use client";
 
-import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 

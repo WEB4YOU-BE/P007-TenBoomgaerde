@@ -5,7 +5,7 @@ import {
     ClockUserIcon,
     SpinnerBallIcon,
     XCircleIcon,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react/ssr";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 

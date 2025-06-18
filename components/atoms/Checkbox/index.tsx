@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon } from "@phosphor-icons/react/dist/ssr";
+import { CheckIcon } from "@phosphor-icons/react/ssr";
 import { Indicator, Root } from "@radix-ui/react-checkbox";
 import React, { type ComponentPropsWithoutRef, type FC } from "react";
 

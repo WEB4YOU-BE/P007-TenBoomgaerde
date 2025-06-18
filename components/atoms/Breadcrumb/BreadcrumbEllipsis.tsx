@@ -1,4 +1,4 @@
-import { DotsThreeIcon } from "@phosphor-icons/react/dist/ssr";
+import { DotsThreeIcon } from "@phosphor-icons/react/ssr";
 import React, { ComponentPropsWithoutRef } from "react";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
