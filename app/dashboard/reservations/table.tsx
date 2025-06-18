@@ -1,10 +1,6 @@
 "use client";
 
-import {
-    ArrowsDownUpIcon,
-    FunnelIcon,
-    InfoIcon,
-} from "@phosphor-icons/react/ssr";
+import { ArrowsDownUpIcon, InfoIcon } from "@phosphor-icons/react/ssr";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -20,12 +16,6 @@ import { useState } from "react";
 import React from "react";
 
 import Button from "@/components/atoms/Button";
-import { Input } from "@/components/atoms/input";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/atoms/popover";
 import {
     Table,
     TableBody,
@@ -61,16 +51,6 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     >
                         <ArrowsDownUpIcon className="" />
                     </Button>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button size="icon" variant="ghost">
-                                <FunnelIcon className="" />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <Input placeholder="Filter reservatienummers" />
-                        </PopoverContent>
-                    </Popover>
                 </div>
             );
         },
@@ -94,9 +74,6 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         variant="ghost"
                     >
                         <ArrowsDownUpIcon className="" />
-                    </Button>
-                    <Button size="icon" variant="ghost">
-                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
@@ -182,9 +159,6 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     >
                         <ArrowsDownUpIcon className="" />
                     </Button>
-                    <Button size="icon" variant="ghost">
-                        <FunnelIcon className="" />
-                    </Button>
                 </div>
             );
         },
@@ -213,9 +187,6 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         variant="ghost"
                     >
                         <ArrowsDownUpIcon className="" />
-                    </Button>
-                    <Button size="icon" variant="ghost">
-                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
@@ -246,9 +217,6 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                     >
                         <ArrowsDownUpIcon className="" />
                     </Button>
-                    <Button size="icon" variant="ghost">
-                        <FunnelIcon className="" />
-                    </Button>
                 </div>
             );
         },
@@ -271,9 +239,6 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
                         variant="ghost"
                     >
                         <ArrowsDownUpIcon className="" />
-                    </Button>
-                    <Button size="icon" variant="ghost">
-                        <FunnelIcon className="" />
                     </Button>
                 </div>
             );
