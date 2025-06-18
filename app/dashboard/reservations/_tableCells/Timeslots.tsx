@@ -27,10 +27,28 @@ const TimeslotsCell = ({ endHourID, startHourID }: TimeslotsCellProps) => {
         staleTime: 1000 * 60, // 1 minute
     });
 
-    return !(isPendingStartHour || isPendingEndHour) ? (
-        `${start_hour?.[0].start_hour}${start_hour?.[0].start_hour === end_hour?.[0].end_hour ? "" : " tot " + end_hour?.[0].end_hour}`
-    ) : (
-        <SpinnerBallIcon className="size-4 animate-spin" />
+    if (isPendingStartHour || isPendingEndHour) {
+        return <SpinnerBallIcon className="size-4 animate-spin" />;
+    }
+
+    const start =
+        start_hour && Array.isArray(start_hour) && start_hour.length > 0
+            ? start_hour[0].start_hour
+            : "";
+    const end =
+        end_hour && Array.isArray(end_hour) && end_hour.length > 0
+            ? end_hour[0].end_hour
+            : "";
+
+    if (!start && !end) {
+        return null;
+    }
+
+    return (
+        <>
+            {start}
+            {start === end || !end ? "" : " tot " + end}
+        </>
     );
 };
 

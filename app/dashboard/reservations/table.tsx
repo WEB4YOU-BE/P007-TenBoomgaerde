@@ -43,12 +43,10 @@ import TimeslotsCell from "./_tableCells/Timeslots";
 
 export const columns: ColumnDef<Tables<"reservations">>[] = [
     {
-        accessorFn: ({
-            reservation_number: number,
-            reservation_year: year,
-        }) => {
-            if (!year || !number) return "Geen geldige nummer";
-            return `${year}-${number}`;
+        accessorFn: ({ reservation_number, reservation_year }) => {
+            if (!reservation_year || !reservation_number)
+                return "Geen geldige nummer";
+            return `${reservation_year.substring(0, 4)}-${reservation_number}`;
         },
         header: ({ column }) => {
             return (

@@ -10,7 +10,7 @@ import Card, {
 } from "@/components/atoms/Card";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-import { getHallById } from "./actions";
+import { getReservationById } from "./actions";
 import CurrentState from "./currentState";
 import UpdateCategoryForm from "./form";
 
@@ -22,24 +22,24 @@ export default async function Page({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    const hall = await getHallById(id);
+    const reservation = await getReservationById(id);
 
     return (
-        <div className="flex flex-row gap-2 h-full">
+        <div className="flex flex-row gap-2 min-h-full pb-2">
             <Card>
                 <CardHeader>
                     <CardTitle>Huidige versie</CardTitle>
                     <CardDescription>
-                        Dit is de huidige versie van de zaal.
+                        Dit is de huidige versie van de reservatie.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                    <CurrentState id={id} initialData={hall} />
+                    <CurrentState id={id} initialData={reservation} />
                 </CardContent>
                 <CardFooter>
                     <Link
                         className={buttonVariants({ variant: "outline" })}
-                        href="/dashboard/halls"
+                        href="/dashboard/reservations"
                     >
                         Terug
                     </Link>
@@ -53,7 +53,7 @@ export default async function Page({
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <UpdateCategoryForm id={id} initialData={hall} />
+                    <UpdateCategoryForm id={id} initialData={reservation} />
                 </CardContent>
             </Card>
         </div>
