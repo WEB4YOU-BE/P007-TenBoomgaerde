@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import Alert from "@/components/atoms/Alert";
+import Alert, { AlertDescription, AlertTitle } from "@/components/atoms/Alert";
 import Button from "@/components/atoms/Button";
 import Calendar from "@/components/atoms/Calendar";
 import Checkbox from "@/components/atoms/Checkbox";
@@ -318,14 +318,14 @@ const AddReservationForm = () => {
                                         ))}
                                     </RadioGroup>
                                     <FormMessage />
-                                    <FormDescription className="text-balance">
+                                    {/* <FormDescription className="text-balance">
                                         Voor een feestje is het verplicht om de
                                         grote zaal en kleine zaal tesamen te
                                         reserveren. Binnenkort kunnen meerdere
                                         zalen tegelijk worden geselecteerd. Voor
                                         nu kan je zelf twee nieuwe reserveringen
                                         maken.
-                                    </FormDescription>
+                                    </FormDescription> */}
                                 </FormItem>
                             )}
                         />
@@ -625,9 +625,29 @@ const AddReservationForm = () => {
                                 )}
                             />
                             <Alert variant={"destructive"}>
-                                Let op, kijk goed bovenstaande gegevens na. Je
-                                reservatie is hierna definitief, en kan niet
-                                meer aangepast worden.
+                                <AlertTitle>
+                                    Let op, je reservering is definitief na
+                                    indienen.
+                                </AlertTitle>
+                                <AlertDescription>
+                                    <p>
+                                        Kijk goed bovenstaande gegevens na. Je
+                                        reservatie kan hierna niet meer
+                                        aangepast worden.
+                                    </p>
+                                    <ul className="list-inside list-disc text-sm">
+                                        <li>
+                                            Controleer de gekozen zaal en data
+                                        </li>
+                                        <li>
+                                            Controleer het start- en einduur
+                                        </li>
+                                        <li>
+                                            Controleer je opmerkingen en
+                                            organisatie
+                                        </li>
+                                    </ul>
+                                </AlertDescription>
                             </Alert>
                             <FormField
                                 control={form.control}

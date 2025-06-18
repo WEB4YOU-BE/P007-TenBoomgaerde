@@ -47,7 +47,7 @@ export default async function Page({
             </Card>
             <Card className="grow">
                 <CardHeader>
-                    <CardTitle>Zaal aanpassen</CardTitle>
+                    <CardTitle>Reservering aanpassen</CardTitle>
                     <CardDescription>
                         Vul de nieuwe gegevens van deze zaal in.
                     </CardDescription>
