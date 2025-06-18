@@ -7,7 +7,8 @@ export const getTimeslotById = async (id: string) => {
     const { data, error } = await supabase
         .from("bloks")
         .select("*")
-        .eq("id", id);
+        .eq("id", id)
+        .single();
     if (error) throw error;
     return data;
 };
@@ -28,7 +29,8 @@ export const getHallById = async (id: string) => {
     const { data, error } = await supabase
         .from("rooms")
         .select("*")
-        .eq("id", id);
+        .eq("id", id)
+        .single();
     if (error) throw error;
     return data;
 };

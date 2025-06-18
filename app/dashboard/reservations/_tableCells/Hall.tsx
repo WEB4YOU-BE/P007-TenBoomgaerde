@@ -19,7 +19,7 @@ const HallCell = ({ id }: HallCellProps) => {
     });
 
     return !isPending ? (
-        `${data?.[0].name || "geen naam"}`
+        `${data?.name || "geen naam"}`
     ) : (
         <SpinnerBallIcon className="size-4 animate-spin" />
     );
