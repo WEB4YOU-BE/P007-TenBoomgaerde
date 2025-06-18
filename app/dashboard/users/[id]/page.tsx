@@ -1,53 +1,46 @@
-import { Metadata } from "next";
+import type { NextPage } from "next";
+
 import Link from "next/link";
 import React from "react";
 
-import Card, {
+import {
     CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/atoms/Card";
+import Card from "@/components/atoms/Card/Card";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-import { getProductById } from "./actions";
+import { getUserById } from "./actions";
 import CurrentState from "./currentState";
-import UpdateProductForm from "./form";
-
-export const metadata: Metadata = {
-    alternates: {
-        canonical: "/dashboard/products/",
-    },
-    title: "Producten",
-};
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({
-    params,
-}: {
+interface PageProps {
     params: Promise<{ id: string }>;
-}) {
+}
+const Page: NextPage<PageProps> = async ({ params }: PageProps) => {
     const { id } = await params;
-    const product = await getProductById(id);
+    const user = await getUserById(id);
 
     return (
-        <div className="flex flex-row gap-2 h-full">
+        <div className="flex flex-row gap-2 h-fit pb-2">
             <Card className="grow">
                 <CardHeader>
                     <CardTitle>Huidige versie</CardTitle>
                     <CardDescription>
-                        Dit is de huidige versie van het product.
+                        Dit is de huidige versie van de gebruiker.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                    <CurrentState id={id} initialData={product} />
+                    <CurrentState id={id} initialData={user} />
                 </CardContent>
                 <CardFooter>
                     <Link
                         className={buttonVariants({ variant: "outline" })}
-                        href="/dashboard/products"
+                        href="/dashboard/users"
                     >
                         Terug
                     </Link>
@@ -55,15 +48,17 @@ export default async function Page({
             </Card>
             <Card className="grow">
                 <CardHeader>
-                    <CardTitle>Product aanpassen</CardTitle>
+                    <CardTitle>Gebruiker aanpassen</CardTitle>
                     <CardDescription>
-                        Vul de nieuwe gegevens van deze zaal in.
+                        Vul de nieuwe gegevens van deze gebruiker in.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <UpdateProductForm id={id} initialData={product} />
+                    {/* <UpdateCategoryForm id={id} initialData={reservation} /> */}
                 </CardContent>
             </Card>
         </div>
     );
-}
+};
+
+export default Page;

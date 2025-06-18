@@ -26,7 +26,7 @@ export default async function Page({
 
     return (
         <div className="flex flex-row gap-2 min-h-full pb-2">
-            <Card>
+            <Card className="grow">
                 <CardHeader>
                     <CardTitle>Huidige versie</CardTitle>
                     <CardDescription>
@@ -45,7 +45,7 @@ export default async function Page({
                     </Link>
                 </CardFooter>
             </Card>
-            <Card>
+            <Card className="grow">
                 <CardHeader>
                     <CardTitle>Zaal aanpassen</CardTitle>
                     <CardDescription>
