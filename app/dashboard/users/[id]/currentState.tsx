@@ -18,7 +18,7 @@ const CurrentState: FC<CurrentStateProps> = ({ id, initialData }) => {
         isPending,
         isRefetching,
     } = useQuery({
-        placeholderData: initialData,
+        initialData,
         queryFn: () => getUserById(id),
         queryKey: ["user", id],
         retry: true,
@@ -91,7 +91,7 @@ const CurrentState: FC<CurrentStateProps> = ({ id, initialData }) => {
                 </span>
             </div>
             <div className="flex flex-col gap-2">
-                <span className="text-sm font-semibold">Is Admin</span>
+                <span className="text-sm font-semibold">Is administrator</span>
                 <span className="text-sm">
                     {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />

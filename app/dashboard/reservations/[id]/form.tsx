@@ -97,7 +97,7 @@ const UpdateReservationForm = ({ id, initialData }: Props) => {
             });
         },
         onSuccess: () => {
-            toast.success("De zaal is bijgewerkt!");
+            toast.success("De reservatie is bijgewerkt!");
             void queryClient.invalidateQueries({
                 queryKey: ["reservation", id],
             });
