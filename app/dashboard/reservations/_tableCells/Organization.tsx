@@ -19,7 +19,7 @@ const OrganisationCell = ({ id }: OrganisationCellProps) => {
     });
 
     return !isPending ? (
-        `${data?.[0].name || "geen naam"}`
+        `${data?.[0]?.name || "geen naam"}`
     ) : (
         <SpinnerBallIcon className="size-4 animate-spin" />
     );

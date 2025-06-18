@@ -19,7 +19,7 @@ const RenterCell = ({ id }: RenterCellProps) => {
     });
 
     return !isPending ? (
-        `${data?.[0]?.firstname || "(geen voornaam)"} ${data?.[0]?.lastname || "(geen achternaam)"}`
+        `${data?.firstname || "(geen voornaam)"} ${data?.lastname || "(geen achternaam)"}`
     ) : (
         <SpinnerBallIcon className="size-4 animate-spin" />
     );

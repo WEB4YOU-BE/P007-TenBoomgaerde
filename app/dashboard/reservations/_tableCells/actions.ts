@@ -17,7 +17,8 @@ export const getRenterById = async (id: string) => {
     const { data, error } = await supabase
         .from("users")
         .select("*")
-        .eq("id", id);
+        .eq("id", id)
+        .single();
     if (error) throw error;
     return data;
 };
