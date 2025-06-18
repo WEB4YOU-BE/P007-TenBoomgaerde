@@ -41,7 +41,7 @@ const CurrentState = ({ id, initialData }: Props) => {
                 </span>
             </div>
             <div className="flex flex-col gap-2">
-                <span className="text-sm font-semibold">Naam</span>
+                <span className="text-sm font-semibold">BTW-nummer</span>
                 <span className="text-sm">
                     {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
