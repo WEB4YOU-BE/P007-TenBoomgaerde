@@ -31,7 +31,7 @@ const DesktopHeader = forwardRef<HTMLDivElement, DesktopHeaderProps>(
                                     className={buttonVariants({
                                         variant: item.isPrimairy
                                             ? "default"
-                                            : "secondary",
+                                            : "outline",
                                     })}
                                     href={item.href}
                                     key={index}
@@ -46,7 +46,7 @@ const DesktopHeader = forwardRef<HTMLDivElement, DesktopHeaderProps>(
                                     className={buttonVariants({
                                         variant: item.isPrimairy
                                             ? "default"
-                                            : "secondary",
+                                            : "outline",
                                     })}
                                     href={item.href}
                                     key={index}

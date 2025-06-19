@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CopyrightIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { forwardRef, HTMLAttributes } from "react";
 import React from "react";
@@ -30,22 +30,21 @@ const DesktopFooter = forwardRef<HTMLDivElement, DesktopFooterProps>(
             <div className={cn("w-screen", className)} ref={ref} {...props}>
                 <div className="container max-w-(--breakpoint-lg) p-2">
                     <div className="flex w-full flex-row gap-2 rounded-lg bg-secondary p-2 text-secondary-foreground">
-                        <Image
-                            alt={"Logo"}
-                            className={
-                                "aspect-square h-[40px] w-[40px] rounded-lg"
-                            }
-                            height={77}
-                            src={"/images/Logo Ten Boomgaerde.PNG"}
-                            width={77}
-                        />
+                        <Link
+                            className={buttonVariants({ variant: "outline" })}
+                            href="https://www.web-4-you.be"
+                            target="_blank"
+                        >
+                            <CopyrightIcon />
+                        </Link>
+
                         <nav className="me-auto flex flex-row gap-2">
                             {leftItems.map((item, index) => (
                                 <Link
                                     className={buttonVariants({
                                         variant: item.isPrimairy
                                             ? "default"
-                                            : "secondary",
+                                            : "outline",
                                     })}
                                     href={item.href}
                                     key={index}
@@ -60,7 +59,7 @@ const DesktopFooter = forwardRef<HTMLDivElement, DesktopFooterProps>(
                                     className={buttonVariants({
                                         variant: item.isPrimairy
                                             ? "default"
-                                            : "secondary",
+                                            : "outline",
                                     })}
                                     href={item.href}
                                     key={index}
