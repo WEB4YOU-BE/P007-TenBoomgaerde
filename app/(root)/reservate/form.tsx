@@ -14,7 +14,7 @@ import {
 } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -191,6 +191,19 @@ const AddReservationForm = () => {
         () => !selectedEndDate || isDisabledEndDate,
         [selectedEndDate, isDisabledEndDate]
     );
+
+    useEffect(() => {
+        form.resetField("start_date", { defaultValue: undefined });
+    }, [form, selectedHall]);
+    useEffect(() => {
+        form.resetField("start_hour", { defaultValue: undefined });
+    }, [form, selectedStartDate]);
+    useEffect(() => {
+        form.resetField("end_date", { defaultValue: undefined });
+    }, [form, selectedStartHour]);
+    useEffect(() => {
+        form.resetField("end_hour", { defaultValue: undefined });
+    }, [form, selectedEndDate]);
 
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const onOpenModal = async () => {
@@ -676,6 +689,7 @@ const AddReservationForm = () => {
                                         defaultValue={field.value}
                                         disabled={isDisabledStartHour}
                                         onValueChange={field.onChange}
+                                        value={field.value}
                                     >
                                         {timeframes?.map((timeframe) => (
                                             <div
@@ -800,6 +814,7 @@ const AddReservationForm = () => {
                                         }
                                         defaultValue={field.value}
                                         onValueChange={field.onChange}
+                                        value={field.value}
                                     >
                                         {timeframes?.map((timeframe) => (
                                             <div
