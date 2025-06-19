@@ -31,14 +31,8 @@ const TimeslotsCell = ({ endHourID, startHourID }: TimeslotsCellProps) => {
         return <SpinnerBallIcon className="size-4 animate-spin" />;
     }
 
-    const start =
-        start_hour && Array.isArray(start_hour) && start_hour.length > 0
-            ? start_hour[0].start_hour
-            : "";
-    const end =
-        end_hour && Array.isArray(end_hour) && end_hour.length > 0
-            ? end_hour[0].end_hour
-            : "";
+    const start = start_hour?.start_hour;
+    const end = end_hour?.end_hour;
 
     if (!start && !end) {
         return null;
