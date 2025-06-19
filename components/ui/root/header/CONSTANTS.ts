@@ -5,7 +5,7 @@ export const mainItems: NavigationItem[] = [
     },
     {
         href: "/reservate",
-        title: "Reserveer",
+        title: "Reserveren",
     },
 ];
 
@@ -13,12 +13,12 @@ export const guestItems: NavigationItem[] = [
     {
         href: "/authentication/sign-in",
         isPrimairy: false,
-        title: "Sign in",
+        title: "Inloggen",
     },
     {
         href: "/authentication/sign-up",
         isPrimairy: true,
-        title: "Sign up",
+        title: "Registreren",
     },
 ];
 export const userItems: NavigationItem[] = [
@@ -30,7 +30,7 @@ export const userItems: NavigationItem[] = [
     {
         href: "/authentication/sign-out",
         isPrimairy: true,
-        title: "Sign out",
+        title: "Uitloggen",
     },
 ];
 export const adminItems: NavigationItem[] = [

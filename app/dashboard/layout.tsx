@@ -9,6 +9,7 @@ import {
     DoorIcon,
     HouseIcon,
     LayoutIcon,
+    SignOutIcon,
     TagIcon,
     UserCircleIcon,
     UsersIcon,
@@ -44,7 +45,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                     links={[
                         {
                             icon: HouseIcon,
-                            label: "",
+                            label: "Ga naar de startpagina",
                             title: "Ten Boomgaerde",
                             url: "/",
                         },
@@ -72,7 +73,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                         },
                         {
                             icon: ChartPieIcon,
-                            label: "",
+                            label: "binnenkort",
                             title: "Analyses",
                             url: "/dashboard/analysis/",
                         },
@@ -137,6 +138,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
                             label: "",
                             title: "Account",
                             url: "/account/",
+                        },
+                        {
+                            icon: SignOutIcon,
+                            label: "",
+                            title: "Uitloggen",
+                            url: "/authentication/sign-out/",
                         },
                     ]}
                 />
