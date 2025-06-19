@@ -41,7 +41,13 @@ const formSchema = z
 
 const SignUpWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
-        mutate(formData);
+        mutate({
+            credentials: {
+                email: formData.email,
+                password: formData.password,
+            },
+            siteUrl: new URL(window.location.href).origin,
+        });
     };
     const { isPending, isSuccess, mutate } = useMutation({
         mutationFn: signUpWithEmailCredentials,

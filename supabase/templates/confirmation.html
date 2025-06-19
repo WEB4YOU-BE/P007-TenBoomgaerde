@@ -256,7 +256,7 @@
                                                                 </v:roundrect><!
                                                             [endif]-->
                                                             <a
-                                                                href="{{ .SiteURL }}/authentication/confirm?type=signup&token={{ .TokenHash }}"
+                                                                href="{{ .SiteURL }}/authentication/confirm?type=signup&token={{ .TokenHash }}&redirect={{ .RedirectTo }}"
                                                                 class="button button--blue"
                                                                 >Verifieer
                                                                 email</a
@@ -283,10 +283,13 @@
                                                         </p>
                                                         <p class="sub">
                                                             <a
-                                                                href="{{ .SiteURL }}/authentication/confirm?type=signup&token={{ .TokenHash }}"
+                                                                href="{{ .SiteURL }}/authentication/confirm?type=signup&token={{ .TokenHash }}&redirect={{ .RedirectTo }}"
                                                                 >{{ .SiteURL
                                                                 }}/authentication/confirm?type=signup&token={{
-                                                                .TokenHash }}</a
+                                                                .TokenHash
+                                                                }}&redirect={{
+                                                                .RedirectTo
+                                                                }}</a
                                                             >
                                                         </p>
                                                     </td>

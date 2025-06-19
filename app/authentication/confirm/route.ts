@@ -4,20 +4,16 @@ import { type NextRequest, NextResponse } from "next/server";
 import createClient from "@/utils/supabase/server";
 
 export const GET = async (request: NextRequest) => {
-    const { searchParams } = new URL(request.url);
-    const to = request.nextUrl.clone();
-
-    const type = searchParams.get("type") as EmailOtpType | null;
-    const token = searchParams.get("token");
-    const redirect = searchParams.get("redirect");
-    to.searchParams.delete("type");
-    to.searchParams.delete("token");
-    to.searchParams.delete("redirect");
+    const url = new URL(request.url);
+    const type = url.searchParams.get("type") as EmailOtpType | null;
+    const token = url.searchParams.get("token");
+    const redirect = url.searchParams.get("redirect");
 
     if (!type || !token) {
-        to.pathname = "/";
-        to.searchParams.append("error", "AuthenticationConfirm");
-        return NextResponse.redirect(to);
+        url.pathname = "/";
+        url.search = "";
+        url.searchParams.set("error", "AuthenticationConfirm");
+        return NextResponse.redirect(url);
     }
 
     const supabase = createClient();
@@ -27,7 +23,5 @@ export const GET = async (request: NextRequest) => {
     });
     if (error) throw error;
 
-    if (redirect) return NextResponse.redirect(redirect);
-    to.pathname = "/account/";
-    return NextResponse.redirect(to);
+    return NextResponse.redirect(redirect || "/");
 };

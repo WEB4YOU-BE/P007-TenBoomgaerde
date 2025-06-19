@@ -27,7 +27,7 @@ const ResetWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
         mutate({
             email: formData.email,
-            siteURL: new URL(window.location.href).origin,
+            siteUrl: new URL(window.location.href).origin,
         });
     };
     const { isPending, mutate } = useMutation({

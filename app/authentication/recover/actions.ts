@@ -4,16 +4,16 @@ import createClient from "@/utils/supabase/server";
 
 export const resetPasswordForEmail = async ({
     email,
-    siteURL,
+    siteUrl,
 }: {
     email: string;
-    siteURL: string;
+    siteUrl: string;
 }) => {
     const supabase = createClient();
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: new URL(
             "/authentication/change-password/",
-            siteURL
+            siteUrl
         ).toString(),
     });
     if (error) throw error;
