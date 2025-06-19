@@ -134,12 +134,12 @@
             /* Buttons ------------------------------ */
             .button {
                 display: inline-block;
-                width: 200px;
+                min-width: 200px;
+                padding: 1rem 2rem;
                 background-color: #414ef9;
                 border-radius: 3px;
                 color: #ffffff;
                 font-size: 15px;
-                line-height: 45px;
                 text-align: center;
                 text-decoration: none;
                 -webkit-text-size-adjust: none;
@@ -205,7 +205,7 @@
                                     <!-- Body content -->
                                     <tr>
                                         <td class="content-cell">
-                                            <h1>Hey,</h1>
+                                            <h1>Kies een nieuw wachtwoord</h1>
                                             <p>
                                                 Je hebt onlangs een nieuw
                                                 wachtwoord aangevraagd voor je
@@ -258,7 +258,7 @@
                                                             [endif]-->
                                                             <a
                                                                 href="{{ .SiteURL }}/authentication/confirm?type=recovery&token={{ .TokenHash }}&redirect={{ .RedirectTo }}"
-                                                                class="button button--red"
+                                                                class="button button--blue"
                                                             >
                                                                 Wachtwoord
                                                                 opnieuw
@@ -278,8 +278,8 @@
                                                 minuten.
                                             </p>
                                             <p>
-                                                Bedankt,<br />het VZW Ten
-                                                Boomgaerde Team
+                                                Bedankt,<br />het Ten Boomgaerde
+                                                team
                                             </p>
                                             <!-- Sub copy -->
                                             <table class="body-sub">

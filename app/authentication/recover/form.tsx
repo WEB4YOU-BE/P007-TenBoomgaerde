@@ -25,7 +25,10 @@ const formSchema = z.object({
 
 const ResetWithEmailCredentialsForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
-        mutate(formData.email);
+        mutate({
+            email: formData.email,
+            siteURL: new URL(window.location.href).origin,
+        });
     };
     const { isPending, mutate } = useMutation({
         mutationFn: resetPasswordForEmail,
@@ -39,7 +42,7 @@ const ResetWithEmailCredentialsForm = () => {
         onSuccess: (_, variables) => {
             form.reset({ email: "" });
             toast.success("Ga verder in jouw mailbox!", {
-                description: `Je hebt een mail gehad op ${variables}`,
+                description: `Je hebt een mail gehad op ${variables.email}`,
                 duration: Infinity,
             });
         },
