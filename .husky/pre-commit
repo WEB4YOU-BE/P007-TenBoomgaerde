@@ -1,0 +1,4 @@
+npm run -s lint
+npm run -s lint-staged --concurrent false
+npm run -s build
+git add .

@@ -1,5 +1,22 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-}
+import NextBundleAnalyzer from "@next/bundle-analyzer";
+import VercelToolbar from "@vercel/toolbar/plugins/next";
 
-module.exports = nextConfig
+/** @type {import("next").NextConfig} */
+const config = {
+    experimental: { optimizePackageImports: ["@phosphor-icons/react/ssr"] },
+    trailingSlash: true,
+    turbopack: {},
+};
+
+const withVercelToolbar = VercelToolbar();
+const withBundleAnalyzer = NextBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+});
+
+const plugins = [withVercelToolbar, withBundleAnalyzer];
+const pluginAppliedConfig = plugins.reduce(
+    (config, plugin) => plugin(config),
+    config
+);
+
+export default pluginAppliedConfig;

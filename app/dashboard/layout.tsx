@@ -1,37 +1,156 @@
+import type { ReactNode } from "react";
+
+import {
+    BarcodeIcon,
+    BuildingOfficeIcon,
+    CalendarCheckIcon,
+    ChartPieIcon,
+    ClockIcon,
+    DoorIcon,
+    HouseIcon,
+    LayoutIcon,
+    SignOutIcon,
+    TagIcon,
+    UserCircleIcon,
+    UsersIcon,
+} from "@phosphor-icons/react/ssr";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import React from "react";
-import NavigationSidebar from "@/components/navigation/navigation-sidebar";
-import NavigationSidebarAuthentication from "@/components/authentication/navigation-sidebar-authentication";
-import NavigationSidebarLink from "@/components/navigation/navigation-sidebar-link";
-import {Box, Building2, Calendar, Clock3, Home, List, PackageOpen, PieChart, Tag, Users} from "lucide-react";
-import AdminRouteProtection from "@/components/authentication/admin-route-protection";
 
-export const dynamic = 'force-dynamic'
+import { Separator } from "@/components/atoms/separator";
+import Sidebar from "@/components/ui/dashboard/sidebar";
+import SidebarNavigation from "@/components/ui/dashboard/sidebarNavigation";
 
-interface LayoutProps {
-    children: React.ReactNode;
-}
+import { fetchIsAdmin, fetchUser } from "./actions";
 
-export default async function layout({children}: LayoutProps) {
-    return <AdminRouteProtection>
-        <div className={"flex flex-col md:flex-row"}>
-            <NavigationSidebar authNode={<NavigationSidebarAuthentication/>}>
-                <NavigationSidebarLink href={"/dashboard"}><Home/><span>Dashboard</span></NavigationSidebarLink>
-                <NavigationSidebarLink href={"/dashboard/agenda"}><Calendar/><span>Agenda</span></NavigationSidebarLink>
-                <NavigationSidebarLink
-                    href={"/dashboard/reservaties"}><List/><span>Reservaties</span></NavigationSidebarLink>
-                <NavigationSidebarLink href={"/dashboard/zalen"}><Box/><span>Zalen</span></NavigationSidebarLink>
-                <NavigationSidebarLink href={"/dashboard/zalen/blokken"}><Clock3/>Blokken</NavigationSidebarLink>
-                <NavigationSidebarLink href={"/dashboard/producten"}><PackageOpen/><span>Producten</span></NavigationSidebarLink>
-                <NavigationSidebarLink href={"/dashboard/producten/categorieen"}><Tag/><span>Categorieën</span></NavigationSidebarLink>
-                <NavigationSidebarLink href={"/dashboard/analyses"}><PieChart/><span>Analyses</span></NavigationSidebarLink>
-                <NavigationSidebarLink
-                    href={"/dashboard/gebruikers"}><Users/><span>Gebruikers</span></NavigationSidebarLink>
-                <NavigationSidebarLink
-                    href={"/dashboard/organisaties"}><Building2/><span>Organisaties</span></NavigationSidebarLink>
-            </NavigationSidebar>
-            <div className={"w-full"}>
-                {children}
+export const metadata: Metadata = {
+    title: {
+        default: "Dashboard",
+        template: "%s | Dashboard | VZW Ten Boomgaerde Lichtervelde",
+    },
+};
+
+export default async function Layout({ children }: { children: ReactNode }) {
+    const user = await fetchUser();
+    if (!user) return redirect("/authentication/");
+
+    const isAdmin = await fetchIsAdmin(user.id);
+    if (!isAdmin) return redirect("/");
+
+    return (
+        <div className="relative flex h-[100dvh] w-[100dvw] flex-row overflow-auto">
+            <Sidebar>
+                <SidebarNavigation
+                    links={[
+                        {
+                            icon: HouseIcon,
+                            label: "Ga naar de startpagina",
+                            title: "Ten Boomgaerde",
+                            url: "/",
+                        },
+                    ]}
+                />
+                <Separator className="bg-muted" />
+                <SidebarNavigation
+                    links={[
+                        {
+                            icon: LayoutIcon,
+                            label: "",
+                            title: "Dashboard",
+                            url: "/dashboard/",
+                        },
+                    ]}
+                />
+                <Separator className="bg-muted" />
+                <SidebarNavigation
+                    links={[
+                        {
+                            icon: CalendarCheckIcon,
+                            label: "",
+                            title: "Reservaties",
+                            url: "/dashboard/reservations/",
+                        },
+                        {
+                            icon: ChartPieIcon,
+                            label: "binnenkort",
+                            title: "Analyses",
+                            url: "/dashboard/analysis/",
+                        },
+                    ]}
+                />
+                <Separator className="bg-muted" />
+                <SidebarNavigation
+                    links={[
+                        {
+                            icon: DoorIcon,
+                            label: "",
+                            title: "Zalen",
+                            url: "/dashboard/halls/",
+                        },
+                        {
+                            icon: ClockIcon,
+                            label: "",
+                            title: "Tijdsblokken",
+                            url: "/dashboard/timeslots/",
+                        },
+                    ]}
+                />
+                <Separator className="bg-muted" />
+                <SidebarNavigation
+                    links={[
+                        {
+                            icon: TagIcon,
+                            label: "",
+                            title: "Categorieën",
+                            url: "/dashboard/categories/",
+                        },
+                        {
+                            icon: BarcodeIcon,
+                            label: "",
+                            title: "Producten",
+                            url: "/dashboard/products/",
+                        },
+                    ]}
+                />
+                <Separator className="bg-muted" />
+                <SidebarNavigation
+                    links={[
+                        {
+                            icon: BuildingOfficeIcon,
+                            label: "",
+                            title: "Organisaties",
+                            url: "/dashboard/organisations/",
+                        },
+                        {
+                            icon: UsersIcon,
+                            label: "",
+                            title: "Gebruikers",
+                            url: "/dashboard/users/",
+                        },
+                    ]}
+                />
+                <Separator className="mb-auto bg-muted" />
+                <SidebarNavigation
+                    links={[
+                        {
+                            icon: UserCircleIcon,
+                            label: "",
+                            title: "Account",
+                            url: "/account/",
+                        },
+                        {
+                            icon: SignOutIcon,
+                            label: "",
+                            title: "Uitloggen",
+                            url: "/authentication/sign-out/",
+                        },
+                    ]}
+                />
+            </Sidebar>
+            <div className="h-full w-full py-2 pe-2">
+                <div className="h-full w-full">{children}</div>
             </div>
         </div>
-    </AdminRouteProtection>
+    );
 }

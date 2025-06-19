@@ -1,52 +1,27 @@
-import '@/styles/globals.css'
-import {inter} from "@/styles/fonts";
-import {Toaster} from "@/components/ui/Toaster";
+import type { NextPage } from "next";
 
-export const metadata = {
-    title: {
-        template: '%s | VZW Ten Boomgaerde Lichtervelde',
-        default: 'VZW Ten Boomgaerde Lichtervelde',
-        absolute: 'VZW Ten Boomgaerde Lichtervelde',
-    },
-    description: 'Ten Boomgaerde is het beweging.net Dienstencentrum van Lichtervelde. Deze zaal bevat een grote- en kleine zaal. Deze kunnen voor allerhande zaken zoals een clubfeest, geboortereceptie, verjaardagsfeest, vergaderingen en communiefeest worden gereserveerd.',
+import React from "react";
 
-    applicationName: "VZW TBL",
-    keywords: ["Ten Boomgaerde", "Lichtervelde", "VZW"],
+import type NextLayout from "@/types/next/layout";
 
-    creator: "WEB4YOU",
-    publisher: "WEB4YOU",
-    authors: [{name: "Jens Penneman", url: "https://jenspenneman.com"}],
+import { inter } from "@/components/fonts";
+import Hosts from "@/components/Hosts";
+import Providers from "@/components/Providers";
+import Tools from "@/components/Tools";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
-    formatDetection: {
-        url: false,
-        email: false,
-        telephone: false,
-        address: false,
-        date: false,
-    },
+import "./globals.css";
 
-    metadataBase: new URL("https://www.vzwtenboomgaerdelichtervelde.be"),
-    referrer: "origin-when-cross-origin",
-    alternates: {
-        canonical: "/",
-        languages: {},
-    },
-
-    appleWebApp: {
-        title: "VZW Ten Boomgaerde Lichtervelde",
-        statusBarStyle: "default",
-    },
-
-    generator: "Next.js",
-};
-
-
-
-export default function RootLayout({children,}: { children: React.ReactNode }) {
-    return <html lang="nl-BE">
-    <body className={inter.className + " overscroll-none"}>
-    {children}
-    <Toaster/>
-    </body>
+const RootLayout: NextPage<NextLayout> = ({ children }: NextLayout) => (
+    <html lang="nl-BE">
+        <body className={cn(inter.variable)}>
+            <Providers>
+                {children}
+                <Hosts />
+                <Tools />
+            </Providers>
+        </body>
     </html>
-}
+);
+
+export default RootLayout;
