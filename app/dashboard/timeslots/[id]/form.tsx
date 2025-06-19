@@ -1,87 +1,99 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SpinnerBallIcon } from "@phosphor-icons/react/ssr";
+import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import type { Tables } from "@/types/supabase/database";
-
+import {
+    getTimeslotById,
+    updateTimeslotById,
+} from "@/app/dashboard/timeslots/[id]/actions";
 import Button from "@/components/atoms/Button";
-import Form, {
+import {
     FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/atoms/Form";
+import Form from "@/components/atoms/Form/Form";
 import { Input } from "@/components/atoms/input";
-
-import { getOrganisationById, updateOrganisationById } from "./actions";
+import { Tables } from "@/types/supabase/database";
 
 const formSchema = z.object({
-    btw_number: z.string(),
-    name: z.string(),
+    end: z.string().time(),
+    name: z.string().optional(),
+    start: z.string().time(),
 });
 interface Props {
     id: string;
-    initialData?: Tables<"organizations">;
+    initialData?: Tables<"bloks">;
 }
-const UpdateOrganisationForm = ({ id, initialData }: Props) => {
+const UpdateTimeslotForm = ({ id, initialData }: Props) => {
     const queryClient = useQueryClient();
 
-    const { data: organisation, isPending: isPendingOrganisation } = useQuery({
+    const { data: timeslot, isPending: isPendingTimeslot } = useQuery({
         initialData,
         networkMode: "online",
-        queryFn: () => getOrganisationById(id),
-        queryKey: ["organisation", id],
+        queryFn: () => getTimeslotById(id),
+        queryKey: ["timeslot", id],
         retry: true,
         staleTime: 1000 * 60, // 1 minute
     });
 
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
-        mutate({ id: id, organisation: formData });
+        mutate({
+            id: id,
+            timeslot: {
+                end_hour: formData.end,
+                name: formData.name,
+                start_hour: formData.start,
+            },
+        });
     };
     const {
         isError,
         isPending: isPendingUpdate,
         mutate,
     } = useMutation({
-        mutationFn: updateOrganisationById,
-        mutationKey: ["UpdateOrganisation"],
+        mutationFn: updateTimeslotById,
+        mutationKey: ["updateTimeslot"],
         networkMode: "online",
+
         onError: (error) => {
             toast.error(error.name, {
                 description: error.message,
             });
         },
         onSuccess: () => {
-            toast.success("De organisatie is bijgewerkt!");
+            toast.success("De tijdsblok is bijgewerkt!");
             void queryClient.invalidateQueries({
-                queryKey: ["organisation", id],
+                queryKey: ["timeslot", id],
             });
         },
     });
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm({
         defaultValues: {
-            btw_number: "",
-            name: "",
+            end: timeslot?.end_hour,
+            name: timeslot?.name,
+            start: timeslot?.start_hour,
         },
-        disabled: isPendingOrganisation || isPendingUpdate,
         resolver: zodResolver(formSchema),
     });
 
     useEffect(() => {
-        if (organisation)
+        if (timeslot)
             form.reset({
-                btw_number: organisation.btw_number || "",
-                name: organisation.name || "",
+                end: timeslot.end_hour || "",
+                name: timeslot.name || "",
+                start: timeslot.start_hour || "",
             });
-    }, [organisation, form]);
+    }, [timeslot, form]);
 
     return (
         <>
@@ -103,27 +115,40 @@ const UpdateOrganisationForm = ({ id, initialData }: Props) => {
                         />
                         <FormField
                             control={form.control}
-                            name="btw_number"
+                            name="start"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>BTW-nummer</FormLabel>
+                                    <FormLabel>Startuur</FormLabel>
                                     <FormControl>
-                                        <Input {...field} />
+                                        <Input type="time" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="end"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Einduur</FormLabel>
+                                    <FormControl>
+                                        <Input type="time" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <Button
-                            disabled={isPendingOrganisation || isPendingUpdate}
+                            disabled={isPendingTimeslot || isPendingUpdate}
                             type="submit"
                             variant={isError ? "destructive" : "default"}
                         >
-                            {isPendingOrganisation ||
+                            {isPendingTimeslot ||
                                 (isPendingUpdate && (
                                     <SpinnerBallIcon className="size-4 animate-spin" />
                                 ))}
-                            {!isPendingOrganisation &&
+                            {!isPendingTimeslot &&
                                 !isPendingUpdate &&
                                 "Bijwerken"}
                         </Button>
@@ -134,4 +159,4 @@ const UpdateOrganisationForm = ({ id, initialData }: Props) => {
     );
 };
 
-export default UpdateOrganisationForm;
+export default UpdateTimeslotForm;
