@@ -225,13 +225,13 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         id: "renter",
     },
     {
-        accessorFn: ({ organizations_id }) => {
-            if (!organizations_id) return "onbekend";
-            return organizations_id;
+        accessorFn: ({ organization_id }) => {
+            if (!organization_id) return "onbekend";
+            return organization_id;
         },
         cell: ({ row }) =>
-            row.original.organizations_id ? (
-                <OrganisationCell id={row.original.organizations_id} />
+            row.original.organization_id ? (
+                <OrganisationCell id={row.original.organization_id} />
             ) : (
                 "Geen organisatie geselecteerd"
             ),

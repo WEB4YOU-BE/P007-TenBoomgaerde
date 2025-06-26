@@ -134,7 +134,7 @@ export type Database = {
                     end?: null | string;
                     gefactureerd?: boolean | null;
                     id?: string;
-                    organizations_id?: null | string;
+                    organization_id?: null | string;
                     product_id?: null | string;
                     remarks?: null | string;
                     reservation_number: number;
@@ -145,7 +145,7 @@ export type Database = {
                 };
                 Relationships: [
                     {
-                        columns: ["organizations_id"];
+                        columns: ["organization_id"];
                         foreignKeyName: "reservations_organizations_id_fkey";
                         isOneToOne: false;
                         referencedColumns: ["id"];
@@ -171,7 +171,7 @@ export type Database = {
                     end: null | string;
                     gefactureerd: boolean | null;
                     id: string;
-                    organizations_id: null | string;
+                    organization_id: null | string;
                     product_id: null | string;
                     remarks: null | string;
                     reservation_number: number;
@@ -185,7 +185,7 @@ export type Database = {
                     end?: null | string;
                     gefactureerd?: boolean | null;
                     id?: string;
-                    organizations_id?: null | string;
+                    organization_id?: null | string;
                     product_id?: null | string;
                     remarks?: null | string;
                     reservation_number?: number;
@@ -257,6 +257,27 @@ export type Database = {
                     phone?: null | string;
                     type?: number;
                 };
+            };
+            users_organizations: {
+                Insert: { organization_id: string; user_id: string };
+                Relationships: [
+                    {
+                        columns: ["organization_id"];
+                        foreignKeyName: "users_organizations_organization_id_fkey";
+                        isOneToOne: false;
+                        referencedColumns: ["id"];
+                        referencedRelation: "organizations";
+                    },
+                    {
+                        columns: ["user_id"];
+                        foreignKeyName: "users_organizations_user_id_fkey";
+                        isOneToOne: false;
+                        referencedColumns: ["id"];
+                        referencedRelation: "users";
+                    },
+                ];
+                Row: { organization_id: string; user_id: string };
+                Update: { organization_id?: string; user_id?: string };
             };
         };
         Views: { [_ in never]: never };

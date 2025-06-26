@@ -65,7 +65,7 @@ export const addReservation = async ({
             end: formatISO(reservation.end || new Date()),
             gefactureerd: false,
             id: undefined,
-            organizations_id: reservation.organizations_id,
+            organization_id: reservation.organization_id,
             product_id: undefined,
             remarks: reservation.remarks,
             reservation_number: latestReservationNumber + 1,

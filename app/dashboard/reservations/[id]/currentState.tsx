@@ -44,9 +44,9 @@ const CurrentState = ({ id, initialData }: Props) => {
     });
 
     const { data: organization, isPending: isPendingOrganization } = useQuery({
-        enabled: !!reservation?.organizations_id,
-        queryFn: () => getOrganizationById(reservation?.organizations_id || ""),
-        queryKey: ["organization", reservation?.organizations_id || ""],
+        enabled: !!reservation?.organization_id,
+        queryFn: () => getOrganizationById(reservation?.organization_id || ""),
+        queryKey: ["organization", reservation?.organization_id || ""],
         retry: true,
         staleTime: 1000 * 60, // 1 minute
     });

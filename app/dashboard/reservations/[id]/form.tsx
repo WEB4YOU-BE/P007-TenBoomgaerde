@@ -71,7 +71,7 @@ const UpdateReservationForm = ({ id, initialData }: Props) => {
                 ...formData,
                 end: reservation.end,
                 id: reservation.id,
-                organizations_id: reservation.organizations_id,
+                organization_id: reservation.organization_id,
                 product_id: reservation.product_id,
                 reservation_number: reservation.reservation_number,
                 reservation_year: reservation.reservation_year,

@@ -22,7 +22,7 @@ const DownloadComponent: FC<Props> = ({ reservations, text }) => {
         );
         const organizations = await Promise.all(
             reservations.map((reservation) =>
-                getOrganisationById(reservation.organizations_id || "")
+                getOrganisationById(reservation.organization_id || "")
             )
         );
 
@@ -44,7 +44,7 @@ const DownloadComponent: FC<Props> = ({ reservations, text }) => {
                 Gefactureerd: reservation.gefactureerd ? "Ja" : "Nee",
                 Organisatie:
                     organizations.find(
-                        (org) => org?.id === reservation.organizations_id
+                        (org) => org?.id === reservation.organization_id
                     )?.name || "Onbekend",
                 Reservatienummer:
                     reservation.reservation_year.substring(0, 4) +
