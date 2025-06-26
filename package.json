@@ -49,6 +49,7 @@
         "format:fix": "prettier --write --ignore-path .gitignore .",
         "supabase:start": "supabase start",
         "supabase:stop": "supabase stop --no-backup",
+        "supabase:gen-types": "supabase gen types typescript --local > types/supabase/database.d.ts",
         "knip": "knip"
     },
     "dependencies": {

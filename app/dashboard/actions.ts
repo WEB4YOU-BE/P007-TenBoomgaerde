@@ -28,7 +28,7 @@ export const fetchReservationsToBeReviewed = async () => {
         .from("reservations")
         .select()
         .eq("status", "in afwachting")
-        .order("start_date", { ascending: true });
+        .order("start", { ascending: true });
     if (error) throw error;
     return data;
 };
@@ -39,7 +39,7 @@ export const fetchReservationsToBeInvoiced = async () => {
         .select()
         .eq("status", "goedgekeurd")
         .eq("gefactureerd", false)
-        .order("start_date", { ascending: true });
+        .order("start", { ascending: true });
     if (error) throw error;
     return data;
 };
@@ -69,9 +69,9 @@ export const fetchReservationsThisWeek = async () => {
     const { data, error } = await supabase
         .from("reservations")
         .select()
-        .gte("start_date", new Date().toISOString())
-        .lte("end_date", add(new Date(), { days: 7 }).toISOString())
-        .order("start_date", { ascending: true });
+        .gte("start", new Date().toISOString())
+        .lte("end", add(new Date(), { days: 7 }).toISOString())
+        .order("start", { ascending: true });
     if (error) throw error;
     return data;
 };
@@ -80,9 +80,9 @@ export const fetchReservationsThisMonth = async () => {
     const { data, error } = await supabase
         .from("reservations")
         .select()
-        .gte("start_date", new Date().toISOString())
-        .lte("end_date", add(new Date(), { months: 1 }).toISOString())
-        .order("start_date", { ascending: true });
+        .gte("start", new Date().toISOString())
+        .lte("end", add(new Date(), { months: 1 }).toISOString())
+        .order("start", { ascending: true });
     if (error) throw error;
     return data;
 };
@@ -92,8 +92,8 @@ export const fetchReservationsThisWeekCount = async () => {
     const { count, error } = await supabase
         .from("reservations")
         .select("id", { count: "exact" })
-        .gte("start_date", new Date().toISOString())
-        .lte("end_date", add(new Date(), { days: 7 }).toISOString());
+        .gte("start", new Date().toISOString())
+        .lte("end", add(new Date(), { days: 7 }).toISOString());
     if (error) throw error;
     return count ?? 0;
 };
@@ -102,8 +102,8 @@ export const fetchReservationsThisMonthCount = async () => {
     const { count, error } = await supabase
         .from("reservations")
         .select("id", { count: "exact" })
-        .gte("start_date", new Date().toISOString())
-        .lte("end_date", add(new Date(), { months: 1 }).toISOString());
+        .gte("start", new Date().toISOString())
+        .lte("end", add(new Date(), { months: 1 }).toISOString());
     if (error) throw error;
     return count ?? 0;
 };

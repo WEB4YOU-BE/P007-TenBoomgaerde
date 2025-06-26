@@ -24,13 +24,14 @@ import createClient from "@/utils/supabase/client";
 import { updateUser } from "./actions";
 
 const formSchema = z.object({
-    city: z.string().min(1),
+    address_city: z.string().min(1),
+    address_number: z.string().optional(),
+    address_postal_code: z.string().min(1),
+    address_street: z.string().min(1),
     email: z.string().email("Ongeldig e-mailadres"),
     firstname: z.string().min(1, "Voornaam is verplicht"),
     lastname: z.string().min(1, "Achternaam is verplicht"),
     phone: z.string().refine(isMobilePhone),
-    postcode: z.string().min(1),
-    street: z.string().min(1),
 });
 const UpdateProfileForm = () => {
     const [account, setAccount] = React.useState<null | User>(null);
@@ -84,13 +85,14 @@ const UpdateProfileForm = () => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
-            city: "",
+            address_city: "",
+            address_number: "",
+            address_postal_code: "",
+            address_street: "",
             email: "",
             firstname: "",
             lastname: "",
             phone: "",
-            postcode: "",
-            street: "",
         },
         resolver: zodResolver(formSchema),
     });
@@ -98,13 +100,14 @@ const UpdateProfileForm = () => {
     useEffect(() => {
         if (profile)
             form.reset({
-                city: profile.city ?? "",
+                address_city: profile.address_city ?? "",
+                address_number: profile.address_number ?? "",
+                address_postal_code: profile.address_postal_code ?? "",
+                address_street: profile.address_street ?? "",
                 email: profile.email,
                 firstname: profile.firstname ?? "",
                 lastname: profile.lastname ?? "",
                 phone: profile.phone ?? "",
-                postcode: profile.postcode ?? "",
-                street: profile.street ?? "",
             });
     }, [profile, form]);
 
@@ -165,7 +168,7 @@ const UpdateProfileForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="street"
+                        name="address_street"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Straat</FormLabel>
@@ -177,7 +180,19 @@ const UpdateProfileForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="postcode"
+                        name="address_number"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Huisnummer</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="address_postal_code"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Postcode</FormLabel>
@@ -189,7 +204,7 @@ const UpdateProfileForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="city"
+                        name="address_city"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Stad</FormLabel>

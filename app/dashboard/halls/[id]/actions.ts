@@ -7,7 +7,7 @@ import createClient from "@/utils/supabase/server";
 export const getHallById = async (id: string) => {
     const supabase = createClient();
     const { data, error } = await supabase
-        .from("rooms")
+        .from("halls")
         .select()
         .eq("id", id)
         .single();
@@ -19,12 +19,12 @@ export const updateHallById = async ({
     hall,
     id,
 }: {
-    hall: TablesUpdate<"rooms">;
+    hall: TablesUpdate<"halls">;
     id: string;
 }) => {
     const supabase = createClient();
     const { data, error } = await supabase
-        .from("rooms")
+        .from("halls")
         .update(hall)
         .eq("id", id);
     if (error) throw error;

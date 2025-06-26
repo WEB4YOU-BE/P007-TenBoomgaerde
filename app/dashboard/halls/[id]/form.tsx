@@ -25,14 +25,14 @@ import { Input } from "@/components/atoms/input";
 import { getHallById, updateHallById } from "./actions";
 
 const formSchema = z.object({
-    day_price: z.number(),
-    day_price2: z.number(),
+    is_private: z.boolean(),
     name: z.string(),
-    private: z.boolean(),
+    price_per_day: z.number(),
+    price_per_day_discount: z.number(),
 });
 interface Props {
     id: string;
-    initialData?: Tables<"rooms">;
+    initialData?: Tables<"halls">;
 }
 const UpdateHallForm = ({ id, initialData }: Props) => {
     const queryClient = useQueryClient();
@@ -70,10 +70,10 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
-            day_price: 0,
-            day_price2: 0,
+            is_private: false,
             name: "",
-            private: false,
+            price_per_day: 0,
+            price_per_day_discount: 0,
         },
         disabled: isPendingHall || isPendingUpdate,
         resolver: zodResolver(formSchema),
@@ -82,10 +82,10 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
     useEffect(() => {
         if (hall)
             form.reset({
-                day_price: hall.day_price || 0,
-                day_price2: hall.day_price2 || 0,
+                is_private: hall.is_private || false,
                 name: hall.name || "",
-                private: hall.private || false,
+                price_per_day: hall.price_per_day || 0,
+                price_per_day_discount: hall.price_per_day_discount || 0,
             });
     }, [hall, form]);
 
@@ -109,10 +109,10 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
                         />
                         <FormField
                             control={form.control}
-                            name="day_price"
+                            name="price_per_day"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Prijs per blok</FormLabel>
+                                    <FormLabel>Prijs per dag</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -130,10 +130,12 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
                         />
                         <FormField
                             control={form.control}
-                            name="day_price2"
+                            name="price_per_day_discount"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Prijs per 2 blokken</FormLabel>
+                                    <FormLabel>
+                                        Prijs per dag (korting)
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -151,7 +153,7 @@ const UpdateHallForm = ({ id, initialData }: Props) => {
                         />
                         <FormField
                             control={form.control}
-                            name="private"
+                            name="is_private"
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                     <FormControl>

@@ -36,7 +36,7 @@ import { Tables } from "@/types/supabase/database";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-export const columns: ColumnDef<Tables<"bloks">>[] = [
+export const columns: ColumnDef<Tables<"timeslots">>[] = [
     {
         accessorFn: ({ name }) => {
             if (!name) return "naamloos";
@@ -58,9 +58,9 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
         id: "name",
     },
     {
-        accessorFn: ({ start_hour }) => {
-            if (!start_hour) return "Geen startuur";
-            return start_hour;
+        accessorFn: ({ start_time }) => {
+            if (!start_time) return "Geen startuur";
+            return start_time;
         },
         header: ({ column }) => {
             return (
@@ -75,12 +75,12 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
                 </Button>
             );
         },
-        id: "start_hour",
+        id: "start_time",
     },
     {
-        accessorFn: ({ end_hour }) => {
-            if (!end_hour) return "Geen einduur";
-            return end_hour;
+        accessorFn: ({ end_time }) => {
+            if (!end_time) return "Geen einduur";
+            return end_time;
         },
         header: ({ column }) => {
             return (
@@ -95,7 +95,7 @@ export const columns: ColumnDef<Tables<"bloks">>[] = [
                 </Button>
             );
         },
-        id: "end_hour",
+        id: "end_time",
     },
     {
         accessorKey: "id",

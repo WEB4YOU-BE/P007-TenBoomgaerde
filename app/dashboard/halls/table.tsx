@@ -36,86 +36,78 @@ import { Tables } from "@/types/supabase/database";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-export const columns: ColumnDef<Tables<"rooms">>[] = [
+export const columns: ColumnDef<Tables<"halls">>[] = [
     {
         accessorFn: ({ name }) => {
             if (!name) return "naamloos";
             return name;
         },
-        header: ({ column }) => {
-            return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Naam
-                    <ArrowsDownUpIcon className="ml-2 size-4" />
-                </Button>
-            );
-        },
+        header: ({ column }) => (
+            <Button
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+                variant="ghost"
+            >
+                Naam
+                <ArrowsDownUpIcon className="ml-2 size-4" />
+            </Button>
+        ),
         id: "name",
     },
     {
-        accessorFn: ({ private: is_private }) => {
+        accessorFn: ({ is_private }) => {
             if (!is_private) return "nee";
             return is_private ? "ja" : "nee";
         },
-        header: ({ column }) => {
-            return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Is privé
-                    <ArrowsDownUpIcon className="ml-2 size-4" />
-                </Button>
-            );
-        },
-        id: "allowance",
+        header: ({ column }) => (
+            <Button
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+                variant="ghost"
+            >
+                Is privé
+                <ArrowsDownUpIcon className="ml-2 size-4" />
+            </Button>
+        ),
+        id: "is_private",
     },
     {
-        accessorFn: ({ day_price }) => {
-            if (!day_price) return "onbekend";
-            return `€${day_price}`;
+        accessorFn: ({ price_per_day }) => {
+            if (!price_per_day) return "onbekend";
+            return `€${price_per_day}`;
         },
-        header: ({ column }) => {
-            return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Normale prijs
-                    <ArrowsDownUpIcon className="ml-2 size-4" />
-                </Button>
-            );
-        },
-        id: "price_for_one_day",
+        header: ({ column }) => (
+            <Button
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+                variant="ghost"
+            >
+                Normale prijs
+                <ArrowsDownUpIcon className="ml-2 size-4" />
+            </Button>
+        ),
+        id: "price_per_day",
     },
     {
-        accessorFn: ({ day_price2 }) => {
-            if (!day_price2) return "onbekend";
-            return `€${day_price2}`;
+        accessorFn: ({ price_per_day_discount }) => {
+            if (!price_per_day_discount) return "onbekend";
+            return `€${price_per_day_discount}`;
         },
-        header: ({ column }) => {
-            return (
-                <Button
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                    variant="ghost"
-                >
-                    Prijs voor meerdere blokken
-                    <ArrowsDownUpIcon className="ml-2 size-4" />
-                </Button>
-            );
-        },
-        id: "price_for_multiple_days",
+        header: ({ column }) => (
+            <Button
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+                variant="ghost"
+            >
+                Prijs voor meerdere blokken
+                <ArrowsDownUpIcon className="ml-2 size-4" />
+            </Button>
+        ),
+        id: "price_per_day_discount",
     },
     {
         accessorKey: "id",
@@ -124,29 +116,27 @@ export const columns: ColumnDef<Tables<"rooms">>[] = [
                 <InfoIcon className="size-6" />
             </Link>
         ),
-        header: () => {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost">Acties</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start">
-                        <DropdownMenuLabel asChild>
-                            <Link
-                                className={cn(
-                                    "flex flex-row gap-2 items-center",
-                                    buttonVariants({ variant: "ghost" })
-                                )}
-                                href="/dashboard/halls/new"
-                            >
-                                <PlusIcon />
-                                <span>Toevoegen</span>
-                            </Link>
-                        </DropdownMenuLabel>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
+        header: () => (
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost">Acties</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                    <DropdownMenuLabel asChild>
+                        <Link
+                            className={cn(
+                                "flex flex-row gap-2 items-center",
+                                buttonVariants({ variant: "ghost" })
+                            )}
+                            href="/dashboard/halls/new"
+                        >
+                            <PlusIcon />
+                            <span>Toevoegen</span>
+                        </Link>
+                    </DropdownMenuLabel>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        ),
         id: "actions",
     },
 ];

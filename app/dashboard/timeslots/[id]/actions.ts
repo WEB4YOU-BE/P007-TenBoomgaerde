@@ -7,7 +7,7 @@ import createClient from "@/utils/supabase/server";
 export const getTimeslotById = async (id: string) => {
     const supabase = createClient();
     const { data, error } = await supabase
-        .from("bloks")
+        .from("timeslots")
         .select()
         .eq("id", id)
         .single();
@@ -20,11 +20,11 @@ export const updateTimeslotById = async ({
     timeslot,
 }: {
     id: string;
-    timeslot: TablesUpdate<"bloks">;
+    timeslot: TablesUpdate<"timeslots">;
 }) => {
     const supabase = createClient();
     const { data, error } = await supabase
-        .from("bloks")
+        .from("timeslots")
         .update(timeslot)
         .eq("id", id);
     if (error) throw error;

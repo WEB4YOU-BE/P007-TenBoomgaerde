@@ -2,12 +2,13 @@
 
 import { formatISO } from "date-fns";
 
-import { TablesInsert } from "@/types/supabase/database";
+import type { Tables, TablesInsert } from "@/types/supabase/database";
+
 import createClient from "@/utils/supabase/server";
 
 export const fetchAllHalls = async () => {
     const supabase = createClient();
-    const { data, error } = await supabase.from("rooms").select();
+    const { data, error } = await supabase.from("halls").select();
     if (error) throw error;
     return data;
 };
@@ -19,12 +20,23 @@ export const fetchAllReservations = async () => {
     return data;
 };
 
+export const fetchLatestReservationNumber = async () => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+        .from("reservations")
+        .select("reservation_number", { count: "exact" })
+        .order("reservation_number", { ascending: false })
+        .single();
+    if (error) throw error;
+    return data?.reservation_number || 0;
+};
+
 export const fetchAllTimeframes = async () => {
     const supabase = createClient();
     const { data, error } = await supabase
-        .from("bloks")
+        .from("timeslots")
         .select()
-        .order("start_hour");
+        .order("start_time");
     if (error) throw error;
     return data;
 };
@@ -37,41 +49,45 @@ export const fetchAllOrganizations = async () => {
 };
 
 export const addReservation = async ({
+    halls,
     reservation,
 }: {
+    halls: Tables<"halls">[];
     reservation: TablesInsert<"reservations">;
 }) => {
     const supabase = createClient();
     const user = await supabase.auth.getUser();
-    const reservations = await fetchAllReservations();
-    const latestReservationNumber = reservations.reduce(
-        (acc, cur) =>
-            cur.reservation_number > acc ? cur.reservation_number : acc,
-        -1
+    const latestReservationNumber = await fetchLatestReservationNumber();
+    const { data: reservationData, error: reservationError } = await supabase
+        .from("reservations")
+        .insert({
+            access_code: undefined,
+            end: formatISO(reservation.end || new Date()),
+            gefactureerd: false,
+            id: undefined,
+            organizations_id: reservation.organizations_id,
+            product_id: undefined,
+            remarks: reservation.remarks,
+            reservation_number: latestReservationNumber + 1,
+            reservation_year: formatISO(reservation.start || new Date(), {
+                representation: "date",
+            }),
+            start: formatISO(reservation.start || new Date()),
+            status: "in afwachting",
+            user_id: user.data.user?.id,
+        })
+        .select()
+        .single();
+    if (reservationError) throw reservationError;
+    if (!reservationData || !reservationData.id)
+        throw new Error("Reservation insert failed");
+    await Promise.all(
+        halls.map((hall) =>
+            supabase.from("reservation_halls").insert({
+                hall_id: hall.id,
+                reservation_id: reservationData.id,
+            })
+        )
     );
-    const { error } = await supabase.from("reservations").insert({
-        access_code: undefined,
-        end_date: formatISO(reservation.end_date || new Date(), {
-            representation: "date",
-        }),
-        end_hour: reservation.end_hour,
-        gefactureerd: false,
-        id: undefined,
-        organizations_id: reservation.organizations_id,
-        product_id: undefined,
-        remarks: reservation.remarks,
-        reservation_number: latestReservationNumber + 1,
-        reservation_year: formatISO(reservation.start_date || new Date(), {
-            representation: "date",
-        }),
-        room_id: reservation.room_id,
-        start_date: formatISO(reservation.start_date || new Date(), {
-            representation: "date",
-        }),
-        start_hour: reservation.start_hour,
-        status: "in afwachting",
-        user_id: user.data.user?.id,
-    });
-    if (error) throw error;
     return;
 };

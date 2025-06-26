@@ -53,14 +53,14 @@ const UpdateUserForm = ({ id, initialData }: Props) => {
         mutate({
             id,
             user: {
-                city: formData.city,
+                address_city: formData.city,
+                address_postal_code: formData.postalCode,
+                address_street: formData.address,
                 email: user.email,
                 firstname: formData.firstName,
                 is_admin: formData.isAdmin,
                 lastname: formData.lastName,
                 phone: formData.phone,
-                postcode: formData.postalCode,
-                street: formData.address,
                 type: user.type,
             },
         });
@@ -88,13 +88,13 @@ const UpdateUserForm = ({ id, initialData }: Props) => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
-            address: user?.street || "",
-            city: user?.city || "",
+            address: user?.address_street || "",
+            city: user?.address_city || "",
             firstName: user?.firstname || "",
             isAdmin: !!user?.is_admin,
             lastName: user?.lastname || "",
             phone: user?.phone || "",
-            postalCode: user?.postcode || "",
+            postalCode: user?.address_postal_code || "",
         },
         disabled: isPendingUser || isPendingUpdate,
         resolver: zodResolver(formSchema),

@@ -10,7 +10,7 @@ import { getTimeslotById } from "./actions";
 
 interface CurrentStateProps {
     id: string;
-    initialData?: Tables<"bloks">;
+    initialData?: Tables<"timeslots">;
 }
 const CurrentState: FC<CurrentStateProps> = ({
     id,
@@ -48,7 +48,7 @@ const CurrentState: FC<CurrentStateProps> = ({
                     {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : (
-                        timeslot?.start_hour
+                        timeslot?.start_time
                     )}
                 </span>
             </div>
@@ -58,7 +58,7 @@ const CurrentState: FC<CurrentStateProps> = ({
                     {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : (
-                        timeslot?.end_hour
+                        timeslot?.end_time
                     )}
                 </span>
             </div>

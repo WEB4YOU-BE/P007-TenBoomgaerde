@@ -72,7 +72,7 @@ const CurrentState: FC<CurrentStateProps> = ({ id, initialData }) => {
                     {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : user ? (
-                        `${user.street}, ${user.postcode} ${user.city}`
+                        `${user.address_street} ${user.address_number}, ${user.address_postal_code} ${user.address_city}`
                     ) : (
                         "Onbekend"
                     )}

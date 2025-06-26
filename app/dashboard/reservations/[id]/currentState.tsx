@@ -7,15 +7,14 @@ import {
     XCircleIcon,
 } from "@phosphor-icons/react/ssr";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import React from "react";
 
 import type { Tables } from "@/types/supabase/database";
 
 import {
-    getHallById,
     getOrganizationById,
     getReservationById,
-    getTimeslotById,
     getUserById,
 } from "./actions";
 
@@ -36,30 +35,6 @@ const CurrentState = ({ id, initialData }: Props) => {
         staleTime: 1000 * 60, // 1 minute
     });
 
-    const { data: startingTimeslot, isPending: isPendingStartingTimeslot } =
-        useQuery({
-            enabled: !!reservation?.start_hour,
-            queryFn: () => getTimeslotById(reservation?.start_hour || ""),
-            queryKey: ["timeslot", reservation?.start_hour || ""],
-            retry: true,
-            staleTime: 1000 * 60, // 1 minute
-        });
-    const { data: endTimeslot, isPending: isPendingEndTimeslot } = useQuery({
-        enabled: !!reservation?.end_hour,
-        queryFn: () => getTimeslotById(reservation?.end_hour || ""),
-        queryKey: ["timeslot", reservation?.end_hour || ""],
-        retry: true,
-        staleTime: 1000 * 60, // 1 minute
-    });
-
-    const { data: room, isPending: isPendingRoom } = useQuery({
-        enabled: !!reservation?.room_id,
-        queryFn: () => getHallById(reservation?.room_id || ""),
-        queryKey: ["room", reservation?.room_id || ""],
-        retry: true,
-        staleTime: 1000 * 60, // 1 minute
-    });
-
     const { data: user, isPending: isPendingUser } = useQuery({
         enabled: !!reservation?.user_id,
         queryFn: () => getUserById(reservation?.user_id || ""),
@@ -67,6 +42,7 @@ const CurrentState = ({ id, initialData }: Props) => {
         retry: true,
         staleTime: 1000 * 60, // 1 minute
     });
+
     const { data: organization, isPending: isPendingOrganization } = useQuery({
         enabled: !!reservation?.organizations_id,
         queryFn: () => getOrganizationById(reservation?.organizations_id || ""),
@@ -133,10 +109,10 @@ const CurrentState = ({ id, initialData }: Props) => {
                     Startdatum en -tijd
                 </span>
                 <span className="text-sm">
-                    {isRefetching && !isPendingStartingTimeslot ? (
+                    {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
-                    ) : reservation ? (
-                        `${reservation.start_date} ${startingTimeslot?.start_hour || ""}`
+                    ) : reservation?.start ? (
+                        format(new Date(reservation.start), "dd-MM-yyyy HH:mm")
                     ) : (
                         "Geen datum/tijd"
                     )}
@@ -147,27 +123,16 @@ const CurrentState = ({ id, initialData }: Props) => {
                     Einddatum en -tijd
                 </span>
                 <span className="text-sm">
-                    {isRefetching && !isPendingEndTimeslot ? (
+                    {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
-                    ) : reservation ? (
-                        `${reservation.end_date} ${endTimeslot?.end_hour || ""}`
+                    ) : reservation?.end ? (
+                        format(new Date(reservation.end), "dd-MM-yyyy HH:mm")
                     ) : (
                         "Geen datum/tijd"
                     )}
                 </span>
             </div>
-            <div className="flex flex-col gap-2">
-                <span className="text-sm font-semibold">Zaal</span>
-                <span className="text-sm">
-                    {isRefetching && isPendingRoom ? (
-                        <SpinnerBallIcon className="size-4 animate-spin" />
-                    ) : room ? (
-                        room.name
-                    ) : (
-                        "Geen zaal"
-                    )}
-                </span>
-            </div>
+            {/* TODO: Add halls */}
             <div className="flex flex-col gap-2">
                 <span className="text-sm font-semibold">Toegangscode</span>
                 <span className="text-sm">
@@ -220,7 +185,7 @@ const CurrentState = ({ id, initialData }: Props) => {
                     {isRefetching && isPendingUser ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : user ? (
-                        `${user.street}, ${user.postcode} ${user.city}`
+                        `${user.address_street || ""} ${user.address_number || ""}, ${user.address_postal_code || ""} ${user.address_city || ""}`
                     ) : (
                         "Geen adres"
                     )}

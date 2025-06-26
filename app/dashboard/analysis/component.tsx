@@ -1,4 +1,3 @@
-/* eslint-disable perfectionist/sort-objects */
 "use client";
 
 import * as XLSX from "@e965/xlsx";
@@ -10,31 +9,12 @@ import { getUserById } from "@/app/dashboard/reservations/[id]/actions";
 import { Tables } from "@/types/supabase/database";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-import {
-    getHallById,
-    getTimeslotById,
-} from "../reservations/_tableCells/actions";
-
 interface Props {
     reservations: Tables<"reservations">[];
     text: string;
 }
 const DownloadComponent: FC<Props> = ({ reservations, text }) => {
     const handleDownloadExcel = async () => {
-        const timeframes = await Promise.all(
-            Array.from(
-                new Set(
-                    reservations
-                        .flatMap((r) => [r.start_hour, r.end_hour])
-                        .filter(Boolean)
-                )
-            ).map((id) => getTimeslotById(id || ""))
-        );
-        const halls = await Promise.all(
-            reservations.map((reservation) =>
-                getHallById(reservation.room_id || "")
-            )
-        );
         const users = await Promise.all(
             reservations.map((reservation) =>
                 getUserById(reservation.user_id || "")
@@ -46,57 +26,45 @@ const DownloadComponent: FC<Props> = ({ reservations, text }) => {
             )
         );
 
-        // Now, map to rows synchronously
         const rows = reservations.map((reservation) => {
             const user = users.find((user) => user?.id === reservation.user_id);
             const reserverName = user
                 ? `${user.firstname} ${user.lastname} (${user.email})`
                 : "Onbekend";
             return {
-                Reservatienummer:
-                    reservation.reservation_year.substring(0, 4) +
-                    "-" +
-                    reservation.reservation_number,
-                Startdatum: reservation.start_date
-                    ? new Date(reservation.start_date).toLocaleDateString(
-                          "nl-NL",
-                          {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                          }
-                      )
+                Eind: reservation.end
+                    ? new Date(reservation.end).toLocaleString("nl-NL", {
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                      })
                     : "Onbekend",
-                Einddatum: reservation.end_date
-                    ? new Date(reservation.end_date).toLocaleDateString(
-                          "nl-NL",
-                          {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                          }
-                      )
-                    : "Onbekend",
-                Startuur: timeframes.find(
-                    (tf) => tf?.id === reservation.start_hour
-                )?.start_hour,
-                Einduur: timeframes.find(
-                    (tf) => tf?.id === reservation.end_hour
-                )?.end_hour,
-                Zaal:
-                    halls.find((hall) => hall?.id === reservation.room_id)
-                        ?.name || "Onbekend",
-                Reserveerder: reserverName,
+                Gefactureerd: reservation.gefactureerd ? "Ja" : "Nee",
                 Organisatie:
                     organizations.find(
                         (org) => org?.id === reservation.organizations_id
                     )?.name || "Onbekend",
+                Reservatienummer:
+                    reservation.reservation_year.substring(0, 4) +
+                    "-" +
+                    reservation.reservation_number,
+                Reserveerder: reserverName,
+                Start: reservation.start
+                    ? new Date(reservation.start).toLocaleString("nl-NL", {
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                      })
+                    : "Onbekend",
+                Status: reservation.status,
                 Toegangscode:
                     reservation.access_code === null
                         ? "Onbekend"
                         : reservation.access_code,
-                Status: reservation.status,
-                Gefactureerd: reservation.gefactureerd ? "Ja" : "Nee",
             };
         });
 
@@ -109,10 +77,8 @@ const DownloadComponent: FC<Props> = ({ reservations, text }) => {
         XLSX.utils.sheet_add_aoa(worksheet, [
             [
                 "Reservatienummer",
-                "Start datum",
-                "Eind datum",
-                "Start uur",
-                "Eind uur",
+                "Start",
+                "Eind",
                 "Zaal",
                 "Reserveerder",
                 "Organisatie",
@@ -143,7 +109,6 @@ const DownloadComponent: FC<Props> = ({ reservations, text }) => {
                 >
                     Excel
                 </button>
-                {/* <button className={buttonVariants()}>PDF</button> */}
             </div>
         </div>
     );

@@ -66,10 +66,20 @@ export const columns: ColumnDef<Tables<"users">>[] = [
         },
     },
     {
-        accessorFn: ({ city, postcode, street }) => {
-            if (!street || !postcode || !city)
+        accessorFn: ({
+            address_city,
+            address_number,
+            address_postal_code,
+            address_street,
+        }) => {
+            if (
+                !address_street ||
+                !address_number ||
+                !address_postal_code ||
+                !address_city
+            )
                 return "Geen of onvolledig adres";
-            return `${street}, ${postcode} ${city}`;
+            return `${address_street} ${address_number}, ${address_postal_code} ${address_city}`;
         },
         header: ({ column }) => {
             return (

@@ -12,7 +12,7 @@ import { getHallById } from "./actions";
 
 interface Props {
     id: string;
-    initialData?: Tables<"rooms">;
+    initialData?: Tables<"halls">; // changed from "rooms" to "halls"
 }
 const CurrentState = ({ id, initialData }: Props) => {
     const {
@@ -48,19 +48,19 @@ const CurrentState = ({ id, initialData }: Props) => {
                     {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : (
-                        hall?.day_price
+                        hall?.price_per_day // changed from day_price
                     )}
                 </span>
             </div>
             <div className="flex flex-col gap-2">
                 <span className="text-sm font-semibold">
-                    Prijs per 2 blokken
+                    Prijs meerdere blokken
                 </span>
                 <span className="text-sm">
                     {isRefetching ? (
                         <SpinnerBallIcon className="size-4 animate-spin" />
                     ) : (
-                        hall?.day_price2
+                        hall?.price_per_day_discount // changed from day_price2
                     )}
                 </span>
             </div>
@@ -71,7 +71,7 @@ const CurrentState = ({ id, initialData }: Props) => {
                             <SpinnerBallIcon className="size-4 animate-spin" />
                         ) : (
                             <Checkbox
-                                checked={hall?.private}
+                                checked={hall?.is_private} // changed from private
                                 contentEditable={false}
                                 disabled={isRefetching}
                             />

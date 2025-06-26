@@ -31,12 +31,14 @@ const formSchema = z.object({
 });
 interface Props {
     id: string;
-    initialData?: Tables<"bloks">;
+    initialData?: Tables<"timeslots">;
 }
 const UpdateTimeslotForm = ({ id, initialData }: Props) => {
     const queryClient = useQueryClient();
 
-    const { data: timeslot, isPending: isPendingTimeslot } = useQuery({
+    const { data: timeslot, isPending: isPendingTimeslot } = useQuery<
+        Tables<"timeslots"> | undefined
+    >({
         initialData,
         networkMode: "online",
         queryFn: () => getTimeslotById(id),
@@ -49,9 +51,9 @@ const UpdateTimeslotForm = ({ id, initialData }: Props) => {
         mutate({
             id: id,
             timeslot: {
-                end_hour: formData.end,
+                end_time: formData.end,
                 name: formData.name,
-                start_hour: formData.start,
+                start_time: formData.start,
             },
         });
     };
@@ -79,9 +81,9 @@ const UpdateTimeslotForm = ({ id, initialData }: Props) => {
 
     const form = useForm({
         defaultValues: {
-            end: timeslot?.end_hour,
-            name: timeslot?.name,
-            start: timeslot?.start_hour,
+            end: timeslot?.end_time ?? "",
+            name: timeslot?.name ?? "",
+            start: timeslot?.start_time ?? "",
         },
         resolver: zodResolver(formSchema),
     });
@@ -89,9 +91,9 @@ const UpdateTimeslotForm = ({ id, initialData }: Props) => {
     useEffect(() => {
         if (timeslot)
             form.reset({
-                end: timeslot.end_hour || "",
-                name: timeslot.name || "",
-                start: timeslot.start_hour || "",
+                end: timeslot.end_time ?? "",
+                name: timeslot.name ?? "",
+                start: timeslot.start_time ?? "",
             });
     }, [timeslot, form]);
 

@@ -5,7 +5,7 @@ import createClient from "@/utils/supabase/server";
 export const getTimeslotById = async (id: string) => {
     const supabase = createClient();
     const { data, error } = await supabase
-        .from("bloks")
+        .from("timeslots")
         .select("*")
         .eq("id", id)
         .single();
@@ -27,7 +27,7 @@ export const getRenterById = async (id: string) => {
 export const getHallById = async (id: string) => {
     const supabase = createClient();
     const { data, error } = await supabase
-        .from("rooms")
+        .from("halls")
         .select("*")
         .eq("id", id)
         .single();

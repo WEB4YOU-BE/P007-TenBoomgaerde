@@ -26,10 +26,8 @@ import {
 } from "@/components/atoms/table";
 import { Tables } from "@/types/supabase/database";
 
-import HallCell from "./_tableCells/Hall";
 import OrganisationCell from "./_tableCells/Organization";
 import RenterCell from "./_tableCells/Renter";
-import TimeslotsCell from "./_tableCells/Timeslots";
 
 export const columns: ColumnDef<Tables<"reservations">>[] = [
     {
@@ -57,15 +55,29 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         id: "reservationNumber",
     },
     {
-        accessorFn: ({ end_date, start_date }) => {
-            if (!start_date || !end_date) return "Geen data ingevoerd";
-            return `${start_date}${start_date === end_date ? "" : " tot " + end_date}`;
+        accessorFn: ({ end, start }) => {
+            if (!start || !end) return "Geen data ingevoerd";
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            const sameDay =
+                startDate.toLocaleDateString() === endDate.toLocaleDateString();
+
+            const formatDate = (date: Date) =>
+                date.toLocaleDateString("nl-BE", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                });
+
+            return sameDay
+                ? formatDate(startDate)
+                : `${formatDate(startDate)} tot ${formatDate(endDate)}`;
         },
         header: ({ column }) => {
             return (
                 <div className="flex flex-row gap-1 items-center">
                     <div>Data</div>
-
                     <Button
                         onClick={() =>
                             column.toggleSorting(column.getIsSorted() === "asc")
@@ -81,19 +93,47 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         id: "dates",
     },
     {
-        accessorFn: ({ end_hour, start_hour }) => {
-            if (!start_hour || !end_hour) return "Geen data ingevoerd";
-            return `${start_hour}${start_hour === end_hour ? "" : " tot " + end_hour}`;
+        accessorFn: ({ end, start }) => {
+            if (!start || !end) return "Geen data ingevoerd";
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            const formatTime = (date: Date) =>
+                date
+                    .toLocaleTimeString("nl-BE", {
+                        hour: "2-digit",
+                        hour12: false,
+                        minute: "2-digit",
+                    })
+                    .replace(/:00$/, "u");
+
+            return `${formatTime(startDate)}${
+                formatTime(startDate) === formatTime(endDate)
+                    ? ""
+                    : " tot " + formatTime(endDate)
+            }`;
         },
-        cell: ({ row }) =>
-            row.original.start_hour && row.original.end_hour ? (
-                <TimeslotsCell
-                    endHourID={row.original.end_hour}
-                    startHourID={row.original.start_hour}
-                />
-            ) : (
-                "Geen data ingevoerd"
-            ),
+        cell: ({ row }) => {
+            const { end, start } = row.original;
+            if (!start || !end) return "Geen data ingevoerd";
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            const formatTime = (date: Date) =>
+                date
+                    .toLocaleTimeString("nl-BE", {
+                        hour: "2-digit",
+                        hour12: false,
+                        minute: "2-digit",
+                    })
+                    .replace(/:00$/, "u");
+
+            return `${formatTime(startDate)}${
+                formatTime(startDate) === formatTime(endDate)
+                    ? ""
+                    : " tot " + formatTime(endDate)
+            }`;
+        },
         header: ({ column }) => {
             return (
                 <div className="flex flex-row gap-1 items-center">
@@ -113,20 +153,11 @@ export const columns: ColumnDef<Tables<"reservations">>[] = [
         id: "timeframes",
     },
     {
-        accessorFn: ({ room_id }) => {
-            if (!room_id) return "Geen zaal geselecteerd";
-            return room_id;
-        },
-        cell: ({ row }) =>
-            row.original.room_id ? (
-                <HallCell id={row.original.room_id} />
-            ) : (
-                "Geen ruimte geselecteerd"
-            ),
+        cell: "Geen ruimte geselecteerd",
         header: ({ column }) => {
             return (
                 <div className="flex flex-row gap-1 items-center">
-                    <div>Zaal</div>
+                    <div>TODO: implement zaal</div>
                     <Button
                         onClick={() =>
                             column.toggleSorting(column.getIsSorted() === "asc")
