@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
-export default interface NextLayout {
+interface NextLayout {
     children: ReactNode;
 }
+
+export type { NextLayout as default };
