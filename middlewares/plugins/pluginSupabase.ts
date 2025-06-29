@@ -16,6 +16,15 @@ const plugin: Plugin =
         request: NextRequest,
         event: NextFetchEvent
     ): Promise<NextMiddlewareResult> => {
+        const excludedRoutes = [
+            /^\/_next\//,
+            /^\/_vercel\//,
+            /^\/favicon\.ico$/,
+        ];
+        const pathname = request.nextUrl.pathname;
+        if (excludedRoutes.some((regex) => regex.test(pathname)))
+            return next(request, event);
+
         const userNotAllowedRegex =
             /(\/authentication\/(sign-in|sign-up|recover|confirm)\/)|(\/authentication\/$)/g;
         const publicNotAllowedRegex =

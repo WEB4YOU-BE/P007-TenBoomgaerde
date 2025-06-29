@@ -77,7 +77,7 @@ export type Database = {
             };
             products: {
                 Insert: {
-                    categorie_id?: null | string;
+                    category?: null | string;
                     for_sale?: boolean | null;
                     id?: string;
                     name: string;
@@ -85,7 +85,7 @@ export type Database = {
                 };
                 Relationships: [
                     {
-                        columns: ["categorie_id"];
+                        columns: ["category"];
                         foreignKeyName: "products_categorie_id_fkey";
                         isOneToOne: false;
                         referencedColumns: ["id"];
@@ -93,73 +93,52 @@ export type Database = {
                     },
                 ];
                 Row: {
-                    categorie_id: null | string;
+                    category: null | string;
                     for_sale: boolean | null;
                     id: string;
                     name: string;
                     price: null | number;
                 };
                 Update: {
-                    categorie_id?: null | string;
+                    category?: null | string;
                     for_sale?: boolean | null;
                     id?: string;
                     name?: string;
                     price?: null | number;
                 };
             };
-            reservation_halls: {
-                Insert: { hall_id: string; reservation_id: string };
-                Relationships: [
-                    {
-                        columns: ["hall_id"];
-                        foreignKeyName: "reservation_halls_hall_id_fkey";
-                        isOneToOne: false;
-                        referencedColumns: ["id"];
-                        referencedRelation: "halls";
-                    },
-                    {
-                        columns: ["reservation_id"];
-                        foreignKeyName: "reservation_halls_reservation_id_fkey";
-                        isOneToOne: false;
-                        referencedColumns: ["id"];
-                        referencedRelation: "reservations";
-                    },
-                ];
-                Row: { hall_id: string; reservation_id: string };
-                Update: { hall_id?: string; reservation_id?: string };
-            };
             reservations: {
                 Insert: {
                     access_code?: null | number;
+                    booker?: null | string;
                     end?: null | string;
                     gefactureerd?: boolean | null;
                     id?: string;
-                    organization_id?: null | string;
-                    product_id?: null | string;
+                    organization?: null | string;
+                    product?: null | string;
                     remarks?: null | string;
                     reservation_number: number;
                     reservation_year: string;
                     start?: null | string;
                     status?: null | string;
-                    user_id?: null | string;
                 };
                 Relationships: [
                     {
-                        columns: ["organization_id"];
+                        columns: ["organization"];
                         foreignKeyName: "reservations_organizations_id_fkey";
                         isOneToOne: false;
                         referencedColumns: ["id"];
                         referencedRelation: "organizations";
                     },
                     {
-                        columns: ["product_id"];
+                        columns: ["product"];
                         foreignKeyName: "reservations_product_id_fkey";
                         isOneToOne: false;
                         referencedColumns: ["id"];
                         referencedRelation: "products";
                     },
                     {
-                        columns: ["user_id"];
+                        columns: ["booker"];
                         foreignKeyName: "reservations_user_id_fkey";
                         isOneToOne: false;
                         referencedColumns: ["id"];
@@ -168,32 +147,53 @@ export type Database = {
                 ];
                 Row: {
                     access_code: null | number;
+                    booker: null | string;
                     end: null | string;
                     gefactureerd: boolean | null;
                     id: string;
-                    organization_id: null | string;
-                    product_id: null | string;
+                    organization: null | string;
+                    product: null | string;
                     remarks: null | string;
                     reservation_number: number;
                     reservation_year: string;
                     start: null | string;
                     status: null | string;
-                    user_id: null | string;
                 };
                 Update: {
                     access_code?: null | number;
+                    booker?: null | string;
                     end?: null | string;
                     gefactureerd?: boolean | null;
                     id?: string;
-                    organization_id?: null | string;
-                    product_id?: null | string;
+                    organization?: null | string;
+                    product?: null | string;
                     remarks?: null | string;
                     reservation_number?: number;
                     reservation_year?: string;
                     start?: null | string;
                     status?: null | string;
-                    user_id?: null | string;
                 };
+            };
+            reservations_halls: {
+                Insert: { hall: string; reservation: string };
+                Relationships: [
+                    {
+                        columns: ["hall"];
+                        foreignKeyName: "reservation_halls_hall_id_fkey";
+                        isOneToOne: false;
+                        referencedColumns: ["id"];
+                        referencedRelation: "halls";
+                    },
+                    {
+                        columns: ["reservation"];
+                        foreignKeyName: "reservation_halls_reservation_id_fkey";
+                        isOneToOne: false;
+                        referencedColumns: ["id"];
+                        referencedRelation: "reservations";
+                    },
+                ];
+                Row: { hall: string; reservation: string };
+                Update: { hall?: string; reservation?: string };
             };
             timeslots: {
                 Insert: {
@@ -259,25 +259,25 @@ export type Database = {
                 };
             };
             users_organizations: {
-                Insert: { organization_id: string; user_id: string };
+                Insert: { organization: string; user: string };
                 Relationships: [
                     {
-                        columns: ["organization_id"];
+                        columns: ["organization"];
                         foreignKeyName: "users_organizations_organization_id_fkey";
                         isOneToOne: false;
                         referencedColumns: ["id"];
                         referencedRelation: "organizations";
                     },
                     {
-                        columns: ["user_id"];
+                        columns: ["user"];
                         foreignKeyName: "users_organizations_user_id_fkey";
                         isOneToOne: false;
                         referencedColumns: ["id"];
                         referencedRelation: "users";
                     },
                 ];
-                Row: { organization_id: string; user_id: string };
-                Update: { organization_id?: string; user_id?: string };
+                Row: { organization: string; user: string };
+                Update: { organization?: string; user?: string };
             };
         };
         Views: { [_ in never]: never };

@@ -1,10 +1,8 @@
 import { NextPage } from "next";
 import React from "react";
 
-const Page: NextPage = () => (
-    <div>
-        <h1>Page</h1>
-    </div>
-);
+const Page: NextPage = () => {
+    return <></>;
+};
 
 export default Page;

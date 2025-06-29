@@ -17,6 +17,15 @@ const plugin: Plugin =
         request: NextRequest,
         event: NextFetchEvent
     ): Promise<NextMiddlewareResult> => {
+        const excludedRoutes = [
+            /^\/_next\//,
+            /^\/_vercel\//,
+            /^\/favicon\.ico$/,
+        ];
+        const pathname = request.nextUrl.pathname;
+        if (excludedRoutes.some((regex) => regex.test(pathname)))
+            return next(request, event);
+
         const result = createMiddleware(routing)(request);
         if (result instanceof NextResponse) return result;
 

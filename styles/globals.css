@@ -151,8 +151,11 @@
     * {
         @apply border-border;
     }
+    *::-webkit-scrollbar {
+        @apply hidden;
+    }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground min-w-dvw min-h-dvh;
     }
 }
 

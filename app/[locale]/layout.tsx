@@ -1,4 +1,5 @@
 import { hasLocale } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import React from "react";
 
@@ -11,6 +12,7 @@ import SSRProviders from "@/components/SSRProviders";
 import Tools from "@/components/Tools";
 import routing from "@/i18n/routing";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import "@/styles/globals.css";
 
 const generateStaticParams = () =>
     routing.locales.map((locale) => ({ locale }));
@@ -20,7 +22,9 @@ interface LayoutProps extends NextLayout {
 }
 const Layout = async ({ children, params }: LayoutProps) => {
     const { locale } = await params;
+
     if (!hasLocale(routing.locales, locale)) return notFound();
+    setRequestLocale(locale);
 
     return (
         <html lang={locale}>

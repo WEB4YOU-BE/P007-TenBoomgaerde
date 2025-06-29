@@ -1,0 +1,174 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeftIcon, SpinnerBallIcon } from "@phosphor-icons/react/ssr";
+import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import React from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import Button from "@/components/atoms/Button";
+import Form, {
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/atoms/Form";
+import { Input } from "@/components/atoms/input";
+import signUp from "@/service/authentication/signUp";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
+
+const formSchema = z
+    .object({
+        email: z.string(),
+        password: z
+            .string()
+            .min(8, {
+                message: "Wachtwoorden zijn minstens 8 karakters lang.",
+            })
+            .regex(/[0-9]/, {
+                message: "Wachtwoord moet minstens één cijfer bevatten.",
+            })
+            .regex(/[a-z]/, {
+                message: "Wachtwoord moet minstens één kleine letter bevatten.",
+            })
+            .regex(/[A-Z]/, {
+                message: "Wachtwoord moet minstens één hoofdletter bevatten.",
+            })
+            // eslint-disable-next-line no-useless-escape
+            .regex(/[!@#$%^&*()_+\-=[\]{};\\':"\\|<>?,.\/`~]/, {
+                message:
+                    "Wachtwoord moet minstens één speciaal teken bevatten: !@#$%^&*()_+-=[]{};':\"|<>?,./`~",
+            }),
+        passwordConfirmation: z.string().min(8, {
+            message: "Wachtwoorden zijn minstens 8 karakters lang.",
+        }),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+        message: "Wachtwoorden komen niet overeen!",
+        path: ["passwordConfirmation"],
+    });
+
+const SignUpForm = () => {
+    const onSubmit = (formData: z.infer<typeof formSchema>) => {
+        mutate({
+            credentials: {
+                email: formData.email,
+                password: formData.password,
+            },
+            siteURL: new URL(window.location.href).origin,
+        });
+    };
+    const { isPending, isSuccess, mutate } = useMutation({
+        mutationFn: signUp,
+        mutationKey: ["SignUpWithEmailCredentials"],
+        networkMode: "online",
+        onError: (error) => {
+            toast.error(error.name, {
+                description: error.message,
+            });
+        },
+        onSuccess: (data) => {
+            toast.success("Jouw account is aangemaakt!", {
+                description: `${data.user?.email || "Je"} kreeg een email. Klik de link om jouw emailadres te verifiëren.`,
+            });
+        },
+        retry: false,
+    });
+
+    useEffect(() => {
+        if (isSuccess) redirect("/authentication/sign-in/");
+    }, [isSuccess]);
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        defaultValues: {
+            email: "",
+            password: "",
+            passwordConfirmation: "",
+        },
+        resolver: zodResolver(formSchema),
+    });
+
+    return (
+        <>
+            <Form {...form}>
+                <form
+                    className="flex flex-col gap-2"
+                    onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
+                >
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>E-mailadres</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        autoComplete="username"
+                                        type="email"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Nieuw wachtwoord</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        autoComplete="new-password"
+                                        type="password"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="passwordConfirmation"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Herhaal wachtwoord</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        autoComplete="new-password"
+                                        type="password"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button disabled={isPending} type="submit">
+                        {isPending && (
+                            <SpinnerBallIcon className="size-4 animate-spin" />
+                        )}
+                        {!isPending && "Maak account"}
+                    </Button>
+                </form>
+            </Form>
+            <Link
+                className={buttonVariants({ variant: "outline" })}
+                href="/authentication/"
+            >
+                <ArrowLeftIcon className="mr-4 size-4" />
+                Ga terug
+            </Link>
+        </>
+    );
+};
+
+export default SignUpForm;
