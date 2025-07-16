@@ -4,7 +4,6 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 /** @type {import("next").NextConfig} */
 const config = {
-    experimental: { optimizePackageImports: ["@phosphor-icons/react/ssr"] },
     trailingSlash: true,
     turbopack: {},
 };

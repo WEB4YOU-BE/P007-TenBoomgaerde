@@ -1,8 +1,6 @@
-import { TrendDownIcon, TrendUpIcon } from "@phosphor-icons/react/dist/ssr";
 import { NextPage } from "next";
 import React from "react";
 
-import Badge from "@/components/atoms/Badge";
 import {
     BreadcrumbItem,
     BreadcrumbLink,
@@ -12,7 +10,6 @@ import {
 } from "@/components/atoms/Breadcrumb";
 import Breadcrumb from "@/components/atoms/Breadcrumb/Breadcrumb";
 import {
-    CardAction,
     CardDescription,
     CardHeader,
     CardTitle,
@@ -49,12 +46,6 @@ const Page: NextPage = () => {
                             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                                 12
                             </CardTitle>
-                            <CardAction>
-                                <Badge variant="outline">
-                                    <TrendUpIcon />
-                                    +12.5%
-                                </Badge>
-                            </CardAction>
                         </CardHeader>
                     </Card>
                     <Card className="@container/card">
@@ -63,12 +54,6 @@ const Page: NextPage = () => {
                             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                                 208
                             </CardTitle>
-                            <CardAction>
-                                <Badge variant="outline">
-                                    <TrendDownIcon />
-                                    -20%
-                                </Badge>
-                            </CardAction>
                         </CardHeader>
                     </Card>
                     <Card className="@container/card">
@@ -77,12 +62,6 @@ const Page: NextPage = () => {
                             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                                 7
                             </CardTitle>
-                            <CardAction>
-                                <Badge variant="outline">
-                                    <TrendUpIcon />
-                                    +12.5%
-                                </Badge>
-                            </CardAction>
                         </CardHeader>
                     </Card>
                     <Card className="@container/card">
@@ -91,12 +70,6 @@ const Page: NextPage = () => {
                             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                                 17
                             </CardTitle>
-                            <CardAction>
-                                <Badge variant="outline">
-                                    <TrendUpIcon />
-                                    +4.5%
-                                </Badge>
-                            </CardAction>
                         </CardHeader>
                     </Card>
                 </div>

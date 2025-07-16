@@ -1,45 +1,18 @@
-"use client";
-
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getSortedRowModel,
-    SortingState,
-    useReactTable,
-} from "@tanstack/react-table";
+import { flexRender, type Table as TTable } from "@tanstack/react-table";
 import React from "react";
-import { useState } from "react";
 
-import {
-    Table,
+import Table, {
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/atoms/table";
+} from "@/components/atoms/Table";
 
-interface TableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
+interface DataTableProps<TData> {
+    table: TTable<TData>;
 }
-
-export function DataTable<TData, TValue>({
-    columns,
-    data,
-}: TableProps<TData, TValue>) {
-    const [sorting, setSorting] = useState<SortingState>([]);
-
-    const table = useReactTable({
-        columns,
-        data,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        onSortingChange: setSorting,
-        state: { sorting },
-    });
-
+const DataTable = <TData,>({ table }: DataTableProps<TData>) => {
     return (
         <div className="rounded-md border">
             <Table>
@@ -83,9 +56,9 @@ export function DataTable<TData, TValue>({
                         <TableRow>
                             <TableCell
                                 className="h-24 text-center"
-                                colSpan={columns.length}
+                                colSpan={table.getAllColumns().length}
                             >
-                                Geen resultaten.
+                                No results.
                             </TableCell>
                         </TableRow>
                     )}
@@ -93,4 +66,6 @@ export function DataTable<TData, TValue>({
             </Table>
         </div>
     );
-}
+};
+
+export default DataTable;

@@ -12,9 +12,11 @@ const getReservations = async ({ signal }: GetReservationsProps) => {
             `
             reservation (
                 id,
+                reservation_number,
                 start,
                 end,
                 status,
+                gefactureerd,
                 booker ( * ),
                 organization ( * )
             ),

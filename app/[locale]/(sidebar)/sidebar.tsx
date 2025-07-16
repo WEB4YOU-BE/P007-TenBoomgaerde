@@ -19,7 +19,7 @@ import SidebarComponent, {
 const Sidebar = ({ children }: { children: ReactNode }) => {
     return (
         <>
-            <SidebarComponent collapsible="icon" variant="floating">
+            <SidebarComponent collapsible="icon" variant="inset">
                 <SidebarHeader>
                     <SidebarHeaderMenu />
                     <SidebarSeparator />
