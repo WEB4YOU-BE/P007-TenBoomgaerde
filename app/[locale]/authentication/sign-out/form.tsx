@@ -13,10 +13,12 @@ import { z } from "zod";
 import Button from "@/components/atoms/Button";
 import Form from "@/components/atoms/Form";
 import signOut from "@/service/authentication/signOut";
+import { getQueryClient } from "@/utils/query/queryClient";
 
 const formSchema = z.object({});
 const SignOutForm = () => {
     const router = useRouter();
+    const queryClient = getQueryClient();
 
     const onSubmit = () => {
         mutate();
@@ -32,6 +34,9 @@ const SignOutForm = () => {
         },
         onSuccess: () => {
             toast.success("U bent succesvol uitgelogd");
+            void queryClient.invalidateQueries({
+                queryKey: ["authenticatedUser"],
+            });
         },
         retry: false,
     });
@@ -54,7 +59,7 @@ const SignOutForm = () => {
                     {isPending && (
                         <SpinnerBallIcon className="size-4 animate-spin" />
                     )}
-                    {!isPending && "Log uit"}
+                    {!isPending && "Meld af"}
                 </Button>
             </form>
         </Form>

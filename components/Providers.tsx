@@ -1,20 +1,10 @@
 "use client";
 
-import {
-    isServer,
-    QueryClient,
-    QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { ReactNode } from "react";
 
-let browserQueryClient: QueryClient | undefined = undefined;
-const createQueryClient = () => new QueryClient();
-const getQueryClient = () => {
-    if (isServer) return createQueryClient();
-    if (!browserQueryClient) browserQueryClient = createQueryClient();
-    return browserQueryClient;
-};
+import { getQueryClient } from "@/utils/query/queryClient";
 
 interface ProvidersProps {
     children: ReactNode;

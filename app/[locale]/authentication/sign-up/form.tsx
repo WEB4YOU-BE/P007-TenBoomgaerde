@@ -25,7 +25,7 @@ import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 const formSchema = z
     .object({
-        email: z.string(),
+        email: z.email(),
         password: z
             .string()
             .min(8, {

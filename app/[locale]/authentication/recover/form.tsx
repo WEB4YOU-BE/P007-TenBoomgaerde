@@ -22,7 +22,7 @@ import recoverPassword from "@/service/authentication/recoverPassword";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 const formSchema = z.object({
-    email: z.string().email(),
+    email: z.email(),
 });
 
 const RecoverPasswordWithEmailForm = () => {

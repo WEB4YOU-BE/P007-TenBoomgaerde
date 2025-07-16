@@ -7,7 +7,7 @@ const CardTitle: FC<ComponentPropsWithoutRef<"div">> = ({
     ...props
 }) => (
     <div
-        className={cn("leading-none font-semibold tracking-tight", className)}
+        className={cn("leading-none font-semibold", className)}
         data-slot="card-title"
         {...props}
     />

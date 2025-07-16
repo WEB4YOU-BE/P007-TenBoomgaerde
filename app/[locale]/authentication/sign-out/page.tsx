@@ -21,10 +21,10 @@ const Page: NextPage<PageProps> = async () => {
         <main className="w-full h-full flex flex-col justify-center items-center p-8">
             <Card className="max-w-xs w-full">
                 <CardHeader>
-                    <CardTitle>Log uit</CardTitle>
+                    <CardTitle>Meld af</CardTitle>
                     <CardDescription className="text-wrap">
                         Bedankt voor het gebruik van onze service! Klik op de
-                        knop hieronder om uit te loggen.
+                        knop hieronder om af te melden.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-2">

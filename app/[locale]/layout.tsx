@@ -11,8 +11,8 @@ import Providers from "@/components/Providers";
 import SSRProviders from "@/components/SSRProviders";
 import Tools from "@/components/Tools";
 import routing from "@/i18n/routing";
-import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import "@/styles/globals.css";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const generateStaticParams = () =>
     routing.locales.map((locale) => ({ locale }));

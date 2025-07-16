@@ -7,7 +7,7 @@ const CardContent: FC<ComponentPropsWithoutRef<"div">> = ({
     ...props
 }) => (
     <div
-        className={cn("p-6 pt-0", className)}
+        className={cn("px-6", className)}
         data-slot="card-content"
         {...props}
     />

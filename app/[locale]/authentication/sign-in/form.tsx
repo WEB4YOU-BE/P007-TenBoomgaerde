@@ -22,15 +22,17 @@ import Form, {
 import { Input } from "@/components/atoms/input";
 import { Link, redirect } from "@/i18n/navigation";
 import signInWithPassword from "@/service/authentication/signInWithPassword";
+import { getQueryClient } from "@/utils/query/queryClient";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 const formSchema = z.object({
     password: z.string(),
-    username: z.string().email(),
+    username: z.email(),
 });
 
 const SignInWithEmailCredentialsForm = () => {
     const locale = useLocale();
+    const queryClient = getQueryClient();
 
     const redirectToChangePassword = useCallback(
         () =>
@@ -59,6 +61,9 @@ const SignInWithEmailCredentialsForm = () => {
             });
         },
         onSuccess: (data) => {
+            void queryClient.invalidateQueries({
+                queryKey: ["authenticatedUser"],
+            });
             if (data.weakPassword)
                 return toast.info("Uw wachtwoord is zwak.", {
                     action: {

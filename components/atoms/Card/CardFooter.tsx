@@ -7,7 +7,7 @@ const CardFooter: FC<ComponentPropsWithoutRef<"div">> = ({
     ...props
 }) => (
     <div
-        className={cn("flex items-center p-6 pt-0", className)}
+        className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
         data-slot="card-footer"
         {...props}
     />
