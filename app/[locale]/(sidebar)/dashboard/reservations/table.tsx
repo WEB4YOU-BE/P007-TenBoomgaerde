@@ -23,8 +23,7 @@ const columnHelper =
 
 const columns = [
     columnHelper.accessor(
-        (row) => {
-            const { reservation_number, start } = row.reservation;
+        ({ reservation: { reservation_number, start } }) => {
             if (start && reservation_number != null) {
                 return `${start.slice(0, 4)}-${reservation_number
                     .toString()
@@ -35,8 +34,7 @@ const columns = [
         { header: "RES-NR", id: "reservationNumber" }
     ),
     columnHelper.accessor(
-        (row) => {
-            const { end, start } = row.reservation;
+        ({ reservation: { end, start } }) => {
             if (!start || !end) return "Geen data ingevoerd";
             const startDate = new Date(start);
             const endDate = new Date(end);
@@ -55,21 +53,18 @@ const columns = [
         }
     ),
     columnHelper.accessor(
-        (row) => {
-            const halls = row.reservation.halls;
-            return halls?.length
+        ({ reservation: { halls } }) =>
+            halls?.length
                 ? halls.map((h) => h.name).join(", ")
-                : "Geen zaal geselecteerd";
-        },
+                : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }
     ),
-    columnHelper.accessor((row) => row.reservation.status || "-", {
+    columnHelper.accessor(({ reservation: { status } }) => status || "-", {
         header: "Status",
         id: "status",
     }),
     columnHelper.accessor(
-        (row) => {
-            const booker = row.reservation.booker;
+        ({ reservation: { booker } }) => {
             if (!booker) return "Gebruiker reeds verwijderd";
             const fullName = [booker.firstname, booker.lastname]
                 .filter(Boolean)
@@ -80,19 +75,12 @@ const columns = [
         { header: "Reserveerder", id: "renter" }
     ),
     columnHelper.accessor(
-        (row) => {
-            const org = row.reservation.organization;
-            return org?.name || (org ? "Onbekende organisatie" : "-");
-        },
+        ({ reservation: { organization } }) => organization?.name || "-",
         { header: "Organisatie", id: "organization" }
     ),
     columnHelper.accessor(
-        (row) =>
-            row.reservation.gefactureerd === undefined
-                ? "onbekend"
-                : row.reservation.gefactureerd
-                  ? "ja"
-                  : "nee",
+        ({ reservation: { gefactureerd } }) =>
+            gefactureerd ? "ja" : gefactureerd === false ? "nee" : "onbekend",
         { header: "Gefactureerd", id: "billed" }
     ),
     columnHelper.display({

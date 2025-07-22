@@ -32,7 +32,7 @@ const Page: NextPage = () => (
                 </BreadcrumbList>
             </Breadcrumb>
         </div>
-        <main className="container mx-auto max-w-(--breakpoint-lg) my-8">
+        <main className="container mx-auto max-w-screen-lg my-8">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                 Ten Boomgaerde
             </h1>
