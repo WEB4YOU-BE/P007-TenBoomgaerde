@@ -28,7 +28,7 @@ const columns = [
             if (start && reservation_number != null) {
                 return `${start.slice(0, 4)}-${reservation_number
                     .toString()
-                    .padStart(3, "0")}`;
+                    .padStart(4, "0")}`;
             }
             return "Geen geldige nummer";
         },
@@ -73,7 +73,8 @@ const columns = [
             if (!booker) return "Gebruiker reeds verwijderd";
             const fullName = [booker.firstname, booker.lastname]
                 .filter(Boolean)
-                .join(" ");
+                .join(" ")
+                .trim();
             return fullName || "-";
         },
         { header: "Reserveerder", id: "renter" }
