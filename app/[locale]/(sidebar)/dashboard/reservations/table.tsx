@@ -5,14 +5,15 @@ import { useQuery } from "@tanstack/react-query";
 import {
     createColumnHelper,
     getCoreRowModel,
+    getPaginationRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import { format, isSameDay } from "date-fns";
 import { nlBE } from "date-fns/locale";
-import React from "react";
+import React, { useMemo } from "react";
 import { useLocale } from "use-intl";
 
-import DataTable from "@/components/atoms/DataTable";
+import DataTable, { Pagination } from "@/components/atoms/DataTable";
 import { Link } from "@/i18n/navigation";
 import getReservations, {
     GetReservationsResponse,
@@ -100,13 +101,20 @@ const Table = () => {
         queryFn: getReservations,
         queryKey: ["reservations"],
     });
+    const reservations = useMemo(() => data?.data ?? [], [data]);
     const table = useReactTable({
         columns,
-        data: data?.data ?? [],
+        data: reservations,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
     });
 
-    return <DataTable table={table} />;
+    return (
+        <div className="flex flex-col gap-2">
+            <DataTable table={table} />
+            <Pagination table={table} />
+        </div>
+    );
 };
 
 export { columns };
