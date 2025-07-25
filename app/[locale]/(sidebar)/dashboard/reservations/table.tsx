@@ -5,7 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import {
     createColumnHelper,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
+    getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import { format, isSameDay } from "date-fns";
@@ -18,6 +20,7 @@ import { Link } from "@/i18n/navigation";
 import getReservations, {
     GetReservationsResponse,
 } from "@/service/reservations/getReservations";
+import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 
 const columnHelper =
     createColumnHelper<NonNullable<GetReservationsResponse["data"]>[number]>();
@@ -44,6 +47,17 @@ const columns = [
             return `${format(startDate, "Pp", { locale: dateFNSLocale })} tot ${format(endDate, isSameDay(startDate, endDate) ? "p" : "Pp", { locale: dateFNSLocale })}`;
         },
         {
+            filterFn: (row, _, [filterStart, filterEnd]: [Date?, Date?]) =>
+                filterByDateRange({
+                    end: row.original.reservation.end
+                        ? new Date(row.original.reservation.end)
+                        : undefined,
+                    filterEnd,
+                    filterStart,
+                    start: row.original.reservation.start
+                        ? new Date(row.original.reservation.start)
+                        : undefined,
+                }),
             header: "Data",
             id: "dates",
             sortingFn: (a, b) => {
@@ -106,7 +120,18 @@ const Table = () => {
         columns,
         data: reservations,
         getCoreRowModel: getCoreRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        initialState: {
+            // columnFilters: [
+            //     { id: "dates", value: [new Date("2025-09-08"), undefined] },
+            //     { id: "hall", value: "Kleine zaal" },
+            // ],
+            // globalFilter: "Grote zaal",
+            pagination: { pageIndex: 0, pageSize: 20 },
+            sorting: [{ desc: true, id: "dates" }],
+        },
     });
 
     return (
