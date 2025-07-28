@@ -7,6 +7,10 @@ export const mainItems: NavigationItem[] = [
         href: "/reservate",
         title: "Reserveren",
     },
+    {
+        href: "/prices",
+        title: "Prijzen",
+    },
 ];
 
 export const guestItems: NavigationItem[] = [
