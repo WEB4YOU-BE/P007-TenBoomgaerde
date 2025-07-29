@@ -1,5 +1,10 @@
 import { type Table as TTable } from "@tanstack/react-table";
-import React, { ComponentPropsWithoutRef } from "react";
+import React, {
+    type ChangeEvent,
+    type ComponentPropsWithoutRef,
+    useCallback,
+    useMemo,
+} from "react";
 
 import { Input } from "@/components/atoms/input";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
@@ -12,6 +17,17 @@ const GlobalSearch = <TData,>({
     table,
     ...props
 }: GlobalSearchProps<TData>) => {
+    const handleSetGlobalFilter = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) =>
+            table.setGlobalFilter(e.target.value),
+        [table]
+    );
+    const globalFilter: unknown = table.getState().globalFilter;
+    const globalFilterValue = useMemo(
+        () => (typeof globalFilter === "string" ? globalFilter : ""),
+        [globalFilter]
+    );
+
     return (
         <div className={cn("flex items-center gap-2", className)} {...props}>
             <label className="sr-only" htmlFor="global-search">
@@ -20,15 +36,10 @@ const GlobalSearch = <TData,>({
             <Input
                 className="input"
                 id="global-search"
-                onChange={(e) => table.setGlobalFilter(e.target.value)}
+                onChange={handleSetGlobalFilter}
                 placeholder="Zoeken..."
                 type="text"
-                value={
-                    typeof (table.getState().globalFilter as unknown) ===
-                    "string"
-                        ? (table.getState().globalFilter as string)
-                        : ""
-                }
+                value={globalFilterValue}
             />
         </div>
     );
