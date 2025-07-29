@@ -23,11 +23,11 @@ import getReservations, {
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 
 const columnHelper =
-    createColumnHelper<NonNullable<GetReservationsResponse["data"]>[number]>();
+    createColumnHelper<NonNullable<GetReservationsResponse>[number]>();
 
 const columns = [
     columnHelper.accessor(
-        ({ reservation: { reservation_number, start } }) => {
+        ({ reservation_number, start }) => {
             if (start && reservation_number != null) {
                 return `${start.slice(0, 4)}-${reservation_number
                     .toString()
@@ -38,7 +38,7 @@ const columns = [
         { header: "RES-NR", id: "reservationNumber" }
     ),
     columnHelper.accessor(
-        ({ reservation: { end, start } }) => {
+        ({ end, start }) => {
             if (!start || !end) return "Geen data ingevoerd";
             const startDate = new Date(start);
             const endDate = new Date(end);
@@ -49,37 +49,37 @@ const columns = [
         {
             filterFn: (row, _, [filterStart, filterEnd]: [Date?, Date?]) =>
                 filterByDateRange({
-                    end: row.original.reservation.end
-                        ? new Date(row.original.reservation.end)
+                    end: row.original.end
+                        ? new Date(row.original.end)
                         : undefined,
                     filterEnd,
                     filterStart,
-                    start: row.original.reservation.start
-                        ? new Date(row.original.reservation.start)
+                    start: row.original.start
+                        ? new Date(row.original.start)
                         : undefined,
                 }),
             header: "Data",
             id: "dates",
             sortingFn: (a, b) => {
-                const dateA = new Date(a.original.reservation.start ?? "");
-                const dateB = new Date(b.original.reservation.start ?? "");
+                const dateA = new Date(a.original.start ?? "");
+                const dateB = new Date(b.original.start ?? "");
                 return dateA.getTime() - dateB.getTime();
             },
         }
     ),
     columnHelper.accessor(
-        ({ reservation: { halls } }) =>
-            halls?.length
-                ? halls.map((h) => h.name).join(", ")
+        ({ reservations_halls }) =>
+            reservations_halls?.length
+                ? reservations_halls.map((h) => h.hall.name).join(", ")
                 : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }
     ),
-    columnHelper.accessor(({ reservation: { status } }) => status || "-", {
+    columnHelper.accessor(({ status }) => status || "-", {
         header: "Status",
         id: "status",
     }),
     columnHelper.accessor(
-        ({ reservation: { booker } }) => {
+        ({ booker }) => {
             if (!booker) return "Gebruiker reeds verwijderd";
             const fullName = [booker.firstname, booker.lastname]
                 .filter(Boolean)
@@ -89,20 +89,18 @@ const columns = [
         },
         { header: "Reserveerder", id: "renter" }
     ),
+    columnHelper.accessor(({ organization }) => organization?.name || "-", {
+        header: "Organisatie",
+        id: "organization",
+    }),
     columnHelper.accessor(
-        ({ reservation: { organization } }) => organization?.name || "-",
-        { header: "Organisatie", id: "organization" }
-    ),
-    columnHelper.accessor(
-        ({ reservation: { gefactureerd } }) =>
+        ({ gefactureerd }) =>
             gefactureerd ? "ja" : gefactureerd === false ? "nee" : "onbekend",
         { header: "Gefactureerd", id: "billed" }
     ),
     columnHelper.display({
         cell: ({ row }) => (
-            <Link
-                href={`/dashboard/reservations/${row.original.reservation.id}`}
-            >
+            <Link href={`/dashboard/reservations/${row.original.id}`}>
                 <InfoIcon className="size-6" />
             </Link>
         ),
@@ -115,7 +113,7 @@ const Table = () => {
         queryFn: getReservations,
         queryKey: ["reservations"],
     });
-    const reservations = useMemo(() => data?.data ?? [], [data]);
+    const reservations = useMemo(() => data ?? [], [data]);
     const table = useReactTable({
         columns,
         data: reservations,
