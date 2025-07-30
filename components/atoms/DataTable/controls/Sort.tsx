@@ -56,7 +56,7 @@ function SortDropdown<TData>({ table }: { table: TTable<TData> }) {
                 <PopoverTrigger asChild>
                     <Button
                         aria-expanded={open}
-                        className="w-[200px] justify-between"
+                        className="min-w-[200px] max-md:grow justify-between"
                         role="combobox"
                         title="Sorteer kolom"
                         variant="outline"
@@ -67,7 +67,7 @@ function SortDropdown<TData>({ table }: { table: TTable<TData> }) {
                                       .find((col) => col.id === currentId)
                                       ?.columnDef.header?.toString() ??
                                   currentId)
-                                : "Sort by"}
+                                : "Sorteer op"}
                         </span>
                         {currentId ? (
                             currentDesc ? (
@@ -80,7 +80,7 @@ function SortDropdown<TData>({ table }: { table: TTable<TData> }) {
                         )}
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className="p-0 w-[var(--radix-popover-trigger-width)]">
                     <Command>
                         <CommandInput
                             className="h-9"

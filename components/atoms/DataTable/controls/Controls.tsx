@@ -21,7 +21,7 @@ const Controls = <TData,>({
     return (
         <div
             className={cn(
-                "flex flex-col md:flex-row md:justify-between md:items-center gap-2 px-2",
+                "flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:px-2",
                 className
             )}
             {...props}
