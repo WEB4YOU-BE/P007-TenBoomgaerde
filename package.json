@@ -96,7 +96,7 @@
         "@vercel/analytics": "^1.5.0",
         "@vercel/otel": "^1.13.0",
         "@vercel/speed-insights": "^1.2.0",
-        "@vercel/toolbar": "^0.1.32",
+        "@vercel/toolbar": "^0.1.38",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
@@ -149,5 +149,9 @@
         "tailwindcss": "^4.1.11",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.38.0"
+    },
+    "overrides": {
+        "cookie": "^0.7.0",
+        "path-to-regexp": "^6.2.3"
     }
 }
