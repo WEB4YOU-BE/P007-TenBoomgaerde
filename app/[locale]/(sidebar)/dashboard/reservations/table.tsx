@@ -94,9 +94,9 @@ const columns = [
         id: "organization",
     }),
     columnHelper.accessor(
-        ({ gefactureerd }) =>
-            gefactureerd ? "ja" : gefactureerd === false ? "nee" : "onbekend",
-        { header: "Gefactureerd", id: "billed" }
+        ({ invoiced }) =>
+            invoiced ? "ja" : invoiced === false ? "nee" : "onbekend",
+        { header: "Gefactureerd", id: "invoiced" }
     ),
     columnHelper.display({
         cell: ({ row }) => (
