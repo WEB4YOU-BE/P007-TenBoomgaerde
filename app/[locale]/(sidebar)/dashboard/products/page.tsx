@@ -12,9 +12,11 @@ import Breadcrumb from "@/components/atoms/Breadcrumb/Breadcrumb";
 import { Separator } from "@/components/atoms/separator";
 import { SidebarTrigger } from "@/components/atoms/Sidebar";
 
+import Table from "./table";
+
 const Page: NextPage = () => {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
             <div className="sticky top-0 z-50 flex w-full items-center border-b p-2 gap-4 rounded-t-2xl bg-background">
                 <SidebarTrigger />
                 <Separator orientation="vertical" />
@@ -38,7 +40,9 @@ const Page: NextPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-            <main></main>
+            <main className="px-2">
+                <Table />
+            </main>
         </div>
     );
 };
