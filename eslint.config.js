@@ -2,6 +2,7 @@
 
 import { FlatCompat } from "@eslint/eslintrc";
 import jseslint from "@eslint/js";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 import perfectionist from "eslint-plugin-perfectionist";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
@@ -42,6 +43,7 @@ const config = [
     ...tseslint.configs.recommendedTypeChecked,
     pluginReact.configs.flat.recommended,
     perfectionist.configs["recommended-natural"],
+    ...pluginQuery.configs["flat/recommended"],
     {
         rules: {
             "@typescript-eslint/no-deprecated": ["error"],
