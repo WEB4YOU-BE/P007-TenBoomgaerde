@@ -75,3 +75,5 @@ ALTER TABLE public.reservations
 RENAME COLUMN "start_date" TO "start";
 ALTER TABLE public.reservations
 RENAME COLUMN "end_date" TO "end";
+ALTER TABLE public.reservations
+RENAME COLUMN "gefactureerd" TO "invoiced";
