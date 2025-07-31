@@ -85,11 +85,13 @@ const columns = [
                                             </AvatarFallback>
                                         </Avatar>
                                     </TooltipTrigger>
-                                    <TooltipContent>
+                                    <TooltipContent align="start" side="bottom">
                                         {[user.firstname, user.lastname]
                                             .filter(Boolean)
                                             .join(" ")
-                                            .trim() || "-"}
+                                            .trim() ||
+                                            user.email ||
+                                            "-"}
                                     </TooltipContent>
                                 </Tooltip>
                             );
