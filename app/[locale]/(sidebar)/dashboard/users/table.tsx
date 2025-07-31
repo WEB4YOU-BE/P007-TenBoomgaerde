@@ -10,12 +10,12 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import parsePhoneNumberFromString from "libphonenumber-js";
 import React, { useMemo } from "react";
 
 import DataTable, { Controls, Pagination } from "@/components/atoms/DataTable";
 import { Link } from "@/i18n/navigation";
 import getUsers, { GetUsersResponse } from "@/service/users/getUsers";
-
 const columnHelper =
     createColumnHelper<NonNullable<GetUsersResponse>[number]>();
 
@@ -37,10 +37,19 @@ const columns = [
         cell: (info) => info.getValue() || "-",
         header: "E-mail",
     }),
-    columnHelper.accessor("phone", {
-        cell: (info) => info.getValue() || "-",
-        header: "Telefoon",
-    }),
+    columnHelper.accessor(
+        (row) => {
+            const value = row.phone ?? "";
+            const parsed = value
+                ? parsePhoneNumberFromString(value, { defaultCountry: "BE" })
+                : undefined;
+            return parsed ? parsed.formatInternational() : "-";
+        },
+        {
+            header: "Telefoon",
+            id: "phone",
+        }
+    ),
     columnHelper.accessor(
         (row) => {
             const street = [row.address_street, row.address_number]
