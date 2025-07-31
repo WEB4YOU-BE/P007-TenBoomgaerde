@@ -78,6 +78,10 @@ const columns = [
         header: "Status",
         id: "status",
     }),
+    columnHelper.accessor(({ access_code }) => access_code || "-", {
+        header: "Toegangscode",
+        id: "access_code",
+    }),
     columnHelper.accessor(
         ({ booker }) => {
             if (!booker) return "Gebruiker reeds verwijderd";
