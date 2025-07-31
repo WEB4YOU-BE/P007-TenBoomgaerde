@@ -12,6 +12,8 @@ import Breadcrumb from "@/components/atoms/Breadcrumb/Breadcrumb";
 import { Separator } from "@/components/atoms/separator";
 import { SidebarTrigger } from "@/components/atoms/Sidebar";
 
+import Table from "./table";
+
 const Page: NextPage = () => {
     return (
         <div className="flex flex-col">
@@ -38,7 +40,9 @@ const Page: NextPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-            <main></main>
+            <main className="p-2">
+                <Table />
+            </main>
         </div>
     );
 };
