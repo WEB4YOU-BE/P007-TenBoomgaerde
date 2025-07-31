@@ -98,20 +98,20 @@ export type Database = {
             };
             organizations: {
                 Insert: {
-                    btw_number: string;
                     id?: string;
                     name: string;
+                    vat: string;
                 };
                 Relationships: [];
                 Row: {
-                    btw_number: string;
                     id: string;
                     name: string;
+                    vat: string;
                 };
                 Update: {
-                    btw_number?: string;
                     id?: string;
                     name?: string;
+                    vat?: string;
                 };
             };
             products: {

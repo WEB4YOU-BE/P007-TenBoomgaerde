@@ -33,7 +33,7 @@ const columns = [
         cell: (info) => info.getValue() || "-",
         header: "Naam",
     }),
-    columnHelper.accessor("btw_number", {
+    columnHelper.accessor("vat", {
         cell: (info) => info.getValue() || "-",
         header: "BTW-nummer",
     }),

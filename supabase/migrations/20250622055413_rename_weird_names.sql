@@ -1,47 +1,38 @@
 -- Rename tables
 ALTER TABLE IF EXISTS public.rooms
 RENAME TO halls;
-
 ALTER TABLE IF EXISTS public.bloks
 RENAME TO timeslots;
 
 -- Rename columns in halls
 ALTER TABLE IF EXISTS public.halls
 RENAME COLUMN private TO is_private;
-
 ALTER TABLE IF EXISTS public.halls
 RENAME COLUMN day_price TO price_per_day;
-
 ALTER TABLE IF EXISTS public.halls
 RENAME COLUMN day_price2 TO price_per_day_discount;
 
 -- Rename columns in reservations
 ALTER TABLE IF EXISTS public.reservations
 RENAME COLUMN room_id TO hall_id;
-
 ALTER TABLE IF EXISTS public.reservations
 RENAME COLUMN start_hour TO start_timeslot_id;
-
 ALTER TABLE IF EXISTS public.reservations
 RENAME COLUMN end_hour TO end_timeslot_id;
 
 -- Rename columns in timeslots
 ALTER TABLE IF EXISTS public.timeslots
 RENAME COLUMN start_hour TO start_time;
-
 ALTER TABLE IF EXISTS public.timeslots
 RENAME COLUMN end_hour TO end_time;
 
 -- Rename columns in users
 ALTER TABLE IF EXISTS public.users
 RENAME COLUMN street to address_street;
-
 ALTER TABLE IF EXISTS public.users
 ADD COLUMN address_number text;
-
 ALTER TABLE IF EXISTS public.users
 RENAME COLUMN postcode TO address_postal_code;
-
 ALTER TABLE IF EXISTS public.users
 RENAME COLUMN city TO address_city;
 
@@ -77,3 +68,7 @@ ALTER TABLE public.reservations
 RENAME COLUMN "end_date" TO "end";
 ALTER TABLE public.reservations
 RENAME COLUMN "gefactureerd" TO "invoiced";
+
+-- rename the columns in organizations
+ALTER TABLE IF EXISTS public.organizations
+RENAME COLUMN "btw_number" TO "vat";
