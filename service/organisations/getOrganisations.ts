@@ -8,7 +8,7 @@ const getOrganisations = async ({ signal }: GetOrganisationsProps) => {
     const supabase = createClient();
     const { data, error } = await supabase
         .from("organizations")
-        .select("*, users_organizations( users( firstname, lastname ) )")
+        .select("*, users_organizations( users( id, firstname, lastname ) )")
         .abortSignal(signal);
     if (error && error instanceof Error) throw error;
 

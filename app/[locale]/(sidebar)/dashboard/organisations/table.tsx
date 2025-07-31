@@ -1,6 +1,6 @@
 "use client";
 
-import { InfoIcon } from "@phosphor-icons/react/dist/ssr";
+import { InfoIcon, QuestionMarkIcon } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
 import {
     createColumnHelper,
@@ -12,7 +12,14 @@ import {
 } from "@tanstack/react-table";
 import React, { useMemo } from "react";
 
+import { AvatarFallback } from "@/components/atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar/Avatar";
 import DataTable, { Controls, Pagination } from "@/components/atoms/DataTable";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/atoms/tooltip";
 import { Link } from "@/i18n/navigation";
 import getOrganisations, {
     GetOrganisationsResponse,
@@ -45,7 +52,55 @@ const columns = [
                 })
                 .join(", ");
         },
-        { header: "Leden", id: "members" }
+        {
+            cell: (info) => {
+                const usersOrgs = info.row.original.users_organizations;
+                if (!usersOrgs || usersOrgs.length === 0) return <span>-</span>;
+
+                return (
+                    <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
+                        {usersOrgs.map((uo) => {
+                            const user = uo.users;
+                            if (!user) return null;
+                            return (
+                                <Tooltip key={user.id}>
+                                    <TooltipTrigger>
+                                        <Avatar>
+                                            <AvatarFallback>
+                                                {(() => {
+                                                    const initials = [
+                                                        user.firstname?.at(0),
+                                                        user.lastname?.at(0),
+                                                    ]
+                                                        .filter(Boolean)
+                                                        .join("")
+                                                        .trim();
+                                                    return initials.length >
+                                                        0 ? (
+                                                        initials
+                                                    ) : (
+                                                        <QuestionMarkIcon />
+                                                    );
+                                                })()}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        {[user.firstname, user.lastname]
+                                            .filter(Boolean)
+                                            .join(" ")
+                                            .trim() || "-"}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+                    </div>
+                );
+            },
+            enableSorting: false,
+            header: "Leden",
+            id: "members",
+        }
     ),
     columnHelper.display({
         cell: ({ row }) => (
