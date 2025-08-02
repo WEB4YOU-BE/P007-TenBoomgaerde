@@ -41,7 +41,7 @@ const columns = [
                 <Link
                     className={cn(
                         buttonVariants({ size: "icon", variant: "ghost" }),
-                        "size-4 rounded-[4px] opacity-50 hover:opacity-100 transition-opacity duration-200"
+                        "size-4 rounded-[4px] !bg-transparent opacity-50 hover:opacity-100 transition-opacity duration-200"
                     )}
                     href={`/dashboard/reservations/${row.original.id}`}
                     onClick={(e) => e.stopPropagation()} // Prevent row selection when clicking the link
