@@ -123,6 +123,7 @@ function SortDropdown<TData>({ table }: { table: TTable<TData> }) {
                 className="h-9"
                 disabled={!currentId}
                 onClick={handleToggleDirection}
+                size="icon"
                 title="Wissel sorteervolgorde"
                 variant="outline"
             >
