@@ -38,6 +38,7 @@ const columns = [
                         "size-4 rounded-[4px] opacity-50 hover:opacity-100 transition-opacity duration-200"
                     )}
                     href={`/dashboard/reservations/${row.original.id}`}
+                    onClick={(e) => e.stopPropagation()} // Prevent row selection when clicking the link
                 >
                     <ArrowsOutSimpleIcon className="size-full" />
                 </Link>
