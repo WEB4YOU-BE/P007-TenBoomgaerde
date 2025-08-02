@@ -3,6 +3,7 @@ import { ComponentPropsWithRef } from "react";
 import React from "react";
 
 import Pagination from "@/components/atoms/DataTable/BottomBar/Pagination";
+import RowSelection from "@/components/atoms/DataTable/BottomBar/RowSelection";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface BottomBarProps<TData> extends ComponentPropsWithRef<"div"> {
@@ -20,7 +21,7 @@ const BottomBar = <TData,>({
         )}
         {...props}
     >
-        <div /> {/* Placeholder for row selection */}
+        <RowSelection table={table} />
         <Pagination table={table} />
     </div>
 );
