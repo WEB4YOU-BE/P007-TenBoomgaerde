@@ -1,6 +1,7 @@
 "use client";
 
-import { InfoIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsOutSimpleIcon } from "@phosphor-icons/react/dist/ssr";
+import { CheckedState } from "@radix-ui/react-checkbox";
 import { useQuery } from "@tanstack/react-query";
 import {
     createColumnHelper,
@@ -15,17 +16,53 @@ import { nlBE } from "date-fns/locale";
 import React, { useMemo } from "react";
 import { useLocale } from "use-intl";
 
+import Checkbox from "@/components/atoms/Checkbox";
 import DataTable, { Controls, Pagination } from "@/components/atoms/DataTable";
 import { Link } from "@/i18n/navigation";
 import getReservations, {
     GetReservationsResponse,
 } from "@/service/reservations/getReservations";
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
+import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 const columnHelper =
     createColumnHelper<NonNullable<GetReservationsResponse>[number]>();
 
 const columns = [
+    columnHelper.display({
+        cell: ({ row }) => (
+            <div className="flex items-center gap-2">
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    disabled={!row.getCanSelect()}
+                    onCheckedChange={row.getToggleSelectedHandler()}
+                />
+                <Link
+                    className={cn(
+                        buttonVariants({ size: "icon", variant: "ghost" }),
+                        "size-4 rounded-[4px] opacity-50 hover:opacity-100 transition-opacity duration-200"
+                    )}
+                    href={`/dashboard/reservations/${row.original.id}`}
+                >
+                    <ArrowsOutSimpleIcon className="size-full" />
+                </Link>
+            </div>
+        ),
+        header: ({ table }) => (
+            <Checkbox
+                checked={
+                    table.getIsSomeRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllRowsSelected()
+                }
+                onCheckedChange={(value: CheckedState) => {
+                    table.toggleAllRowsSelected(!!value);
+                }}
+            />
+        ),
+        id: "select",
+    }),
     columnHelper.accessor(
         ({ reservation_number, start }) => {
             if (start && reservation_number != null) {
@@ -102,14 +139,6 @@ const columns = [
             invoiced ? "ja" : invoiced === false ? "nee" : "onbekend",
         { header: "Gefactureerd", id: "invoiced" }
     ),
-    columnHelper.display({
-        cell: ({ row }) => (
-            <Link href={`/dashboard/reservations/${row.original.id}`}>
-                <InfoIcon className="size-6" />
-            </Link>
-        ),
-        id: "actions",
-    }),
 ];
 
 const Table = () => {
@@ -124,13 +153,10 @@ const Table = () => {
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        getRowId: (row) => row.id,
         getSortedRowModel: getSortedRowModel(),
         initialState: {
-            // columnFilters: [
-            //     { id: "dates", value: [new Date("2025-09-08"), undefined] },
-            //     { id: "hall", value: "Kleine zaal" },
-            // ],
-            // globalFilter: "Grote zaal",
+            columnPinning: { left: ["select"] },
             pagination: { pageIndex: 0, pageSize: 20 },
             sorting: [{ desc: true, id: "dates" }],
         },
