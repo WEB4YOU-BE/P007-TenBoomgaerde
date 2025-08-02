@@ -49,6 +49,7 @@ const columns = [
                 </Link>
             </div>
         ),
+        enableHiding: false,
         header: ({ table }) => (
             <Checkbox
                 checked={

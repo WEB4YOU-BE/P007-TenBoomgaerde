@@ -36,7 +36,6 @@ interface ColumnSortProps<TData>
     table: Table<TData>;
 }
 
-// This component can add columns to sort by, and toggle the sort direction:
 const ColumnSort = <TData,>({
     className,
     table,
