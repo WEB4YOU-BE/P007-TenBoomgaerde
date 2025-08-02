@@ -1,7 +1,5 @@
-import type { ReactNode } from "react";
-
 import { NextIntlClientProvider } from "next-intl";
-import React from "react";
+import React, { type ReactNode } from "react";
 
 interface SSRProvidersProps {
     children: ReactNode;
