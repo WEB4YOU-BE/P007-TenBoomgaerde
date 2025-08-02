@@ -19,7 +19,7 @@ import React, { useMemo } from "react";
 import { AvatarFallback } from "@/components/atoms/Avatar";
 import Avatar from "@/components/atoms/Avatar/Avatar";
 import Checkbox from "@/components/atoms/Checkbox";
-import DataTable, { Pagination } from "@/components/atoms/DataTable";
+import DataTable from "@/components/atoms/DataTable";
 import {
     Tooltip,
     TooltipContent,
@@ -169,12 +169,7 @@ const Table = () => {
         },
     });
 
-    return (
-        <div className="flex flex-col gap-2">
-            <DataTable table={table} />
-            <Pagination table={table} />
-        </div>
-    );
+    return <DataTable table={table} />;
 };
 
 export { columns };

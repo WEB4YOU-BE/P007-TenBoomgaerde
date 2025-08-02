@@ -55,7 +55,7 @@ const Pagination = <TData,>({
     return (
         <div
             className={cn(
-                "flex flex-col gap-2 px-2 sm:flex-row sm:justify-end sm:items-center",
+                "flex flex-col gap-2 sm:flex-row sm:justify-end sm:items-center",
                 className
             )}
             {...props}

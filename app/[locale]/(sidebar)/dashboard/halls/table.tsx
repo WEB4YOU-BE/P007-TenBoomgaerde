@@ -14,7 +14,7 @@ import {
 import React, { useMemo } from "react";
 
 import Checkbox from "@/components/atoms/Checkbox";
-import DataTable, { Pagination } from "@/components/atoms/DataTable";
+import DataTable from "@/components/atoms/DataTable";
 import { Link } from "@/i18n/navigation";
 import getHalls, { GetHallsResponse } from "@/service/halls/getHalls";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
@@ -107,12 +107,7 @@ const Table = () => {
         },
     });
 
-    return (
-        <div className="flex flex-col gap-2">
-            <DataTable table={table} />
-            <Pagination table={table} />
-        </div>
-    );
+    return <DataTable table={table} />;
 };
 
 export { columns };
