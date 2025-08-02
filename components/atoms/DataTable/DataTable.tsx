@@ -43,6 +43,7 @@ const DataTable = <TData,>({ table }: DataTableProps<TData>) => (
                             <TableRow
                                 data-state={row.getIsSelected() && "selected"}
                                 key={row.id}
+                                onClick={() => row.toggleSelected()}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
