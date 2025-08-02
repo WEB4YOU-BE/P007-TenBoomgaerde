@@ -1,7 +1,7 @@
 import { flexRender, type Table as TTable } from "@tanstack/react-table";
 import React from "react";
 
-import BottomBar from "@/components/atoms/DataTable/BottomBar/BottomBar";
+import BottomBar from "@/components/atoms/DataTable/BottomBar";
 import TopBar from "@/components/atoms/DataTable/TopBar";
 import Table, {
     TableBody,
