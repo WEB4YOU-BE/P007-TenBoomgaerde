@@ -26,6 +26,7 @@ import getReservations, {
     GetReservationsResponse,
 } from "@/service/reservations/getReservations";
 import updateReservationsInvoiced from "@/service/reservations/updateReservationsInvoiced";
+import updateReservationsStatus from "@/service/reservations/updateReservationsStatus";
 import { RowAction } from "@/types/features/table/rowActions/RowAction";
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
@@ -165,10 +166,10 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
 
                     const reservationIds = selectedRows.map((row) => row.id);
                     const signal = AbortSignal.timeout(5000);
-                    await updateReservationsInvoiced({
-                        invoiced: true,
+                    await updateReservationsStatus({
                         reservationIds,
                         signal,
+                        status: "goedgekeurd",
                     });
 
                     await queryClient.invalidateQueries({
@@ -196,10 +197,10 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
 
                     const reservationIds = selectedRows.map((row) => row.id);
                     const signal = AbortSignal.timeout(5000);
-                    await updateReservationsInvoiced({
-                        invoiced: false,
+                    await updateReservationsStatus({
                         reservationIds,
                         signal,
+                        status: "in afwachting",
                     });
 
                     await queryClient.invalidateQueries({
@@ -227,10 +228,10 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
 
                     const reservationIds = selectedRows.map((row) => row.id);
                     const signal = AbortSignal.timeout(5000);
-                    await updateReservationsInvoiced({
-                        invoiced: false,
+                    await updateReservationsStatus({
                         reservationIds,
                         signal,
+                        status: "geweigerd",
                     });
 
                     await queryClient.invalidateQueries({
