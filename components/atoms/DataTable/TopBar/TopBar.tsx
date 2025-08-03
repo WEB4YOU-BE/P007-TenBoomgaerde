@@ -4,6 +4,7 @@ import React from "react";
 
 import ColumnSort from "@/components/atoms/DataTable/TopBar/ColumnSort";
 import ColumnVisibility from "@/components/atoms/DataTable/TopBar/ColumnVisibility";
+import TableActions from "@/components/atoms/DataTable/TopBar/TableActions";
 import TableSearch from "@/components/atoms/DataTable/TopBar/TableSearch";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
@@ -19,10 +20,10 @@ const TopBar = <TData,>({ className, table, ...props }: TopBarProps<TData>) => (
         {...props}
     >
         <TableSearch table={table} />
-        {/* PLACEHOLDER Row Actions */}
         <ColumnSort table={table} />
         {/* PLACEHOLDER ColumnFilter */}
         <ColumnVisibility table={table} />
+        <TableActions table={table} />
     </div>
 );
 

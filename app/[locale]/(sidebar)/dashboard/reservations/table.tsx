@@ -9,6 +9,7 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    type Table,
     useReactTable,
 } from "@tanstack/react-table";
 import { format, isSameDay } from "date-fns";
@@ -18,16 +19,19 @@ import { useLocale } from "use-intl";
 
 import Checkbox from "@/components/atoms/Checkbox";
 import DataTable from "@/components/atoms/DataTable";
+import RowActionsFeature from "@/features/table/RowActionsFeature";
 import { Link } from "@/i18n/navigation";
 import getReservations, {
     GetReservationsResponse,
 } from "@/service/reservations/getReservations";
+import { RowAction } from "@/types/features/table/rowActions/RowAction";
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-const columnHelper =
-    createColumnHelper<NonNullable<GetReservationsResponse>[number]>();
+type TData = NonNullable<GetReservationsResponse>[number];
+
+const columnHelper = createColumnHelper<TData>();
 
 const columns = [
     columnHelper.display({
@@ -143,6 +147,21 @@ const columns = [
     ),
 ];
 
+const actions: RowAction<TData>[] = [
+    // {
+    //     buttonLabel: "Delete selected rows",
+    //     disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+    //     fn: (table) => {
+    //         console.log(
+    //             "Delete action triggered for selected rows:",
+    //             table.getSelectedRowModel().rows
+    //         );
+    //     },
+    //     id: "delete",
+    // },
+    // Add more actions here as needed
+];
+
 const Table = () => {
     const { data } = useQuery({
         queryFn: getReservations,
@@ -150,6 +169,8 @@ const Table = () => {
     });
     const reservations = useMemo(() => data ?? [], [data]);
     const table = useReactTable({
+        _features: [RowActionsFeature<TData>()],
+        actions,
         columns,
         data: reservations,
         getCoreRowModel: getCoreRowModel(),
