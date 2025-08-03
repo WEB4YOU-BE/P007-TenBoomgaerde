@@ -9,6 +9,7 @@ import React, {
 import Button from "@/components/atoms/Button";
 import {
     Command,
+    CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
@@ -32,7 +33,15 @@ const TableActions = <TData,>({
     table,
     ...props
 }: TableActionsProps<TData>) => {
+    // Getting the list of actions from the table options
+    const actions = table.getAllRowActions();
+
     // Selecting and deselecting all rows
+    const isEnabledRowSelection = useMemo(
+        () => table.options.enableRowSelection ?? true,
+        [table.options.enableRowSelection]
+    );
+
     const isSomeRowsSelected = table.getIsSomeRowsSelected();
     const isAllRowsSelected = table.getIsAllRowsSelected();
     const isNoRowsSelected = useMemo(
@@ -58,8 +67,6 @@ const TableActions = <TData,>({
         [table]
     );
 
-    const actions = table.getAllRowActions?.() ?? [];
-
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -81,6 +88,7 @@ const TableActions = <TData,>({
                 <Command>
                     <CommandInput className="h-9" placeholder="Zoek actie..." />
                     <CommandList>
+                        <CommandEmpty>Geen actie gevonden.</CommandEmpty>
                         {actions.length > 0 && (
                             <CommandGroup heading="Acties">
                                 {actions.map((action) => (
@@ -94,26 +102,28 @@ const TableActions = <TData,>({
                                 ))}
                             </CommandGroup>
                         )}
-                        <CommandGroup heading="Rijen">
-                            <CommandItem
-                                disabled={!canSelectAllRows}
-                                onSelect={handleToggleSelectAllRows}
-                            >
-                                Selecteer alle rijen
-                                <CommandShortcut>
-                                    {isAllRowsSelected && <CheckIcon />}
-                                </CommandShortcut>
-                            </CommandItem>
-                            <CommandItem
-                                disabled={!canDeselectAllRows}
-                                onSelect={handleDeselectAllRows}
-                            >
-                                Deselecteer alle rijen
-                                <CommandShortcut>
-                                    {isNoRowsSelected && <CheckIcon />}
-                                </CommandShortcut>
-                            </CommandItem>
-                        </CommandGroup>
+                        {isEnabledRowSelection && (
+                            <CommandGroup heading="Rijen">
+                                <CommandItem
+                                    disabled={!canSelectAllRows}
+                                    onSelect={handleToggleSelectAllRows}
+                                >
+                                    Selecteer alle rijen
+                                    <CommandShortcut>
+                                        {isAllRowsSelected && <CheckIcon />}
+                                    </CommandShortcut>
+                                </CommandItem>
+                                <CommandItem
+                                    disabled={!canDeselectAllRows}
+                                    onSelect={handleDeselectAllRows}
+                                >
+                                    Deselecteer alle rijen
+                                    <CommandShortcut>
+                                        {isNoRowsSelected && <CheckIcon />}
+                                    </CommandShortcut>
+                                </CommandItem>
+                            </CommandGroup>
+                        )}
                     </CommandList>
                 </Command>
             </PopoverContent>

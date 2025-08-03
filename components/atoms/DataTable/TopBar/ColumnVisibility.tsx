@@ -6,6 +6,7 @@ import React from "react";
 import Button from "@/components/atoms/Button";
 import {
     Command,
+    CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
@@ -55,6 +56,7 @@ const ColumnVisibility = <TData,>({
                 <Command>
                     <CommandInput className="h-9" placeholder="Zoek kolom..." />
                     <CommandList>
+                        <CommandEmpty>Geen kolom gevonden.</CommandEmpty>
                         <CommandGroup>
                             {allHideableColumns.map((column) => (
                                 <CommandItem
