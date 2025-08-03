@@ -168,7 +168,7 @@ const Table = () => {
         queryKey: ["reservations"],
     });
     const reservations = useMemo(() => data ?? [], [data]);
-    const table = useReactTable({
+    const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
         actions,
         columns,

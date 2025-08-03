@@ -15,6 +15,7 @@ import React, { useMemo } from "react";
 
 import Checkbox from "@/components/atoms/Checkbox";
 import DataTable from "@/components/atoms/DataTable";
+import RowActionsFeature from "@/features/table/RowActionsFeature";
 import { Link } from "@/i18n/navigation";
 import getCategories, {
     GetCategoriesResponse,
@@ -22,8 +23,9 @@ import getCategories, {
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-const columnHelper =
-    createColumnHelper<NonNullable<GetCategoriesResponse>[number]>();
+type TData = NonNullable<GetCategoriesResponse>[number];
+
+const columnHelper = createColumnHelper<TData>();
 
 const columns = [
     columnHelper.display({
@@ -74,7 +76,8 @@ const Table = () => {
         queryKey: ["categories"],
     });
     const categories = useMemo(() => data ?? [], [data]);
-    const table = useReactTable({
+    const table = useReactTable<TData>({
+        _features: [RowActionsFeature<TData>()],
         columns,
         data: categories,
         getCoreRowModel: getCoreRowModel(),

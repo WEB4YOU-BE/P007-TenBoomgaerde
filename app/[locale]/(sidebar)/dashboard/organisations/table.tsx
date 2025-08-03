@@ -25,6 +25,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/atoms/tooltip";
+import RowActionsFeature from "@/features/table/RowActionsFeature";
 import { Link } from "@/i18n/navigation";
 import getOrganisations, {
     GetOrganisationsResponse,
@@ -32,8 +33,9 @@ import getOrganisations, {
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-const columnHelper =
-    createColumnHelper<NonNullable<GetOrganisationsResponse>[number]>();
+type TData = NonNullable<GetOrganisationsResponse>[number];
+
+const columnHelper = createColumnHelper<TData>();
 
 const columns = [
     columnHelper.display({
@@ -154,7 +156,8 @@ const Table = () => {
         queryKey: ["organisations"],
     });
     const organisations = useMemo(() => data ?? [], [data]);
-    const table = useReactTable({
+    const table = useReactTable<TData>({
+        _features: [RowActionsFeature<TData>()],
         columns,
         data: organisations,
         getCoreRowModel: getCoreRowModel(),
