@@ -2,7 +2,7 @@
 
 import { ArrowsOutSimpleIcon } from "@phosphor-icons/react/dist/ssr";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     createColumnHelper,
     getCoreRowModel,
@@ -15,6 +15,7 @@ import {
 import { format, isSameDay } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import React, { useMemo } from "react";
+import { toast } from "sonner";
 import { useLocale } from "use-intl";
 
 import Checkbox from "@/components/atoms/Checkbox";
@@ -24,6 +25,7 @@ import { Link } from "@/i18n/navigation";
 import getReservations, {
     GetReservationsResponse,
 } from "@/service/reservations/getReservations";
+import updateReservationsInvoiced from "@/service/reservations/updateReservationsInvoiced";
 import { RowAction } from "@/types/features/table/rowActions/RowAction";
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
@@ -147,22 +149,171 @@ const columns = [
     ),
 ];
 
-const actions: RowAction<TData>[] = [
-    // {
-    //     buttonLabel: "Delete selected rows",
-    //     disabled: (table) => table.getSelectedRowModel().rows.length === 0,
-    //     fn: (table) => {
-    //         console.log(
-    //             "Delete action triggered for selected rows:",
-    //             table.getSelectedRowModel().rows
-    //         );
-    //     },
-    //     id: "delete",
-    // },
-    // Add more actions here as needed
+const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
+    queryClient
+) => [
+    // Mark status actions (goedgekeurd, in afwachting, geweigerd)
+    {
+        buttonLabel: "Markeer als goedgekeurd",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen rijen geselecteerd");
+
+                    const reservationIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateReservationsInvoiced({
+                        invoiced: true,
+                        reservationIds,
+                        signal,
+                    });
+
+                    await queryClient.invalidateQueries({
+                        queryKey: ["reservations"],
+                    });
+                },
+                {
+                    error: (error) => `Fout bij markeren: ${error}`,
+                    loading: "Bezig met markeren als goedgekeurd...",
+                    success: "Rijen succesvol gemarkeerd als goedgekeurd",
+                }
+            );
+        },
+        id: "mark-as-approved",
+    },
+    {
+        buttonLabel: "Markeer als in afwachting",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen rijen geselecteerd");
+
+                    const reservationIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateReservationsInvoiced({
+                        invoiced: false,
+                        reservationIds,
+                        signal,
+                    });
+
+                    await queryClient.invalidateQueries({
+                        queryKey: ["reservations"],
+                    });
+                },
+                {
+                    error: (error) => `Fout bij markeren: ${error}`,
+                    loading: "Bezig met markeren als in afwachting...",
+                    success: "Rijen succesvol gemarkeerd als in afwachting",
+                }
+            );
+        },
+        id: "mark-as-pending",
+    },
+    {
+        buttonLabel: "Markeer als geweigerd",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen rijen geselecteerd");
+
+                    const reservationIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateReservationsInvoiced({
+                        invoiced: false,
+                        reservationIds,
+                        signal,
+                    });
+
+                    await queryClient.invalidateQueries({
+                        queryKey: ["reservations"],
+                    });
+                },
+                {
+                    error: (error) => `Fout bij markeren: ${error}`,
+                    loading: "Bezig met markeren als geweigerd...",
+                    success: "Rijen succesvol gemarkeerd als geweigerd",
+                }
+            );
+        },
+        id: "mark-as-rejected",
+    },
+    // Mark as invoiced and not invoiced actions
+    {
+        buttonLabel: "Markeer als gefactureerd",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen rijen geselecteerd");
+
+                    const reservationIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateReservationsInvoiced({
+                        invoiced: true,
+                        reservationIds,
+                        signal,
+                    });
+
+                    await queryClient.invalidateQueries({
+                        queryKey: ["reservations"],
+                    });
+                },
+                {
+                    error: (error) => `Fout bij markeren: ${error}`,
+                    loading: "Bezig met markeren als gefactureerd...",
+                    success: "Rijen succesvol gemarkeerd als gefactureerd",
+                }
+            );
+        },
+        id: "mark-as-invoiced",
+    },
+    {
+        buttonLabel: "Markeer als niet gefactureerd",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen rijen geselecteerd");
+
+                    const reservationIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateReservationsInvoiced({
+                        invoiced: false,
+                        reservationIds,
+                        signal,
+                    });
+
+                    await queryClient.invalidateQueries({
+                        queryKey: ["reservations"],
+                    });
+                },
+                {
+                    error: (error) => `Fout bij markeren: ${error}`,
+                    loading: "Bezig met markeren als niet gefactureerd...",
+                    success: "Rijen succesvol gemarkeerd als niet gefactureerd",
+                }
+            );
+        },
+        id: "mark-as-not-invoiced",
+    },
 ];
 
 const Table = () => {
+    const queryClient = useQueryClient();
+
     const { data } = useQuery({
         queryFn: getReservations,
         queryKey: ["reservations"],
@@ -170,7 +321,7 @@ const Table = () => {
     const reservations = useMemo(() => data ?? [], [data]);
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
-        actions,
+        actions: actions(queryClient),
         columns,
         data: reservations,
         getCoreRowModel: getCoreRowModel(),
