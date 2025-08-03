@@ -33,8 +33,14 @@ const TableActions = <TData,>({
     table,
     ...props
 }: TableActionsProps<TData>) => {
-    // Getting the list of actions from the table options
-    const actions = table.getAllRowActions();
+    // Getting the list of actions from the table options:
+    // Declaration merging makes getAllRowActions available in the type system for all tables,
+    // but at runtime, the method only exists if the feature is loaded. See TanStack Table docs:
+    // https://tanstack.com/table/v8/docs/guide/custom-features#caveats-of-using-declaration-merging
+    const actions =
+        typeof table.getAllRowActions === "function"
+            ? table.getAllRowActions()
+            : [];
 
     // Selecting and deselecting all rows
     const isEnabledRowSelection = useMemo(
