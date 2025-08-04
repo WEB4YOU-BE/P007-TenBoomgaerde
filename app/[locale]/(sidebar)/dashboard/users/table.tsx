@@ -149,7 +149,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
         id: "send-password-reset",
     },
     {
-        buttonLabel: "Geef admin rechten",
+        buttonLabel: "Geef adminrechten",
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
