@@ -2,7 +2,7 @@
 
 import { ArrowsOutSimpleIcon } from "@phosphor-icons/react/dist/ssr";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     createColumnHelper,
     getCoreRowModel,
@@ -23,6 +23,7 @@ import RowActionsFeature from "@/features/table/RowActionsFeature";
 import { Link } from "@/i18n/navigation";
 import getUsers, { GetUsersResponse } from "@/service/users/getUsers";
 import sendPasswordReset from "@/service/users/sendPasswordReset";
+import updateUsersAdmin from "@/service/users/updateUsersAdmin";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
@@ -118,7 +119,9 @@ const columns = [
     }),
 ];
 
-const actions: RowAction<TData>[] = [
+const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
+    queryClient
+) => [
     {
         buttonLabel: "Stuur e-mail voor wachtwoordherstel",
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
@@ -145,9 +148,62 @@ const actions: RowAction<TData>[] = [
         },
         id: "send-password-reset",
     },
+    {
+        buttonLabel: "Geef admin rechten",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen gebruikers geselecteerd");
+                    const userIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateUsersAdmin({ isAdmin: true, signal, userIds });
+                    await queryClient.invalidateQueries({
+                        queryKey: ["users"],
+                    });
+                },
+                {
+                    error: (error) =>
+                        `Fout bij het toekennen van adminrechten: ${error}`,
+                    loading: "Adminrechten worden toegekend...",
+                    success: "Adminrechten succesvol toegekend",
+                }
+            );
+        },
+        id: "make-admin",
+    },
+    {
+        buttonLabel: "Verwijder adminrechten",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen gebruikers geselecteerd");
+                    const userIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateUsersAdmin({ isAdmin: false, signal, userIds });
+                    await queryClient.invalidateQueries({
+                        queryKey: ["users"],
+                    });
+                },
+                {
+                    error: (error) =>
+                        `Fout bij het verwijderen van adminrechten: ${error}`,
+                    loading: "Adminrechten worden verwijderd...",
+                    success: "Adminrechten succesvol verwijderd",
+                }
+            );
+        },
+        id: "make-not-admin",
+    },
 ];
 
 const Table = () => {
+    const queryClient = useQueryClient();
     const { data } = useQuery({
         queryFn: getUsers,
         queryKey: ["users"],
@@ -155,7 +211,7 @@ const Table = () => {
     const users = useMemo(() => data ?? [], [data]);
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
-        actions: actions,
+        actions: actions(queryClient),
         columns,
         data: users,
         getCoreRowModel: getCoreRowModel(),
