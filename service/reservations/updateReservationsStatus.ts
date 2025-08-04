@@ -19,7 +19,6 @@ const updateReservationsStatus = async ({
         .from("reservations")
         .update({ status })
         .in("id", reservationIds)
-        .select("*")
         .abortSignal(signal);
 
     if (error && error instanceof Error) throw error;

@@ -3,6 +3,7 @@
 import { ArrowsOutSimpleIcon } from "@phosphor-icons/react/dist/ssr";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import {
     createColumnHelper,
     getCoreRowModel,
@@ -12,12 +13,16 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import React, { useMemo } from "react";
+import { toast } from "sonner";
+
+import type { RowAction } from "@/types/features/table/rowActions/RowAction";
 
 import Checkbox from "@/components/atoms/Checkbox";
 import DataTable from "@/components/atoms/DataTable";
 import RowActionsFeature from "@/features/table/RowActionsFeature";
 import { Link } from "@/i18n/navigation";
 import getHalls, { GetHallsResponse } from "@/service/halls/getHalls";
+import updateHallPrivacy from "@/service/halls/updateHallPrivacy";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
@@ -88,7 +93,71 @@ const columns = [
     ),
 ];
 
+const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
+    queryClient
+) => [
+    {
+        buttonLabel: "Zet op privé",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen rijen geselecteerd");
+                    const hallIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateHallPrivacy({
+                        hallIds,
+                        isPrivate: true,
+                        signal,
+                    });
+                    await queryClient.invalidateQueries({
+                        queryKey: ["halls"],
+                    });
+                },
+                {
+                    error: (error) => `Fout bij markeren: ${error}`,
+                    loading: "Bezig met markeren als privé...",
+                    success: "Zalen succesvol op privé gezet",
+                }
+            );
+        },
+        id: "mark-as-private",
+    },
+    {
+        buttonLabel: "Maak openbaar",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen rijen geselecteerd");
+                    const hallIds = selectedRows.map((row) => row.id);
+                    const signal = AbortSignal.timeout(5000);
+                    await updateHallPrivacy({
+                        hallIds,
+                        isPrivate: false,
+                        signal,
+                    });
+                    await queryClient.invalidateQueries({
+                        queryKey: ["halls"],
+                    });
+                },
+                {
+                    error: (error) => `Fout bij markeren: ${error}`,
+                    loading: "Bezig met markeren als openbaar...",
+                    success: "Zalen succesvol openbaar gemaakt",
+                }
+            );
+        },
+        id: "mark-as-public",
+    },
+];
+
 const Table = () => {
+    const queryClient = useQueryClient();
     const { data } = useQuery({
         queryFn: getHalls,
         queryKey: ["halls"],
@@ -96,6 +165,7 @@ const Table = () => {
     const halls = useMemo(() => data ?? [], [data]);
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
+        actions: actions(queryClient),
         columns,
         data: halls,
         getCoreRowModel: getCoreRowModel(),
