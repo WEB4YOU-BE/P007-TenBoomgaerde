@@ -154,7 +154,6 @@ export type Database = {
                     id?: string;
                     invoiced?: boolean | null;
                     organization?: null | string;
-                    product?: null | string;
                     remarks?: null | string;
                     reservation_number: number;
                     reservation_year: string;
@@ -168,13 +167,6 @@ export type Database = {
                         isOneToOne: false;
                         referencedColumns: ["id"];
                         referencedRelation: "organizations";
-                    },
-                    {
-                        columns: ["product"];
-                        foreignKeyName: "reservations_product_id_fkey";
-                        isOneToOne: false;
-                        referencedColumns: ["id"];
-                        referencedRelation: "products";
                     },
                     {
                         columns: ["booker"];
@@ -191,7 +183,6 @@ export type Database = {
                     id: string;
                     invoiced: boolean | null;
                     organization: null | string;
-                    product: null | string;
                     remarks: null | string;
                     reservation_number: number;
                     reservation_year: string;
@@ -205,7 +196,6 @@ export type Database = {
                     id?: string;
                     invoiced?: boolean | null;
                     organization?: null | string;
-                    product?: null | string;
                     remarks?: null | string;
                     reservation_number?: number;
                     reservation_year?: string;
