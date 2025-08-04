@@ -13,12 +13,16 @@ import {
 } from "@tanstack/react-table";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import React, { useMemo } from "react";
+import { toast } from "sonner";
+
+import type { RowAction } from "@/types/features/table/rowActions/RowAction";
 
 import Checkbox from "@/components/atoms/Checkbox";
 import DataTable from "@/components/atoms/DataTable";
 import RowActionsFeature from "@/features/table/RowActionsFeature";
 import { Link } from "@/i18n/navigation";
 import getUsers, { GetUsersResponse } from "@/service/users/getUsers";
+import sendPasswordReset from "@/service/users/sendPasswordReset";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
@@ -114,6 +118,35 @@ const columns = [
     }),
 ];
 
+const actions: RowAction<TData>[] = [
+    {
+        buttonLabel: "Stuur e-mail voor wachtwoordherstel",
+        disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const selectedRows = table.getSelectedRowModel().rows;
+                    if (selectedRows.length === 0)
+                        throw new Error("Geen gebruikers geselecteerd");
+                    const emails = selectedRows
+                        .map((row) => row.original.email)
+                        .filter(Boolean);
+                    await sendPasswordReset({
+                        emails,
+                        siteURL: new URL(window.location.href).origin,
+                    });
+                },
+                {
+                    error: (error) => `Fout bij het versturen: ${error}`,
+                    loading: "Wachtwoordherstel e-mails worden verzonden...",
+                    success: "E-mails succesvol verzonden",
+                }
+            );
+        },
+        id: "send-password-reset",
+    },
+];
+
 const Table = () => {
     const { data } = useQuery({
         queryFn: getUsers,
@@ -122,6 +155,7 @@ const Table = () => {
     const users = useMemo(() => data ?? [], [data]);
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
+        actions: actions,
         columns,
         data: users,
         getCoreRowModel: getCoreRowModel(),
