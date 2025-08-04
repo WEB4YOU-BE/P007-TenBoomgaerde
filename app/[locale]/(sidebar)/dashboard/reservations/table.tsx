@@ -12,7 +12,7 @@ import {
     type Table,
     useReactTable,
 } from "@tanstack/react-table";
-import { format, isSameDay } from "date-fns";
+import { format, isSameDay, startOfWeek } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
@@ -124,10 +124,22 @@ const columns = [
         header: "Status",
         id: "status",
     }),
-    columnHelper.accessor(({ access_code }) => access_code || "-", {
-        header: "Toegangscode",
-        id: "access_code",
-    }),
+    columnHelper.accessor(
+        ({ access_code, start, status }) => {
+            if (!access_code || status !== "goedgekeurd" || !start) return "-";
+            // Calculate the Sunday before the reservation starts using date-fns
+            const startDate = new Date(start);
+            const sundayBefore = startOfWeek(startDate, { weekStartsOn: 0 });
+            const now = new Date();
+            if (now < sundayBefore) return "-";
+            // Always show as four digits
+            return access_code.toString().padStart(4, "0");
+        },
+        {
+            header: "Toegangscode",
+            id: "access_code",
+        }
+    ),
     columnHelper.accessor(
         ({ booker }) => {
             if (!booker) return "Gebruiker reeds verwijderd";
