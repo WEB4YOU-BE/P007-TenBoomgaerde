@@ -1,5 +1,7 @@
 import React from "react";
 
+import { AlertDescription, AlertTitle } from "@/components/atoms/Alert";
+import Alert from "@/components/atoms/Alert/Alert";
 import Breadcrumb, {
     BreadcrumbItem,
     BreadcrumbLink,
@@ -65,18 +67,33 @@ const page = async () => {
                         <h2 className={"text-2xl font-bold mb-4"}>
                             Huurprijs zaal
                         </h2>
-                        <div className={"flex flex-row gap-2"}>
+                        <div className={"flex flex-row flex-wrap gap-2"}>
                             {rooms.data.map((room, index) => (
-                                <Card className="grow" key={index}>
-                                    <CardHeader>
-                                        <CardTitle>{room.name}</CardTitle>
-                                        <CardDescription>
+                                <Card
+                                    className="grow min-w-[180px]"
+                                    key={index}
+                                >
+                                    <CardHeader className="w-fit">
+                                        <CardTitle className="text-nowrap">
+                                            {room.name}
+                                        </CardTitle>
+                                        <CardDescription className="text-nowrap">
                                             &euro; {room.price_per_day} per
                                             tijdsblok
                                         </CardDescription>
                                     </CardHeader>
                                 </Card>
                             ))}
+                            <Alert variant="default">
+                                <AlertTitle>Belangrijke informatie</AlertTitle>
+                                <AlertDescription>
+                                    Voor particuliere feesten in het weekend
+                                    (zaterdag en zondag) is het verplicht om
+                                    alle zalen te reserveren voor de volledige
+                                    dag. De totaalprijs voor de zalen bedraagt
+                                    dan &euro; 250 per dag.
+                                </AlertDescription>
+                            </Alert>
                         </div>
                         <h3 className={"text-xl font-bold mt-6"}>
                             Extra informatie
