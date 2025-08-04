@@ -1,7 +1,8 @@
 "use client";
 
-import { CurrencyEurIcon } from "@phosphor-icons/react/dist/ssr";
+import { CurrencyEurIcon, GavelIcon } from "@phosphor-icons/react/dist/ssr";
 import { useQuery } from "@tanstack/react-query";
+import { default as NextLink } from "next/link";
 import React from "react";
 
 import {
@@ -36,6 +37,17 @@ const PublicSidebarMenu = () => {
                                     <CurrencyEurIcon />
                                     <span>Prijzen</span>
                                 </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild>
+                                <NextLink
+                                    href="/documents/Reglement_vergaderzalen_Ten_Boomgaerde_vzw.pdf"
+                                    target="_blank"
+                                >
+                                    <GavelIcon />
+                                    <span>Reglement vergaderzalen</span>
+                                </NextLink>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>

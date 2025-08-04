@@ -21,6 +21,7 @@ const plugin: Plugin =
             /^\/_next\//,
             /^\/_vercel\//,
             /^\/favicon\.ico$/,
+            /^\/documents\//,
         ];
         const pathname = request.nextUrl.pathname;
         if (excludedRoutes.some((regex) => regex.test(pathname)))
