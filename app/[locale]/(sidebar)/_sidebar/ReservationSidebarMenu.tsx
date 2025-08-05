@@ -48,7 +48,7 @@ const ReservationSidebarMenu = () => {
             <SidebarGroup>
                 <SidebarGroupLabel asChild>
                     <CollapsibleTrigger>
-                        Reservaties
+                        Reserveringen
                         <CaretDownIcon className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                     </CollapsibleTrigger>
                 </SidebarGroupLabel>
@@ -83,32 +83,17 @@ const ReservationSidebarMenu = () => {
                                 </Tooltip>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <SidebarMenuButton
-                                            asChild
-                                            disabled
-                                            isActive={
-                                                pathname ===
-                                                "/account/reservations/"
-                                            }
-                                        >
-                                            <Link
-                                                aria-disabled
-                                                href="/account/reservations/"
-                                            >
-                                                <CalendarCheckIcon />
-                                                <span>Mijn reserveringen</span>
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </TooltipTrigger>
-                                    <TooltipContent
-                                        side="right"
-                                        updatePositionStrategy="always"
-                                    >
-                                        Beschikbaar vanaf 15 augustus
-                                    </TooltipContent>
-                                </Tooltip>
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={
+                                        pathname === "/account/reservations/"
+                                    }
+                                >
+                                    <Link href="/account/reservations/">
+                                        <CalendarCheckIcon />
+                                        <span>Mijn reserveringen</span>
+                                    </Link>
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>

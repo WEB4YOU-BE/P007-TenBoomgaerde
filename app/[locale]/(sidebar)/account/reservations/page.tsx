@@ -28,14 +28,10 @@ const Page: NextPage = () => {
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                            <BreadcrumbLink href="/dashboard/">
-                                Dashboard
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
+                        <BreadcrumbItem>Account</BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Reserveringen</BreadcrumbPage>
+                            <BreadcrumbPage>Mijn reserveringen</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

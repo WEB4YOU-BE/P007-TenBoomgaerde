@@ -89,7 +89,7 @@ const DashboardSidebarMenu = () => {
                                 >
                                     <Link href="/dashboard/reservations/">
                                         <CalendarCheckIcon />
-                                        <span>Reservaties</span>
+                                        <span>Reserveringen</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>

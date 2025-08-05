@@ -28,11 +28,7 @@ const Page: NextPage = () => {
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                            <BreadcrumbLink href="/account/">
-                                Account
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
+                        <BreadcrumbItem>Account</BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
                             <BreadcrumbPage>

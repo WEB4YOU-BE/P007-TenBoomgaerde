@@ -64,7 +64,7 @@ const OrganisationSidebarMenu = () => {
                                     <SidebarMenuSubItem>
                                         <SidebarMenuSubButton asChild>
                                             <Link href="/organisations/1/reservations/">
-                                                <span>Reservaties</span>
+                                                <span>Reserveringen</span>
                                             </Link>
                                         </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>
@@ -103,7 +103,7 @@ const OrganisationSidebarMenu = () => {
                                             }
                                         >
                                             <Link href="/organisations/1/reservations/">
-                                                <span>Reservaties</span>
+                                                <span>Reserveringen</span>
                                             </Link>
                                         </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>
