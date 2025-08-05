@@ -3,7 +3,7 @@ import React, { type ReactNode, Suspense } from "react";
 import SidebarAuthentication from "@/app/[locale]/(sidebar)/_sidebar/Authentication";
 import DashboardSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/DashboardSidebarMenu";
 import LoadingSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/Loading";
-// import OrganisationSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/OrganisationsSidebarMenu";
+import OrganisationSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/OrganisationsSidebarMenu";
 import PublicSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/PublicSidebarMenu";
 import ReservationSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/ReservationSidebarMenu";
 import SidebarHeaderMenu from "@/app/[locale]/(sidebar)/_sidebar/SidebarHeaderMenu";
@@ -27,7 +27,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                 <SidebarContent>
                     <PublicSidebarMenu />
                     <ReservationSidebarMenu />
-                    {/* <OrganisationSidebarMenu /> */}
+                    <OrganisationSidebarMenu />
                     <DashboardSidebarMenu />
                 </SidebarContent>
                 <SidebarFooter>
