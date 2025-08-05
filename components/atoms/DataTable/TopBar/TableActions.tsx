@@ -73,6 +73,8 @@ const TableActions = <TData,>({
         [table]
     );
 
+    if (actions.length === 0 && !isEnabledRowSelection) return null; // No actions to display
+
     return (
         <Popover>
             <PopoverTrigger asChild>
