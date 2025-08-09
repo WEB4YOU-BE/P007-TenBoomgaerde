@@ -12,6 +12,9 @@ const RowSelection = <TData,>({
     table,
     ...props
 }: RowSelectionProps<TData>) => {
+    const isEnabledRowSelection = table.options.enableRowSelection ?? true;
+    if (!isEnabledRowSelection) return <span />;
+
     const selectedRowCount = table.getSelectedRowModel().rows.length;
     const totalRowCount = table.getFilteredRowModel().rows.length;
 
