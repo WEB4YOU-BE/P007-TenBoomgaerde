@@ -34,10 +34,10 @@ const Page: NextPage<PageProps> = async ({ params }: PageProps) => {
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
-                        <BreadcrumbItem>Account</BreadcrumbItem>
+                        <BreadcrumbItem>Organisatie</BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Mijn reserveringen</BreadcrumbPage>
+                            <BreadcrumbPage>Reserveringen</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
