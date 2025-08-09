@@ -65,16 +65,8 @@ const Table = ({ organisationId }: { organisationId: string }) => {
         getRowId: (row) => row.id,
         getSortedRowModel: getSortedRowModel(),
         initialState: {
-            columnVisibility: {
-                access_code: true,
-                dates: true,
-                hall: true,
-                renter: true,
-                reservationNumber: false,
-                status: true,
-            },
             pagination: { pageIndex: 0, pageSize: 20 },
-            sorting: [{ desc: true, id: "dates" }],
+            sorting: [{ desc: false, id: "fullname" }],
         },
     });
 

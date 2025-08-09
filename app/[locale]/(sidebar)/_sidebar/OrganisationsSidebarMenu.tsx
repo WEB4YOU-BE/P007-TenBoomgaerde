@@ -102,33 +102,19 @@ const OrganisationSidebarMenu = () => {
                                                     </SidebarMenuSubButton>
                                                 </SidebarMenuSubItem>
                                                 <SidebarMenuSubItem>
-                                                    <Tooltip>
-                                                        <TooltipTrigger>
-                                                            <SidebarMenuSubButton
-                                                                asChild
-                                                                isActive={
-                                                                    pathname ===
-                                                                    `/organisations/${organisation.id}/members/`
-                                                                }
-                                                            >
-                                                                <Link
-                                                                    aria-disabled
-                                                                    href={`/organisations/${organisation.id}/members/`}
-                                                                >
-                                                                    <span>
-                                                                        Leden
-                                                                    </span>
-                                                                </Link>
-                                                            </SidebarMenuSubButton>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent
-                                                            side="right"
-                                                            updatePositionStrategy="always"
+                                                    <SidebarMenuSubButton
+                                                        asChild
+                                                        isActive={
+                                                            pathname ===
+                                                            `/organisations/${organisation.id}/members/`
+                                                        }
+                                                    >
+                                                        <Link
+                                                            href={`/organisations/${organisation.id}/members/`}
                                                         >
-                                                            Beschikbaar vanaf 15
-                                                            augustus
-                                                        </TooltipContent>
-                                                    </Tooltip>
+                                                            <span>Leden</span>
+                                                        </Link>
+                                                    </SidebarMenuSubButton>
                                                 </SidebarMenuSubItem>
                                             </SidebarMenuSub>
                                         </CollapsibleContent>
