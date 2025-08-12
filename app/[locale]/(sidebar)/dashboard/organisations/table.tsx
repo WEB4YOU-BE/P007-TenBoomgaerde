@@ -5,7 +5,7 @@ import {
     QuestionMarkIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     createColumnHelper,
     getCoreRowModel,
@@ -15,6 +15,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import React, { useMemo } from "react";
+import { toast } from "sonner";
 
 import { AvatarFallback } from "@/components/atoms/Avatar";
 import Avatar from "@/components/atoms/Avatar/Avatar";
@@ -31,6 +32,8 @@ import { Link } from "@/i18n/navigation";
 import getOrganisations, {
     GetOrganisationsResponse,
 } from "@/service/organisations/getOrganisations";
+import updateOrganisationsStatus from "@/service/organisations/updateOrganisationsStatus";
+import { RowAction } from "@/types/features/table/rowActions/RowAction";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { BadgeVariantProps } from "@/utils/tailwindcss/variants/badgeVariants";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
@@ -201,13 +204,119 @@ const columns = [
 ];
 
 const Table = () => {
+    const queryClient = useQueryClient();
     const { data } = useQuery({
         queryFn: getOrganisations,
         queryKey: ["organisations"],
     });
     const organisations = useMemo(() => data ?? [], [data]);
+    const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
+        queryClient
+    ) => [
+        {
+            buttonLabel: `Markeer als ${STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
+            disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+            fn: (table) => {
+                toast.promise(
+                    async () => {
+                        const selectedRows = table.getSelectedRowModel().rows;
+                        if (selectedRows.length === 0)
+                            throw new Error("Geen rijen geselecteerd");
+
+                        const organisationIds = selectedRows.map(
+                            (row) => row.id
+                        );
+                        const signal = AbortSignal.timeout(5000);
+                        await updateOrganisationsStatus({
+                            organisationIds,
+                            signal,
+                            status: "ACCEPTED",
+                        });
+
+                        await queryClient.invalidateQueries({
+                            queryKey: ["organisations"],
+                        });
+                    },
+                    {
+                        error: (error) => `Fout bij markeren: ${error}`,
+                        loading: `Bezig met markeren als ${STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}...`,
+                        success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
+                    }
+                );
+            },
+            id: "mark-as-approved",
+        },
+        {
+            buttonLabel: `Markeer als ${STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
+            disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+            fn: (table) => {
+                toast.promise(
+                    async () => {
+                        const selectedRows = table.getSelectedRowModel().rows;
+                        if (selectedRows.length === 0)
+                            throw new Error("Geen rijen geselecteerd");
+
+                        const organisationIds = selectedRows.map(
+                            (row) => row.id
+                        );
+                        const signal = AbortSignal.timeout(5000);
+                        await updateOrganisationsStatus({
+                            organisationIds,
+                            signal,
+                            status: "PENDING",
+                        });
+
+                        await queryClient.invalidateQueries({
+                            queryKey: ["organisations"],
+                        });
+                    },
+                    {
+                        error: (error) => `Fout bij markeren: ${error}`,
+                        loading: `Bezig met markeren als ${STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}...`,
+                        success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
+                    }
+                );
+            },
+            id: "mark-as-pending",
+        },
+        {
+            buttonLabel: `Markeer als ${STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
+            disabled: (table) => table.getSelectedRowModel().rows.length === 0,
+            fn: (table) => {
+                toast.promise(
+                    async () => {
+                        const selectedRows = table.getSelectedRowModel().rows;
+                        if (selectedRows.length === 0)
+                            throw new Error("Geen rijen geselecteerd");
+
+                        const organisationIds = selectedRows.map(
+                            (row) => row.id
+                        );
+                        const signal = AbortSignal.timeout(5000);
+                        await updateOrganisationsStatus({
+                            organisationIds,
+                            signal,
+                            status: "DECLINED",
+                        });
+
+                        await queryClient.invalidateQueries({
+                            queryKey: ["organisations"],
+                        });
+                    },
+                    {
+                        error: (error) => `Fout bij markeren: ${error}`,
+                        loading: `Bezig met markeren als ${STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}...`,
+                        success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
+                    }
+                );
+            },
+            id: "mark-as-rejected",
+        },
+    ];
+
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
+        actions: actions(queryClient),
         columns,
         data: organisations,
         getCoreRowModel: getCoreRowModel(),
