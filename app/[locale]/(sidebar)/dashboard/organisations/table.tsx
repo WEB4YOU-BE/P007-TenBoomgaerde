@@ -18,6 +18,7 @@ import React, { useMemo } from "react";
 
 import { AvatarFallback } from "@/components/atoms/Avatar";
 import Avatar from "@/components/atoms/Avatar/Avatar";
+import Badge from "@/components/atoms/Badge";
 import Checkbox from "@/components/atoms/Checkbox";
 import DataTable from "@/components/atoms/DataTable";
 import {
@@ -31,9 +32,30 @@ import getOrganisations, {
     GetOrganisationsResponse,
 } from "@/service/organisations/getOrganisations";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { BadgeVariantProps } from "@/utils/tailwindcss/variants/badgeVariants";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 type TData = NonNullable<GetOrganisationsResponse>[number];
+
+// Map acceptance status to Badge variants
+const STATUS_TO_BADGE_VARIANT: Record<
+    NonNullable<TData["acceptance_status"]>,
+    BadgeVariantProps["variant"]
+> = {
+    ACCEPTED: "default",
+    DECLINED: "destructive",
+    PENDING: "secondary",
+};
+
+// Dutch labels for acceptance status
+const STATUS_LABEL_NL: Record<
+    NonNullable<TData["acceptance_status"]>,
+    string
+> = {
+    ACCEPTED: "Goedgekeurd",
+    DECLINED: "Afgewezen",
+    PENDING: "In afwachting",
+};
 
 const columnHelper = createColumnHelper<TData>();
 
@@ -72,6 +94,19 @@ const columns = [
             />
         ),
         id: "select",
+    }),
+    columnHelper.accessor((row) => row.acceptance_status, {
+        cell: (info) => {
+            const status = info.getValue();
+            if (!status) return <span>-</span>;
+            return (
+                <Badge variant={STATUS_TO_BADGE_VARIANT[status]}>
+                    {STATUS_LABEL_NL[status]}
+                </Badge>
+            );
+        },
+        header: "Status",
+        id: "acceptance_status",
     }),
     columnHelper.accessor("name", {
         cell: (info) => info.getValue() || "-",
