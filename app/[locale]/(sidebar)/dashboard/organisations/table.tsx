@@ -104,9 +104,9 @@ const columns = [
         ),
         id: "select",
     }),
-    columnHelper.accessor((row) => row.acceptance_status, {
+    columnHelper.accessor((row) => STATUS_LABEL_NL[row.acceptance_status], {
         cell: (info) => {
-            const status = info.getValue();
+            const status = info.row.original.acceptance_status;
             if (!status) return <span>-</span>;
             return (
                 <Badge variant={STATUS_TO_BADGE_VARIANT[status]}>
