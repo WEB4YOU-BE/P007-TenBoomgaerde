@@ -15,15 +15,50 @@ import { nlBE } from "date-fns/locale";
 import React, { useCallback, useMemo } from "react";
 import { useLocale } from "use-intl";
 
+import Badge from "@/components/atoms/Badge";
 import DataTable from "@/components/atoms/DataTable";
 import getReservationsForOrganisation, {
     GetReservationsForOrganisationResponse,
 } from "@/service/reservations/getReservationsForOrganisation";
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
+import { BadgeVariantProps } from "@/utils/tailwindcss/variants/badgeVariants";
 
 type TData = NonNullable<GetReservationsForOrganisationResponse>[number];
 
 const columnHelper = createColumnHelper<TData>();
+
+// Status mappings (reuse from dashboard)
+const RES_STATUS_TO_BADGE_VARIANT: Record<
+    "ACCEPTED" | "DECLINED" | "PENDING",
+    BadgeVariantProps["variant"]
+> = {
+    ACCEPTED: "default",
+    DECLINED: "destructive",
+    PENDING: "secondary",
+};
+
+const RES_STATUS_LABEL_NL: Record<"ACCEPTED" | "DECLINED" | "PENDING", string> =
+    {
+        ACCEPTED: "Goedgekeurd",
+        DECLINED: "Afgewezen",
+        PENDING: "In afwachting",
+    };
+
+const normalizeReservationStatus = (
+    status: TData["status"]
+): "ACCEPTED" | "DECLINED" | "PENDING" | undefined => {
+    if (!status) return undefined;
+    const s = String(status).toLowerCase();
+    if (s === "accepted" || s === "goedgekeurd") return "ACCEPTED";
+    if (s === "pending" || s === "in afwachting") return "PENDING";
+    if (s === "declined" || s === "geweigerd") return "DECLINED";
+    return undefined;
+};
+
+const getReservationStatusLabel = (status: TData["status"]) => {
+    const key = normalizeReservationStatus(status);
+    return key ? RES_STATUS_LABEL_NL[key] : "";
+};
 
 const columns = [
     columnHelper.accessor(
@@ -74,13 +109,31 @@ const columns = [
                 : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }
     ),
-    columnHelper.accessor(({ status }) => status || "-", {
+    columnHelper.accessor((row) => getReservationStatusLabel(row.status), {
+        cell: (info) => {
+            const key = normalizeReservationStatus(info.row.original.status);
+            if (!key) return <span>-</span>;
+            return (
+                <Badge variant={RES_STATUS_TO_BADGE_VARIANT[key]}>
+                    {RES_STATUS_LABEL_NL[key]}
+                </Badge>
+            );
+        },
         header: "Status",
         id: "status",
+        sortingFn: (rowA, rowB) => {
+            const a = getReservationStatusLabel(rowA.original.status);
+            const b = getReservationStatusLabel(rowB.original.status);
+            if (!a && !b) return 0;
+            if (!a) return 1;
+            if (!b) return -1;
+            return a.localeCompare(b, "nl", { sensitivity: "base" });
+        },
     }),
     columnHelper.accessor(
         ({ access_code, start, status }) => {
-            if (!access_code || status !== "goedgekeurd" || !start) return "-";
+            const norm = normalizeReservationStatus(status);
+            if (!access_code || norm !== "ACCEPTED" || !start) return "-";
             const startDate = new Date(start);
             const sundayBefore = startOfWeek(startDate, { weekStartsOn: 0 });
             const now = new Date();

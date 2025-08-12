@@ -11,7 +11,7 @@ const getReservationCountPending = async ({
     const { count, error } = await supabase
         .from("reservations")
         .select("id", { count: "exact", head: true })
-        .eq("status", "in afwachting")
+        .eq("status", "PENDING")
         .abortSignal(signal);
     if (error && error instanceof Error) throw error;
     return count ?? 0;

@@ -18,6 +18,7 @@ import React, { useMemo } from "react";
 import { toast } from "sonner";
 import { useLocale } from "use-intl";
 
+import Badge from "@/components/atoms/Badge";
 import Checkbox from "@/components/atoms/Checkbox";
 import DataTable from "@/components/atoms/DataTable";
 import RowActionsFeature from "@/features/table/RowActionsFeature";
@@ -30,11 +31,45 @@ import updateReservationsStatus from "@/service/reservations/updateReservationsS
 import { RowAction } from "@/types/features/table/rowActions/RowAction";
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import { BadgeVariantProps } from "@/utils/tailwindcss/variants/badgeVariants";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 type TData = NonNullable<GetReservationsResponse>[number];
 
 const columnHelper = createColumnHelper<TData>();
+
+// Status mappings (reuse same approach as organisations)
+const RES_STATUS_TO_BADGE_VARIANT: Record<
+    "ACCEPTED" | "DECLINED" | "PENDING",
+    BadgeVariantProps["variant"]
+> = {
+    ACCEPTED: "default",
+    DECLINED: "destructive",
+    PENDING: "secondary",
+};
+
+const RES_STATUS_LABEL_NL: Record<"ACCEPTED" | "DECLINED" | "PENDING", string> =
+    {
+        ACCEPTED: "Goedgekeurd",
+        DECLINED: "Afgewezen",
+        PENDING: "In afwachting",
+    };
+
+const normalizeReservationStatus = (
+    status: TData["status"]
+): "ACCEPTED" | "DECLINED" | "PENDING" | undefined => {
+    if (!status) return undefined;
+    const s = String(status).toLowerCase();
+    if (s === "accepted" || s === "goedgekeurd") return "ACCEPTED";
+    if (s === "pending" || s === "in afwachting") return "PENDING";
+    if (s === "declined" || s === "geweigerd") return "DECLINED";
+    return undefined;
+};
+
+const getReservationStatusLabel = (status: TData["status"]) => {
+    const key = normalizeReservationStatus(status);
+    return key ? RES_STATUS_LABEL_NL[key] : "";
+};
 
 const columns = [
     columnHelper.display({
@@ -120,13 +155,31 @@ const columns = [
                 : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }
     ),
-    columnHelper.accessor(({ status }) => status || "-", {
+    columnHelper.accessor((row) => getReservationStatusLabel(row.status), {
+        cell: (info) => {
+            const key = normalizeReservationStatus(info.row.original.status);
+            if (!key) return <span>-</span>;
+            return (
+                <Badge variant={RES_STATUS_TO_BADGE_VARIANT[key]}>
+                    {RES_STATUS_LABEL_NL[key]}
+                </Badge>
+            );
+        },
         header: "Status",
         id: "status",
+        sortingFn: (rowA, rowB) => {
+            const a = getReservationStatusLabel(rowA.original.status);
+            const b = getReservationStatusLabel(rowB.original.status);
+            if (!a && !b) return 0;
+            if (!a) return 1;
+            if (!b) return -1;
+            return a.localeCompare(b, "nl", { sensitivity: "base" });
+        },
     }),
     columnHelper.accessor(
         ({ access_code, start, status }) => {
-            if (!access_code || status !== "goedgekeurd" || !start) return "-";
+            const norm = normalizeReservationStatus(status);
+            if (!access_code || norm !== "ACCEPTED" || !start) return "-";
             // Calculate the Sunday before the reservation starts using date-fns
             const startDate = new Date(start);
             const sundayBefore = startOfWeek(startDate, { weekStartsOn: 0 });
@@ -167,7 +220,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
 ) => [
     // Mark status actions (goedgekeurd, in afwachting, geweigerd)
     {
-        buttonLabel: "Markeer als goedgekeurd",
+        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -181,7 +234,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     await updateReservationsStatus({
                         reservationIds,
                         signal,
-                        status: "goedgekeurd",
+                        status: "ACCEPTED",
                     });
 
                     await queryClient.invalidateQueries({
@@ -190,15 +243,15 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                 },
                 {
                     error: (error) => `Fout bij markeren: ${error}`,
-                    loading: "Bezig met markeren als goedgekeurd...",
-                    success: "Rijen succesvol gemarkeerd als goedgekeurd",
+                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
                 }
             );
         },
         id: "mark-as-approved",
     },
     {
-        buttonLabel: "Markeer als in afwachting",
+        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -212,7 +265,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     await updateReservationsStatus({
                         reservationIds,
                         signal,
-                        status: "in afwachting",
+                        status: "PENDING",
                     });
 
                     await queryClient.invalidateQueries({
@@ -221,15 +274,15 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                 },
                 {
                     error: (error) => `Fout bij markeren: ${error}`,
-                    loading: "Bezig met markeren als in afwachting...",
-                    success: "Rijen succesvol gemarkeerd als in afwachting",
+                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
                 }
             );
         },
         id: "mark-as-pending",
     },
     {
-        buttonLabel: "Markeer als geweigerd",
+        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -243,7 +296,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     await updateReservationsStatus({
                         reservationIds,
                         signal,
-                        status: "geweigerd",
+                        status: "DECLINED",
                     });
 
                     await queryClient.invalidateQueries({
@@ -252,8 +305,8 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                 },
                 {
                     error: (error) => `Fout bij markeren: ${error}`,
-                    loading: "Bezig met markeren als geweigerd...",
-                    success: "Rijen succesvol gemarkeerd als geweigerd",
+                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
                 }
             );
         },

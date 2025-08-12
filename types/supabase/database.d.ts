@@ -49,6 +49,7 @@ export type Database = {
         };
         Enums: {
             organization_acceptance_status: "ACCEPTED" | "DECLINED" | "PENDING";
+            reservation_status: "ACCEPTED" | "DECLINED" | "PENDING";
         };
         Functions: {
             is_admin: {
@@ -151,6 +152,7 @@ export type Database = {
             };
             reservations: {
                 Insert: {
+                    _deprecated_status?: null | string;
                     access_code?: null | number;
                     booker?: null | string;
                     end?: null | string;
@@ -161,7 +163,7 @@ export type Database = {
                     reservation_number: number;
                     reservation_year: string;
                     start?: null | string;
-                    status?: null | string;
+                    status?: Database["public"]["Enums"]["reservation_status"];
                 };
                 Relationships: [
                     {
@@ -180,6 +182,7 @@ export type Database = {
                     },
                 ];
                 Row: {
+                    _deprecated_status: null | string;
                     access_code: null | number;
                     booker: null | string;
                     end: null | string;
@@ -190,9 +193,10 @@ export type Database = {
                     reservation_number: number;
                     reservation_year: string;
                     start: null | string;
-                    status: null | string;
+                    status: Database["public"]["Enums"]["reservation_status"];
                 };
                 Update: {
+                    _deprecated_status?: null | string;
                     access_code?: null | number;
                     booker?: null | string;
                     end?: null | string;
@@ -203,7 +207,7 @@ export type Database = {
                     reservation_number?: number;
                     reservation_year?: string;
                     start?: null | string;
-                    status?: null | string;
+                    status?: Database["public"]["Enums"]["reservation_status"];
                 };
             };
             reservations_halls: {
@@ -890,6 +894,7 @@ export const Constants = {
     public: {
         Enums: {
             organization_acceptance_status: ["ACCEPTED", "PENDING", "DECLINED"],
+            reservation_status: ["ACCEPTED", "PENDING", "DECLINED"],
         },
     },
     storage: {

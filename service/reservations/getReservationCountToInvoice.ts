@@ -11,7 +11,7 @@ const getReservationCountToInvoice = async ({
     const { count, error } = await supabase
         .from("reservations")
         .select("id", { count: "exact", head: true })
-        .eq("status", "goedgekeurd")
+        .eq("status", "ACCEPTED")
         .eq("invoiced", false)
         .abortSignal(signal);
     if (error && error instanceof Error) throw error;

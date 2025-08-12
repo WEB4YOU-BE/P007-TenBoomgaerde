@@ -17,7 +17,7 @@ const getReservationCountForThisMonth = async ({
     const { count, error } = await supabase
         .from("reservations")
         .select("id", { count: "exact", head: true })
-        .eq("status", "goedgekeurd")
+        .eq("status", "ACCEPTED")
         .gte("start", firstDay.toISOString())
         .lte("start", lastDay.toISOString())
         .gte("end", firstDay.toISOString())
