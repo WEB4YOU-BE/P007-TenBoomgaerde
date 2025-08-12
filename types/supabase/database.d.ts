@@ -48,7 +48,7 @@ export type Database = {
             [_ in never]: never;
         };
         Enums: {
-            [_ in never]: never;
+            organization_acceptance_status: "ACCEPTED" | "DECLINED" | "PENDING";
         };
         Functions: {
             is_admin: {
@@ -98,17 +98,20 @@ export type Database = {
             };
             organizations: {
                 Insert: {
+                    acceptance_status?: Database["public"]["Enums"]["organization_acceptance_status"];
                     id?: string;
                     name: string;
                     vat: string;
                 };
                 Relationships: [];
                 Row: {
+                    acceptance_status: Database["public"]["Enums"]["organization_acceptance_status"];
                     id: string;
                     name: string;
                     vat: string;
                 };
                 Update: {
+                    acceptance_status?: Database["public"]["Enums"]["organization_acceptance_status"];
                     id?: string;
                     name?: string;
                     vat?: string;
@@ -324,6 +327,21 @@ export type Database = {
                 Update: {
                     organization?: string;
                     user?: string;
+                };
+            };
+            week_access_codes: {
+                Insert: {
+                    access_code: number;
+                    week_start: string;
+                };
+                Relationships: [];
+                Row: {
+                    access_code: number;
+                    week_start: string;
+                };
+                Update: {
+                    access_code?: number;
+                    week_start?: string;
                 };
             };
         };
@@ -870,7 +888,9 @@ export const Constants = {
         Enums: {},
     },
     public: {
-        Enums: {},
+        Enums: {
+            organization_acceptance_status: ["ACCEPTED", "PENDING", "DECLINED"],
+        },
     },
     storage: {
         Enums: {},
