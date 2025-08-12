@@ -89,9 +89,9 @@
         "@radix-ui/react-toggle-group": "^1.1.10",
         "@radix-ui/react-tooltip": "^1.2.7",
         "@supabase/ssr": "^0.6.1",
-        "@supabase/supabase-js": "^2.54.0",
-        "@tanstack/react-query": "^5.84.2",
-        "@tanstack/react-query-devtools": "^5.84.2",
+        "@supabase/supabase-js": "^2.55.0",
+        "@tanstack/react-query": "^5.85.0",
+        "@tanstack/react-query-devtools": "^5.85.0",
         "@tanstack/react-table": "^8.21.3",
         "@vercel/analytics": "^1.5.0",
         "@vercel/otel": "^1.13.0",
@@ -120,7 +120,7 @@
         "tailwindcss-animate": "^1.0.7",
         "validator": "^13.15.15",
         "vaul": "^1.1.2",
-        "zod": "^4.0.16"
+        "zod": "^4.0.17"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.8.1",
@@ -146,10 +146,10 @@
         "postcss": "^8",
         "prettier": "^3.6.2",
         "prettier-plugin-tailwindcss": "^0.6.14",
-        "supabase": "^2.33.9",
+        "supabase": "^2.34.3",
         "tailwindcss": "^4.1.11",
         "typescript": "^5.9.2",
-        "typescript-eslint": "^8.39.0"
+        "typescript-eslint": "^8.39.1"
     },
     "overrides": {
         "cookie": "^0.7.0",
