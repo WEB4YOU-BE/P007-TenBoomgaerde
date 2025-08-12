@@ -57,6 +57,12 @@ const STATUS_LABEL_NL: Record<
     PENDING: "In afwachting",
 };
 
+// Helper for safe status-to-label mapping (handles null/undefined)
+const getStatusLabel = (status: TData["acceptance_status"]) => {
+    if (!status) return "";
+    return STATUS_LABEL_NL[status];
+};
+
 const columnHelper = createColumnHelper<TData>();
 
 const columns = [
@@ -107,6 +113,15 @@ const columns = [
         },
         header: "Status",
         id: "acceptance_status",
+        sortingFn: (rowA, rowB) => {
+            const a = getStatusLabel(rowA.original.acceptance_status);
+            const b = getStatusLabel(rowB.original.acceptance_status);
+            // Undefined/empty statuses go to the bottom
+            if (!a && !b) return 0;
+            if (!a) return 1;
+            if (!b) return -1;
+            return a.localeCompare(b, "nl", { sensitivity: "base" });
+        },
     }),
     columnHelper.accessor("name", {
         cell: (info) => info.getValue() || "-",
