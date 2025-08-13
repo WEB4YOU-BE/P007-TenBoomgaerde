@@ -31,11 +31,7 @@ const columnHelper = createColumnHelper<TData>();
 const RES_STATUS_TO_BADGE_VARIANT: Record<
     "ACCEPTED" | "DECLINED" | "PENDING",
     BadgeVariantProps["variant"]
-> = {
-    ACCEPTED: "default",
-    DECLINED: "destructive",
-    PENDING: "secondary",
-};
+> = { ACCEPTED: "default", DECLINED: "destructive", PENDING: "secondary" };
 
 const RES_STATUS_LABEL_NL: Record<"ACCEPTED" | "DECLINED" | "PENDING", string> =
     {
@@ -140,10 +136,7 @@ const columns = [
             if (now < sundayBefore) return "-";
             return access_code.toString().padStart(4, "0");
         },
-        {
-            header: "Toegangscode",
-            id: "access_code",
-        }
+        { header: "Toegangscode", id: "access_code" }
     ),
     columnHelper.accessor(
         ({ booker }) => {
@@ -161,10 +154,7 @@ const columns = [
 const Table = ({ organisationId }: { organisationId: string }) => {
     const queryFunction = useCallback(
         ({ signal }: { signal: AbortSignal }) =>
-            getReservationsForOrganisation({
-                organisationId,
-                signal,
-            }),
+            getReservationsForOrganisation({ organisationId, signal }),
         [organisationId]
     );
     const { data } = useQuery({

@@ -4,6 +4,7 @@
  */
 const config = {
     doubleQuote: true,
+    objectWrap: "collapse",
     semi: true,
     singleQuote: false,
     tabWidth: 4,

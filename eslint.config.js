@@ -1,5 +1,3 @@
-// @ts-check
-
 import { FlatCompat } from "@eslint/eslintrc";
 import jseslint from "@eslint/js";
 import pluginQuery from "@tanstack/eslint-plugin-query";
@@ -13,9 +11,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-});
+const compat = new FlatCompat({ baseDirectory: __dirname });
 
 const config = [
     ...compat.extends("next/core-web-vitals", "next/typescript"),
@@ -33,7 +29,7 @@ const config = [
         languageOptions: {
             globals: { ...globals.browser, ...globals.node },
             parserOptions: {
-                projectService: { allowDefaultProject: ["*.config.js"] },
+                projectService: true,
                 sourceType: "module",
                 tsconfigRootDir: import.meta.dirname,
             },
@@ -67,14 +63,8 @@ const config = [
             "perfectionist/sort-variable-declarations": ["error"],
         },
         settings: {
-            perfectionist: {
-                ignoreCase: true,
-                order: "asc",
-                type: "natural",
-            },
-            react: {
-                version: "detect",
-            },
+            perfectionist: { ignoreCase: true, order: "asc", type: "natural" },
+            react: { version: "detect" },
         },
     },
 ];

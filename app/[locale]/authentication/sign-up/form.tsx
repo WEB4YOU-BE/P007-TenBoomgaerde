@@ -28,9 +28,7 @@ const formSchema = z
         email: z.email(),
         password: z
             .string()
-            .min(8, {
-                message: "Wachtwoorden zijn minstens 8 karakters lang.",
-            })
+            .min(8, { message: "Wachtwoorden zijn minstens 8 karakters lang." })
             .regex(/[0-9]/, {
                 message: "Wachtwoord moet minstens één cijfer bevatten.",
             })
@@ -45,9 +43,11 @@ const formSchema = z
                 message:
                     "Wachtwoord moet minstens één speciaal teken bevatten: !@#$%^&*()_+-=[]{};':\"|<>?,./`~",
             }),
-        passwordConfirmation: z.string().min(8, {
-            message: "Wachtwoorden zijn minstens 8 karakters lang.",
-        }),
+        passwordConfirmation: z
+            .string()
+            .min(8, {
+                message: "Wachtwoorden zijn minstens 8 karakters lang.",
+            }),
     })
     .refine((data) => data.password === data.passwordConfirmation, {
         message: "Wachtwoorden komen niet overeen!",
@@ -57,10 +57,7 @@ const formSchema = z
 const SignUpForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
         mutate({
-            credentials: {
-                email: formData.email,
-                password: formData.password,
-            },
+            credentials: { email: formData.email, password: formData.password },
             siteURL: new URL(window.location.href).origin,
         });
     };
@@ -69,9 +66,7 @@ const SignUpForm = () => {
         mutationKey: ["SignUpWithEmailCredentials"],
         networkMode: "online",
         onError: (error) => {
-            toast.error(error.name, {
-                description: error.message,
-            });
+            toast.error(error.name, { description: error.message });
         },
         onSuccess: (data) => {
             toast.success("Jouw account is aangemaakt!", {
@@ -86,11 +81,7 @@ const SignUpForm = () => {
     }, [isSuccess]);
 
     const form = useForm<z.infer<typeof formSchema>>({
-        defaultValues: {
-            email: "",
-            password: "",
-            passwordConfirmation: "",
-        },
+        defaultValues: { email: "", password: "", passwordConfirmation: "" },
         resolver: zodResolver(formSchema),
     });
 

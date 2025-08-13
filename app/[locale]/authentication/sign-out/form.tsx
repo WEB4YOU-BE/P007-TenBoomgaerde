@@ -28,9 +28,7 @@ const SignOutForm = () => {
         mutationKey: ["SignOut"],
         networkMode: "online",
         onError: (error) => {
-            toast.error(error.name, {
-                description: error.message,
-            });
+            toast.error(error.name, { description: error.message });
         },
         onSuccess: () => {
             toast.success("U bent succesvol uitgelogd");

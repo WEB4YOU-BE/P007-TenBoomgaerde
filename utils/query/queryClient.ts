@@ -4,10 +4,7 @@ let browserQueryClient: QueryClient | undefined = undefined;
 const createQueryClient = () =>
     new QueryClient({
         defaultOptions: {
-            mutations: {
-                networkMode: "online",
-                retry: false,
-            },
+            mutations: { networkMode: "online", retry: false },
             queries: {
                 networkMode: "online",
                 retry: true,

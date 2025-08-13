@@ -25,10 +25,7 @@ import signInWithPassword from "@/service/authentication/signInWithPassword";
 import { getQueryClient } from "@/utils/query/queryClient";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-const formSchema = z.object({
-    password: z.string(),
-    username: z.email(),
-});
+const formSchema = z.object({ password: z.string(), username: z.email() });
 
 const SignInWithEmailCredentialsForm = () => {
     const locale = useLocale();
@@ -56,9 +53,7 @@ const SignInWithEmailCredentialsForm = () => {
         mutationKey: ["SignInWithEmailCredentials"],
         networkMode: "online",
         onError: (error) => {
-            return toast.error(error.name, {
-                description: error.message,
-            });
+            return toast.error(error.name, { description: error.message });
         },
         onSuccess: (data) => {
             void queryClient.invalidateQueries({
@@ -83,20 +78,11 @@ const SignInWithEmailCredentialsForm = () => {
 
     useEffect(() => {
         if (isSuccess)
-            return redirect(
-                {
-                    href: "/",
-                    locale,
-                },
-                RedirectType.replace
-            );
+            return redirect({ href: "/", locale }, RedirectType.replace);
     }, [isSuccess, locale]);
 
     const form = useForm<z.infer<typeof formSchema>>({
-        defaultValues: {
-            password: "",
-            username: "",
-        },
+        defaultValues: { password: "", username: "" },
         resolver: zodResolver(formSchema),
     });
 

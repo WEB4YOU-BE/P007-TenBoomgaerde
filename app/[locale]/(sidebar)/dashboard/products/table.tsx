@@ -78,10 +78,7 @@ const columns = [
                 : row.for_sale === false
                   ? "nee"
                   : "onbekend",
-        {
-            header: "Te koop",
-            id: "for_sale",
-        }
+        { header: "Te koop", id: "for_sale" }
     ),
     columnHelper.accessor((row) => (row.price != null ? row.price : "-"), {
         header: "Prijs",
@@ -90,10 +87,7 @@ const columns = [
 ];
 
 const Table = () => {
-    const { data } = useQuery({
-        queryFn: getProducts,
-        queryKey: ["products"],
-    });
+    const { data } = useQuery({ queryFn: getProducts, queryKey: ["products"] });
     const products = useMemo(() => data ?? [], [data]);
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],

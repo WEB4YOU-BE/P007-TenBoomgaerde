@@ -19,12 +19,8 @@ export type CompositeTypes<
 
 export type Database = {
     graphql_public: {
-        CompositeTypes: {
-            [_ in never]: never;
-        };
-        Enums: {
-            [_ in never]: never;
-        };
+        CompositeTypes: { [_ in never]: never };
+        Enums: { [_ in never]: never };
         Functions: {
             graphql: {
                 Args: {
@@ -36,42 +32,24 @@ export type Database = {
                 Returns: Json;
             };
         };
-        Tables: {
-            [_ in never]: never;
-        };
-        Views: {
-            [_ in never]: never;
-        };
+        Tables: { [_ in never]: never };
+        Views: { [_ in never]: never };
     };
     public: {
-        CompositeTypes: {
-            [_ in never]: never;
-        };
+        CompositeTypes: { [_ in never]: never };
         Enums: {
             organization_acceptance_status: "ACCEPTED" | "DECLINED" | "PENDING";
             reservation_status: "ACCEPTED" | "DECLINED" | "PENDING";
         };
         Functions: {
-            is_admin: {
-                Args: { user_id: string };
-                Returns: boolean;
-            };
+            is_admin: { Args: { user_id: string }; Returns: boolean };
         };
         Tables: {
             categories: {
-                Insert: {
-                    id?: string;
-                    name: string;
-                };
+                Insert: { id?: string; name: string };
                 Relationships: [];
-                Row: {
-                    id: string;
-                    name: string;
-                };
-                Update: {
-                    id?: string;
-                    name?: string;
-                };
+                Row: { id: string; name: string };
+                Update: { id?: string; name?: string };
             };
             halls: {
                 Insert: {
@@ -211,10 +189,7 @@ export type Database = {
                 };
             };
             reservations_halls: {
-                Insert: {
-                    hall: string;
-                    reservation: string;
-                };
+                Insert: { hall: string; reservation: string };
                 Relationships: [
                     {
                         columns: ["hall"];
@@ -231,14 +206,8 @@ export type Database = {
                         referencedRelation: "reservations";
                     },
                 ];
-                Row: {
-                    hall: string;
-                    reservation: string;
-                };
-                Update: {
-                    hall?: string;
-                    reservation?: string;
-                };
+                Row: { hall: string; reservation: string };
+                Update: { hall?: string; reservation?: string };
             };
             timeslots: {
                 Insert: {
@@ -304,10 +273,7 @@ export type Database = {
                 };
             };
             users_organizations: {
-                Insert: {
-                    organization: string;
-                    user: string;
-                };
+                Insert: { organization: string; user: string };
                 Relationships: [
                     {
                         columns: ["organization"];
@@ -324,42 +290,21 @@ export type Database = {
                         referencedRelation: "users";
                     },
                 ];
-                Row: {
-                    organization: string;
-                    user: string;
-                };
-                Update: {
-                    organization?: string;
-                    user?: string;
-                };
+                Row: { organization: string; user: string };
+                Update: { organization?: string; user?: string };
             };
             week_access_codes: {
-                Insert: {
-                    access_code: number;
-                    week_start: string;
-                };
+                Insert: { access_code: number; week_start: string };
                 Relationships: [];
-                Row: {
-                    access_code: number;
-                    week_start: string;
-                };
-                Update: {
-                    access_code?: number;
-                    week_start?: string;
-                };
+                Row: { access_code: number; week_start: string };
+                Update: { access_code?: number; week_start?: string };
             };
         };
-        Views: {
-            [_ in never]: never;
-        };
+        Views: { [_ in never]: never };
     };
     storage: {
-        CompositeTypes: {
-            [_ in never]: never;
-        };
-        Enums: {
-            [_ in never]: never;
-        };
+        CompositeTypes: { [_ in never]: never };
+        Enums: { [_ in never]: never };
         Functions: {
             add_prefixes: {
                 Args: { _bucket_id: string; _name: string };
@@ -378,36 +323,15 @@ export type Database = {
                 Args: { _bucket_id: string; _name: string };
                 Returns: boolean;
             };
-            extension: {
-                Args: { name: string };
-                Returns: string;
-            };
-            filename: {
-                Args: { name: string };
-                Returns: string;
-            };
-            foldername: {
-                Args: { name: string };
-                Returns: string[];
-            };
-            get_level: {
-                Args: { name: string };
-                Returns: number;
-            };
-            get_prefix: {
-                Args: { name: string };
-                Returns: string;
-            };
-            get_prefixes: {
-                Args: { name: string };
-                Returns: string[];
-            };
+            extension: { Args: { name: string }; Returns: string };
+            filename: { Args: { name: string }; Returns: string };
+            foldername: { Args: { name: string }; Returns: string[] };
+            get_level: { Args: { name: string }; Returns: number };
+            get_prefix: { Args: { name: string }; Returns: string };
+            get_prefixes: { Args: { name: string }; Returns: string[] };
             get_size_by_bucket: {
                 Args: Record<PropertyKey, never>;
-                Returns: {
-                    bucket_id: string;
-                    size: number;
-                }[];
+                Returns: { bucket_id: string; size: number }[];
             };
             list_multipart_uploads_with_delimiter: {
                 Args: {
@@ -418,11 +342,7 @@ export type Database = {
                     next_upload_token?: string;
                     prefix_param: string;
                 };
-                Returns: {
-                    created_at: string;
-                    id: string;
-                    key: string;
-                }[];
+                Returns: { created_at: string; id: string; key: string }[];
             };
             list_objects_with_delimiter: {
                 Args: {
@@ -440,10 +360,7 @@ export type Database = {
                     updated_at: string;
                 }[];
             };
-            operation: {
-                Args: Record<PropertyKey, never>;
-                Returns: string;
-            };
+            operation: { Args: Record<PropertyKey, never>; Returns: string };
             search: {
                 Args: {
                     bucketname: string;
@@ -770,9 +687,7 @@ export type Database = {
                 };
             };
         };
-        Views: {
-            [_ in never]: never;
-        };
+        Views: { [_ in never]: never };
     };
 };
 
@@ -888,16 +803,12 @@ type DefaultSchema = DatabaseWithoutInternals[Extract<
 >];
 
 export const Constants = {
-    graphql_public: {
-        Enums: {},
-    },
+    graphql_public: { Enums: {} },
     public: {
         Enums: {
             organization_acceptance_status: ["ACCEPTED", "PENDING", "DECLINED"],
             reservation_status: ["ACCEPTED", "PENDING", "DECLINED"],
         },
     },
-    storage: {
-        Enums: {},
-    },
+    storage: { Enums: {} },
 } as const;

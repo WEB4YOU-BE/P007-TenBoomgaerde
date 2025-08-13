@@ -44,11 +44,7 @@ type TData = NonNullable<GetOrganisationsResponse>[number];
 const STATUS_TO_BADGE_VARIANT: Record<
     NonNullable<TData["acceptance_status"]>,
     BadgeVariantProps["variant"]
-> = {
-    ACCEPTED: "default",
-    DECLINED: "destructive",
-    PENDING: "secondary",
-};
+> = { ACCEPTED: "default", DECLINED: "destructive", PENDING: "secondary" };
 
 // Dutch labels for acceptance status
 const STATUS_LABEL_NL: Record<

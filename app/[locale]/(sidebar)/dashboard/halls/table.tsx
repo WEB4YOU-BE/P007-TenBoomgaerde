@@ -76,20 +76,14 @@ const columns = [
     }),
     columnHelper.accessor(
         (row) => (row.price_per_day != null ? row.price_per_day : "-"),
-        {
-            header: "Prijs per tijdsblok",
-            id: "price_per_day",
-        }
+        { header: "Prijs per tijdsblok", id: "price_per_day" }
     ),
     columnHelper.accessor(
         (row) =>
             row.price_per_day_discount != null
                 ? row.price_per_day_discount
                 : "-",
-        {
-            header: "Korting per tijdsblok",
-            id: "price_per_day_discount",
-        }
+        { header: "Korting per tijdsblok", id: "price_per_day_discount" }
     ),
 ];
 
@@ -158,10 +152,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
 
 const Table = () => {
     const queryClient = useQueryClient();
-    const { data } = useQuery({
-        queryFn: getHalls,
-        queryKey: ["halls"],
-    });
+    const { data } = useQuery({ queryFn: getHalls, queryKey: ["halls"] });
     const halls = useMemo(() => data ?? [], [data]);
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],

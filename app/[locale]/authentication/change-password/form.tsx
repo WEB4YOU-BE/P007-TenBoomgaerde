@@ -26,9 +26,7 @@ const formSchema = z
     .object({
         password: z
             .string()
-            .min(8, {
-                message: "Wachtwoorden zijn minstens 8 karakters lang.",
-            })
+            .min(8, { message: "Wachtwoorden zijn minstens 8 karakters lang." })
             .regex(/[0-9]/, {
                 message: "Wachtwoord moet minstens één cijfer bevatten.",
             })
@@ -43,9 +41,11 @@ const formSchema = z
                 message:
                     "Wachtwoord moet minstens één speciaal teken bevatten: !@#$%^&*()_+-=[]{};':\"|<>?,./`~",
             }),
-        verifyPassword: z.string().min(8, {
-            message: "Wachtwoorden zijn minstens 8 karakters lang.",
-        }),
+        verifyPassword: z
+            .string()
+            .min(8, {
+                message: "Wachtwoorden zijn minstens 8 karakters lang.",
+            }),
     })
     .refine((data) => data.password === data.verifyPassword, {
         message: "Wachtwoorden komen niet overeen.",
@@ -62,9 +62,7 @@ const ChangePasswordForm = () => {
         mutationFn: changePassword,
         networkMode: "online",
         onError: (error) => {
-            toast.error(error.name, {
-                description: error.message,
-            });
+            toast.error(error.name, { description: error.message });
         },
         onSuccess: () => {
             form.reset({ password: "", verifyPassword: "" });
@@ -76,22 +74,13 @@ const ChangePasswordForm = () => {
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
-        defaultValues: {
-            password: "",
-            verifyPassword: "",
-        },
+        defaultValues: { password: "", verifyPassword: "" },
         resolver: zodResolver(formSchema),
     });
 
     useEffect(() => {
         if (isSuccess)
-            return redirect(
-                {
-                    href: "/",
-                    locale,
-                },
-                RedirectType.replace
-            );
+            return redirect({ href: "/", locale }, RedirectType.replace);
     }, [isSuccess, locale]);
 
     return (

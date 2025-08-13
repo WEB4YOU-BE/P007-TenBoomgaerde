@@ -21,9 +21,7 @@ import { Link } from "@/i18n/navigation";
 import recoverPassword from "@/service/authentication/recoverPassword";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
-const formSchema = z.object({
-    email: z.email(),
-});
+const formSchema = z.object({ email: z.email() });
 
 const RecoverPasswordWithEmailForm = () => {
     const onSubmit = (formData: z.infer<typeof formSchema>) => {
@@ -36,9 +34,7 @@ const RecoverPasswordWithEmailForm = () => {
         mutationFn: recoverPassword,
         networkMode: "online",
         onError: (error) => {
-            toast.error(error.name, {
-                description: error.message,
-            });
+            toast.error(error.name, { description: error.message });
         },
         onSuccess: (_, variables) => {
             form.reset({ email: "" });
@@ -51,9 +47,7 @@ const RecoverPasswordWithEmailForm = () => {
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
-        defaultValues: {
-            email: "",
-        },
+        defaultValues: { email: "" },
         resolver: zodResolver(formSchema),
     });
 

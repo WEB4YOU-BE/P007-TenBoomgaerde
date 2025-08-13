@@ -75,10 +75,7 @@ const columns = [
                 .trim();
             return fullName || "-";
         },
-        {
-            header: "Naam",
-            id: "fullname",
-        }
+        { header: "Naam", id: "fullname" }
     ),
     columnHelper.accessor("email", {
         cell: (info) => info.getValue() || "-",
@@ -92,10 +89,7 @@ const columns = [
                 : undefined;
             return parsed ? parsed.formatInternational() : "-";
         },
-        {
-            header: "Telefoon",
-            id: "phone",
-        }
+        { header: "Telefoon", id: "phone" }
     ),
     columnHelper.accessor(
         (row) => {
@@ -108,10 +102,7 @@ const columns = [
             const address = [street, city].filter(Boolean).join(", ");
             return address || "-";
         },
-        {
-            header: "Adres",
-            id: "address",
-        }
+        { header: "Adres", id: "address" }
     ),
     columnHelper.accessor((row) => (row.is_admin ? "ja" : "nee"), {
         header: "Admin",
@@ -204,10 +195,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
 
 const Table = () => {
     const queryClient = useQueryClient();
-    const { data } = useQuery({
-        queryFn: getUsers,
-        queryKey: ["users"],
-    });
+    const { data } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
     const users = useMemo(() => data ?? [], [data]);
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],

@@ -42,11 +42,7 @@ const columnHelper = createColumnHelper<TData>();
 const RES_STATUS_TO_BADGE_VARIANT: Record<
     "ACCEPTED" | "DECLINED" | "PENDING",
     BadgeVariantProps["variant"]
-> = {
-    ACCEPTED: "default",
-    DECLINED: "destructive",
-    PENDING: "secondary",
-};
+> = { ACCEPTED: "default", DECLINED: "destructive", PENDING: "secondary" };
 
 const RES_STATUS_LABEL_NL: Record<"ACCEPTED" | "DECLINED" | "PENDING", string> =
     {
@@ -188,10 +184,7 @@ const columns = [
             // Always show as four digits
             return access_code.toString().padStart(4, "0");
         },
-        {
-            header: "Toegangscode",
-            id: "access_code",
-        }
+        { header: "Toegangscode", id: "access_code" }
     ),
     columnHelper.accessor(
         ({ booker }) => {

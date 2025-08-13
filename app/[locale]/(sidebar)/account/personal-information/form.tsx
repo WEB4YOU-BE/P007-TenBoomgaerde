@@ -69,19 +69,14 @@ const UpdateProfileForm = () => {
             return toast.error("Update mislukt", {
                 description: "We konden je profiel niet vinden.",
             });
-        mutate({
-            id: account.id,
-            user: formData,
-        });
+        mutate({ id: account.id, user: formData });
     };
     const { isError, isPending, isSuccess, mutate } = useMutation({
         mutationFn: updateProfile,
         mutationKey: ["UpdateProfile"],
         networkMode: "online",
         onError: (error) => {
-            toast.error(error.name, {
-                description: error.message,
-            });
+            toast.error(error.name, { description: error.message });
         },
         onSuccess: () => {
             toast.success("Je profiel is bijgewerkt!");

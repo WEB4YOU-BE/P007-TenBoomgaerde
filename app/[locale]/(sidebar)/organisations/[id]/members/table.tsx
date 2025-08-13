@@ -30,10 +30,7 @@ const columns = [
                 .trim();
             return fullName || "-";
         },
-        {
-            header: "Naam",
-            id: "fullname",
-        }
+        { header: "Naam", id: "fullname" }
     ),
     columnHelper.accessor("email", {
         cell: (info) => info.getValue() || "-",
@@ -44,10 +41,7 @@ const columns = [
 const Table = ({ organisationId }: { organisationId: string }) => {
     const queryFunction = useCallback(
         ({ signal }: { signal: AbortSignal }) =>
-            getMembersForOrganisation({
-                organisationId,
-                signal,
-            }),
+            getMembersForOrganisation({ organisationId, signal }),
         [organisationId]
     );
     const { data } = useQuery({
