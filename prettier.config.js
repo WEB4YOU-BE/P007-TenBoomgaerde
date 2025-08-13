@@ -3,7 +3,6 @@
  * @type {import("prettier").Config}
  */
 const config = {
-    doubleQuote: true,
     objectWrap: "collapse",
     semi: true,
     singleQuote: false,
