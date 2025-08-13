@@ -42,22 +42,32 @@ import createReservation from "@/service/reservations/createReservation";
 import getReservations from "@/service/reservations/getReservations";
 import getTimeslots from "@/service/timeslots/getTimeslots";
 
-const schema = z.object({
+// Replace the flat schema with a discriminated union so organisationId is only
+// required when organisationType === "organisation". Also use .uuid().
+const commonSchema = z.object({
     acceptedPolicy: z
         .boolean()
         .refine((val) => val === true, {
             message: "Je moet het reglement accepteren",
         }),
     endDate: z.date(),
-    endTimeslotId: z.uuidv4(),
+    endTimeslotId: z.uuid(),
     isParty: z.boolean(),
-    organisationId: z.uuidv4(),
-    organisationType: z.enum(["personal", "organisation"]),
     remarks: z.string().optional(),
     selectedHallIds: z.array(z.string()).min(1),
     startDate: z.date(),
-    startTimeslotId: z.uuidv4(),
+    startTimeslotId: z.uuid(),
 });
+const schema = z.discriminatedUnion("organisationType", [
+    commonSchema.extend({
+        organisationId: z.uuid().optional().nullable(),
+        organisationType: z.literal("personal"),
+    }),
+    commonSchema.extend({
+        organisationId: z.uuid(),
+        organisationType: z.literal("organisation"),
+    }),
+]);
 
 // Helper to safely pluck string props from unknown data
 const getStringProp = (obj: unknown, key: string): string | undefined => {
@@ -67,6 +77,45 @@ const getStringProp = (obj: unknown, key: string): string | undefined => {
     }
     return undefined;
 };
+
+// Helpers for availability/normalization
+const getStringArrayFromUnknown = (val: unknown): string[] | undefined => {
+    if (!Array.isArray(val)) return undefined;
+    if (val.every((x) => typeof x === "string")) return val;
+    if (
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        val.every((x) => x && typeof x === "object" && typeof x.id === "string")
+    ) {
+        return (val as Array<{ id: string }>).map((x) => x.id);
+    }
+    return undefined;
+};
+const getHallIdsFromReservation = (obj: unknown): string[] => {
+    if (!obj || typeof obj !== "object") return [];
+    const candidates = [
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        (obj as any).hallIds,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        (obj as any).hall_ids,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        (obj as any).halls,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        (obj as any).rooms,
+    ];
+    for (const c of candidates) {
+        const arr = getStringArrayFromUnknown(c);
+        if (arr && arr.length) return arr;
+    }
+    return [];
+};
+const isValidDateObj = (d: unknown): d is Date =>
+    d instanceof Date && !isNaN(d.getTime());
+const rangesOverlap = (
+    aStart: Date,
+    aEnd: Date,
+    bStart: Date,
+    bEnd: Date
+): boolean => aStart < bEnd && bStart < aEnd;
 
 const ReservationForm = () => {
     // All data-fetching:
@@ -87,7 +136,8 @@ const ReservationForm = () => {
         queryKey: ["my-organisations"],
     });
 
-    console.debug("Fetched data:", { halls, reservations, timeslots });
+    if (process.env.NODE_ENV !== "production")
+        console.debug("Fetched data:", { halls, reservations, timeslots });
 
     // All pre-form data transformation:
     // ...
@@ -150,18 +200,24 @@ const ReservationForm = () => {
             if (endDateTime <= startDateTime)
                 throw new Error("Eindtijd moet na starttijd liggen");
 
-            const signal = AbortSignal.timeout(5000);
-            await mutateAsync({
-                end: endDateTime.toISOString(),
-                hallIds: data.selectedHallIds,
-                organisationId:
-                    data.organisationType === "organisation"
-                        ? data.organisationId
-                        : null,
-                remarks: data.remarks ?? "",
-                signal,
-                start: startDateTime.toISOString(),
-            });
+            // Use a compatible timeout with AbortController
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 5000);
+            try {
+                await mutateAsync({
+                    end: endDateTime.toISOString(),
+                    hallIds: data.selectedHallIds,
+                    organisationId:
+                        data.organisationType === "organisation"
+                            ? data.organisationId
+                            : null,
+                    remarks: data.remarks ?? "",
+                    signal: controller.signal,
+                    start: startDateTime.toISOString(),
+                });
+            } finally {
+                clearTimeout(timeout);
+            }
         },
         [mutateAsync, timeslots, combineDateAndTime]
     );
@@ -186,6 +242,124 @@ const ReservationForm = () => {
     // Derived helpers
     const isParty = form.watch("isParty");
     const organisationType = form.watch("organisationType");
+    // Remove the inline fallback to avoid creating a new array each render
+    const selectedHallIds = form.watch("selectedHallIds");
+    const startDateVal = form.watch("startDate");
+    const endDateVal = form.watch("endDate");
+
+    // Availability: normalize reservations and timeslots
+    type NormalizedReservation = { end: Date; hallIds: string[]; start: Date };
+    const normalizedReservations = useMemo<NormalizedReservation[]>(() => {
+        return (reservations ?? [])
+            .map((r: unknown) => {
+                const startStr =
+                    getStringProp(r, "start") ?? getStringProp(r, "start_time");
+                const endStr =
+                    getStringProp(r, "end") ?? getStringProp(r, "end_time");
+                const halls = getHallIdsFromReservation(r);
+                const start = startStr ? new Date(startStr) : undefined;
+                const end = endStr ? new Date(endStr) : undefined;
+                if (
+                    !start ||
+                    !end ||
+                    !isValidDateObj(start) ||
+                    !isValidDateObj(end)
+                )
+                    return null;
+                return { end, hallIds: halls, start };
+            })
+            .filter(Boolean) as NormalizedReservation[];
+    }, [reservations]);
+
+    const selectedHallIdSet = useMemo(
+        // Apply fallback inside the memo to stabilize the dependency
+        () => new Set<string>(selectedHallIds ?? []),
+        [selectedHallIds]
+    );
+    const intersectsSelected = useCallback(
+        (res: NormalizedReservation): boolean =>
+            res.hallIds.some((id) => selectedHallIdSet.has(id)),
+        [selectedHallIdSet]
+    );
+
+    const timeslotById = useMemo(() => {
+        const map = new Map<
+            string,
+            { end: string; id: string; start: string }
+        >();
+        timeslots?.forEach((t: unknown, idx) => {
+            const id = getStringProp(t, "id") ?? String(idx);
+            const start = getStringProp(t, "start_time") ?? "";
+            const end = getStringProp(t, "end_time") ?? "";
+            if (id && start && end) map.set(id, { end, id, start });
+        });
+        return map;
+    }, [timeslots]);
+
+    const timeslotIds = useMemo(
+        () => Array.from(timeslotById.keys()),
+        [timeslotById]
+    );
+
+    const isTimeslotDisabledOnDate = useCallback(
+        (date: Date | undefined, timeslotId: string): boolean => {
+            if (!date) return false;
+            const slot = timeslotById.get(timeslotId);
+            if (!slot) return false;
+            try {
+                const startDT = combineDateAndTime(date, slot.start);
+                const endDT = combineDateAndTime(date, slot.end);
+                return (
+                    normalizedReservations?.some((r) => {
+                        if (!intersectsSelected(r)) return false;
+                        return rangesOverlap(startDT, endDT, r.start, r.end);
+                    }) ?? false
+                );
+            } catch {
+                return false;
+            }
+        },
+        [
+            timeslotById,
+            combineDateAndTime,
+            normalizedReservations,
+            intersectsSelected,
+        ]
+    );
+
+    const isDateFullyBlockedForSelection = useCallback(
+        (date: Date): boolean => {
+            if (!timeslotIds.length) return false;
+            return timeslotIds.every((id) =>
+                isTimeslotDisabledOnDate(date, id)
+            );
+        },
+        [timeslotIds, isTimeslotDisabledOnDate]
+    );
+
+    const isDateBlockedForParty = useCallback(
+        (date: Date): boolean => {
+            const dayStart = set(date, {
+                hours: 0,
+                milliseconds: 0,
+                minutes: 0,
+                seconds: 0,
+            });
+            const dayEnd = set(date, {
+                hours: 23,
+                milliseconds: 999,
+                minutes: 59,
+                seconds: 59,
+            });
+            return (
+                normalizedReservations?.some((r) => {
+                    if (!intersectsSelected(r)) return false;
+                    return rangesOverlap(dayStart, dayEnd, r.start, r.end);
+                }) ?? false
+            );
+        },
+        [normalizedReservations, intersectsSelected]
+    );
 
     // Compute visible steps based on current form state (skip halls/end for weekendfeest)
     const visibleSteps = useMemo(
@@ -253,6 +427,14 @@ const ReservationForm = () => {
         }
     }, [isParty, halls, earliestTimeslotId, latestTimeslotId, form]);
 
+    // Keep endDate in sync with startDate for weekendfeest
+    useEffect(() => {
+        if (isParty) {
+            const d = startDateVal;
+            if (d) form.setValue("endDate", d, { shouldValidate: true });
+        }
+    }, [isParty, startDateVal, form]);
+
     const goNext = useCallback(async () => {
         // Step-level validation
         let valid = true;
@@ -272,9 +454,7 @@ const ReservationForm = () => {
         } else if (key === "start") {
             if (isParty) {
                 valid = await form.trigger(["startDate"]);
-                // Mirror endDate to same date
-                const d = form.getValues("startDate");
-                if (d) form.setValue("endDate", d, { shouldValidate: true });
+                // endDate is mirrored by effect
             } else {
                 const ok1 = await form.trigger(["startDate"]);
                 const ok2 = await form.trigger(["startTimeslotId"]);
@@ -291,17 +471,12 @@ const ReservationForm = () => {
                         const eDate = form.getValues("endDate");
                         const sId = form.getValues("startTimeslotId");
                         const eId = form.getValues("endTimeslotId");
-                        const sSlot = timeslots?.find((t) => t.id === sId);
-                        const eSlot = timeslots?.find((t) => t.id === eId);
+                        // Use the memoized lookup to avoid unsafe property access
+                        const sSlot = sId ? timeslotById.get(sId) : undefined;
+                        const eSlot = eId ? timeslotById.get(eId) : undefined;
                         if (sDate && eDate && sSlot && eSlot) {
-                            const sDT = combineDateAndTime(
-                                sDate,
-                                sSlot.start_time
-                            );
-                            const eDT = combineDateAndTime(
-                                eDate,
-                                eSlot.end_time
-                            );
+                            const sDT = combineDateAndTime(sDate, sSlot.start);
+                            const eDT = combineDateAndTime(eDate, eSlot.end);
                             if (eDT <= sDT) {
                                 form.setError("endTimeslotId", {
                                     message: "End must be after start",
@@ -329,7 +504,7 @@ const ReservationForm = () => {
         form,
         isParty,
         organisationType,
-        timeslots,
+        timeslotById,
         combineDateAndTime,
     ]);
 
@@ -341,8 +516,12 @@ const ReservationForm = () => {
     // Submit on final confirm
     const onSubmitFinal = useCallback(
         async (values: output<typeof schema>) => {
-            await onSubmitValid(values);
-            setActiveStep(visibleSteps.length - 1);
+            try {
+                await onSubmitValid(values);
+                setActiveStep(visibleSteps.length - 1);
+            } catch {
+                // Keep the user on the confirm step if submission fails
+            }
         },
         [onSubmitValid, visibleSteps.length]
     );
@@ -381,7 +560,7 @@ const ReservationForm = () => {
             <Form {...form}>
                 <form
                     className="space-y-6"
-                    onSubmit={void form.handleSubmit(onSubmitFinal)}
+                    onSubmit={(e) => void form.handleSubmit(onSubmitFinal)(e)}
                 >
                     {/* Step 1: Weekend party? */}
                     {activeKey === "isParty" && (
@@ -621,7 +800,12 @@ const ReservationForm = () => {
                                                 <Calendar
                                                     className="rounded-lg border"
                                                     disabled={(date) =>
-                                                        date <= new Date()
+                                                        date <= new Date() ||
+                                                        (date
+                                                            ? isDateBlockedForParty(
+                                                                  date
+                                                              )
+                                                            : false)
                                                     }
                                                     locale={nlBE}
                                                     mode="single"
@@ -656,7 +840,13 @@ const ReservationForm = () => {
                                                     <Calendar
                                                         className="rounded-lg border"
                                                         disabled={(date) =>
-                                                            date <= new Date()
+                                                            date <=
+                                                                new Date() ||
+                                                            (date
+                                                                ? isDateFullyBlockedForSelection(
+                                                                      date
+                                                                  )
+                                                                : false)
                                                         }
                                                         locale={nlBE}
                                                         mode="single"
@@ -711,8 +901,18 @@ const ReservationForm = () => {
                                                                             t,
                                                                             "start_time"
                                                                         ) ?? "";
+                                                                    const disabled =
+                                                                        id
+                                                                            ? isTimeslotDisabledOnDate(
+                                                                                  startDateVal,
+                                                                                  id
+                                                                              )
+                                                                            : false;
                                                                     return (
                                                                         <SelectItem
+                                                                            disabled={
+                                                                                disabled
+                                                                            }
                                                                             key={
                                                                                 id
                                                                             }
@@ -752,7 +952,12 @@ const ReservationForm = () => {
                                             <Calendar
                                                 className="rounded-lg border"
                                                 disabled={(date) =>
-                                                    date <= new Date()
+                                                    date <= new Date() ||
+                                                    (date
+                                                        ? isDateFullyBlockedForSelection(
+                                                              date
+                                                          )
+                                                        : false)
                                                 }
                                                 locale={nlBE}
                                                 mode="single"
@@ -796,8 +1001,17 @@ const ReservationForm = () => {
                                                                     t,
                                                                     "end_time"
                                                                 ) ?? "";
+                                                            const disabled = id
+                                                                ? isTimeslotDisabledOnDate(
+                                                                      endDateVal,
+                                                                      id
+                                                                  )
+                                                                : false;
                                                             return (
                                                                 <SelectItem
+                                                                    disabled={
+                                                                        disabled
+                                                                    }
                                                                     key={id}
                                                                     value={id}
                                                                 >
