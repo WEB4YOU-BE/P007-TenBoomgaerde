@@ -3,6 +3,7 @@
  * @type {import("prettier").Config}
  */
 const config = {
+    htmlWhitespaceSensitivity: "strict",
     objectWrap: "collapse",
     semi: true,
     singleQuote: false,
