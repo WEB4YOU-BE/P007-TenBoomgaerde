@@ -900,6 +900,9 @@ const ReservationForm = () => {
                                                 <FormControl>
                                                     <Calendar
                                                         className="rounded-lg border"
+                                                        defaultMonth={
+                                                            startDateVal
+                                                        }
                                                         disabled={
                                                             isStartDateDisabled
                                                         }
@@ -935,6 +938,9 @@ const ReservationForm = () => {
                                                     <FormControl>
                                                         <Calendar
                                                             className="rounded-lg border"
+                                                            defaultMonth={
+                                                                startDateVal
+                                                            }
                                                             disabled={
                                                                 isStartDateDisabled
                                                             }
@@ -1072,6 +1078,7 @@ const ReservationForm = () => {
                                             <FormControl>
                                                 <Calendar
                                                     className="rounded-lg border"
+                                                    defaultMonth={startDateVal}
                                                     disabled={(date) =>
                                                         date <= new Date() ||
                                                         (date
@@ -1111,44 +1118,56 @@ const ReservationForm = () => {
                                                         <SelectValue placeholder="Selecteer eindtijd" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {timeslots?.map(
-                                                            (
-                                                                t: unknown,
-                                                                idx
-                                                            ) => {
-                                                                const id =
-                                                                    getStringProp(
-                                                                        t,
-                                                                        "id"
-                                                                    ) ??
-                                                                    String(idx);
-                                                                const end =
-                                                                    getStringProp(
-                                                                        t,
-                                                                        "end_time"
-                                                                    ) ?? "";
-                                                                const disabled =
-                                                                    id
-                                                                        ? isTimeslotDisabledOnDate(
-                                                                              endDateVal,
-                                                                              id
-                                                                          )
-                                                                        : false;
-                                                                return (
-                                                                    <SelectItem
-                                                                        disabled={
-                                                                            disabled
-                                                                        }
-                                                                        key={id}
-                                                                        value={
-                                                                            id
-                                                                        }
-                                                                    >
-                                                                        {end}
-                                                                    </SelectItem>
-                                                                );
-                                                            }
-                                                        )}
+                                                        {timeslots
+                                                            ?.sort((a, b) =>
+                                                                a.end_time.localeCompare(
+                                                                    b.end_time
+                                                                )
+                                                            )
+                                                            .map(
+                                                                (
+                                                                    t: unknown,
+                                                                    idx
+                                                                ) => {
+                                                                    const id =
+                                                                        getStringProp(
+                                                                            t,
+                                                                            "id"
+                                                                        ) ??
+                                                                        String(
+                                                                            idx
+                                                                        );
+                                                                    const end =
+                                                                        getStringProp(
+                                                                            t,
+                                                                            "end_time"
+                                                                        ) ?? "";
+                                                                    const disabled =
+                                                                        id
+                                                                            ? isTimeslotDisabledOnDate(
+                                                                                  endDateVal,
+                                                                                  id
+                                                                              )
+                                                                            : false;
+                                                                    return (
+                                                                        <SelectItem
+                                                                            disabled={
+                                                                                disabled
+                                                                            }
+                                                                            key={
+                                                                                id
+                                                                            }
+                                                                            value={
+                                                                                id
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                end
+                                                                            }
+                                                                        </SelectItem>
+                                                                    );
+                                                                }
+                                                            )}
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
