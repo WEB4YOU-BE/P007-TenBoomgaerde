@@ -1,5 +1,6 @@
 "use client";
 
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr";
 import { useMutation } from "@tanstack/react-query";
@@ -83,6 +84,7 @@ const RecoverPasswordWithEmailForm = () => {
                 <ArrowLeftIcon className="mr-4 size-4" />
                 Ga terug
             </Link>
+            <DevTool control={form.control} placement="top-right" />
         </>
     );
 };

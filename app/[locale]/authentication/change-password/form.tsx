@@ -1,5 +1,6 @@
 "use client";
 
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerBallIcon } from "@phosphor-icons/react/dist/ssr";
 import { useMutation } from "@tanstack/react-query";
@@ -132,6 +133,7 @@ const ChangePasswordForm = () => {
                     </Button>
                 </form>
             </Form>
+            <DevTool control={form.control} placement="top-right" />
         </>
     );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation } from "@tanstack/react-query";
@@ -48,19 +49,22 @@ const SignOutForm = () => {
     });
 
     return (
-        <Form {...form}>
-            <form
-                className="flex flex-col gap-2"
-                onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
-            >
-                <Button disabled={isPending} type="submit">
-                    {isPending && (
-                        <SpinnerBallIcon className="size-4 animate-spin" />
-                    )}
-                    {!isPending && "Meld af"}
-                </Button>
-            </form>
-        </Form>
+        <>
+            <Form {...form}>
+                <form
+                    className="flex flex-col gap-2"
+                    onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
+                >
+                    <Button disabled={isPending} type="submit">
+                        {isPending && (
+                            <SpinnerBallIcon className="size-4 animate-spin" />
+                        )}
+                        {!isPending && "Meld af"}
+                    </Button>
+                </form>
+            </Form>
+            <DevTool control={form.control} placement="top-right" />
+        </>
     );
 };
 

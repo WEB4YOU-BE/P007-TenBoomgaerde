@@ -1,5 +1,6 @@
 "use client";
 
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -530,311 +531,296 @@ const ReservationForm = () => {
         activeStep === visibleSteps.findIndex((s) => s.key === "confirm");
 
     return (
-        <div className="container mx-auto max-w-3xl py-4">
-            <h2 className="mb-2 text-xl font-semibold">Reservatie aanvragen</h2>
-            <p className="mb-6 text-sm text-muted-foreground">
-                Gelieve de onderstaande stappen te doorlopen om een reservatie
-                aan te vragen.
-            </p>
+        <>
+            <div className="container mx-auto max-w-3xl py-4">
+                <h2 className="mb-2 text-xl font-semibold">
+                    Reservatie aanvragen
+                </h2>
+                <p className="mb-6 text-sm text-muted-foreground">
+                    Gelieve de onderstaande stappen te doorlopen om een
+                    reservatie aan te vragen.
+                </p>
 
-            {/* Step indicator */}
-            <ol className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {visibleSteps.map((s, idx) => (
-                    <li
-                        className={`rounded border p-2 text-xs ${
-                            idx === activeStep
-                                ? "border-primary"
-                                : idx < activeStep
-                                  ? "border-green-500"
-                                  : "border-border"
-                        }`}
-                        key={s.key}
+                {/* Step indicator */}
+                <ol className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    {visibleSteps.map((s, idx) => (
+                        <li
+                            className={`rounded border p-2 text-xs ${
+                                idx === activeStep
+                                    ? "border-primary"
+                                    : idx < activeStep
+                                      ? "border-green-500"
+                                      : "border-border"
+                            }`}
+                            key={s.key}
+                        >
+                            <div className="font-medium">
+                                {idx + 1}. {s.title}
+                            </div>
+                        </li>
+                    ))}
+                </ol>
+
+                <Form {...form}>
+                    <form
+                        className="space-y-6"
+                        onSubmit={(e) =>
+                            void form.handleSubmit(onSubmitFinal)(e)
+                        }
                     >
-                        <div className="font-medium">
-                            {idx + 1}. {s.title}
-                        </div>
-                    </li>
-                ))}
-            </ol>
-
-            <Form {...form}>
-                <form
-                    className="space-y-6"
-                    onSubmit={(e) => void form.handleSubmit(onSubmitFinal)(e)}
-                >
-                    {/* Step 1: Weekend party? */}
-                    {activeKey === "isParty" && (
-                        <div className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="isParty"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>
-                                            Is dit een weekendfeest?
-                                        </FormLabel>
-                                        <FormDescription>
-                                            Indien ja, worden alle zalen voor de
-                                            volledige geselecteerde dag
-                                            gereserveerd.
-                                        </FormDescription>
-                                        <FormControl>
-                                            <RadioGroup
-                                                className="flex gap-6"
-                                                onValueChange={(v) =>
-                                                    field.onChange(v === "yes")
-                                                }
-                                                value={
-                                                    field.value ? "yes" : "no"
-                                                }
-                                            >
-                                                <label className="flex items-center gap-2">
-                                                    <RadioGroupItem value="no" />
-                                                    <span>Nee</span>
-                                                </label>
-                                                <label className="flex items-center gap-2">
-                                                    <RadioGroupItem value="yes" />
-                                                    <span>Ja</span>
-                                                </label>
-                                            </RadioGroup>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                    )}
-
-                    {/* Step 2: Organisation type + optional organisation select */}
-                    {activeKey === "organisation" && (
-                        <div className="space-y-6">
-                            <FormField
-                                control={form.control}
-                                name="organisationType"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Wie reserveert?</FormLabel>
-                                        <FormControl>
-                                            <RadioGroup
-                                                className="flex gap-6"
-                                                onValueChange={field.onChange}
-                                                value={field.value}
-                                            >
-                                                <label className="flex items-center gap-2">
-                                                    <RadioGroupItem value="personal" />
-                                                    <span>Persoonlijk</span>
-                                                </label>
-                                                <label className="flex items-center gap-2">
-                                                    <RadioGroupItem value="organisation" />
-                                                    <span>Organisatie</span>
-                                                </label>
-                                            </RadioGroup>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            {organisationType === "organisation" && (
+                        {/* Step 1: Weekend party? */}
+                        {activeKey === "isParty" && (
+                            <div className="space-y-4">
                                 <FormField
                                     control={form.control}
-                                    name="organisationId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Organisatie</FormLabel>
-                                            <FormControl>
-                                                <Select
-                                                    onValueChange={
-                                                        field.onChange
-                                                    }
-                                                    value={field.value ?? ""}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Selecteer organisatie" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {organisations?.map(
-                                                            (
-                                                                o: unknown,
-                                                                idx
-                                                            ) => {
-                                                                const id =
-                                                                    getStringProp(
-                                                                        o,
-                                                                        "id"
-                                                                    ) ??
-                                                                    String(idx);
-                                                                const name =
-                                                                    getStringProp(
-                                                                        o,
-                                                                        "name"
-                                                                    ) ?? id;
-                                                                return (
-                                                                    <SelectItem
-                                                                        key={id}
-                                                                        value={
-                                                                            id
-                                                                        }
-                                                                    >
-                                                                        {name}
-                                                                    </SelectItem>
-                                                                );
-                                                            }
-                                                        )}
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            )}
-                        </div>
-                    )}
-
-                    {/* Step 3: Halls (skip if party) */}
-                    {activeKey === "halls" && (
-                        <div className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="selectedHallIds"
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel>Selecteer zalen</FormLabel>
-                                        <FormDescription>
-                                            Kies één of meerdere zalen om te
-                                            reserveren.
-                                        </FormDescription>
-                                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                            {halls?.map((h: unknown) => (
-                                                <FormField
-                                                    control={form.control}
-                                                    key={
-                                                        getStringProp(
-                                                            h,
-                                                            "id"
-                                                        ) ?? "hall"
-                                                    }
-                                                    name="selectedHallIds"
-                                                    render={({ field }) => {
-                                                        const id =
-                                                            getStringProp(
-                                                                h,
-                                                                "id"
-                                                            ) ?? "";
-                                                        const checked =
-                                                            field.value?.includes(
-                                                                id
-                                                            );
-                                                        return (
-                                                            <label className="flex cursor-pointer items-center gap-3 rounded border p-3">
-                                                                <Checkbox
-                                                                    checked={
-                                                                        !!checked
-                                                                    }
-                                                                    onCheckedChange={(
-                                                                        v
-                                                                    ) => {
-                                                                        const on =
-                                                                            Boolean(
-                                                                                v
-                                                                            );
-                                                                        if (
-                                                                            on
-                                                                        ) {
-                                                                            field.onChange(
-                                                                                [
-                                                                                    ...(field.value ??
-                                                                                        []),
-                                                                                    id,
-                                                                                ]
-                                                                            );
-                                                                        } else {
-                                                                            field.onChange(
-                                                                                (
-                                                                                    field.value ??
-                                                                                    []
-                                                                                ).filter(
-                                                                                    (
-                                                                                        x: string
-                                                                                    ) =>
-                                                                                        x !==
-                                                                                        id
-                                                                                )
-                                                                            );
-                                                                        }
-                                                                    }}
-                                                                />
-                                                                <span className="text-sm">
-                                                                    {getStringProp(
-                                                                        h,
-                                                                        "name"
-                                                                    ) ?? id}
-                                                                </span>
-                                                            </label>
-                                                        );
-                                                    }}
-                                                />
-                                            ))}
-                                        </div>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                    )}
-
-                    {/* Step 4: Start (party = date only) */}
-                    {activeKey === "start" && (
-                        <div className="space-y-4">
-                            {isParty ? (
-                                <FormField
-                                    control={form.control}
-                                    name="startDate"
+                                    name="isParty"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                Datum weekendfeest
+                                                Is dit een weekendfeest?
                                             </FormLabel>
+                                            <FormDescription>
+                                                Indien ja, worden alle zalen
+                                                voor de volledige geselecteerde
+                                                dag gereserveerd.
+                                            </FormDescription>
                                             <FormControl>
-                                                <Calendar
-                                                    className="rounded-lg border"
-                                                    disabled={(date) =>
-                                                        date <= new Date() ||
-                                                        (date
-                                                            ? isDateBlockedForParty(
-                                                                  date
-                                                              )
-                                                            : false)
-                                                    }
-                                                    locale={nlBE}
-                                                    mode="single"
-                                                    onSelect={(d) =>
+                                                <RadioGroup
+                                                    className="flex gap-6"
+                                                    onValueChange={(v) =>
                                                         field.onChange(
-                                                            d ?? undefined
+                                                            v === "yes"
                                                         )
                                                     }
-                                                    selected={field.value}
-                                                />
+                                                    value={
+                                                        field.value
+                                                            ? "yes"
+                                                            : "no"
+                                                    }
+                                                >
+                                                    <label className="flex items-center gap-2">
+                                                        <RadioGroupItem value="no" />
+                                                        <span>Nee</span>
+                                                    </label>
+                                                    <label className="flex items-center gap-2">
+                                                        <RadioGroupItem value="yes" />
+                                                        <span>Ja</span>
+                                                    </label>
+                                                </RadioGroup>
                                             </FormControl>
-                                            <FormDescription>
-                                                Alle zalen worden geboekt van
-                                                00:00 tot 23:59 op de
-                                                geselecteerde datum.
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                            ) : (
-                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            </div>
+                        )}
+
+                        {/* Step 2: Organisation type + optional organisation select */}
+                        {activeKey === "organisation" && (
+                            <div className="space-y-6">
+                                <FormField
+                                    control={form.control}
+                                    name="organisationType"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Wie reserveert?
+                                            </FormLabel>
+                                            <FormControl>
+                                                <RadioGroup
+                                                    className="flex gap-6"
+                                                    onValueChange={
+                                                        field.onChange
+                                                    }
+                                                    value={field.value}
+                                                >
+                                                    <label className="flex items-center gap-2">
+                                                        <RadioGroupItem value="personal" />
+                                                        <span>Persoonlijk</span>
+                                                    </label>
+                                                    <label className="flex items-center gap-2">
+                                                        <RadioGroupItem value="organisation" />
+                                                        <span>Organisatie</span>
+                                                    </label>
+                                                </RadioGroup>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {organisationType === "organisation" && (
+                                    <FormField
+                                        control={form.control}
+                                        name="organisationId"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Organisatie
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Select
+                                                        onValueChange={
+                                                            field.onChange
+                                                        }
+                                                        value={
+                                                            field.value ?? ""
+                                                        }
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Selecteer organisatie" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {organisations?.map(
+                                                                (
+                                                                    o: unknown,
+                                                                    idx
+                                                                ) => {
+                                                                    const id =
+                                                                        getStringProp(
+                                                                            o,
+                                                                            "id"
+                                                                        ) ??
+                                                                        String(
+                                                                            idx
+                                                                        );
+                                                                    const name =
+                                                                        getStringProp(
+                                                                            o,
+                                                                            "name"
+                                                                        ) ?? id;
+                                                                    return (
+                                                                        <SelectItem
+                                                                            key={
+                                                                                id
+                                                                            }
+                                                                            value={
+                                                                                id
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                name
+                                                                            }
+                                                                        </SelectItem>
+                                                                    );
+                                                                }
+                                                            )}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
+                            </div>
+                        )}
+
+                        {/* Step 3: Halls (skip if party) */}
+                        {activeKey === "halls" && (
+                            <div className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="selectedHallIds"
+                                    render={() => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Selecteer zalen
+                                            </FormLabel>
+                                            <FormDescription>
+                                                Kies één of meerdere zalen om te
+                                                reserveren.
+                                            </FormDescription>
+                                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                                {halls?.map((h: unknown) => (
+                                                    <FormField
+                                                        control={form.control}
+                                                        key={
+                                                            getStringProp(
+                                                                h,
+                                                                "id"
+                                                            ) ?? "hall"
+                                                        }
+                                                        name="selectedHallIds"
+                                                        render={({ field }) => {
+                                                            const id =
+                                                                getStringProp(
+                                                                    h,
+                                                                    "id"
+                                                                ) ?? "";
+                                                            const checked =
+                                                                field.value?.includes(
+                                                                    id
+                                                                );
+                                                            return (
+                                                                <label className="flex cursor-pointer items-center gap-3 rounded border p-3">
+                                                                    <Checkbox
+                                                                        checked={
+                                                                            !!checked
+                                                                        }
+                                                                        onCheckedChange={(
+                                                                            v
+                                                                        ) => {
+                                                                            const on =
+                                                                                Boolean(
+                                                                                    v
+                                                                                );
+                                                                            if (
+                                                                                on
+                                                                            ) {
+                                                                                field.onChange(
+                                                                                    [
+                                                                                        ...(field.value ??
+                                                                                            []),
+                                                                                        id,
+                                                                                    ]
+                                                                                );
+                                                                            } else {
+                                                                                field.onChange(
+                                                                                    (
+                                                                                        field.value ??
+                                                                                        []
+                                                                                    ).filter(
+                                                                                        (
+                                                                                            x: string
+                                                                                        ) =>
+                                                                                            x !==
+                                                                                            id
+                                                                                    )
+                                                                                );
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <span className="text-sm">
+                                                                        {getStringProp(
+                                                                            h,
+                                                                            "name"
+                                                                        ) ?? id}
+                                                                    </span>
+                                                                </label>
+                                                            );
+                                                        }}
+                                                    />
+                                                ))}
+                                            </div>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+
+                        {/* Step 4: Start (party = date only) */}
+                        {activeKey === "start" && (
+                            <div className="space-y-4">
+                                {isParty ? (
                                     <FormField
                                         control={form.control}
                                         name="startDate"
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>
-                                                    Startdatum
+                                                    Datum weekendfeest
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Calendar
@@ -843,7 +829,7 @@ const ReservationForm = () => {
                                                             date <=
                                                                 new Date() ||
                                                             (date
-                                                                ? isDateFullyBlockedForSelection(
+                                                                ? isDateBlockedForParty(
                                                                       date
                                                                   )
                                                                 : false)
@@ -858,421 +844,494 @@ const ReservationForm = () => {
                                                         selected={field.value}
                                                     />
                                                 </FormControl>
+                                                <FormDescription>
+                                                    Alle zalen worden geboekt
+                                                    van 00:00 tot 23:59 op de
+                                                    geselecteerde datum.
+                                                </FormDescription>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-                                    <FormField
-                                        control={form.control}
-                                        name="startTimeslotId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>
-                                                    Starttijdslot
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Select
-                                                        onValueChange={
-                                                            field.onChange
-                                                        }
-                                                        value={
-                                                            field.value ?? ""
-                                                        }
-                                                    >
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Selecteer starttijd" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            {timeslots?.map(
-                                                                (
-                                                                    t: unknown,
-                                                                    idx
-                                                                ) => {
-                                                                    const id =
-                                                                        getStringProp(
-                                                                            t,
-                                                                            "id"
-                                                                        ) ??
-                                                                        String(
-                                                                            idx
+                                ) : (
+                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                        <FormField
+                                            control={form.control}
+                                            name="startDate"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>
+                                                        Startdatum
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Calendar
+                                                            className="rounded-lg border"
+                                                            disabled={(date) =>
+                                                                date <=
+                                                                    new Date() ||
+                                                                (date
+                                                                    ? isDateFullyBlockedForSelection(
+                                                                          date
+                                                                      )
+                                                                    : false)
+                                                            }
+                                                            locale={nlBE}
+                                                            mode="single"
+                                                            onSelect={(d) =>
+                                                                field.onChange(
+                                                                    d ??
+                                                                        undefined
+                                                                )
+                                                            }
+                                                            selected={
+                                                                field.value
+                                                            }
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="startTimeslotId"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>
+                                                        Starttijdslot
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Select
+                                                            onValueChange={
+                                                                field.onChange
+                                                            }
+                                                            value={
+                                                                field.value ??
+                                                                ""
+                                                            }
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Selecteer starttijd" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {timeslots?.map(
+                                                                    (
+                                                                        t: unknown,
+                                                                        idx
+                                                                    ) => {
+                                                                        const id =
+                                                                            getStringProp(
+                                                                                t,
+                                                                                "id"
+                                                                            ) ??
+                                                                            String(
+                                                                                idx
+                                                                            );
+                                                                        const start =
+                                                                            getStringProp(
+                                                                                t,
+                                                                                "start_time"
+                                                                            ) ??
+                                                                            "";
+                                                                        const disabled =
+                                                                            id
+                                                                                ? isTimeslotDisabledOnDate(
+                                                                                      startDateVal,
+                                                                                      id
+                                                                                  )
+                                                                                : false;
+                                                                        return (
+                                                                            <SelectItem
+                                                                                disabled={
+                                                                                    disabled
+                                                                                }
+                                                                                key={
+                                                                                    id
+                                                                                }
+                                                                                value={
+                                                                                    id
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    start
+                                                                                }
+                                                                            </SelectItem>
                                                                         );
-                                                                    const start =
-                                                                        getStringProp(
-                                                                            t,
-                                                                            "start_time"
-                                                                        ) ?? "";
-                                                                    const disabled =
-                                                                        id
-                                                                            ? isTimeslotDisabledOnDate(
-                                                                                  startDateVal,
-                                                                                  id
-                                                                              )
-                                                                            : false;
-                                                                    return (
-                                                                        <SelectItem
-                                                                            disabled={
-                                                                                disabled
-                                                                            }
-                                                                            key={
-                                                                                id
-                                                                            }
-                                                                            value={
-                                                                                id
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                start
-                                                                            }
-                                                                        </SelectItem>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </SelectContent>
-                                                    </Select>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Step 5: End (skip for party) */}
-                    {activeKey === "end" && (
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <FormField
-                                control={form.control}
-                                name="endDate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Einddatum</FormLabel>
-                                        <FormControl>
-                                            <Calendar
-                                                className="rounded-lg border"
-                                                disabled={(date) =>
-                                                    date <= new Date() ||
-                                                    (date
-                                                        ? isDateFullyBlockedForSelection(
-                                                              date
-                                                          )
-                                                        : false)
-                                                }
-                                                locale={nlBE}
-                                                mode="single"
-                                                onSelect={(d) =>
-                                                    field.onChange(
-                                                        d ?? undefined
-                                                    )
-                                                }
-                                                selected={field.value}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="endTimeslotId"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Eindtijdslot</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                value={field.value ?? ""}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Selecteer eindtijd" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {timeslots?.map(
-                                                        (t: unknown, idx) => {
-                                                            const id =
-                                                                getStringProp(
-                                                                    t,
-                                                                    "id"
-                                                                ) ??
-                                                                String(idx);
-                                                            const end =
-                                                                getStringProp(
-                                                                    t,
-                                                                    "end_time"
-                                                                ) ?? "";
-                                                            const disabled = id
-                                                                ? isTimeslotDisabledOnDate(
-                                                                      endDateVal,
-                                                                      id
-                                                                  )
-                                                                : false;
-                                                            return (
-                                                                <SelectItem
-                                                                    disabled={
-                                                                        disabled
                                                                     }
-                                                                    key={id}
-                                                                    value={id}
-                                                                >
-                                                                    {end}
-                                                                </SelectItem>
-                                                            );
-                                                        }
-                                                    )}
-                                                </SelectContent>
-                                            </Select>
+                                                                )}
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Step 5: End (skip for party) */}
+                        {activeKey === "end" && (
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <FormField
+                                    control={form.control}
+                                    name="endDate"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Einddatum</FormLabel>
+                                            <FormControl>
+                                                <Calendar
+                                                    className="rounded-lg border"
+                                                    disabled={(date) =>
+                                                        date <= new Date() ||
+                                                        (date
+                                                            ? isDateFullyBlockedForSelection(
+                                                                  date
+                                                              )
+                                                            : false)
+                                                    }
+                                                    locale={nlBE}
+                                                    mode="single"
+                                                    onSelect={(d) =>
+                                                        field.onChange(
+                                                            d ?? undefined
+                                                        )
+                                                    }
+                                                    selected={field.value}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="endTimeslotId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Eindtijdslot</FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    onValueChange={
+                                                        field.onChange
+                                                    }
+                                                    value={field.value ?? ""}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Selecteer eindtijd" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {timeslots?.map(
+                                                            (
+                                                                t: unknown,
+                                                                idx
+                                                            ) => {
+                                                                const id =
+                                                                    getStringProp(
+                                                                        t,
+                                                                        "id"
+                                                                    ) ??
+                                                                    String(idx);
+                                                                const end =
+                                                                    getStringProp(
+                                                                        t,
+                                                                        "end_time"
+                                                                    ) ?? "";
+                                                                const disabled =
+                                                                    id
+                                                                        ? isTimeslotDisabledOnDate(
+                                                                              endDateVal,
+                                                                              id
+                                                                          )
+                                                                        : false;
+                                                                return (
+                                                                    <SelectItem
+                                                                        disabled={
+                                                                            disabled
+                                                                        }
+                                                                        key={id}
+                                                                        value={
+                                                                            id
+                                                                        }
+                                                                    >
+                                                                        {end}
+                                                                    </SelectItem>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+
+                        {/* Step 6: Remarks */}
+                        {activeKey === "remarks" && (
+                            <FormField
+                                control={form.control}
+                                name="remarks"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Opmerkingen (optioneel)
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Textarea rows={4} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                        </div>
-                    )}
+                        )}
 
-                    {/* Step 6: Remarks */}
-                    {activeKey === "remarks" && (
-                        <FormField
-                            control={form.control}
-                            name="remarks"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        Opmerkingen (optioneel)
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Textarea rows={4} {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    )}
-
-                    {/* Step 7: Confirm + policy */}
-                    {activeKey === "confirm" && (
-                        <div className="space-y-6">
-                            <div className="rounded-md border p-4 text-sm">
-                                <h3 className="mb-2 font-medium">Overzicht</h3>
-                                <ul className="space-y-1">
-                                    <li>
-                                        Weekendfeest: {isParty ? "Ja" : "Nee"}
-                                    </li>
-                                    <li>
-                                        Type aanvrager: {organisationType}
-                                        {organisationType ===
-                                            "organisation" && (
-                                            <>
-                                                {" "}
-                                                –{" "}
-                                                {organisations?.find(
-                                                    (o) =>
-                                                        String(o.id) ===
-                                                        String(
-                                                            form.getValues(
-                                                                "organisationId"
-                                                            )
-                                                        )
-                                                )?.name ??
-                                                    form.getValues(
-                                                        "organisationId"
-                                                    )}
-                                            </>
-                                        )}
-                                    </li>
-                                    {!isParty && (
+                        {/* Step 7: Confirm + policy */}
+                        {activeKey === "confirm" && (
+                            <div className="space-y-6">
+                                <div className="rounded-md border p-4 text-sm">
+                                    <h3 className="mb-2 font-medium">
+                                        Overzicht
+                                    </h3>
+                                    <ul className="space-y-1">
                                         <li>
-                                            Zalen:{" "}
-                                            {halls
-                                                ?.filter((h: unknown) =>
-                                                    form
-                                                        .getValues(
-                                                            "selectedHallIds"
-                                                        )
-                                                        ?.includes(
+                                            Weekendfeest:{" "}
+                                            {isParty ? "Ja" : "Nee"}
+                                        </li>
+                                        <li>
+                                            Type aanvrager: {organisationType}
+                                            {organisationType ===
+                                                "organisation" && (
+                                                <>
+                                                    {" "}
+                                                    –{" "}
+                                                    {organisations?.find(
+                                                        (o) =>
+                                                            String(o.id) ===
                                                             String(
-                                                                getStringProp(
-                                                                    h,
-                                                                    "id"
+                                                                form.getValues(
+                                                                    "organisationId"
                                                                 )
                                                             )
-                                                        )
-                                                )
-                                                .map(
-                                                    (h: unknown) =>
-                                                        getStringProp(
-                                                            h,
-                                                            "name"
-                                                        ) ??
-                                                        (getStringProp(
-                                                            h,
-                                                            "id"
-                                                        ) ||
-                                                            "")
-                                                )
-                                                .join(", ") || "-"}
+                                                    )?.name ??
+                                                        form.getValues(
+                                                            "organisationId"
+                                                        )}
+                                                </>
+                                            )}
                                         </li>
-                                    )}
-                                    <li>
-                                        Start:{" "}
-                                        {form
-                                            .getValues("startDate")
-                                            ?.toLocaleDateString() || "-"}{" "}
-                                        {getStringProp(
-                                            timeslots?.find(
-                                                (t: unknown) =>
-                                                    String(
-                                                        getStringProp(t, "id")
-                                                    ) ===
-                                                    String(
-                                                        form.getValues(
-                                                            "startTimeslotId"
-                                                        )
+                                        {!isParty && (
+                                            <li>
+                                                Zalen:{" "}
+                                                {halls
+                                                    ?.filter((h: unknown) =>
+                                                        form
+                                                            .getValues(
+                                                                "selectedHallIds"
+                                                            )
+                                                            ?.includes(
+                                                                String(
+                                                                    getStringProp(
+                                                                        h,
+                                                                        "id"
+                                                                    )
+                                                                )
+                                                            )
                                                     )
-                                            ),
-                                            "start_time"
-                                        ) ||
-                                            (isParty
-                                                ? earliestTimeslotId &&
-                                                  getStringProp(
-                                                      timeslots?.find(
-                                                          (t: unknown) =>
-                                                              getStringProp(
-                                                                  t,
-                                                                  "id"
-                                                              ) ===
-                                                              earliestTimeslotId
-                                                      ),
-                                                      "start_time"
-                                                  )
-                                                : "")}
-                                    </li>
-                                    <li>
-                                        Einde:{" "}
-                                        {form
-                                            .getValues("endDate")
-                                            ?.toLocaleDateString() ||
-                                            (isParty
-                                                ? form
-                                                      .getValues("startDate")
-                                                      ?.toLocaleDateString()
-                                                : "-")}{" "}
-                                        {getStringProp(
-                                            timeslots?.find(
-                                                (t: unknown) =>
-                                                    String(
-                                                        getStringProp(t, "id")
-                                                    ) ===
-                                                    String(
-                                                        form.getValues(
-                                                            "endTimeslotId"
-                                                        )
+                                                    .map(
+                                                        (h: unknown) =>
+                                                            getStringProp(
+                                                                h,
+                                                                "name"
+                                                            ) ??
+                                                            (getStringProp(
+                                                                h,
+                                                                "id"
+                                                            ) ||
+                                                                "")
                                                     )
-                                            ),
-                                            "end_time"
-                                        ) ||
-                                            (isParty
-                                                ? latestTimeslotId &&
-                                                  getStringProp(
-                                                      timeslots?.find(
-                                                          (t: unknown) =>
-                                                              getStringProp(
-                                                                  t,
-                                                                  "id"
-                                                              ) ===
-                                                              latestTimeslotId
-                                                      ),
-                                                      "end_time"
-                                                  )
-                                                : "")}
-                                    </li>
-                                    {form.getValues("remarks") && (
+                                                    .join(", ") || "-"}
+                                            </li>
+                                        )}
                                         <li>
-                                            Opmerkingen:{" "}
-                                            {form.getValues("remarks")}
+                                            Start:{" "}
+                                            {form
+                                                .getValues("startDate")
+                                                ?.toLocaleDateString() ||
+                                                "-"}{" "}
+                                            {getStringProp(
+                                                timeslots?.find(
+                                                    (t: unknown) =>
+                                                        String(
+                                                            getStringProp(
+                                                                t,
+                                                                "id"
+                                                            )
+                                                        ) ===
+                                                        String(
+                                                            form.getValues(
+                                                                "startTimeslotId"
+                                                            )
+                                                        )
+                                                ),
+                                                "start_time"
+                                            ) ||
+                                                (isParty
+                                                    ? earliestTimeslotId &&
+                                                      getStringProp(
+                                                          timeslots?.find(
+                                                              (t: unknown) =>
+                                                                  getStringProp(
+                                                                      t,
+                                                                      "id"
+                                                                  ) ===
+                                                                  earliestTimeslotId
+                                                          ),
+                                                          "start_time"
+                                                      )
+                                                    : "")}
                                         </li>
+                                        <li>
+                                            Einde:{" "}
+                                            {form
+                                                .getValues("endDate")
+                                                ?.toLocaleDateString() ||
+                                                (isParty
+                                                    ? form
+                                                          .getValues(
+                                                              "startDate"
+                                                          )
+                                                          ?.toLocaleDateString()
+                                                    : "-")}{" "}
+                                            {getStringProp(
+                                                timeslots?.find(
+                                                    (t: unknown) =>
+                                                        String(
+                                                            getStringProp(
+                                                                t,
+                                                                "id"
+                                                            )
+                                                        ) ===
+                                                        String(
+                                                            form.getValues(
+                                                                "endTimeslotId"
+                                                            )
+                                                        )
+                                                ),
+                                                "end_time"
+                                            ) ||
+                                                (isParty
+                                                    ? latestTimeslotId &&
+                                                      getStringProp(
+                                                          timeslots?.find(
+                                                              (t: unknown) =>
+                                                                  getStringProp(
+                                                                      t,
+                                                                      "id"
+                                                                  ) ===
+                                                                  latestTimeslotId
+                                                          ),
+                                                          "end_time"
+                                                      )
+                                                    : "")}
+                                        </li>
+                                        {form.getValues("remarks") && (
+                                            <li>
+                                                Opmerkingen:{" "}
+                                                {form.getValues("remarks")}
+                                            </li>
+                                        )}
+                                    </ul>
+                                </div>
+
+                                <FormField
+                                    control={form.control}
+                                    name="acceptedPolicy"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={(v) =>
+                                                        field.onChange(
+                                                            Boolean(v)
+                                                        )
+                                                    }
+                                                />
+                                            </FormControl>
+                                            <div className="space-y-1 leading-none">
+                                                <span className="text-sm">
+                                                    Ik heb het reglement gelezen
+                                                    en ga ermee akkoord.{" "}
+                                                    <a
+                                                        className="underline"
+                                                        href="/documents/Reglement_vergaderzalen_Ten_Boomgaerde_vzw.pdf"
+                                                        rel="noreferrer"
+                                                        target="_blank"
+                                                    >
+                                                        Bekijk reglement
+                                                    </a>
+                                                </span>
+                                                <FormMessage />
+                                            </div>
+                                        </FormItem>
                                     )}
-                                </ul>
+                                />
                             </div>
+                        )}
 
-                            <FormField
-                                control={form.control}
-                                name="acceptedPolicy"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={(v) =>
-                                                    field.onChange(Boolean(v))
-                                                }
-                                            />
-                                        </FormControl>
-                                        <div className="space-y-1 leading-none">
-                                            <span className="text-sm">
-                                                Ik heb het reglement gelezen en
-                                                ga ermee akkoord.{" "}
-                                                <a
-                                                    className="underline"
-                                                    href="/documents/Reglement_vergaderzalen_Ten_Boomgaerde_vzw.pdf"
-                                                    rel="noreferrer"
-                                                    target="_blank"
-                                                >
-                                                    Bekijk reglement
-                                                </a>
-                                            </span>
-                                            <FormMessage />
-                                        </div>
-                                    </FormItem>
+                        {/* Step 8: Done */}
+                        {activeKey === "done" && (
+                            <div className="rounded-md border p-6">
+                                <h3 className="mb-2 text-lg font-semibold">
+                                    Reservatie-aanvraag verzonden
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                    Uw aanvraag werd succesvol ingediend. U
+                                    ontvangt een bevestigingsmail na manuele
+                                    controle.
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Navigation */}
+                        <div className="mt-8 flex items-center justify-between">
+                            <Button
+                                disabled={
+                                    activeStep === 0 ||
+                                    activeStep === visibleSteps.length - 1
+                                }
+                                onClick={goPrev}
+                                type="button"
+                                variant="outline"
+                            >
+                                Terug
+                            </Button>
+
+                            {activeStep < visibleSteps.length - 1 &&
+                                !isLastEditableStep && (
+                                    <Button
+                                        onClick={() => void goNext()}
+                                        type="button"
+                                    >
+                                        Volgende
+                                    </Button>
                                 )}
-                            />
-                        </div>
-                    )}
 
-                    {/* Step 8: Done */}
-                    {activeKey === "done" && (
-                        <div className="rounded-md border p-6">
-                            <h3 className="mb-2 text-lg font-semibold">
-                                Reservatie-aanvraag verzonden
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                                Uw aanvraag werd succesvol ingediend. U ontvangt
-                                een bevestigingsmail na manuele controle.
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Navigation */}
-                    <div className="mt-8 flex items-center justify-between">
-                        <Button
-                            disabled={
-                                activeStep === 0 ||
-                                activeStep === visibleSteps.length - 1
-                            }
-                            onClick={goPrev}
-                            type="button"
-                            variant="outline"
-                        >
-                            Terug
-                        </Button>
-
-                        {activeStep < visibleSteps.length - 1 &&
-                            !isLastEditableStep && (
-                                <Button
-                                    onClick={() => void goNext()}
-                                    type="button"
-                                >
-                                    Volgende
+                            {isLastEditableStep && (
+                                <Button type="submit">
+                                    Reservatie bevestigen
                                 </Button>
                             )}
-
-                        {isLastEditableStep && (
-                            <Button type="submit">Reservatie bevestigen</Button>
-                        )}
-                    </div>
-                </form>
-            </Form>
-        </div>
+                        </div>
+                    </form>
+                </Form>
+            </div>
+            <DevTool control={form.control} placement="top-right" />
+        </>
     );
 };
 

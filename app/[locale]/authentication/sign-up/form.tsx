@@ -1,5 +1,6 @@
 "use client";
 
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon, SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation } from "@tanstack/react-query";
@@ -158,6 +159,7 @@ const SignUpForm = () => {
                 <ArrowLeftIcon className="mr-4 size-4" />
                 Ga terug
             </Link>
+            <DevTool control={form.control} placement="top-right" />
         </>
     );
 };
