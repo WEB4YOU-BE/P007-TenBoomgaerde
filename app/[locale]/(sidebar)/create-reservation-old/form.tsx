@@ -44,6 +44,7 @@ import { Textarea } from "@/components/atoms/textarea";
 import getHalls from "@/service/halls/getHalls";
 import getMyOrganisations from "@/service/organisations/getMyOrganisations";
 import { createGetDayStatus } from "@/service/reservations/createGetDayStatus";
+import { createGetDayTimeslotIds } from "@/service/reservations/createGetDayTimeslotIds";
 import createReservation from "@/service/reservations/createReservation";
 import getReservations from "@/service/reservations/getReservations";
 import getTimeslots from "@/service/timeslots/getTimeslots";
@@ -141,11 +142,6 @@ const ReservationForm = () => {
         queryFn: getMyOrganisations,
         queryKey: ["my-organisations"],
     });
-
-    console.debug("Fetched data:", { halls, reservations, timeslots });
-
-    // All pre-form data transformation:
-    // ...
 
     // All mutation-related:
     const { mutateAsync } = useMutation({ mutationFn: createReservation });
@@ -384,6 +380,62 @@ const ReservationForm = () => {
     );
 
     // (isDateBlockedForParty) removed in favor of getDayStatus-based disabling
+
+    // Build day-timeslot resolver and derive available start timeslot IDs for the selected date
+    const getDayTimeslotIds = useMemo(
+        () =>
+            createGetDayTimeslotIds({
+                halls: selectedHallsData as unknown as NonNullable<GetHallsResponse>,
+                onlyWeekend: isParty,
+                reservations: (reservations ??
+                    []) as unknown as NonNullable<GetReservationsResponse>,
+                timeslots: (timeslots ??
+                    []) as unknown as NonNullable<GetTimeslotsResponse>,
+            }),
+        [selectedHallsData, reservations, timeslots, isParty]
+    );
+    const availableStartTimeslotIdSet = useMemo(() => {
+        if (!startDateVal) return null;
+        try {
+            const ids = getDayTimeslotIds({ date: startDateVal });
+            return new Set(ids);
+        } catch {
+            return null;
+        }
+    }, [getDayTimeslotIds, startDateVal]);
+
+    // If the selected start timeslot becomes unavailable for the chosen date,
+    // reset it to the first available option for that date (by start_time ASC)
+    useEffect(() => {
+        if (!startDateVal) return; // don't auto-select without a date
+        if (!availableStartTimeslotIdSet) return;
+        const current = form.getValues("startTimeslotId");
+        if (current && availableStartTimeslotIdSet.has(current)) return;
+
+        const firstAvailable = (timeslots ?? [])
+            .map((t: unknown, idx) => ({
+                id: getStringProp(t, "id") ?? String(idx),
+                start: getStringProp(t, "start_time") ?? "",
+            }))
+            .filter(
+                (x): x is { id: string; start: string } =>
+                    Boolean(x.id) && availableStartTimeslotIdSet.has(x.id)
+            )
+            .sort((a, b) => a.start.localeCompare(b.start))[0]?.id;
+
+        if (firstAvailable) {
+            form.setValue("startTimeslotId", firstAvailable, {
+                shouldDirty: true,
+                shouldValidate: true,
+            });
+        } else if (current) {
+            // Clear if no available options remain
+            form.setValue("startTimeslotId", undefined as unknown as string, {
+                shouldDirty: true,
+                shouldValidate: true,
+            });
+        }
+    }, [startDateVal, availableStartTimeslotIdSet, timeslots, form]);
 
     // Compute visible steps based on current form state (skip halls/end for weekendfeest)
     const visibleSteps = useMemo(
@@ -925,51 +977,77 @@ const ReservationForm = () => {
                                                                 <SelectValue placeholder="Selecteer starttijd" />
                                                             </SelectTrigger>
                                                             <SelectContent>
-                                                                {timeslots?.map(
-                                                                    (
-                                                                        t: unknown,
-                                                                        idx
-                                                                    ) => {
-                                                                        const id =
-                                                                            getStringProp(
-                                                                                t,
-                                                                                "id"
-                                                                            ) ??
-                                                                            String(
-                                                                                idx
+                                                                {timeslots
+                                                                    ?.filter(
+                                                                        (
+                                                                            t: unknown,
+                                                                            idx
+                                                                        ) => {
+                                                                            const id =
+                                                                                getStringProp(
+                                                                                    t,
+                                                                                    "id"
+                                                                                ) ??
+                                                                                String(
+                                                                                    idx
+                                                                                );
+                                                                            if (
+                                                                                !id
+                                                                            )
+                                                                                return false;
+                                                                            // If no date yet, show all; otherwise only allowed IDs
+                                                                            return (
+                                                                                !availableStartTimeslotIdSet ||
+                                                                                availableStartTimeslotIdSet.has(
+                                                                                    id
+                                                                                )
                                                                             );
-                                                                        const start =
-                                                                            getStringProp(
-                                                                                t,
-                                                                                "start_time"
-                                                                            ) ??
-                                                                            "";
-                                                                        const disabled =
-                                                                            id
-                                                                                ? isTimeslotDisabledOnDate(
-                                                                                      startDateVal,
-                                                                                      id
-                                                                                  )
-                                                                                : false;
-                                                                        return (
-                                                                            <SelectItem
-                                                                                disabled={
-                                                                                    disabled
-                                                                                }
-                                                                                key={
-                                                                                    id
-                                                                                }
-                                                                                value={
-                                                                                    id
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    start
-                                                                                }
-                                                                            </SelectItem>
-                                                                        );
-                                                                    }
-                                                                )}
+                                                                        }
+                                                                    )
+                                                                    .sort(
+                                                                        (
+                                                                            a,
+                                                                            b
+                                                                        ) =>
+                                                                            a.start_time.localeCompare(
+                                                                                b.start_time
+                                                                            )
+                                                                    )
+                                                                    .map(
+                                                                        (
+                                                                            t: unknown,
+                                                                            idx
+                                                                        ) => {
+                                                                            const id =
+                                                                                getStringProp(
+                                                                                    t,
+                                                                                    "id"
+                                                                                ) ??
+                                                                                String(
+                                                                                    idx
+                                                                                );
+                                                                            const start =
+                                                                                getStringProp(
+                                                                                    t,
+                                                                                    "start_time"
+                                                                                ) ??
+                                                                                "";
+                                                                            return (
+                                                                                <SelectItem
+                                                                                    key={
+                                                                                        id
+                                                                                    }
+                                                                                    value={
+                                                                                        id
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        start
+                                                                                    }
+                                                                                </SelectItem>
+                                                                            );
+                                                                        }
+                                                                    )}
                                                             </SelectContent>
                                                         </Select>
                                                     </FormControl>
