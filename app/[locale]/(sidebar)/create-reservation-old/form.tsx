@@ -17,6 +17,10 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import z, { output } from "zod";
 
+import type { GetHallsResponse } from "@/service/halls/getHalls";
+import type { GetReservationsResponse } from "@/service/reservations/getReservations";
+import type { GetTimeslotsResponse } from "@/service/timeslots/getTimeslots";
+
 import Button from "@/components/atoms/Button";
 import Calendar from "@/components/atoms/Calendar";
 import Checkbox from "@/components/atoms/Checkbox";
@@ -39,6 +43,7 @@ import {
 import { Textarea } from "@/components/atoms/textarea";
 import getHalls from "@/service/halls/getHalls";
 import getMyOrganisations from "@/service/organisations/getMyOrganisations";
+import { createGetDayStatus } from "@/service/reservations/createGetDayStatus";
 import createReservation from "@/service/reservations/createReservation";
 import getReservations from "@/service/reservations/getReservations";
 import getTimeslots from "@/service/timeslots/getTimeslots";
@@ -137,8 +142,7 @@ const ReservationForm = () => {
         queryKey: ["my-organisations"],
     });
 
-    if (process.env.NODE_ENV !== "production")
-        console.debug("Fetched data:", { halls, reservations, timeslots });
+    console.debug("Fetched data:", { halls, reservations, timeslots });
 
     // All pre-form data transformation:
     // ...
@@ -302,6 +306,47 @@ const ReservationForm = () => {
         [timeslotById]
     );
 
+    // Build day-status function from selected halls + all reservations/timeslots
+    const selectedHallsData = useMemo(() => {
+        // For weekend party, treat as all halls
+        if (isParty) return (halls ?? []) as unknown[];
+        const set = new Set<string>(selectedHallIds ?? []);
+        return (halls ?? []).filter((h: unknown) =>
+            set.has(getStringProp(h, "id") ?? "")
+        );
+    }, [halls, selectedHallIds, isParty]);
+
+    type DayStatusString = "AVAILABLE" | "FULLY_BOOKED" | "PARTIALLY_BOOKED";
+    const getDayStatus = useMemo(() => {
+        const fn = createGetDayStatus({
+            halls: selectedHallsData as unknown as NonNullable<GetHallsResponse>,
+            onlyFullDays: isParty,
+            onlyWeekend: isParty,
+            reservations: (reservations ??
+                []) as unknown as NonNullable<GetReservationsResponse>,
+            timeslots: (timeslots ??
+                []) as unknown as NonNullable<GetTimeslotsResponse>,
+        });
+        return ({ date }: { date: Date }): DayStatusString =>
+            fn({ date }) as unknown as DayStatusString;
+    }, [selectedHallsData, reservations, timeslots, isParty]);
+
+    const isStartDateDisabled = useCallback(
+        (date: Date | undefined): boolean => {
+            if (!date) return false;
+            // Block past/today
+            if (date <= new Date()) return true;
+            const status = getDayStatus({ date });
+            if (isParty) {
+                // For party: any overlap blocks the whole day
+                return status !== "AVAILABLE";
+            }
+            // For normal flow: disable only if the day is fully booked
+            return status === "FULLY_BOOKED";
+        },
+        [getDayStatus, isParty]
+    );
+
     const isTimeslotDisabledOnDate = useCallback(
         (date: Date | undefined, timeslotId: string): boolean => {
             if (!date) return false;
@@ -338,29 +383,7 @@ const ReservationForm = () => {
         [timeslotIds, isTimeslotDisabledOnDate]
     );
 
-    const isDateBlockedForParty = useCallback(
-        (date: Date): boolean => {
-            const dayStart = set(date, {
-                hours: 0,
-                milliseconds: 0,
-                minutes: 0,
-                seconds: 0,
-            });
-            const dayEnd = set(date, {
-                hours: 23,
-                milliseconds: 999,
-                minutes: 59,
-                seconds: 59,
-            });
-            return (
-                normalizedReservations?.some((r) => {
-                    if (!intersectsSelected(r)) return false;
-                    return rangesOverlap(dayStart, dayEnd, r.start, r.end);
-                }) ?? false
-            );
-        },
-        [normalizedReservations, intersectsSelected]
-    );
+    // (isDateBlockedForParty) removed in favor of getDayStatus-based disabling
 
     // Compute visible steps based on current form state (skip halls/end for weekendfeest)
     const visibleSteps = useMemo(
@@ -825,14 +848,8 @@ const ReservationForm = () => {
                                                 <FormControl>
                                                     <Calendar
                                                         className="rounded-lg border"
-                                                        disabled={(date) =>
-                                                            date <=
-                                                                new Date() ||
-                                                            (date
-                                                                ? isDateBlockedForParty(
-                                                                      date
-                                                                  )
-                                                                : false)
+                                                        disabled={
+                                                            isStartDateDisabled
                                                         }
                                                         locale={nlBE}
                                                         mode="single"
@@ -866,14 +883,8 @@ const ReservationForm = () => {
                                                     <FormControl>
                                                         <Calendar
                                                             className="rounded-lg border"
-                                                            disabled={(date) =>
-                                                                date <=
-                                                                    new Date() ||
-                                                                (date
-                                                                    ? isDateFullyBlockedForSelection(
-                                                                          date
-                                                                      )
-                                                                    : false)
+                                                            disabled={
+                                                                isStartDateDisabled
                                                             }
                                                             locale={nlBE}
                                                             mode="single"
