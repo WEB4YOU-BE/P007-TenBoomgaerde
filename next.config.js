@@ -3,7 +3,11 @@ import VercelToolbar from "@vercel/toolbar/plugins/next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 /** @type {import("next").NextConfig} */
-const config = { trailingSlash: true, turbopack: {} };
+const config = {
+    compiler: { removeConsole: process.env.NODE_ENV === "production" },
+    trailingSlash: true,
+    turbopack: {},
+};
 
 const withVercelToolbar = VercelToolbar();
 const withBundleAnalyzer = NextBundleAnalyzer({
