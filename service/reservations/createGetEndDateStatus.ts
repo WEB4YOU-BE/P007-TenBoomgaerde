@@ -14,7 +14,7 @@
  * - If a reservation after start shortens the end within the active window, it's PARTIALLY_BOOKED.
  * - Otherwise AVAILABLE.
  */
-import { addDays, isWeekend } from "date-fns";
+import { addDays, isSameDay, isWeekend, startOfDay } from "date-fns";
 
 import type { GetHallsResponse } from "@/service/halls/getHalls";
 import type { GetReservationsResponse } from "@/service/reservations/getReservations";
@@ -47,7 +47,7 @@ const buildDateAtTime = (base: Date, time: string) => {
  */
 export const createGetEndDateStatus = ({
     halls,
-    onlyFullDays = false,
+    // onlyFullDays = false,
     onlyWeekend = false,
     reservations,
     startDateTime,
@@ -68,54 +68,82 @@ export const createGetEndDateStatus = ({
         .filter((r) => !isNaN(r.start.getTime()) && !isNaN(r.end.getTime()))
         .sort((a, b) => a.start.getTime() - b.start.getTime());
 
-    return ({ date }) => {
-        // Enforce weekend-only bookings if requested (block weekdays)
-        if (onlyWeekend && !isWeekend(date)) return DAY_STATUS.FULLY_BOOKED;
-        if (!timeslots.length) return DAY_STATUS.FULLY_BOOKED;
-
-        // Build day-specific timeslot ranges
-        const ranges = timeslots.map((ts) => {
-            const start = buildDateAtTime(date, ts.start_time);
-            const endCandidate = buildDateAtTime(date, ts.end_time);
+    // Helper: build ranges for an arbitrary base date (handles overnight)
+    const buildRangesForDate = (baseDate: Date) =>
+        timeslots.map((ts) => {
+            const start = buildDateAtTime(baseDate, ts.start_time);
+            const endCandidate = buildDateAtTime(baseDate, ts.end_time);
             const end =
                 endCandidate <= start ? addDays(endCandidate, 1) : endCandidate;
             return { end, start };
         });
 
-        // Determine the active booking window containing the start
-        const activeRanges = onlyFullDays
-            ? [
-                  {
-                      end: new Date(
-                          Math.max(...ranges.map((r) => r.end.getTime()))
-                      ),
-                      start: new Date(
-                          Math.min(...ranges.map((r) => r.start.getTime()))
-                      ),
-                  },
-              ]
-            : ranges;
+    // Determine the start's owning timeslot day (consider overnight via previous day)
+    const startDay = startOfDay(startDateTime);
+    const startDayRanges = buildRangesForDate(startDay);
+    const prevDay = addDays(startDay, -1);
+    const prevDayRanges = buildRangesForDate(prevDay);
 
-        const active = activeRanges.find(
-            (r) => startDateTime >= r.start && startDateTime < r.end
+    const findActiveContainingStart = (ranges: { end: Date; start: Date }[]) =>
+        ranges.find((r) => startDateTime >= r.start && startDateTime < r.end);
+
+    let owningStartDay = startDay;
+    const activeStartRange =
+        findActiveContainingStart(startDayRanges) ||
+        ((owningStartDay = prevDay),
+        findActiveContainingStart(prevDayRanges) || null);
+
+    const startInsideAnyTimeslot = Boolean(activeStartRange);
+
+    // Precompute reservation interactions relative to the start
+    const overlapsStart = reservationRanges.some(
+        (res) => res.start <= startDateTime && res.end > startDateTime
+    );
+    const nextBlocker = reservationRanges.find(
+        (res) => res.start > startDateTime
+    );
+
+    return ({ date }) => {
+        // Weekend-only enforcement
+        if (onlyWeekend && !isWeekend(date)) return DAY_STATUS.FULLY_BOOKED;
+        // No configured timeslots at all
+        if (!timeslots.length) return DAY_STATUS.FULLY_BOOKED;
+        // Start must be valid inside some timeslot (considering overnight ownership)
+        if (!startInsideAnyTimeslot) return DAY_STATUS.FULLY_BOOKED;
+        // If a reservation overlaps the start, everything is invalid
+        if (overlapsStart) return DAY_STATUS.FULLY_BOOKED;
+
+        // Build the day's overall window [minStart, maxEnd]
+        const dayRanges = buildRangesForDate(date);
+        const windowStartRaw = new Date(
+            Math.min(...dayRanges.map((r) => r.start.getTime()))
         );
-        if (!active) return DAY_STATUS.FULLY_BOOKED; // start not inside an allowed range
+        const windowEndRaw = new Date(
+            Math.max(...dayRanges.map((r) => r.end.getTime()))
+        );
 
-        // Scan for conflicting reservations relative to the start
-        for (const res of reservationRanges) {
-            // If there's a reservation already overlapping the start (res.start < start < res.end),
-            // the start is invalid and the date is effectively fully booked.
-            if (res.start <= startDateTime && res.end > startDateTime) {
+        // If the day window ends before the start, cannot end here
+        if (windowEndRaw <= startDateTime) return DAY_STATUS.FULLY_BOOKED;
+
+        // On the owning start day, the window is restricted to the active range end and starts at the startDateTime
+        const isOwningStartDay =
+            activeStartRange && isSameDay(date, owningStartDay);
+        const windowStart = isOwningStartDay ? startDateTime : windowStartRaw;
+        const windowEnd = isOwningStartDay
+            ? (activeStartRange as { end: Date }).end
+            : windowEndRaw;
+
+        // If there is a future reservation that starts after the selected start, classify relative to this day's window
+        if (nextBlocker) {
+            // If the blocker begins before or at this day's window start, you can't reach this day
+            if (nextBlocker.start <= windowStart)
                 return DAY_STATUS.FULLY_BOOKED;
-            }
-            // If reservation starts after the selected start and before the end of the active range,
-            // it shortens the possible end and thus this day is partially booked.
-            if (res.start > startDateTime && res.start <= active.end) {
+            // If the blocker begins within this day's window, the day is partially available
+            if (nextBlocker.start <= windowEnd)
                 return DAY_STATUS.PARTIALLY_BOOKED;
-            }
         }
 
-        // No blockers within the active window, so it's available until the window end.
+        // Otherwise this day is available to select as an end date
         return DAY_STATUS.AVAILABLE;
     };
 };
