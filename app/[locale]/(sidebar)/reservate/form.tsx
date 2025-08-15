@@ -202,6 +202,7 @@ const ReservationForm = () => {
                         bookerId: user?.id,
                         end: formatISO(endDateTime), // was: endDateTime.toISOString()
                         hallIds: allHallIds,
+                        isParty: data.isParty,
                         organisationId:
                             data.organisationType === "organisation"
                                 ? data.organisationId
@@ -244,6 +245,7 @@ const ReservationForm = () => {
                     bookerId: user?.id,
                     end: formatISO(endDateTime), // was: endDateTime.toISOString()
                     hallIds: data.selectedHallIds,
+                    isParty: data.isParty,
                     organisationId:
                         data.organisationType === "organisation"
                             ? data.organisationId

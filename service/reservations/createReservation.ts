@@ -5,6 +5,7 @@ interface CreateReservationProps {
     bookerId: TablesInsert<"reservations">["booker"];
     end: TablesInsert<"reservations">["end"];
     hallIds: TablesInsert<"reservations_halls">["hall"][];
+    isParty: TablesInsert<"reservations">["is_party"];
     organisationId: TablesInsert<"reservations">["organization"];
     remarks: TablesInsert<"reservations">["remarks"];
     signal: AbortSignal;
@@ -15,6 +16,7 @@ const createReservation = async ({
     bookerId,
     end,
     hallIds,
+    isParty,
     organisationId,
     remarks,
     signal,
@@ -43,6 +45,7 @@ const createReservation = async ({
         .insert({
             booker: bookerId,
             end,
+            is_party: isParty,
             organization: organisationId,
             remarks,
             reservation_number: reservationNumber + 1,
