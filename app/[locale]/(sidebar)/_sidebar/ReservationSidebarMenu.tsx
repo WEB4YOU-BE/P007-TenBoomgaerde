@@ -23,11 +23,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/atoms/Sidebar";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/atoms/tooltip";
 import { usePathname } from "@/i18n/navigation";
 import getUser from "@/service/authentication/getUser";
 
@@ -56,31 +51,15 @@ const ReservationSidebarMenu = () => {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <SidebarMenuButton
-                                            asChild
-                                            disabled
-                                            isActive={
-                                                pathname === "/reservate/"
-                                            }
-                                        >
-                                            <Link
-                                                aria-disabled
-                                                href="/reservate/"
-                                            >
-                                                <CalendarPlusIcon />
-                                                <span>Reserveren</span>
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </TooltipTrigger>
-                                    <TooltipContent
-                                        side="right"
-                                        updatePositionStrategy="always"
-                                    >
-                                        Beschikbaar vanaf 15 augustus
-                                    </TooltipContent>
-                                </Tooltip>
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={pathname === "/reservate/"}
+                                >
+                                    <Link href="/reservate/">
+                                        <CalendarPlusIcon />
+                                        <span>Reserveren</span>
+                                    </Link>
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton
