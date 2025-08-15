@@ -4,10 +4,11 @@ import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-    formatISO, // added
+    formatISO,
     getHours,
     getMinutes,
     getSeconds,
+    isSameDay, // added
     isValid,
     parse,
     set,
@@ -452,15 +453,50 @@ const ReservationForm = () => {
                 []) as unknown as NonNullable<GetTimeslotsResponse>,
         });
     }, [selectedHallsData, reservations, timeslots, startDateTimeForEnd]);
+
+    // When end-day equals start-day, make sure we also include all slots that end after the selected start slot.
     const availableEndTimeslotIdSet = useMemo(() => {
-        if (!endDateVal || !getEndDayTimeslotIds) return null;
-        try {
-            const ids = getEndDayTimeslotIds({ date: endDateVal });
-            return new Set(ids);
-        } catch {
-            return null;
+        if (!endDateVal) return null;
+
+        const base = new Set<string>();
+
+        // 1) Base from service
+        if (getEndDayTimeslotIds) {
+            try {
+                const ids = getEndDayTimeslotIds({ date: endDateVal });
+                ids.forEach((id) => base.add(id));
+            } catch {
+                // ignore
+            }
         }
-    }, [getEndDayTimeslotIds, endDateVal]);
+
+        // 2) Same-day augmentation: include any slot whose end_time > selected start slot's start time
+        if (
+            startDateVal &&
+            startTimeslotIdVal &&
+            isSameDay(endDateVal, startDateVal)
+        ) {
+            const startSlot = timeslotById.get(startTimeslotIdVal);
+            const startTime = startSlot?.start;
+            if (startTime) {
+                (timeslots ?? []).forEach((t: unknown, idx) => {
+                    const id = getStringProp(t, "id") ?? String(idx);
+                    const end = getStringProp(t, "end_time") ?? "";
+                    if (!id || !end) return;
+                    if (end.localeCompare(startTime) > 0) base.add(id);
+                });
+            }
+        }
+
+        return base.size ? base : null;
+    }, [
+        getEndDayTimeslotIds,
+        endDateVal,
+        startDateVal,
+        startTimeslotIdVal,
+        timeslotById,
+        timeslots,
+    ]);
 
     // If selected end timeslot becomes unavailable for the chosen end date,
     // reset it to the earliest by end_time for that date, or clear it.
