@@ -28,11 +28,10 @@ const createReservation = async ({
             .from("reservations")
             .select("reservation_number")
             .order("reservation_number", { ascending: false })
-            .abortSignal(signal)
-            .single();
+            .abortSignal(signal);
     if (latestReservationError && latestReservationError instanceof Error)
         throw latestReservationError;
-    const reservationNumber = latestReservation?.reservation_number ?? 0;
+    const reservationNumber = latestReservation?.at(0)?.reservation_number ?? 0;
 
     // Get the current reservation year as a string 'YYYY-01-01':
     const currentYear = new Date().getFullYear();
