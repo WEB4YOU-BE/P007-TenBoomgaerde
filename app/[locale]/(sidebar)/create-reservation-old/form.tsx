@@ -491,6 +491,19 @@ const ReservationForm = () => {
                 | "PARTIALLY_BOOKED";
     }, [selectedHallsData, reservations, timeslots, startDateTimeForEnd]);
 
+    // End-date modifiers: for weekendfeest mirror day status; otherwise use end-date status
+    const endModifiers = useMemo(
+        () => ({
+            AVAILABLE: (date: Date) =>
+                getEndDateStatus?.({ date }) === "AVAILABLE",
+            FULLY_BOOKED: (date: Date) =>
+                getEndDateStatus?.({ date }) === "FULLY_BOOKED",
+            PARTIALLY_BOOKED: (date: Date) =>
+                getEndDateStatus?.({ date }) === "PARTIALLY_BOOKED",
+        }),
+        [getEndDateStatus]
+    );
+
     const isEndDateDisabled = useCallback(
         (date: Date | undefined): boolean => {
             if (!date) return false;
@@ -561,12 +574,9 @@ const ReservationForm = () => {
         }
     }, [startDateVal, availableStartTimeslotIdSet, timeslots, form]);
 
-    // Compute visible steps based on current form state (skip halls/end for weekendfeest)
+    // Compute visible steps based on current form state (skip halls only for weekendfeest)
     const visibleSteps = useMemo(
-        () =>
-            steps.filter(
-                (s) => !(isParty && (s.key === "halls" || s.key === "end"))
-            ),
+        () => steps.filter((s) => !(isParty && s.key === "halls")),
         [steps, isParty]
     );
     const activeKey = visibleSteps[activeStep]?.key;
@@ -1210,15 +1220,17 @@ const ReservationForm = () => {
                             </div>
                         )}
 
-                        {/* Step 5: End (skip for party) */}
-                        {activeKey === "end" && (
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {/* Step 5: End (keep for party; show only calendar) */}
+                        {activeKey === "end" &&
+                            (isParty ? (
                                 <FormField
                                     control={form.control}
                                     name="endDate"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Einddatum</FormLabel>
+                                            <FormLabel>
+                                                Einddatum weekendfeest
+                                            </FormLabel>
                                             <FormControl>
                                                 <Calendar
                                                     className="rounded-lg border"
@@ -1226,6 +1238,10 @@ const ReservationForm = () => {
                                                     disabled={isEndDateDisabled}
                                                     locale={nlBE}
                                                     mode="single"
+                                                    modifiers={endModifiers}
+                                                    modifiersClassNames={
+                                                        modifiersClassNames
+                                                    }
                                                     onSelect={(d) =>
                                                         field.onChange(
                                                             d ?? undefined
@@ -1234,86 +1250,131 @@ const ReservationForm = () => {
                                                     selected={field.value}
                                                 />
                                             </FormControl>
+                                            <FormDescription>
+                                                Alle zalen worden voor de hele
+                                                dag geboekt op de geselecteerde
+                                                datum.
+                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="endTimeslotId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Eindtijdslot</FormLabel>
-                                            <FormControl>
-                                                <Select
-                                                    onValueChange={
-                                                        field.onChange
-                                                    }
-                                                    value={field.value ?? ""}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Selecteer eindtijd" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {timeslots
-                                                            ?.sort((a, b) =>
-                                                                a.end_time.localeCompare(
-                                                                    b.end_time
-                                                                )
+                            ) : (
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <FormField
+                                        control={form.control}
+                                        name="endDate"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Einddatum</FormLabel>
+                                                <FormControl>
+                                                    <Calendar
+                                                        className="rounded-lg border"
+                                                        defaultMonth={
+                                                            startDateVal
+                                                        }
+                                                        disabled={
+                                                            isEndDateDisabled
+                                                        }
+                                                        locale={nlBE}
+                                                        mode="single"
+                                                        modifiers={endModifiers}
+                                                        modifiersClassNames={
+                                                            modifiersClassNames
+                                                        }
+                                                        onSelect={(d) =>
+                                                            field.onChange(
+                                                                d ?? undefined
                                                             )
-                                                            .map(
-                                                                (
-                                                                    t: unknown,
-                                                                    idx
-                                                                ) => {
-                                                                    const id =
-                                                                        getStringProp(
-                                                                            t,
-                                                                            "id"
-                                                                        ) ??
-                                                                        String(
-                                                                            idx
+                                                        }
+                                                        selected={field.value}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="endTimeslotId"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Eindtijdslot
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Select
+                                                        onValueChange={
+                                                            field.onChange
+                                                        }
+                                                        value={
+                                                            field.value ?? ""
+                                                        }
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Selecteer eindtijd" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {timeslots
+                                                                ?.sort((a, b) =>
+                                                                    a.end_time.localeCompare(
+                                                                        b.end_time
+                                                                    )
+                                                                )
+                                                                .map(
+                                                                    (
+                                                                        t: unknown,
+                                                                        idx
+                                                                    ) => {
+                                                                        const id =
+                                                                            getStringProp(
+                                                                                t,
+                                                                                "id"
+                                                                            ) ??
+                                                                            String(
+                                                                                idx
+                                                                            );
+                                                                        const end =
+                                                                            getStringProp(
+                                                                                t,
+                                                                                "end_time"
+                                                                            ) ??
+                                                                            "";
+                                                                        const disabled =
+                                                                            id
+                                                                                ? isTimeslotDisabledOnDate(
+                                                                                      endDateVal,
+                                                                                      id
+                                                                                  )
+                                                                                : false;
+                                                                        return (
+                                                                            <SelectItem
+                                                                                disabled={
+                                                                                    disabled
+                                                                                }
+                                                                                key={
+                                                                                    id
+                                                                                }
+                                                                                value={
+                                                                                    id
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    end
+                                                                                }
+                                                                            </SelectItem>
                                                                         );
-                                                                    const end =
-                                                                        getStringProp(
-                                                                            t,
-                                                                            "end_time"
-                                                                        ) ?? "";
-                                                                    const disabled =
-                                                                        id
-                                                                            ? isTimeslotDisabledOnDate(
-                                                                                  endDateVal,
-                                                                                  id
-                                                                              )
-                                                                            : false;
-                                                                    return (
-                                                                        <SelectItem
-                                                                            disabled={
-                                                                                disabled
-                                                                            }
-                                                                            key={
-                                                                                id
-                                                                            }
-                                                                            value={
-                                                                                id
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                end
-                                                                            }
-                                                                        </SelectItem>
-                                                                    );
-                                                                }
-                                                            )}
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                        )}
+                                                                    }
+                                                                )}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                            ))}
 
                         {/* Step 6: Remarks */}
                         {activeKey === "remarks" && (
