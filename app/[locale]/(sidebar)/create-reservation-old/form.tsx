@@ -47,6 +47,7 @@ import getMyOrganisations from "@/service/organisations/getMyOrganisations";
 import { createGetDayStatus } from "@/service/reservations/createGetDayStatus";
 import { createGetDayTimeslotIds } from "@/service/reservations/createGetDayTimeslotIds";
 import { createGetEndDateStatus } from "@/service/reservations/createGetEndDateStatus";
+import { createGetEndDayTimeslotIds } from "@/service/reservations/createGetEndDayTimeslotIds";
 import createReservation from "@/service/reservations/createReservation";
 import getReservations from "@/service/reservations/getReservations";
 import getTimeslots from "@/service/timeslots/getTimeslots";
@@ -88,44 +89,7 @@ const getStringProp = (obj: unknown, key: string): string | undefined => {
     return undefined;
 };
 
-// Helpers for availability/normalization
-const getStringArrayFromUnknown = (val: unknown): string[] | undefined => {
-    if (!Array.isArray(val)) return undefined;
-    if (val.every((x) => typeof x === "string")) return val;
-    if (
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        val.every((x) => x && typeof x === "object" && typeof x.id === "string")
-    ) {
-        return (val as Array<{ id: string }>).map((x) => x.id);
-    }
-    return undefined;
-};
-const getHallIdsFromReservation = (obj: unknown): string[] => {
-    if (!obj || typeof obj !== "object") return [];
-    const candidates = [
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        (obj as any).hallIds,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        (obj as any).hall_ids,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        (obj as any).halls,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        (obj as any).rooms,
-    ];
-    for (const c of candidates) {
-        const arr = getStringArrayFromUnknown(c);
-        if (arr && arr.length) return arr;
-    }
-    return [];
-};
-const isValidDateObj = (d: unknown): d is Date =>
-    d instanceof Date && !isNaN(d.getTime());
-const rangesOverlap = (
-    aStart: Date,
-    aEnd: Date,
-    bStart: Date,
-    bEnd: Date
-): boolean => aStart < bEnd && bStart < aEnd;
+// Helpers for availability/normalization (removed legacy variants no longer used)
 
 const ReservationForm = () => {
     // All data-fetching:
@@ -308,40 +272,7 @@ const ReservationForm = () => {
     const startTimeslotIdVal = form.watch("startTimeslotId");
     const endDateVal = form.watch("endDate");
 
-    // Availability: normalize reservations and timeslots
-    type NormalizedReservation = { end: Date; hallIds: string[]; start: Date };
-    const normalizedReservations = useMemo<NormalizedReservation[]>(() => {
-        return (reservations ?? [])
-            .map((r: unknown) => {
-                const startStr =
-                    getStringProp(r, "start") ?? getStringProp(r, "start_time");
-                const endStr =
-                    getStringProp(r, "end") ?? getStringProp(r, "end_time");
-                const halls = getHallIdsFromReservation(r);
-                const start = startStr ? new Date(startStr) : undefined;
-                const end = endStr ? new Date(endStr) : undefined;
-                if (
-                    !start ||
-                    !end ||
-                    !isValidDateObj(start) ||
-                    !isValidDateObj(end)
-                )
-                    return null;
-                return { end, hallIds: halls, start };
-            })
-            .filter(Boolean) as NormalizedReservation[];
-    }, [reservations]);
-
-    const selectedHallIdSet = useMemo(
-        // Apply fallback inside the memo to stabilize the dependency
-        () => new Set<string>(selectedHallIds ?? []),
-        [selectedHallIds]
-    );
-    const intersectsSelected = useCallback(
-        (res: NormalizedReservation): boolean =>
-            res.hallIds.some((id) => selectedHallIdSet.has(id)),
-        [selectedHallIdSet]
-    );
+    // Availability: normalized reservations no longer required for end-timeslot gating
 
     const timeslotById = useMemo(() => {
         const map = new Map<
@@ -431,31 +362,7 @@ const ReservationForm = () => {
         []
     );
 
-    const isTimeslotDisabledOnDate = useCallback(
-        (date: Date | undefined, timeslotId: string): boolean => {
-            if (!date) return false;
-            const slot = timeslotById.get(timeslotId);
-            if (!slot) return false;
-            try {
-                const startDT = combineDateAndTime(date, slot.start);
-                const endDT = combineDateAndTime(date, slot.end);
-                return (
-                    normalizedReservations?.some((r) => {
-                        if (!intersectsSelected(r)) return false;
-                        return rangesOverlap(startDT, endDT, r.start, r.end);
-                    }) ?? false
-                );
-            } catch {
-                return false;
-            }
-        },
-        [
-            timeslotById,
-            combineDateAndTime,
-            normalizedReservations,
-            intersectsSelected,
-        ]
-    );
+    // Removed legacy isTimeslotDisabledOnDate; end-timeslot availability now comes from createGetEndDayTimeslotIds
 
     // Deprecated: end-date disabling now driven by createGetEndDateStatus
 
@@ -517,6 +424,62 @@ const ReservationForm = () => {
     );
 
     // (isDateBlockedForParty) removed in favor of getDayStatus-based disabling
+
+    // Build end-day timeslot resolver relative to selected start and end date
+    const getEndDayTimeslotIds = useMemo(() => {
+        if (!startDateTimeForEnd) return null;
+        return createGetEndDayTimeslotIds({
+            halls: selectedHallsData as unknown as NonNullable<GetHallsResponse>,
+            onlyFullDays: false,
+            onlyWeekend: false,
+            reservations: (reservations ??
+                []) as unknown as NonNullable<GetReservationsResponse>,
+            startDateTime: startDateTimeForEnd,
+            timeslots: (timeslots ??
+                []) as unknown as NonNullable<GetTimeslotsResponse>,
+        });
+    }, [selectedHallsData, reservations, timeslots, startDateTimeForEnd]);
+    const availableEndTimeslotIdSet = useMemo(() => {
+        if (!endDateVal || !getEndDayTimeslotIds) return null;
+        try {
+            const ids = getEndDayTimeslotIds({ date: endDateVal });
+            return new Set(ids);
+        } catch {
+            return null;
+        }
+    }, [getEndDayTimeslotIds, endDateVal]);
+
+    // If selected end timeslot becomes unavailable for the chosen end date,
+    // reset it to the earliest by end_time for that date, or clear it.
+    useEffect(() => {
+        if (!endDateVal) return; // don't auto-select without a date
+        if (!availableEndTimeslotIdSet) return;
+        const current = form.getValues("endTimeslotId");
+        if (current && availableEndTimeslotIdSet.has(current)) return;
+
+        const firstAvailable = (timeslots ?? [])
+            .map((t: unknown, idx) => ({
+                end: getStringProp(t, "end_time") ?? "",
+                id: getStringProp(t, "id") ?? String(idx),
+            }))
+            .filter(
+                (x): x is { end: string; id: string } =>
+                    Boolean(x.id) && availableEndTimeslotIdSet.has(x.id)
+            )
+            .sort((a, b) => a.end.localeCompare(b.end))[0]?.id;
+
+        if (firstAvailable) {
+            form.setValue("endTimeslotId", firstAvailable, {
+                shouldDirty: true,
+                shouldValidate: true,
+            });
+        } else if (current) {
+            form.setValue("endTimeslotId", undefined as unknown as string, {
+                shouldDirty: true,
+                shouldValidate: true,
+            });
+        }
+    }, [endDateVal, availableEndTimeslotIdSet, timeslots, form]);
 
     // Build day-timeslot resolver and derive available start timeslot IDs for the selected date
     const getDayTimeslotIds = useMemo(
@@ -1316,7 +1279,31 @@ const ReservationForm = () => {
                                                         </SelectTrigger>
                                                         <SelectContent>
                                                             {timeslots
-                                                                ?.sort((a, b) =>
+                                                                ?.filter(
+                                                                    (
+                                                                        t: unknown,
+                                                                        idx
+                                                                    ) => {
+                                                                        const id =
+                                                                            getStringProp(
+                                                                                t,
+                                                                                "id"
+                                                                            ) ??
+                                                                            String(
+                                                                                idx
+                                                                            );
+                                                                        if (!id)
+                                                                            return false;
+                                                                        // If no date/start context yet, show all; otherwise only allowed IDs
+                                                                        return (
+                                                                            !availableEndTimeslotIdSet ||
+                                                                            availableEndTimeslotIdSet.has(
+                                                                                id
+                                                                            )
+                                                                        );
+                                                                    }
+                                                                )
+                                                                .sort((a, b) =>
                                                                     a.end_time.localeCompare(
                                                                         b.end_time
                                                                     )
@@ -1340,18 +1327,8 @@ const ReservationForm = () => {
                                                                                 "end_time"
                                                                             ) ??
                                                                             "";
-                                                                        const disabled =
-                                                                            id
-                                                                                ? isTimeslotDisabledOnDate(
-                                                                                      endDateVal,
-                                                                                      id
-                                                                                  )
-                                                                                : false;
                                                                         return (
                                                                             <SelectItem
-                                                                                disabled={
-                                                                                    disabled
-                                                                                }
                                                                                 key={
                                                                                     id
                                                                                 }
