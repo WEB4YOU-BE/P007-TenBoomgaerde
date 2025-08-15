@@ -136,6 +136,7 @@ export type Database = {
                     end?: null | string;
                     id?: string;
                     invoiced?: boolean | null;
+                    is_party?: boolean | null;
                     organization?: null | string;
                     remarks?: null | string;
                     reservation_number: number;
@@ -166,6 +167,7 @@ export type Database = {
                     end: null | string;
                     id: string;
                     invoiced: boolean | null;
+                    is_party: boolean | null;
                     organization: null | string;
                     remarks: null | string;
                     reservation_number: number;
@@ -180,6 +182,7 @@ export type Database = {
                     end?: null | string;
                     id?: string;
                     invoiced?: boolean | null;
+                    is_party?: boolean | null;
                     organization?: null | string;
                     remarks?: null | string;
                     reservation_number?: number;
