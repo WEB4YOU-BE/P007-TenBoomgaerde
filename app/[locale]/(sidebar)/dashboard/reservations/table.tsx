@@ -144,6 +144,11 @@ const columns = [
             },
         }
     ),
+    // is_party:
+    columnHelper.accessor(({ is_party }) => (is_party ? "Ja" : "Nee"), {
+        header: "Feest",
+        id: "is_party",
+    }),
     columnHelper.accessor(
         ({ reservations_halls }) =>
             reservations_halls?.length
