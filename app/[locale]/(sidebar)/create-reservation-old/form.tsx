@@ -2,8 +2,9 @@
 
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+    formatISO, // added
     getHours,
     getMinutes,
     getSeconds,
@@ -42,6 +43,7 @@ import {
     SelectValue,
 } from "@/components/atoms/select";
 import { Textarea } from "@/components/atoms/textarea";
+import getUser from "@/service/authentication/getUser";
 import getHalls from "@/service/halls/getHalls";
 import getMyOrganisations from "@/service/organisations/getMyOrganisations";
 import { createGetDayStatus } from "@/service/reservations/createGetDayStatus";
@@ -109,9 +111,18 @@ const ReservationForm = () => {
         queryFn: getMyOrganisations,
         queryKey: ["my-organisations"],
     });
+    const { data: user } = useQuery({
+        queryFn: getUser,
+        queryKey: ["authenticatedUser"],
+    });
 
     // All mutation-related:
-    const { mutateAsync } = useMutation({ mutationFn: createReservation });
+    const queryClient = useQueryClient();
+    const { mutateAsync } = useMutation({
+        mutationFn: createReservation,
+        onSuccess: () =>
+            void queryClient.invalidateQueries({ queryKey: ["reservations"] }),
+    });
 
     const form = useForm<output<typeof schema>>({
         defaultValues: {
@@ -187,7 +198,8 @@ const ReservationForm = () => {
                 const timeout = setTimeout(() => controller.abort(), 5000);
                 try {
                     await mutateAsync({
-                        end: endDateTime.toISOString(),
+                        bookerId: user?.id,
+                        end: formatISO(endDateTime), // was: endDateTime.toISOString()
                         hallIds: allHallIds,
                         organisationId:
                             data.organisationType === "organisation"
@@ -195,7 +207,7 @@ const ReservationForm = () => {
                                 : null,
                         remarks: data.remarks ?? "",
                         signal: controller.signal,
-                        start: startDateTime.toISOString(),
+                        start: formatISO(startDateTime), // was: startDateTime.toISOString()
                     });
                 } finally {
                     clearTimeout(timeout);
@@ -228,7 +240,8 @@ const ReservationForm = () => {
             const timeout = setTimeout(() => controller.abort(), 5000);
             try {
                 await mutateAsync({
-                    end: endDateTime.toISOString(),
+                    bookerId: user?.id,
+                    end: formatISO(endDateTime), // was: endDateTime.toISOString()
                     hallIds: data.selectedHallIds,
                     organisationId:
                         data.organisationType === "organisation"
@@ -236,14 +249,14 @@ const ReservationForm = () => {
                             : null,
                     remarks: data.remarks ?? "",
                     signal: controller.signal,
-                    start: startDateTime.toISOString(),
+                    start: formatISO(startDateTime), // was: startDateTime.toISOString()
                 });
             } finally {
                 clearTimeout(timeout);
             }
         },
         // Added `halls` to ensure we can compute all hall IDs for weekendfeest
-        [mutateAsync, timeslots, halls, combineDateAndTime]
+        [mutateAsync, timeslots, halls, combineDateAndTime, user]
     );
     // Invalid submission handler retained for potential future use
 

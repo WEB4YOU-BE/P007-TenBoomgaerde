@@ -2,6 +2,7 @@ import { TablesInsert } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/client";
 
 interface CreateReservationProps {
+    bookerId: TablesInsert<"reservations">["booker"];
     end: TablesInsert<"reservations">["end"];
     hallIds: TablesInsert<"reservations_halls">["hall"][];
     organisationId: TablesInsert<"reservations">["organization"];
@@ -11,6 +12,7 @@ interface CreateReservationProps {
 }
 type CreateReservationResponse = Awaited<ReturnType<typeof createReservation>>;
 const createReservation = async ({
+    bookerId,
     end,
     hallIds,
     organisationId,
@@ -40,6 +42,7 @@ const createReservation = async ({
     const { data: reservation, error: reservationError } = await supabase
         .from("reservations")
         .insert({
+            booker: bookerId,
             end,
             organization: organisationId,
             remarks,
