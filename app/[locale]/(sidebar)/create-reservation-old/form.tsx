@@ -14,6 +14,7 @@ import {
 import { nlBE } from "date-fns/locale";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import React from "react";
+import { ModifiersClassNames } from "react-day-picker";
 import { SubmitHandler, useForm } from "react-hook-form";
 import z, { output } from "zod";
 
@@ -48,6 +49,7 @@ import { createGetDayTimeslotIds } from "@/service/reservations/createGetDayTime
 import createReservation from "@/service/reservations/createReservation";
 import getReservations from "@/service/reservations/getReservations";
 import getTimeslots from "@/service/timeslots/getTimeslots";
+import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 
 // Replace the flat schema with a discriminated union so organisationId is only
 // required when organisationType === "organisation". Also use .uuid().
@@ -181,6 +183,61 @@ const ReservationForm = () => {
 
     const onSubmitValid = useCallback<SubmitHandler<output<typeof schema>>>(
         async (data) => {
+            // Enforce "weekendfeest": all halls, first to last timeslot, same day
+            if (data.isParty) {
+                const allHallIds =
+                    (halls ?? [])
+                        .map((h: unknown) => getStringProp(h, "id"))
+                        .filter((v): v is string => Boolean(v)) ?? [];
+
+                const slotBasics = (timeslots ?? [])
+                    .map((t: unknown, idx) => ({
+                        end: getStringProp(t, "end_time") ?? "",
+                        id: getStringProp(t, "id") ?? String(idx),
+                        start: getStringProp(t, "start_time") ?? "",
+                    }))
+                    .filter((s) => s.id && s.start && s.end);
+
+                const earliest = [...slotBasics].sort((a, b) =>
+                    a.start.localeCompare(b.start)
+                )[0];
+                const latest = [...slotBasics].sort((a, b) =>
+                    a.end.localeCompare(b.end)
+                )[slotBasics.length - 1];
+
+                if (!data.startDate) throw new Error("Selecteer een datum");
+                if (!earliest || !latest)
+                    throw new Error("Geen geldige tijdsloten gevonden");
+
+                const startDateTime = combineDateAndTime(
+                    data.startDate,
+                    earliest.start
+                );
+                const endDateTime = combineDateAndTime(
+                    data.startDate,
+                    latest.end
+                );
+
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 5000);
+                try {
+                    await mutateAsync({
+                        end: endDateTime.toISOString(),
+                        hallIds: allHallIds,
+                        organisationId:
+                            data.organisationType === "organisation"
+                                ? data.organisationId
+                                : null,
+                        remarks: data.remarks ?? "",
+                        signal: controller.signal,
+                        start: startDateTime.toISOString(),
+                    });
+                } finally {
+                    clearTimeout(timeout);
+                }
+                return;
+            }
+
             const startSlot = timeslots?.find(
                 (t: unknown) => getStringProp(t, "id") === data.startTimeslotId
             );
@@ -220,7 +277,8 @@ const ReservationForm = () => {
                 clearTimeout(timeout);
             }
         },
-        [mutateAsync, timeslots, combineDateAndTime]
+        // Added `halls` to ensure we can compute all hall IDs for weekendfeest
+        [mutateAsync, timeslots, halls, combineDateAndTime]
     );
     // Invalid submission handler retained for potential future use
 
@@ -341,6 +399,37 @@ const ReservationForm = () => {
             return status === "FULLY_BOOKED";
         },
         [getDayStatus, isParty]
+    );
+
+    const [startMonth, setStartMonth] = useState<Date>(new Date());
+
+    // Build modifiers mapping expected by react-day-picker:
+    const startModifiers = useMemo(
+        () => ({
+            AVAILABLE: (date: Date) => getDayStatus({ date }) === "AVAILABLE",
+            FULLY_BOOKED: (date: Date) =>
+                getDayStatus({ date }) === "FULLY_BOOKED",
+            PARTIALLY_BOOKED: (date: Date) =>
+                getDayStatus({ date }) === "PARTIALLY_BOOKED",
+        }),
+        [getDayStatus]
+    );
+
+    const modifiersClassNames = useMemo(
+        (): ModifiersClassNames => ({
+            AVAILABLE: buttonVariants({
+                className: "text-green-600",
+                size: "icon",
+                variant: "outline",
+            }),
+            FULLY_BOOKED: "text-red-600",
+            PARTIALLY_BOOKED: buttonVariants({
+                className: "text-yellow-600",
+                size: "icon",
+                variant: "secondary",
+            }),
+        }),
+        []
     );
 
     const isTimeslotDisabledOnDate = useCallback(
@@ -908,6 +997,16 @@ const ReservationForm = () => {
                                                         }
                                                         locale={nlBE}
                                                         mode="single"
+                                                        modifiers={
+                                                            startModifiers
+                                                        }
+                                                        modifiersClassNames={
+                                                            modifiersClassNames
+                                                        }
+                                                        month={startMonth}
+                                                        onMonthChange={
+                                                            setStartMonth
+                                                        }
                                                         onSelect={(d) =>
                                                             field.onChange(
                                                                 d ?? undefined
@@ -917,8 +1016,8 @@ const ReservationForm = () => {
                                                     />
                                                 </FormControl>
                                                 <FormDescription>
-                                                    Alle zalen worden geboekt
-                                                    van 00:00 tot 23:59 op de
+                                                    Alle zalen worden voor de
+                                                    hele dag geboekt op de
                                                     geselecteerde datum.
                                                 </FormDescription>
                                                 <FormMessage />
@@ -946,6 +1045,16 @@ const ReservationForm = () => {
                                                             }
                                                             locale={nlBE}
                                                             mode="single"
+                                                            modifiers={
+                                                                startModifiers
+                                                            }
+                                                            modifiersClassNames={
+                                                                modifiersClassNames
+                                                            }
+                                                            month={startMonth}
+                                                            onMonthChange={
+                                                                setStartMonth
+                                                            }
                                                             onSelect={(d) =>
                                                                 field.onChange(
                                                                     d ??
