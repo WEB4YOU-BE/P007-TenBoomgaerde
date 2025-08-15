@@ -46,6 +46,7 @@ import getHalls from "@/service/halls/getHalls";
 import getMyOrganisations from "@/service/organisations/getMyOrganisations";
 import { createGetDayStatus } from "@/service/reservations/createGetDayStatus";
 import { createGetDayTimeslotIds } from "@/service/reservations/createGetDayTimeslotIds";
+import { createGetEndDateStatus } from "@/service/reservations/createGetEndDateStatus";
 import createReservation from "@/service/reservations/createReservation";
 import getReservations from "@/service/reservations/getReservations";
 import getTimeslots from "@/service/timeslots/getTimeslots";
@@ -304,6 +305,7 @@ const ReservationForm = () => {
     // Remove the inline fallback to avoid creating a new array each render
     const selectedHallIds = form.watch("selectedHallIds");
     const startDateVal = form.watch("startDate");
+    const startTimeslotIdVal = form.watch("startTimeslotId");
     const endDateVal = form.watch("endDate");
 
     // Availability: normalize reservations and timeslots
@@ -355,10 +357,7 @@ const ReservationForm = () => {
         return map;
     }, [timeslots]);
 
-    const timeslotIds = useMemo(
-        () => Array.from(timeslotById.keys()),
-        [timeslotById]
-    );
+    // timeslotIds no longer needed now that end-date disabling is status-based
 
     // Build day-status function from selected halls + all reservations/timeslots
     const selectedHallsData = useMemo(() => {
@@ -458,14 +457,50 @@ const ReservationForm = () => {
         ]
     );
 
-    const isDateFullyBlockedForSelection = useCallback(
-        (date: Date): boolean => {
-            if (!timeslotIds.length) return false;
-            return timeslotIds.every((id) =>
-                isTimeslotDisabledOnDate(date, id)
-            );
+    // Deprecated: end-date disabling now driven by createGetEndDateStatus
+
+    // Build end-date status resolver relative to the selected start DateTime
+    const startDateTimeForEnd = useMemo(() => {
+        if (!startDateVal || !startTimeslotIdVal) return null;
+        const slot = timeslotById.get(startTimeslotIdVal);
+        if (!slot) return null;
+        try {
+            return combineDateAndTime(startDateVal, slot.start);
+        } catch {
+            return null;
+        }
+    }, [startDateVal, startTimeslotIdVal, timeslotById, combineDateAndTime]);
+
+    const getEndDateStatus = useMemo(() => {
+        if (!startDateTimeForEnd) return null;
+        const fn = createGetEndDateStatus({
+            halls: selectedHallsData as unknown as NonNullable<GetHallsResponse>,
+            // Only applies to non-party flow; we don't merge to full-day
+            onlyFullDays: false,
+            onlyWeekend: false,
+            reservations: (reservations ??
+                []) as unknown as NonNullable<GetReservationsResponse>,
+            startDateTime: startDateTimeForEnd,
+            timeslots: (timeslots ??
+                []) as unknown as NonNullable<GetTimeslotsResponse>,
+        });
+        return ({ date }: { date: Date }) =>
+            fn({ date }) as unknown as
+                | "AVAILABLE"
+                | "FULLY_BOOKED"
+                | "PARTIALLY_BOOKED";
+    }, [selectedHallsData, reservations, timeslots, startDateTimeForEnd]);
+
+    const isEndDateDisabled = useCallback(
+        (date: Date | undefined): boolean => {
+            if (!date) return false;
+            // Block past/today and require a valid start selection
+            if (date <= new Date()) return true;
+            if (!getEndDateStatus) return true;
+            const status = getEndDateStatus({ date });
+            return status === "FULLY_BOOKED";
         },
-        [timeslotIds, isTimeslotDisabledOnDate]
+        [getEndDateStatus]
     );
 
     // (isDateBlockedForParty) removed in favor of getDayStatus-based disabling
@@ -1188,14 +1223,7 @@ const ReservationForm = () => {
                                                 <Calendar
                                                     className="rounded-lg border"
                                                     defaultMonth={startDateVal}
-                                                    disabled={(date) =>
-                                                        date <= new Date() ||
-                                                        (date
-                                                            ? isDateFullyBlockedForSelection(
-                                                                  date
-                                                              )
-                                                            : false)
-                                                    }
+                                                    disabled={isEndDateDisabled}
                                                     locale={nlBE}
                                                     mode="single"
                                                     onSelect={(d) =>

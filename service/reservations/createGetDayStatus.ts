@@ -17,12 +17,12 @@ import { GetHallsResponse } from "@/service/halls/getHalls";
 import { GetReservationsResponse } from "@/service/reservations/getReservations";
 import { GetTimeslotsResponse } from "@/service/timeslots/getTimeslots";
 
-enum DAY_STATUS {
+export enum DAY_STATUS {
     AVAILABLE = "AVAILABLE",
     FULLY_BOOKED = "FULLY_BOOKED",
     PARTIALLY_BOOKED = "PARTIALLY_BOOKED",
 }
-type GetDayStatus = (props: GetDayStatusProps) => DAY_STATUS;
+export type GetDayStatus = (props: GetDayStatusProps) => DAY_STATUS;
 /**
  * Options for createGetDayStatus.
  * - halls: Halls to consider.
@@ -31,14 +31,14 @@ type GetDayStatus = (props: GetDayStatusProps) => DAY_STATUS;
  * - onlyWeekend: If true, block weekdays.
  * - onlyFullDays: If true, use the union of all timeslots as one range.
  */
-interface GetDayStatusOptions {
+export interface GetDayStatusOptions {
     halls: NonNullable<GetHallsResponse>;
     onlyFullDays?: boolean;
     onlyWeekend?: boolean;
     reservations: NonNullable<GetReservationsResponse>;
     timeslots: NonNullable<GetTimeslotsResponse>;
 }
-interface GetDayStatusProps {
+export interface GetDayStatusProps {
     date: Date;
 }
 /**
