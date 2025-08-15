@@ -47,7 +47,7 @@ const buildDateAtTime = (base: Date, time: string) => {
  */
 export const createGetEndDateStatus = ({
     halls,
-    // onlyFullDays = false,
+    onlyFullDays = false,
     onlyWeekend = false,
     reservations,
     startDateTime,
@@ -138,9 +138,13 @@ export const createGetEndDateStatus = ({
             // If the blocker begins before or at this day's window start, you can't reach this day
             if (nextBlocker.start <= windowStart)
                 return DAY_STATUS.FULLY_BOOKED;
-            // If the blocker begins within this day's window, the day is partially available
+            // If the blocker begins within this day's window:
+            // - when onlyFullDays: it's not allowed (treat as fully booked)
+            // - otherwise: it's partially available
             if (nextBlocker.start <= windowEnd)
-                return DAY_STATUS.PARTIALLY_BOOKED;
+                return onlyFullDays
+                    ? DAY_STATUS.FULLY_BOOKED
+                    : DAY_STATUS.PARTIALLY_BOOKED;
         }
 
         // Otherwise this day is available to select as an end date
