@@ -54,7 +54,7 @@ function Calendar({
                     defaultClassNames.caption_label
                 ),
                 day: cn(
-                    "relative w-full h-full p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md group/day aspect-square select-none",
+                    "relative flex flex-row items-center justify-center w-full h-full p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md group/day aspect-auto select-none",
                     defaultClassNames.day
                 ),
                 disabled: cn(
@@ -112,7 +112,10 @@ function Calendar({
                     "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
                     defaultClassNames.today
                 ),
-                week: cn("flex w-full mt-2", defaultClassNames.week),
+                week: cn(
+                    "flex w-full h-(--cell-size) mt-2",
+                    defaultClassNames.week
+                ),
                 week_number: cn(
                     "text-[0.8rem] select-none text-muted-foreground",
                     defaultClassNames.week_number

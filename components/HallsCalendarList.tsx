@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { endOfToday, isBefore } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import React, { useMemo } from "react";
 
@@ -69,6 +70,9 @@ const HallsCalendarList: React.FC = () => {
         []
     );
 
+    // Helper to check if a date is strictly before today (includes today)
+    const isBeforeToday = (date: Date) => isBefore(date, endOfToday());
+
     if (isLoading) {
         return (
             <div className="mt-8 grid gap-6 md:grid-cols-2">
@@ -103,7 +107,7 @@ const HallsCalendarList: React.FC = () => {
                 />
                 <LegendItem dotClass="bg-red-600" label="Volgeboekt" />
             </div>
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <div className="mt-4 grid gap-4 lg:grid-cols-2">
                 {halls.map((hall, idx) => {
                     const hallId = hall.id ?? String(idx);
                     const hallName = hall.name ?? "Zaal";
@@ -123,13 +127,16 @@ const HallsCalendarList: React.FC = () => {
 
                     const modifiers = {
                         AVAILABLE: (date: Date) =>
+                            !isBeforeToday(date) &&
                             dayStatusForHall({ date }) === DAY_STATUS.AVAILABLE,
                         FULLY_BOOKED: (date: Date) =>
+                            isBeforeToday(date) ||
                             dayStatusForHall({ date }) ===
-                            DAY_STATUS.FULLY_BOOKED,
+                                DAY_STATUS.FULLY_BOOKED,
                         PARTIALLY_BOOKED: (date: Date) =>
+                            !isBeforeToday(date) &&
                             dayStatusForHall({ date }) ===
-                            DAY_STATUS.PARTIALLY_BOOKED,
+                                DAY_STATUS.PARTIALLY_BOOKED,
                     } as const;
 
                     return (
@@ -138,8 +145,9 @@ const HallsCalendarList: React.FC = () => {
                                 {hallName}
                             </h3>
                             <Calendar
-                                className="rounded-lg border w-full"
+                                className="w-full rounded-lg border"
                                 defaultMonth={new Date()}
+                                disabled={(date) => isBeforeToday(date)}
                                 locale={nlBE}
                                 modifiers={modifiers}
                                 modifiersClassNames={modifiersClassNames}
