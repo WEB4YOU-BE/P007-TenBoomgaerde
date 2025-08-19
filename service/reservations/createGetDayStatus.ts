@@ -60,7 +60,7 @@ export const createGetDayStatus = ({
     const reservationRanges = reservations
         .filter((reservation) =>
             reservation.reservations_halls.some((reservationHall) =>
-                hallIds.has(reservationHall.hall.id)
+                hallIds.has(reservationHall.hall?.id)
             )
         )
         .map((reservation) => ({

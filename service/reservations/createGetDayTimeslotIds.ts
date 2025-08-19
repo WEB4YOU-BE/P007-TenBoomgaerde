@@ -40,7 +40,9 @@ export const createGetDayTimeslotIds = ({
     // Filter reservations to only those affecting the selected halls and with valid datetimes
     const reservationsFiltered = reservations
         .filter((reservation) =>
-            reservation.reservations_halls.some((rh) => hallIds.has(rh.hall.id))
+            reservation.reservations_halls.some((rh) =>
+                hallIds.has(rh.hall?.id)
+            )
         )
         .map((r) => ({
             end: new Date(r.end || ""),

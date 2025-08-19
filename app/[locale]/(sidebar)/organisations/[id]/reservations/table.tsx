@@ -101,7 +101,9 @@ const columns = [
     columnHelper.accessor(
         ({ reservations_halls }) =>
             reservations_halls?.length
-                ? reservations_halls.map((h) => h.hall.name).join(", ")
+                ? reservations_halls
+                      .map((h) => h.hall?.name || "Onbekend")
+                      .join(", ")
                 : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }
     ),
