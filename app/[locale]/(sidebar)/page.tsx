@@ -12,6 +12,7 @@ import {
 import Breadcrumb from "@/components/atoms/Breadcrumb/Breadcrumb";
 import { Separator } from "@/components/atoms/separator";
 import { SidebarTrigger } from "@/components/atoms/Sidebar";
+import HallsCalendarList from "@/components/HallsCalendarList";
 import tenBoomgaerde from "@/public/images/tenboomgaerde.jpg";
 
 const metadata: Metadata = {
@@ -63,6 +64,7 @@ const Page: NextPage = () => (
                 src={tenBoomgaerde}
                 width={1600}
             />
+            <HallsCalendarList />
             <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
                 Praktische informatie
             </h2>
