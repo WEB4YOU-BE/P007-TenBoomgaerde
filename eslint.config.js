@@ -14,6 +14,15 @@ const __dirname = dirname(__filename);
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
 const config = [
+    {
+        ignores: [
+            "node_modules/**",
+            ".next/**",
+            "out/**",
+            "build/**",
+            "next-env.d.ts",
+        ],
+    },
     ...compat.extends("next/core-web-vitals", "next/typescript"),
     { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
     {

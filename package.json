@@ -42,7 +42,7 @@
         "prestart": "npm run -s build",
         "start": "next start",
         "prepare": "husky",
-        "lint": "next lint",
+        "lint": "eslint .",
         "lint-staged": "lint-staged",
         "commitlint": "commitlint --strict --edit",
         "format": "prettier --check --ignore-path .gitignore .",
