@@ -160,7 +160,7 @@
     },
     "overrides": {
         "cookie": "^1.0.2",
-        "path-to-regexp": "^6.2.3",
+        "path-to-regexp": "^8.3.0",
         "next": "15.5.2"
     }
 }
