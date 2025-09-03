@@ -98,7 +98,8 @@ const columns = [
     columnHelper.accessor(
         ({ reservations_halls }) =>
             reservations_halls.length
-                ? reservations_halls.map((h) => h.hall.name).join(", ")
+                ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                  reservations_halls.map((h) => h.hall?.name).join(", ")
                 : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }
     ),
