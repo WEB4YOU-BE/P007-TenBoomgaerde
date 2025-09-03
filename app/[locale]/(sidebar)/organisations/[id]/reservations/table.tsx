@@ -13,7 +13,6 @@ import {
 import { format, isSameDay, startOfWeek } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import React, { useCallback, useMemo } from "react";
-import { useLocale } from "use-intl";
 
 import Badge from "@/components/atoms/Badge";
 import DataTable from "@/components/atoms/DataTable";
@@ -43,8 +42,7 @@ const RES_STATUS_LABEL_NL: Record<"ACCEPTED" | "DECLINED" | "PENDING", string> =
 const normalizeReservationStatus = (
     status: TData["status"]
 ): "ACCEPTED" | "DECLINED" | "PENDING" | undefined => {
-    if (!status) return undefined;
-    const s = String(status).toLowerCase();
+    const s = status.toLowerCase();
     if (s === "accepted" || s === "goedgekeurd") return "ACCEPTED";
     if (s === "pending" || s === "in afwachting") return "PENDING";
     if (s === "declined" || s === "geweigerd") return "DECLINED";
@@ -59,7 +57,7 @@ const getReservationStatusLabel = (status: TData["status"]) => {
 const columns = [
     columnHelper.accessor(
         ({ reservation_number, start }) => {
-            if (start && reservation_number != null) {
+            if (start) {
                 return `${start.slice(0, 4)}-${reservation_number
                     .toString()
                     .padStart(4, "0")}`;
@@ -73,8 +71,7 @@ const columns = [
             if (!start || !end) return "Geen data ingevoerd";
             const startDate = new Date(start);
             const endDate = new Date(end);
-            const locale = useLocale();
-            const dateFNSLocale = locale === "nl-BE" ? nlBE : undefined;
+            const dateFNSLocale = nlBE;
             return `${format(startDate, "Pp", { locale: dateFNSLocale })} tot ${format(endDate, isSameDay(startDate, endDate) ? "p" : "Pp", { locale: dateFNSLocale })}`;
         },
         {
@@ -100,9 +97,9 @@ const columns = [
     ),
     columnHelper.accessor(
         ({ reservations_halls }) =>
-            reservations_halls?.length
+            reservations_halls.length
                 ? reservations_halls
-                      .map((h) => h.hall?.name || "Onbekend")
+                      .map((h) => h.hall.name || "Onbekend")
                       .join(", ")
                 : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }

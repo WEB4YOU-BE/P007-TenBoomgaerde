@@ -56,7 +56,7 @@ const UpdateProfileForm = () => {
             const { data, error } = await supabase
                 .from("users")
                 .select("*")
-                .eq("id", account?.id ?? "")
+                .eq("id", account.id)
                 .single();
             if (error) throw error;
             setProfile(data);

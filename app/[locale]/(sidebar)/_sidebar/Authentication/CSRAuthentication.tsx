@@ -43,7 +43,7 @@ const SidebarAuthentication = () => {
         isPaused,
     } = useQuery({
         enabled: !!user?.id,
-        queryFn: () => getUserById({ userId: user?.id || "" }),
+        queryFn: () => getUserById({ userId: user?.id ?? "" }),
         queryKey: ["user", user?.id],
     });
 
@@ -73,7 +73,7 @@ const SidebarAuthentication = () => {
                             )}
                             {account && <UserCircleIcon />}
                             {account &&
-                                `${account.firstname || ""} ${account.lastname || ""}`.trim()}
+                                `${account.firstname ?? ""} ${account.lastname ?? ""}`.trim()}
                             <CaretUpIcon className="ml-auto transition-transform group-data-[state=open]/dropdown:rotate-180" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>

@@ -18,7 +18,12 @@ interface TableSearchProps<TData>
 const TableSearch = <TData,>({ table, ...props }: TableSearchProps<TData>) => {
     const handleSetGlobalFilter = useCallback<
         NonNullable<CustomComponentPropsWithRef<typeof Input>["onChange"]>
-    >((e) => table.setGlobalFilter(e.target.value), [table]);
+    >(
+        (e) => {
+            table.setGlobalFilter(e.target.value);
+        },
+        [table]
+    );
     const globalFilter: unknown = table.getState().globalFilter;
     const globalFilterValue = useMemo(
         () => (typeof globalFilter === "string" ? globalFilter : ""),

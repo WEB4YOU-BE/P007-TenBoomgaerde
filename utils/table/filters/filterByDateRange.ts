@@ -28,9 +28,10 @@ const filterByDateRange = ({
     if (!filterStart && filterEnd)
         return start <= filterEnd || end <= filterEnd;
 
+    if (!filterStart || !filterEnd) return true;
     return (
-        isWithinInterval(start, { end: filterEnd!, start: filterStart! }) ||
-        isWithinInterval(end, { end: filterEnd!, start: filterStart! })
+        isWithinInterval(start, { end: filterEnd, start: filterStart }) ||
+        isWithinInterval(end, { end: filterEnd, start: filterStart })
     );
 };
 

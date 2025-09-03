@@ -2,7 +2,7 @@
 
 import { createContext } from "react";
 
-type SidebarContextProps = {
+interface SidebarContextProps {
     isMobile: boolean;
     open: boolean;
     openMobile: boolean;
@@ -10,7 +10,7 @@ type SidebarContextProps = {
     setOpenMobile: (open: boolean) => void;
     state: "collapsed" | "expanded";
     toggleSidebar: () => void;
-};
+}
 const SidebarContext = createContext<null | SidebarContextProps>(null);
 
 export type { SidebarContextProps };

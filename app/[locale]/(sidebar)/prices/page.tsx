@@ -116,8 +116,8 @@ const page = async () => {
                             Huurprijs aanwezig materiaal
                         </h2>
                         <ul className={"list-disc pl-5 space-y-1"}>
-                            {materials.data.map((material, index) => (
-                                <li key={material.id ?? index}>
+                            {materials.data.map((material) => (
+                                <li key={material.id}>
                                     {material.name}: &euro; {material.price}
                                 </li>
                             ))}
@@ -133,8 +133,8 @@ const page = async () => {
                             activiteit.
                         </p>
                         <ul className={"list-disc pl-5 space-y-1"}>
-                            {products.data.map((product, index) => (
-                                <li key={product.id ?? index}>
+                            {products.data.map((product) => (
+                                <li key={product.id}>
                                     {product.name}: &euro; {product.price}
                                 </li>
                             ))}

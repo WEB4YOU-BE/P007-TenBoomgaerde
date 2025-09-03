@@ -71,7 +71,7 @@ const SignInWithEmailCredentialsForm = () => {
                     duration: 60000,
                 });
             return toast.success("Je bent ingelogd!", {
-                description: `${data.user?.email} is aangemeld.`,
+                description: `${data.user?.email ?? "Onbekende gebruiker"} is aangemeld.`,
             });
         },
         retry: false,

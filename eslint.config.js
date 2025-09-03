@@ -13,7 +13,16 @@ const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
 
 const config = tseslint.config(
     { files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"] },
-    { ignores: ["node_modules/**", "**/.*", "**/.*/*"] },
+    {
+        ignores: [
+            "node_modules/**",
+            "**/.*",
+            "**/.*/**",
+            "out/**",
+            "build/**",
+            "next-env.d.ts",
+        ],
+    },
 
     // Enable base configs
     jseslint.configs.recommended,
@@ -32,10 +41,10 @@ const config = tseslint.config(
     },
 
     // React
-    react.configs.flat.all,
+    react.configs.flat.recommended,
     {
         languageOptions: {
-            ...react.configs.flat.all.languageOptions,
+            ...react.configs.flat.recommended.languageOptions,
             globals: { ...globals.serviceworker, ...globals.browser },
         },
         settings: { react: { version: "detect" } },

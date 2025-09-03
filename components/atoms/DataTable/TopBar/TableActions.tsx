@@ -64,14 +64,12 @@ const TableActions = <TData,>({
         [isSomeRowsSelected, isAllRowsSelected]
     );
 
-    const handleToggleSelectAllRows = useCallback(
-        () => table.toggleAllRowsSelected(),
-        [table]
-    );
-    const handleDeselectAllRows = useCallback(
-        () => table.toggleAllRowsSelected(false),
-        [table]
-    );
+    const handleToggleSelectAllRows = useCallback(() => {
+        table.toggleAllRowsSelected();
+    }, [table]);
+    const handleDeselectAllRows = useCallback(() => {
+        table.toggleAllRowsSelected(false);
+    }, [table]);
 
     if (actions.length === 0 && !isEnabledRowSelection) return null; // No actions to display
 
@@ -103,7 +101,9 @@ const TableActions = <TData,>({
                                     <CommandItem
                                         disabled={action.disabled?.(table)}
                                         key={action.id}
-                                        onSelect={() => action.fn(table)}
+                                        onSelect={() => {
+                                            action.fn(table);
+                                        }}
                                     >
                                         {action.buttonLabel}
                                     </CommandItem>

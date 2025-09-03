@@ -57,10 +57,8 @@ const STATUS_LABEL_NL: Record<
 };
 
 // Helper for safe status-to-label mapping (handles null/undefined)
-const getStatusLabel = (status: TData["acceptance_status"]) => {
-    if (!status) return "";
-    return STATUS_LABEL_NL[status];
-};
+const getStatusLabel = (status: TData["acceptance_status"]) =>
+    STATUS_LABEL_NL[status];
 
 const columnHelper = createColumnHelper<TData>();
 
@@ -79,7 +77,9 @@ const columns = [
                         "size-4 rounded-[4px] !bg-transparent opacity-50 hover:opacity-100 transition-opacity duration-200"
                     )}
                     href={`/dashboard/reservations/${row.original.id}`}
-                    onClick={(e) => e.stopPropagation()} // Prevent row selection when clicking the link
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }} // Prevent row selection when clicking the link
                 >
                     <ArrowsOutSimpleIcon className="size-full" />
                 </Link>
@@ -103,7 +103,6 @@ const columns = [
     columnHelper.accessor((row) => STATUS_LABEL_NL[row.acceptance_status], {
         cell: (info) => {
             const status = info.row.original.acceptance_status;
-            if (!status) return <span>-</span>;
             return (
                 <Badge variant={STATUS_TO_BADGE_VARIANT[status]}>
                     {STATUS_LABEL_NL[status]}
@@ -132,11 +131,10 @@ const columns = [
     }),
     columnHelper.accessor(
         (row) => {
-            if (!row.users_organizations?.length) return "-";
+            if (!row.users_organizations.length) return "-";
             return row.users_organizations
                 .map((uo) => {
                     const user = uo.users;
-                    if (!user) return "-";
                     const fullName = [user.firstname, user.lastname]
                         .filter(Boolean)
                         .join(" ")
@@ -148,13 +146,12 @@ const columns = [
         {
             cell: (info) => {
                 const usersOrgs = info.row.original.users_organizations;
-                if (!usersOrgs || usersOrgs.length === 0) return <span>-</span>;
+                if (usersOrgs.length === 0) return <span>-</span>;
 
                 return (
                     <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
                         {usersOrgs.map((uo) => {
                             const user = uo.users;
-                            if (!user) return null;
                             return (
                                 <Tooltip key={user.id}>
                                     <TooltipTrigger>
@@ -203,7 +200,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
     queryClient
 ) => [
     {
-        buttonLabel: `Markeer als ${STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
+        buttonLabel: `Markeer als ${STATUS_LABEL_NL.ACCEPTED.toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -225,16 +222,17 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
-                    loading: `Bezig met markeren als ${STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}...`,
-                    success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
+                    loading: `Bezig met markeren als ${STATUS_LABEL_NL.ACCEPTED.toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL.ACCEPTED.toLocaleLowerCase()}`,
                 }
             );
         },
         id: "mark-as-approved",
     },
     {
-        buttonLabel: `Markeer als ${STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
+        buttonLabel: `Markeer als ${STATUS_LABEL_NL.PENDING.toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -256,16 +254,17 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
-                    loading: `Bezig met markeren als ${STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}...`,
-                    success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
+                    loading: `Bezig met markeren als ${STATUS_LABEL_NL.PENDING.toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL.PENDING.toLocaleLowerCase()}`,
                 }
             );
         },
         id: "mark-as-pending",
     },
     {
-        buttonLabel: `Markeer als ${STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
+        buttonLabel: `Markeer als ${STATUS_LABEL_NL.DECLINED.toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -287,9 +286,10 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
-                    loading: `Bezig met markeren als ${STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}...`,
-                    success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
+                    loading: `Bezig met markeren als ${STATUS_LABEL_NL.DECLINED.toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${STATUS_LABEL_NL.DECLINED.toLocaleLowerCase()}`,
                 }
             );
         },

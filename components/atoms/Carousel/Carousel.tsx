@@ -71,7 +71,7 @@ const Carousel: FC<CarouselProps & ComponentPropsWithoutRef<"div">> = ({
         api.on("select", onSelect);
 
         return () => {
-            api?.off("select", onSelect);
+            api.off("select", onSelect);
         };
     }, [api, onSelect]);
 
@@ -83,9 +83,7 @@ const Carousel: FC<CarouselProps & ComponentPropsWithoutRef<"div">> = ({
                 canScrollPrev,
                 carouselRef,
                 opts,
-                orientation:
-                    orientation ||
-                    (opts?.axis === "y" ? "vertical" : "horizontal"),
+                orientation: opts?.axis === "y" ? "vertical" : "horizontal",
                 scrollNext,
                 scrollPrev,
             }}

@@ -16,7 +16,10 @@ const SidebarMenuSkeleton = ({
     ...props
 }: SidebarMenuSkeletonProps) => {
     // Random width between 50 to 90%.
-    const width = useMemo(() => `${Math.floor(Math.random() * 40) + 50}%`, []);
+    const width = useMemo(
+        () => `${String(Math.floor(Math.random() * 40) + 50)}%`,
+        []
+    );
 
     return (
         <div

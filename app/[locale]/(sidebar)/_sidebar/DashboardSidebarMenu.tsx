@@ -42,7 +42,7 @@ const DashboardSidebarMenu = () => {
         queryKey: ["authenticatedUser"],
     });
     const getIsAdminByIdCallback = useCallback(
-        async () => await isAdmin({ userID: user?.id || "" }),
+        async () => await isAdmin({ userID: user?.id ?? "" }),
         [user?.id]
     );
     const { data: isAdminReturn, isFetching: isFetchingIsAdmin } =

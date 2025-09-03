@@ -61,9 +61,7 @@ import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 const commonSchema = z.object({
     acceptedPolicy: z
         .boolean()
-        .refine((val) => val === true, {
-            message: "Je moet het reglement accepteren",
-        }),
+        .refine((val) => val, { message: "Je moet het reglement accepteren" }),
     endDate: z.date(),
     endTimeslotId: z.uuid(),
     isParty: z.boolean(),
@@ -128,15 +126,15 @@ const ReservationForm = () => {
     const form = useForm<output<typeof schema>>({
         defaultValues: {
             acceptedPolicy: false,
-            endDate: undefined,
-            endTimeslotId: undefined as unknown as string,
+            endDate: new Date(),
+            endTimeslotId: "",
             isParty: false,
-            organisationId: undefined as unknown as string,
+            organisationId: undefined,
             organisationType: "personal",
             remarks: "",
             selectedHallIds: [],
-            startDate: undefined,
-            startTimeslotId: undefined as unknown as string,
+            startDate: new Date(),
+            startTimeslotId: "",
         },
         resolver: zodResolver(schema),
         shouldUnregister: false,
@@ -162,10 +160,9 @@ const ReservationForm = () => {
         async (data) => {
             // Enforce "weekendfeest": all halls, first to last timeslot, same day
             if (data.isParty) {
-                const allHallIds =
-                    (halls ?? [])
-                        .map((h: unknown) => getStringProp(h, "id"))
-                        .filter((v): v is string => Boolean(v)) ?? [];
+                const allHallIds = (halls ?? [])
+                    .map((h: unknown) => getStringProp(h, "id"))
+                    .filter((v): v is string => Boolean(v));
 
                 const slotBasics = (timeslots ?? [])
                     .map((t: unknown, idx) => ({
@@ -182,10 +179,6 @@ const ReservationForm = () => {
                     a.end.localeCompare(b.end)
                 )[slotBasics.length - 1];
 
-                if (!data.startDate) throw new Error("Selecteer een datum");
-                if (!earliest || !latest)
-                    throw new Error("Geen geldige tijdsloten gevonden");
-
                 const startDateTime = combineDateAndTime(
                     data.startDate,
                     earliest.start
@@ -196,7 +189,9 @@ const ReservationForm = () => {
                 );
 
                 const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 5000);
+                const timeout = setTimeout(() => {
+                    controller.abort();
+                }, 5000);
                 try {
                     await mutateAsync({
                         bookerId: user?.id,
@@ -239,7 +234,9 @@ const ReservationForm = () => {
 
             // Use a compatible timeout with AbortController
             const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 5000);
+            const timeout = setTimeout(() => {
+                controller.abort();
+            }, 5000);
             try {
                 await mutateAsync({
                     bookerId: user?.id,
@@ -310,7 +307,7 @@ const ReservationForm = () => {
     const selectedHallsData = useMemo(() => {
         // For weekend party, treat as all halls
         if (isParty) return (halls ?? []) as unknown[];
-        const set = new Set<string>(selectedHallIds ?? []);
+        const set = new Set<string>(selectedHallIds);
         return (halls ?? []).filter((h: unknown) =>
             set.has(getStringProp(h, "id") ?? "")
         );
@@ -384,7 +381,7 @@ const ReservationForm = () => {
 
     // Build end-date status resolver relative to the selected start DateTime
     const startDateTimeForEnd = useMemo(() => {
-        if (!startDateVal || !startTimeslotIdVal) return null;
+        if (!startTimeslotIdVal) return null;
         const slot = timeslotById.get(startTimeslotIdVal);
         if (!slot) return null;
         try {
@@ -458,8 +455,6 @@ const ReservationForm = () => {
 
     // When end-day equals start-day, make sure we also include all slots that end after the selected start slot.
     const availableEndTimeslotIdSet = useMemo(() => {
-        if (!endDateVal) return null;
-
         const base = new Set<string>();
 
         // 1) Base from service
@@ -473,11 +468,7 @@ const ReservationForm = () => {
         }
 
         // 2) Same-day augmentation: include any slot whose end_time > selected start slot's start time
-        if (
-            startDateVal &&
-            startTimeslotIdVal &&
-            isSameDay(endDateVal, startDateVal)
-        ) {
+        if (startTimeslotIdVal && isSameDay(endDateVal, startDateVal)) {
             const startSlot = timeslotById.get(startTimeslotIdVal);
             const startTime = startSlot?.start;
             if (startTime) {
@@ -503,7 +494,6 @@ const ReservationForm = () => {
     // If selected end timeslot becomes unavailable for the chosen end date,
     // reset it to the earliest by end_time for that date, or clear it.
     useEffect(() => {
-        if (!endDateVal) return; // don't auto-select without a date
         if (!availableEndTimeslotIdSet) return;
         const current = form.getValues("endTimeslotId");
         if (current && availableEndTimeslotIdSet.has(current)) return;
@@ -546,7 +536,6 @@ const ReservationForm = () => {
         [selectedHallsData, reservations, timeslots, isParty]
     );
     const availableStartTimeslotIdSet = useMemo(() => {
-        if (!startDateVal) return null;
         try {
             const ids = getDayTimeslotIds({ date: startDateVal });
             return new Set(ids);
@@ -558,7 +547,6 @@ const ReservationForm = () => {
     // If the selected start timeslot becomes unavailable for the chosen date,
     // reset it to the first available option for that date (by start_time ASC)
     useEffect(() => {
-        if (!startDateVal) return; // don't auto-select without a date
         if (!availableStartTimeslotIdSet) return;
         const current = form.getValues("startTimeslotId");
         if (current && availableStartTimeslotIdSet.has(current)) return;
@@ -653,10 +641,8 @@ const ReservationForm = () => {
 
     // Keep endDate in sync with startDate for weekendfeest
     useEffect(() => {
-        if (isParty) {
-            const d = startDateVal;
-            if (d) form.setValue("endDate", d, { shouldValidate: true });
-        }
+        if (isParty && form.getValues("endDate") !== startDateVal)
+            form.setValue("endDate", startDateVal, { shouldValidate: true });
     }, [isParty, startDateVal, form]);
 
     const goNext = useCallback(async () => {
@@ -698,7 +684,7 @@ const ReservationForm = () => {
                         // Use the memoized lookup to avoid unsafe property access
                         const sSlot = sId ? timeslotById.get(sId) : undefined;
                         const eSlot = eId ? timeslotById.get(eId) : undefined;
-                        if (sDate && eDate && sSlot && eSlot) {
+                        if (sSlot && eSlot) {
                             const sDT = combineDateAndTime(sDate, sSlot.start);
                             const eDT = combineDateAndTime(eDate, eSlot.end);
                             if (eDT <= sDT) {
@@ -732,10 +718,9 @@ const ReservationForm = () => {
         combineDateAndTime,
     ]);
 
-    const goPrev = useCallback(
-        () => setActiveStep((s) => Math.max(0, s - 1)),
-        []
-    );
+    const goPrev = useCallback(() => {
+        setActiveStep((s) => Math.max(0, s - 1));
+    }, []);
 
     // Submit on final confirm
     const onSubmitFinal = useCallback(
@@ -810,11 +795,11 @@ const ReservationForm = () => {
                                             <FormControl>
                                                 <RadioGroup
                                                     className="flex gap-6"
-                                                    onValueChange={(v) =>
+                                                    onValueChange={(v) => {
                                                         field.onChange(
                                                             v === "yes"
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                     value={
                                                         field.value
                                                             ? "yes"
@@ -941,95 +926,69 @@ const ReservationForm = () => {
 
                         {/* Step 3: Halls (skip if party) */}
                         {activeKey === "halls" && (
-                            <div className="space-y-4">
-                                <FormField
-                                    control={form.control}
-                                    name="selectedHallIds"
-                                    render={() => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                Selecteer zalen
-                                            </FormLabel>
-                                            <FormDescription>
-                                                Kies één of meerdere zalen om te
-                                                reserveren.
-                                            </FormDescription>
-                                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                                {halls?.map((h: unknown) => (
-                                                    <FormField
-                                                        control={form.control}
-                                                        key={
-                                                            getStringProp(
-                                                                h,
-                                                                "id"
-                                                            ) ?? "hall"
-                                                        }
-                                                        name="selectedHallIds"
-                                                        render={({ field }) => {
-                                                            const id =
-                                                                getStringProp(
-                                                                    h,
-                                                                    "id"
-                                                                ) ?? "";
-                                                            const checked =
-                                                                field.value?.includes(
-                                                                    id
+                            <div className="space-y-2">
+                                {halls?.map((h: unknown) => (
+                                    <FormField
+                                        control={form.control}
+                                        key={getStringProp(h, "id") ?? "hall"}
+                                        name="selectedHallIds"
+                                        render={({ field }) => {
+                                            const id =
+                                                getStringProp(h, "id") ?? "";
+                                            const checked =
+                                                field.value.includes(id);
+                                            return (
+                                                <label className="flex cursor-pointer items-center gap-3 rounded border p-3">
+                                                    <Checkbox
+                                                        checked={checked}
+                                                        onCheckedChange={(
+                                                            v
+                                                        ) => {
+                                                            const on =
+                                                                Boolean(v);
+                                                            if (on) {
+                                                                // Add hall ID
+                                                                form.setValue(
+                                                                    "selectedHallIds",
+                                                                    [
+                                                                        ...field.value,
+                                                                        id,
+                                                                    ],
+                                                                    {
+                                                                        shouldDirty: true,
+                                                                        shouldValidate: true,
+                                                                    }
                                                                 );
-                                                            return (
-                                                                <label className="flex cursor-pointer items-center gap-3 rounded border p-3">
-                                                                    <Checkbox
-                                                                        checked={
-                                                                            !!checked
-                                                                        }
-                                                                        onCheckedChange={(
-                                                                            v
-                                                                        ) => {
-                                                                            const on =
-                                                                                Boolean(
-                                                                                    v
-                                                                                );
-                                                                            if (
-                                                                                on
-                                                                            ) {
-                                                                                field.onChange(
-                                                                                    [
-                                                                                        ...(field.value ??
-                                                                                            []),
-                                                                                        id,
-                                                                                    ]
-                                                                                );
-                                                                            } else {
-                                                                                field.onChange(
-                                                                                    (
-                                                                                        field.value ??
-                                                                                        []
-                                                                                    ).filter(
-                                                                                        (
-                                                                                            x: string
-                                                                                        ) =>
-                                                                                            x !==
-                                                                                            id
-                                                                                    )
-                                                                                );
-                                                                            }
-                                                                        }}
-                                                                    />
-                                                                    <span className="text-sm">
-                                                                        {getStringProp(
-                                                                            h,
-                                                                            "name"
-                                                                        ) ?? id}
-                                                                    </span>
-                                                                </label>
-                                                            );
+                                                            } else {
+                                                                // Remove hall ID
+                                                                form.setValue(
+                                                                    "selectedHallIds",
+                                                                    field.value.filter(
+                                                                        (
+                                                                            val: string
+                                                                        ) =>
+                                                                            val !==
+                                                                            id
+                                                                    ),
+                                                                    {
+                                                                        shouldDirty: true,
+                                                                        shouldValidate: true,
+                                                                    }
+                                                                );
+                                                            }
                                                         }}
                                                     />
-                                                ))}
-                                            </div>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                                    <span className="text-sm">
+                                                        {getStringProp(
+                                                            h,
+                                                            "name"
+                                                        ) ?? id}
+                                                    </span>
+                                                </label>
+                                            );
+                                        }}
+                                    />
+                                ))}
                             </div>
                         )}
 
@@ -1066,11 +1025,11 @@ const ReservationForm = () => {
                                                         onMonthChange={
                                                             setStartMonth
                                                         }
-                                                        onSelect={(d) =>
+                                                        onSelect={(d) => {
                                                             field.onChange(
                                                                 d ?? undefined
-                                                            )
-                                                        }
+                                                            );
+                                                        }}
                                                         selected={field.value}
                                                     />
                                                 </FormControl>
@@ -1114,12 +1073,12 @@ const ReservationForm = () => {
                                                             onMonthChange={
                                                                 setStartMonth
                                                             }
-                                                            onSelect={(d) =>
+                                                            onSelect={(d) => {
                                                                 field.onChange(
                                                                     d ??
                                                                         undefined
-                                                                )
-                                                            }
+                                                                );
+                                                            }}
                                                             selected={
                                                                 field.value
                                                             }
@@ -1142,10 +1101,7 @@ const ReservationForm = () => {
                                                             onValueChange={
                                                                 field.onChange
                                                             }
-                                                            value={
-                                                                field.value ??
-                                                                ""
-                                                            }
+                                                            value={field.value}
                                                         >
                                                             <SelectTrigger>
                                                                 <SelectValue placeholder="Selecteer starttijd" />
@@ -1256,11 +1212,11 @@ const ReservationForm = () => {
                                                     modifiersClassNames={
                                                         modifiersClassNames
                                                     }
-                                                    onSelect={(d) =>
+                                                    onSelect={(d) => {
                                                         field.onChange(
                                                             d ?? undefined
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                     selected={field.value}
                                                 />
                                             </FormControl>
@@ -1296,11 +1252,11 @@ const ReservationForm = () => {
                                                         modifiersClassNames={
                                                             modifiersClassNames
                                                         }
-                                                        onSelect={(d) =>
+                                                        onSelect={(d) => {
                                                             field.onChange(
                                                                 d ?? undefined
-                                                            )
-                                                        }
+                                                            );
+                                                        }}
                                                         selected={field.value}
                                                     />
                                                 </FormControl>
@@ -1321,9 +1277,7 @@ const ReservationForm = () => {
                                                         onValueChange={
                                                             field.onChange
                                                         }
-                                                        value={
-                                                            field.value ?? ""
-                                                        }
+                                                        value={field.value}
                                                     >
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Selecteer eindtijd" />
@@ -1444,7 +1398,7 @@ const ReservationForm = () => {
                                                     –{" "}
                                                     {organisations?.find(
                                                         (o) =>
-                                                            String(o.id) ===
+                                                            o.id ===
                                                             String(
                                                                 form.getValues(
                                                                     "organisationId"
@@ -1466,7 +1420,7 @@ const ReservationForm = () => {
                                                             .getValues(
                                                                 "selectedHallIds"
                                                             )
-                                                            ?.includes(
+                                                            .includes(
                                                                 String(
                                                                     getStringProp(
                                                                         h,
@@ -1481,20 +1435,20 @@ const ReservationForm = () => {
                                                                 h,
                                                                 "name"
                                                             ) ??
-                                                            (getStringProp(
+                                                            getStringProp(
                                                                 h,
                                                                 "id"
-                                                            ) ||
-                                                                "")
+                                                            ) ??
+                                                            ""
                                                     )
-                                                    .join(", ") || "-"}
+                                                    .join(", ") ?? "-"}
                                             </li>
                                         )}
                                         <li>
                                             Start:{" "}
                                             {form
                                                 .getValues("startDate")
-                                                ?.toLocaleDateString() ||
+                                                .toLocaleDateString() ||
                                                 "-"}{" "}
                                             {getStringProp(
                                                 timeslots?.find(
@@ -1505,14 +1459,12 @@ const ReservationForm = () => {
                                                                 "id"
                                                             )
                                                         ) ===
-                                                        String(
-                                                            form.getValues(
-                                                                "startTimeslotId"
-                                                            )
+                                                        form.getValues(
+                                                            "startTimeslotId"
                                                         )
                                                 ),
                                                 "start_time"
-                                            ) ||
+                                            ) ??
                                                 (isParty
                                                     ? earliestTimeslotId &&
                                                       getStringProp(
@@ -1532,13 +1484,13 @@ const ReservationForm = () => {
                                             Einde:{" "}
                                             {form
                                                 .getValues("endDate")
-                                                ?.toLocaleDateString() ||
+                                                .toLocaleDateString() ||
                                                 (isParty
                                                     ? form
                                                           .getValues(
                                                               "startDate"
                                                           )
-                                                          ?.toLocaleDateString()
+                                                          .toLocaleDateString()
                                                     : "-")}{" "}
                                             {getStringProp(
                                                 timeslots?.find(
@@ -1549,14 +1501,12 @@ const ReservationForm = () => {
                                                                 "id"
                                                             )
                                                         ) ===
-                                                        String(
-                                                            form.getValues(
-                                                                "endTimeslotId"
-                                                            )
+                                                        form.getValues(
+                                                            "endTimeslotId"
                                                         )
                                                 ),
                                                 "end_time"
-                                            ) ||
+                                            ) ??
                                                 (isParty
                                                     ? latestTimeslotId &&
                                                       getStringProp(
@@ -1589,11 +1539,11 @@ const ReservationForm = () => {
                                             <FormControl>
                                                 <Checkbox
                                                     checked={field.value}
-                                                    onCheckedChange={(v) =>
+                                                    onCheckedChange={(v) => {
                                                         field.onChange(
                                                             Boolean(v)
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                 />
                                             </FormControl>
                                             <div className="space-y-1 leading-none">

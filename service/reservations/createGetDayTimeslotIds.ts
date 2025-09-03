@@ -41,12 +41,13 @@ export const createGetDayTimeslotIds = ({
     const reservationsFiltered = reservations
         .filter((reservation) =>
             reservation.reservations_halls.some((rh) =>
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 hallIds.has(rh.hall?.id)
             )
         )
         .map((r) => ({
-            end: new Date(r.end || ""),
-            start: new Date(r.start || ""),
+            end: new Date(r.end ?? ""),
+            start: new Date(r.start ?? ""),
         }))
         .filter((r) => !isNaN(r.start.getTime()) && !isNaN(r.end.getTime()));
 

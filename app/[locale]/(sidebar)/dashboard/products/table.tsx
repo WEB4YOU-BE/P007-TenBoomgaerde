@@ -42,7 +42,9 @@ const columns = [
                         "size-4 rounded-[4px] !bg-transparent opacity-50 hover:opacity-100 transition-opacity duration-200"
                     )}
                     href={`/dashboard/reservations/${row.original.id}`}
-                    onClick={(e) => e.stopPropagation()} // Prevent row selection when clicking the link
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }} // Prevent row selection when clicking the link
                 >
                     <ArrowsOutSimpleIcon className="size-full" />
                 </Link>
@@ -67,7 +69,7 @@ const columns = [
         header: "Naam",
         id: "name",
     }),
-    columnHelper.accessor((row) => row.category?.name || "-", {
+    columnHelper.accessor((row) => row.category?.name ?? "-", {
         header: "Categorie",
         id: "category",
     }),
@@ -80,7 +82,7 @@ const columns = [
                   : "onbekend",
         { header: "Te koop", id: "for_sale" }
     ),
-    columnHelper.accessor((row) => (row.price != null ? row.price : "-"), {
+    columnHelper.accessor((row) => row.price ?? "-", {
         header: "Prijs",
         id: "price",
     }),

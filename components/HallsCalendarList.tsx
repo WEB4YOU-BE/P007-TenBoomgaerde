@@ -108,9 +108,9 @@ const HallsCalendarList: React.FC = () => {
                 <LegendItem dotClass="bg-red-600" label="Volgeboekt" />
             </div>
             <div className="mt-4 grid gap-4 lg:grid-cols-2">
-                {halls.map((hall, idx) => {
-                    const hallId = hall.id ?? String(idx);
-                    const hallName = hall.name ?? "Zaal";
+                {halls.map((hall) => {
+                    const hallId = hall.id;
+                    const hallName = hall.name;
 
                     // Build a day status resolver for this hall (no hooks inside loop)
                     const dayStatusForHall = createGetDayStatus({
@@ -121,8 +121,8 @@ const HallsCalendarList: React.FC = () => {
                         onlyWeekend: false,
                         reservations: (reservations ??
                             []) as unknown as NonNullable<GetReservationsResponse>,
-                        timeslots: (timeslots ??
-                            []) as unknown as NonNullable<GetTimeslotsResponse>,
+                        timeslots:
+                            timeslots as unknown as NonNullable<GetTimeslotsResponse>,
                     });
 
                     const modifiers = {

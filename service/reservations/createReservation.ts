@@ -37,7 +37,7 @@ const createReservation = async ({
 
     // Get the current reservation year as a string 'YYYY-01-01':
     const currentYear = new Date().getFullYear();
-    const currentReservationYear = `${currentYear}-01-01`;
+    const currentReservationYear = `${String(currentYear)}-01-01`;
 
     // Create reservation itself:
     const { data: reservation, error: reservationError } = await supabase

@@ -1,3 +1,5 @@
-type FormItemContextValue = { id: string };
+interface FormItemContextValue {
+    id: string;
+}
 
 export type { FormItemContextValue };

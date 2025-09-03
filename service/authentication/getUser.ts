@@ -7,8 +7,7 @@ const getUser = async () => {
     const { data, error } = await supabase.auth.getUser();
     if (error && error instanceof AuthSessionMissingError) return null;
     if (error && error instanceof Error) throw error;
-    if (data?.user === null) return null;
-    return data.user;
+    return data.user ?? null;
 };
 
 export default getUser;

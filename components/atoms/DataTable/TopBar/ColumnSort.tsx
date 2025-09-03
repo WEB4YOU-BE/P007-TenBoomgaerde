@@ -114,9 +114,9 @@ const ColumnSort = <TData,>({
                                     return (
                                         <CommandItem
                                             key={sort.id}
-                                            onSelect={() =>
-                                                handleColumnSort(sort.id)
-                                            }
+                                            onSelect={() => {
+                                                handleColumnSort(sort.id);
+                                            }}
                                         >
                                             <span>
                                                 {index + 1}.{" "}
@@ -154,9 +154,9 @@ const ColumnSort = <TData,>({
                                 {unsortedColumns.map((column) => (
                                     <CommandItem
                                         key={column.id}
-                                        onSelect={() =>
-                                            handleColumnSort(column.id)
-                                        }
+                                        onSelect={() => {
+                                            handleColumnSort(column.id);
+                                        }}
                                     >
                                         {column.columnDef.header?.toString()}
                                     </CommandItem>

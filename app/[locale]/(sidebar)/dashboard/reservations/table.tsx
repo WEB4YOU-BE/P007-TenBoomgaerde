@@ -16,7 +16,6 @@ import { format, isSameDay, startOfWeek } from "date-fns";
 import { nlBE } from "date-fns/locale";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
-import { useLocale } from "use-intl";
 
 import Badge from "@/components/atoms/Badge";
 import Checkbox from "@/components/atoms/Checkbox";
@@ -54,8 +53,7 @@ const RES_STATUS_LABEL_NL: Record<"ACCEPTED" | "DECLINED" | "PENDING", string> =
 const normalizeReservationStatus = (
     status: TData["status"]
 ): "ACCEPTED" | "DECLINED" | "PENDING" | undefined => {
-    if (!status) return undefined;
-    const s = String(status).toLowerCase();
+    const s = status.toLowerCase();
     if (s === "accepted" || s === "goedgekeurd") return "ACCEPTED";
     if (s === "pending" || s === "in afwachting") return "PENDING";
     if (s === "declined" || s === "geweigerd") return "DECLINED";
@@ -82,7 +80,9 @@ const columns = [
                         "size-4 rounded-[4px] !bg-transparent opacity-50 hover:opacity-100 transition-opacity duration-200"
                     )}
                     href={`/dashboard/reservations/${row.original.id}`}
-                    onClick={(e) => e.stopPropagation()} // Prevent row selection when clicking the link
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }} // Prevent row selection when clicking the link
                 >
                     <ArrowsOutSimpleIcon className="size-full" />
                 </Link>
@@ -105,7 +105,7 @@ const columns = [
     }),
     columnHelper.accessor(
         ({ reservation_number, start }) => {
-            if (start && reservation_number != null) {
+            if (start) {
                 return `${start.slice(0, 4)}-${reservation_number
                     .toString()
                     .padStart(4, "0")}`;
@@ -119,8 +119,8 @@ const columns = [
             if (!start || !end) return "Geen data ingevoerd";
             const startDate = new Date(start);
             const endDate = new Date(end);
-            const locale = useLocale();
-            const dateFNSLocale = locale === "nl-BE" ? nlBE : undefined;
+            // Always use nlBE as locale
+            const dateFNSLocale = nlBE;
             return `${format(startDate, "Pp", { locale: dateFNSLocale })} tot ${format(endDate, isSameDay(startDate, endDate) ? "p" : "Pp", { locale: dateFNSLocale })}`;
         },
         {
@@ -151,7 +151,7 @@ const columns = [
     }),
     columnHelper.accessor(
         ({ reservations_halls }) =>
-            reservations_halls?.length
+            reservations_halls.length
                 ? reservations_halls.map((h) => h.hall.name).join(", ")
                 : "Geen zaal geselecteerd",
         { header: "Zaal", id: "hall" }
@@ -202,7 +202,7 @@ const columns = [
         },
         { header: "Reserveerder", id: "renter" }
     ),
-    columnHelper.accessor(({ organization }) => organization?.name || "-", {
+    columnHelper.accessor(({ organization }) => organization?.name ?? "-", {
         header: "Organisatie",
         id: "organization",
     }),
@@ -218,7 +218,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
 ) => [
     // Mark status actions (goedgekeurd, in afwachting, geweigerd)
     {
-        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
+        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL.ACCEPTED.toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -240,16 +240,17 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
-                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}...`,
-                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL["ACCEPTED"].toLocaleLowerCase()}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
+                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL.ACCEPTED.toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL.ACCEPTED.toLocaleLowerCase()}`,
                 }
             );
         },
         id: "mark-as-approved",
     },
     {
-        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
+        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL.PENDING.toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -271,16 +272,17 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
-                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}...`,
-                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL["PENDING"].toLocaleLowerCase()}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
+                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL.PENDING.toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL.PENDING.toLocaleLowerCase()}`,
                 }
             );
         },
         id: "mark-as-pending",
     },
     {
-        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
+        buttonLabel: `Markeer als ${RES_STATUS_LABEL_NL.DECLINED.toLocaleLowerCase()}`,
         disabled: (table) => table.getSelectedRowModel().rows.length === 0,
         fn: (table) => {
             toast.promise(
@@ -302,9 +304,10 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
-                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}...`,
-                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL["DECLINED"].toLocaleLowerCase()}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
+                    loading: `Bezig met markeren als ${RES_STATUS_LABEL_NL.DECLINED.toLocaleLowerCase()}...`,
+                    success: `Rijen succesvol gemarkeerd als ${RES_STATUS_LABEL_NL.DECLINED.toLocaleLowerCase()}`,
                 }
             );
         },
@@ -334,7 +337,8 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
                     loading: "Bezig met markeren als gefactureerd...",
                     success: "Rijen succesvol gemarkeerd als gefactureerd",
                 }
@@ -365,7 +369,8 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
                     loading: "Bezig met markeren als niet gefactureerd...",
                     success: "Rijen succesvol gemarkeerd als niet gefactureerd",
                 }

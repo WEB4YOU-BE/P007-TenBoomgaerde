@@ -18,7 +18,7 @@ const getMyReservations = async ({ signal }: GetMyReservationsProps) => {
     if (orgError && orgError instanceof Error) throw orgError;
 
     // Now fetch reservations for the user and their organizations
-    const orgIds = organizationIds?.map((org) => org.organization) || [];
+    const orgIds = organizationIds?.map((org) => org.organization) ?? [];
     const orgFilter = `organization.in.(${orgIds.join(",")})`;
     const bookerFilter = `booker.eq.${user.data.user.id}`;
     const { data, error } = await supabase

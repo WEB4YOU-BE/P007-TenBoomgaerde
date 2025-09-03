@@ -61,7 +61,9 @@ const ColumnVisibility = <TData,>({
                             {allHideableColumns.map((column) => (
                                 <CommandItem
                                     key={column.id}
-                                    onSelect={() => column.toggleVisibility()}
+                                    onSelect={() => {
+                                        column.toggleVisibility();
+                                    }}
                                 >
                                     {column.columnDef.header?.toString()}
                                     {column.getIsVisible() && (

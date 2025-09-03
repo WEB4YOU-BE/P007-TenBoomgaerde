@@ -60,12 +60,13 @@ export const createGetDayStatus = ({
     const reservationRanges = reservations
         .filter((reservation) =>
             reservation.reservations_halls.some((reservationHall) =>
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 hallIds.has(reservationHall.hall?.id)
             )
         )
         .map((reservation) => ({
-            end: new Date(reservation.end || ""),
-            start: new Date(reservation.start || ""),
+            end: new Date(reservation.end ?? ""),
+            start: new Date(reservation.start ?? ""),
         }))
         .filter((r) => !isNaN(r.start.getTime()) && !isNaN(r.end.getTime()));
 

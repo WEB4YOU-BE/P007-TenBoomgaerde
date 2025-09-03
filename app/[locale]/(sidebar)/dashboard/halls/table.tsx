@@ -45,7 +45,9 @@ const columns = [
                         "size-4 rounded-[4px] !bg-transparent opacity-50 hover:opacity-100 transition-opacity duration-200"
                     )}
                     href={`/dashboard/reservations/${row.original.id}`}
-                    onClick={(e) => e.stopPropagation()} // Prevent row selection when clicking the link
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }} // Prevent row selection when clicking the link
                 >
                     <ArrowsOutSimpleIcon className="size-full" />
                 </Link>
@@ -74,17 +76,14 @@ const columns = [
         header: "Privé",
         id: "is_private",
     }),
-    columnHelper.accessor(
-        (row) => (row.price_per_day != null ? row.price_per_day : "-"),
-        { header: "Prijs per tijdsblok", id: "price_per_day" }
-    ),
-    columnHelper.accessor(
-        (row) =>
-            row.price_per_day_discount != null
-                ? row.price_per_day_discount
-                : "-",
-        { header: "Korting per tijdsblok", id: "price_per_day_discount" }
-    ),
+    columnHelper.accessor((row) => row.price_per_day ?? "-", {
+        header: "Prijs per tijdsblok",
+        id: "price_per_day",
+    }),
+    columnHelper.accessor((row) => row.price_per_day_discount ?? "-", {
+        header: "Korting per tijdsblok",
+        id: "price_per_day_discount",
+    }),
 ];
 
 const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
@@ -111,7 +110,8 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
                     loading: "Bezig met markeren als privé...",
                     success: "Zalen succesvol op privé gezet",
                 }
@@ -140,7 +140,8 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij markeren: ${error}`,
+                    error: (error) =>
+                        `Fout bij markeren: ${error instanceof Error ? error.message : String(error)}`,
                     loading: "Bezig met markeren als openbaar...",
                     success: "Zalen succesvol openbaar gemaakt",
                 }

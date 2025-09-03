@@ -46,7 +46,9 @@ const columns = [
                         "size-4 rounded-[4px] !bg-transparent opacity-50 hover:opacity-100 transition-opacity duration-200"
                     )}
                     href={`/dashboard/reservations/${row.original.id}`}
-                    onClick={(e) => e.stopPropagation()} // Prevent row selection when clicking the link
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }} // Prevent row selection when clicking the link
                 >
                     <ArrowsOutSimpleIcon className="size-full" />
                 </Link>
@@ -131,7 +133,8 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                     });
                 },
                 {
-                    error: (error) => `Fout bij het versturen: ${error}`,
+                    error: (error) =>
+                        `Fout bij het versturen: ${error instanceof Error ? error.message : String(error)}`,
                     loading: "Wachtwoordherstel e-mails worden verzonden...",
                     success: "E-mails succesvol verzonden",
                 }
@@ -157,7 +160,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                 },
                 {
                     error: (error) =>
-                        `Fout bij het toekennen van adminrechten: ${error}`,
+                        `Fout bij het toekennen van adminrechten: ${error instanceof Error ? error.message : String(error)}`,
                     loading: "Adminrechten worden toegekend...",
                     success: "Adminrechten succesvol toegekend",
                 }
@@ -183,7 +186,7 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
                 },
                 {
                     error: (error) =>
-                        `Fout bij het verwijderen van adminrechten: ${error}`,
+                        `Fout bij het verwijderen van adminrechten: ${error instanceof Error ? error.message : String(error)}`,
                     loading: "Adminrechten worden verwijderd...",
                     success: "Adminrechten succesvol verwijderd",
                 }

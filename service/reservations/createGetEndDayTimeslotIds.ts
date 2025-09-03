@@ -55,11 +55,14 @@ export const createGetEndDayTimeslotIds = ({
     // Filter and map reservations to date ranges for the selected halls
     const reservationRanges = reservations
         .filter((reservation) =>
-            reservation.reservations_halls.some((rh) => hallIds.has(rh.hall.id))
+            reservation.reservations_halls.some((rh) =>
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                hallIds.has(rh.hall?.id)
+            )
         )
         .map((r) => ({
-            end: new Date(r.end || ""),
-            start: new Date(r.start || ""),
+            end: new Date(r.end ?? ""),
+            start: new Date(r.start ?? ""),
         }))
         .filter((r) => !isNaN(r.start.getTime()) && !isNaN(r.end.getTime()))
         .sort((a, b) => a.start.getTime() - b.start.getTime());
@@ -90,9 +93,9 @@ export const createGetEndDayTimeslotIds = ({
 
     let owningStartDay = startDay;
     const activeStartRange =
-        findActiveContainingStart(startDayRanges) ||
+        findActiveContainingStart(startDayRanges) ??
         ((owningStartDay = prevDay),
-        findActiveContainingStart(prevDayRanges) || null);
+        findActiveContainingStart(prevDayRanges) ?? null);
 
     const startInsideAnyTimeslot = Boolean(activeStartRange);
 

@@ -17,10 +17,10 @@ export type CompositeTypes<
       ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
       : never;
 
-export type Database = {
+export interface Database {
     graphql_public: {
-        CompositeTypes: { [_ in never]: never };
-        Enums: { [_ in never]: never };
+        CompositeTypes: Record<never, never>;
+        Enums: Record<never, never>;
         Functions: {
             graphql: {
                 Args: {
@@ -32,11 +32,11 @@ export type Database = {
                 Returns: Json;
             };
         };
-        Tables: { [_ in never]: never };
-        Views: { [_ in never]: never };
+        Tables: Record<never, never>;
+        Views: Record<never, never>;
     };
     public: {
-        CompositeTypes: { [_ in never]: never };
+        CompositeTypes: Record<never, never>;
         Enums: {
             organization_acceptance_status: "ACCEPTED" | "DECLINED" | "PENDING";
             reservation_status: "ACCEPTED" | "DECLINED" | "PENDING";
@@ -303,11 +303,11 @@ export type Database = {
                 Update: { access_code?: number; week_start?: string };
             };
         };
-        Views: { [_ in never]: never };
+        Views: Record<never, never>;
     };
     storage: {
-        CompositeTypes: { [_ in never]: never };
-        Enums: { [_ in never]: never };
+        CompositeTypes: Record<never, never>;
+        Enums: Record<never, never>;
         Functions: {
             add_prefixes: {
                 Args: { _bucket_id: string; _name: string };
@@ -690,9 +690,9 @@ export type Database = {
                 };
             };
         };
-        Views: { [_ in never]: never };
+        Views: Record<never, never>;
     };
-};
+}
 
 export type Enums<
     DefaultSchemaEnumNameOrOptions extends

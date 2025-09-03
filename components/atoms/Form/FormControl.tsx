@@ -11,7 +11,7 @@ const FormControl = ({ ...props }: ComponentPropsWithoutRef<typeof Slot>) => {
         <Slot
             aria-describedby={
                 !error
-                    ? `${formDescriptionId}`
+                    ? formDescriptionId
                     : `${formDescriptionId} ${formMessageId}`
             }
             aria-invalid={!!error}

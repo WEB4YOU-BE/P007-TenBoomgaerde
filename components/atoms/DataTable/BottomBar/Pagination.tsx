@@ -37,20 +37,27 @@ const Pagination = <TData,>({
     );
 
     const handlePageSizeChange = useCallback(
-        (value: string) => table.setPageSize(Number(value)),
+        (value: string) => {
+            table.setPageSize(Number(value));
+        },
         [table]
     );
 
     const canPreviousPage = table.getCanPreviousPage();
     const canNextPage = table.getCanNextPage();
 
-    const handleFirstPage = useCallback(() => table.setPageIndex(0), [table]);
-    const handlePreviousPage = useCallback(() => table.previousPage(), [table]);
-    const handleNextPage = useCallback(() => table.nextPage(), [table]);
-    const handleLastPage = useCallback(
-        () => table.setPageIndex(pageCount - 1),
-        [table, pageCount]
-    );
+    const handleFirstPage = useCallback(() => {
+        table.setPageIndex(0);
+    }, [table]);
+    const handlePreviousPage = useCallback(() => {
+        table.previousPage();
+    }, [table]);
+    const handleNextPage = useCallback(() => {
+        table.nextPage();
+    }, [table]);
+    const handleLastPage = useCallback(() => {
+        table.setPageIndex(pageCount - 1);
+    }, [table, pageCount]);
 
     return (
         <div

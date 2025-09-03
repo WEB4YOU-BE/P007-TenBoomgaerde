@@ -71,7 +71,7 @@ const SignUpForm = () => {
         },
         onSuccess: (data) => {
             toast.success("Jouw account is aangemaakt!", {
-                description: `${data.user?.email || "Je"} kreeg een email. Klik de link om jouw emailadres te verifiëren.`,
+                description: `${data.user?.email ?? "Je"} kreeg een email. Klik de link om jouw emailadres te verifiëren.`,
             });
         },
         retry: false,

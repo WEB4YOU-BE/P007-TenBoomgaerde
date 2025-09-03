@@ -39,12 +39,14 @@ const DataTable = <TData,>({ table }: DataTableProps<TData>) => (
                     ))}
                 </TableHeader>
                 <TableBody>
-                    {table.getRowModel().rows?.length ? (
+                    {table.getRowModel().rows.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 data-state={row.getIsSelected() && "selected"}
                                 key={row.id}
-                                onClick={() => row.toggleSelected()}
+                                onClick={() => {
+                                    row.toggleSelected();
+                                }}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>

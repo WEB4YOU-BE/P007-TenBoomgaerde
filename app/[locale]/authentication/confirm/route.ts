@@ -23,5 +23,5 @@ export const GET = async (request: NextRequest) => {
     });
     if (error) throw error;
 
-    return NextResponse.redirect(redirect || "/");
+    return NextResponse.redirect(redirect ?? "/");
 };
