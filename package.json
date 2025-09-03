@@ -37,6 +37,7 @@
         "predev": "npm run -s supabase:start",
         "dev": "next dev --turbopack",
         "postdev": "npm run -s supabase:stop",
+        "dev:email": "email dev",
         "build": "next build --turbopack",
         "analyze": "ANALYZE=true next build",
         "prestart": "npm run -s build",
@@ -130,6 +131,7 @@
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.34.0",
         "@hookform/devtools": "^4.4.0",
+        "@react-email/preview-server": "^4.2.8",
         "@tailwindcss/postcss": "^4.1.12",
         "@tanstack/eslint-plugin-query": "^5.83.1",
         "@types/node": "^24.3.0",
@@ -158,6 +160,7 @@
     },
     "overrides": {
         "cookie": "^0.7.0",
-        "path-to-regexp": "^6.2.3"
+        "path-to-regexp": "^6.2.3",
+        "next": "15.5.2"
     }
 }
