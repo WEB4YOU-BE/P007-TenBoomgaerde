@@ -57,13 +57,15 @@ export const createGetDayStatus = ({
     const hallIds = new Set(halls.map((h) => h.id));
 
     // Precompute valid reservations for the selected halls
+    // Exclude declined reservations from blocking availability.
     const reservationRanges = reservations
-        .filter((reservation) =>
-            reservation.reservations_halls.some((reservationHall) =>
+        .filter((reservation) => {
+            if (reservation.status === "DECLINED") return false;
+            return reservation.reservations_halls.some((reservationHall) =>
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 hallIds.has(reservationHall.hall?.id)
-            )
-        )
+            );
+        })
         .map((reservation) => ({
             end: new Date(reservation.end ?? ""),
             start: new Date(reservation.start ?? ""),

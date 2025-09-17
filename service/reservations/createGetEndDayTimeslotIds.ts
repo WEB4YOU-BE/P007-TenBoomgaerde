@@ -52,14 +52,15 @@ export const createGetEndDayTimeslotIds = ({
     // Precompute hall IDs once
     const hallIds = new Set(halls.map((h) => h.id));
 
-    // Filter and map reservations to date ranges for the selected halls
+    // Filter and map reservations to date ranges for the selected halls (exclude declined)
     const reservationRanges = reservations
-        .filter((reservation) =>
-            reservation.reservations_halls.some((rh) =>
+        .filter((reservation) => {
+            if (reservation.status === "DECLINED") return false;
+            return reservation.reservations_halls.some((rh) =>
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 hallIds.has(rh.hall?.id)
-            )
-        )
+            );
+        })
         .map((r) => ({
             end: new Date(r.end ?? ""),
             start: new Date(r.start ?? ""),

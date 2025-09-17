@@ -28,6 +28,7 @@ import getReservations, {
 import updateReservationsInvoiced from "@/service/reservations/updateReservationsInvoiced";
 import updateReservationsStatus from "@/service/reservations/updateReservationsStatus";
 import { RowAction } from "@/types/features/table/rowActions/RowAction";
+import { Enums } from "@/types/supabase/database";
 import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { BadgeVariantProps } from "@/utils/tailwindcss/variants/badgeVariants";
@@ -39,31 +40,20 @@ const columnHelper = createColumnHelper<TData>();
 
 // Status mappings (reuse same approach as organisations)
 const RES_STATUS_TO_BADGE_VARIANT: Record<
-    "ACCEPTED" | "DECLINED" | "PENDING",
+    Enums<"reservation_status">,
     BadgeVariantProps["variant"]
 > = { ACCEPTED: "default", DECLINED: "destructive", PENDING: "secondary" };
 
-const RES_STATUS_LABEL_NL: Record<"ACCEPTED" | "DECLINED" | "PENDING", string> =
-    {
-        ACCEPTED: "Goedgekeurd",
-        DECLINED: "Afgewezen",
-        PENDING: "In afwachting",
-    };
+const RES_STATUS_LABEL_NL = {
+    ACCEPTED: "Goedgekeurd",
+    DECLINED: "Afgewezen",
+    PENDING: "In afwachting",
+} as const satisfies Record<Enums<"reservation_status">, string>;
 
-const normalizeReservationStatus = (
-    status: TData["status"]
-): "ACCEPTED" | "DECLINED" | "PENDING" | undefined => {
-    const s = status.toLowerCase();
-    if (s === "accepted" || s === "goedgekeurd") return "ACCEPTED";
-    if (s === "pending" || s === "in afwachting") return "PENDING";
-    if (s === "declined" || s === "geweigerd") return "DECLINED";
-    return undefined;
-};
-
-const getReservationStatusLabel = (status: TData["status"]) => {
-    const key = normalizeReservationStatus(status);
-    return key ? RES_STATUS_LABEL_NL[key] : "";
-};
+// Generic function: passing a specific status yields the corresponding string literal type.
+const getReservationStatusLabel = <S extends Enums<"reservation_status">>(
+    status: S
+): (typeof RES_STATUS_LABEL_NL)[S] => RES_STATUS_LABEL_NL[status];
 
 const columns = [
     columnHelper.display({
@@ -157,30 +147,24 @@ const columns = [
         { header: "Zaal", id: "hall" }
     ),
     columnHelper.accessor((row) => getReservationStatusLabel(row.status), {
-        cell: (info) => {
-            const key = normalizeReservationStatus(info.row.original.status);
-            if (!key) return <span>-</span>;
-            return (
-                <Badge variant={RES_STATUS_TO_BADGE_VARIANT[key]}>
-                    {RES_STATUS_LABEL_NL[key]}
-                </Badge>
-            );
-        },
+        cell: (info) => (
+            <Badge
+                variant={RES_STATUS_TO_BADGE_VARIANT[info.row.original.status]}
+            >
+                {RES_STATUS_LABEL_NL[info.row.original.status]}
+            </Badge>
+        ),
         header: "Status",
         id: "status",
         sortingFn: (rowA, rowB) => {
             const a = getReservationStatusLabel(rowA.original.status);
             const b = getReservationStatusLabel(rowB.original.status);
-            if (!a && !b) return 0;
-            if (!a) return 1;
-            if (!b) return -1;
             return a.localeCompare(b, "nl", { sensitivity: "base" });
         },
     }),
     columnHelper.accessor(
         ({ access_code, start, status }) => {
-            const norm = normalizeReservationStatus(status);
-            if (!access_code || norm !== "ACCEPTED" || !start) return "-";
+            if (!access_code || status !== "ACCEPTED" || !start) return "-";
             // Calculate the Sunday before the reservation starts using date-fns
             const startDate = new Date(start);
             const sundayBefore = startOfWeek(startDate, { weekStartsOn: 0 });

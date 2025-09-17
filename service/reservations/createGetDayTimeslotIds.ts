@@ -37,14 +37,15 @@ export const createGetDayTimeslotIds = ({
     // Precompute hall id set once
     const hallIds = new Set(halls.map((h) => h.id));
 
-    // Filter reservations to only those affecting the selected halls and with valid datetimes
+    // Filter reservations to only those affecting the selected halls (excluding declined) and with valid datetimes
     const reservationsFiltered = reservations
-        .filter((reservation) =>
-            reservation.reservations_halls.some((rh) =>
+        .filter((reservation) => {
+            if (reservation.status === "DECLINED") return false;
+            return reservation.reservations_halls.some((rh) =>
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 hallIds.has(rh.hall?.id)
-            )
-        )
+            );
+        })
         .map((r) => ({
             end: new Date(r.end ?? ""),
             start: new Date(r.start ?? ""),
