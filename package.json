@@ -30,7 +30,7 @@
     "type": "module",
     "engineStrict": true,
     "engines": {
-        "node": ">=20 <=24",
+        "node": ">=20 <=25",
         "npm": ">=10"
     },
     "scripts": {
