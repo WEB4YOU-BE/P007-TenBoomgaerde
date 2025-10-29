@@ -7,7 +7,6 @@ const createQueryClient = () =>
             mutations: { networkMode: "online", retry: false },
             queries: {
                 networkMode: "online",
-                retry: true,
                 staleTime: 2 * 60 * 60 * 1000,
                 throwOnError: false,
             },
