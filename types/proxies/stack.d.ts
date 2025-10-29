@@ -1,4 +1,4 @@
-import type { NextFetchEvent, NextRequest, NextProxy } from "next/server";
+import type { NextFetchEvent, NextProxy, NextRequest } from "next/server";
 
 import type { Plugin } from "./plugin";
 
