@@ -42,27 +42,6 @@ export default defineConfig(
         },
     },
 
-    // React recommended
-    react.configs.flat.recommended,
-    // React globals + settings override
-    {
-        languageOptions: {
-            ...react.configs.flat.recommended.languageOptions,
-            globals: { ...globals.serviceworker, ...globals.browser },
-        },
-        settings: { react: { version: "detect" } },
-    },
-
-    // Next.js legacy configs via compat
-    ...compat.config({
-        extends: [
-            "next",
-            "next/core-web-vitals",
-            "next/typescript",
-            "prettier",
-        ],
-    }),
-
     // TanStack Query
     query.configs["flat/recommended"],
 
