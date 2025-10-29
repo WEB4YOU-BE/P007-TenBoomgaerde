@@ -7,7 +7,7 @@ import {
     NextResponse,
 } from "next/server";
 
-import type { Plugin } from "@/types/middleware/plugin";
+import type { Plugin } from "@/types/proxies/plugin";
 
 import routing from "@/i18n/routing";
 

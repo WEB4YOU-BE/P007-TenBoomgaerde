@@ -1,7 +1,7 @@
-import type { Plugin } from "@/types/middleware/plugin";
-import type { Stack } from "@/types/middleware/stack";
+import type { Plugin } from "@/types/proxies/plugin";
+import type { Stack } from "@/types/proxies/stack";
 
-import { pluginDefault } from "@/middlewares/plugins";
+import { pluginDefault } from "@/proxies/plugins";
 
 const stack: Stack = async ({ event, plugins, request }) => {
     if (plugins.length === 0) return pluginDefault(() => void 0);

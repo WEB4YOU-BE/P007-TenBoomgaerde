@@ -106,24 +106,24 @@ npm run lint-staged
 - **`utils/supabase/`**: Database client configuration (server/client)
 - **`utils/query/`**: TanStack Query client setup
 - **`utils/tailwindcss/`**: Tailwind utility functions
-- **`middlewares/`**: Custom middleware stack with plugin system
+- **`proxies/`**: Custom proxy stack with plugin system
 - **`i18n/`**: Internationalization routing and configuration
 - **`types/`**: TypeScript type definitions
 
-#### Middleware System
+#### proxy System
 
-The project uses a plugin-based middleware system:
+The project uses a plugin-based proxy system:
 
-- **`middlewares/stack.ts`**: Middleware orchestration
-- **`middlewares/plugins/`**: Individual middleware plugins
-- **`middleware.ts`**: Next.js middleware entry point
+- **`proxies/stack.ts`**: proxy orchestration
+- **`proxies/plugins/`**: Individual proxy plugins
+- **`proxy.ts`**: Next.js proxy entry point
 
 ### Key Patterns
 
 #### Authentication & Authorization
 
 - Supabase Auth integration with server/client patterns
-- Protected routes using middleware
+- Protected routes using proxy
 - Role-based access (admin functions)
 
 #### Data Fetching
