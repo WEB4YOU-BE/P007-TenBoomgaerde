@@ -7,8 +7,7 @@ import badgeVariants, {
 } from "@/utils/tailwindcss/variants/badgeVariants";
 
 interface BadgeProps
-    extends BadgeVariantProps,
-        ComponentPropsWithoutRef<"span"> {
+    extends BadgeVariantProps, ComponentPropsWithoutRef<"span"> {
     asChild?: boolean;
 }
 

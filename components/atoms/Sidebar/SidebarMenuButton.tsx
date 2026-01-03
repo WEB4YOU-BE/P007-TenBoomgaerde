@@ -15,7 +15,8 @@ import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import sidebarMenuButtonVariants from "@/utils/tailwindcss/variants/sidebarMenuButtonVariants";
 
 interface SidebarMenuButtonProps
-    extends ComponentPropsWithRef<"button">,
+    extends
+        ComponentPropsWithRef<"button">,
         VariantProps<typeof sidebarMenuButtonVariants> {
     asChild?: boolean;
     isActive?: boolean;

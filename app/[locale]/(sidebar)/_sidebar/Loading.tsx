@@ -6,8 +6,9 @@ import {
     SidebarMenuSkeleton,
 } from "@/components/atoms/Sidebar";
 
-interface LoadingSidebarMenuProps
-    extends ComponentPropsWithRef<typeof SidebarMenu> {
+interface LoadingSidebarMenuProps extends ComponentPropsWithRef<
+    typeof SidebarMenu
+> {
     items?: number;
 }
 const LoadingSidebarMenu = ({

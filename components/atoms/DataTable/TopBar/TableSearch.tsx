@@ -7,11 +7,10 @@ import React, {
 
 import { Input } from "@/components/atoms/input";
 
-interface TableSearchProps<TData>
-    extends Omit<
-        CustomComponentPropsWithRef<typeof Input>,
-        "onChange" | "value"
-    > {
+interface TableSearchProps<TData> extends Omit<
+    CustomComponentPropsWithRef<typeof Input>,
+    "onChange" | "value"
+> {
     table: TTable<TData>;
 }
 

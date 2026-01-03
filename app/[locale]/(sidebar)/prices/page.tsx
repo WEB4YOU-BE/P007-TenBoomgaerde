@@ -19,6 +19,8 @@ import { Separator } from "@/components/atoms/separator";
 import { SidebarTrigger } from "@/components/atoms/Sidebar";
 import createClient from "@/utils/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 const page = async () => {
     const supabase = createClient();
     const queryProducts = supabase

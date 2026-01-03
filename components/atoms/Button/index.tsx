@@ -7,8 +7,7 @@ import buttonVariants, {
 } from "@/utils/tailwindcss/variants/buttonVariants";
 
 interface ButtonProps
-    extends ButtonVariantProps,
-        ComponentPropsWithRef<"button"> {
+    extends ButtonVariantProps, ComponentPropsWithRef<"button"> {
     asChild?: boolean;
 }
 

@@ -31,8 +31,9 @@ import {
 } from "@/components/atoms/popover";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
-interface ColumnSortProps<TData>
-    extends CustomComponentPropsWithRef<typeof Button> {
+interface ColumnSortProps<TData> extends CustomComponentPropsWithRef<
+    typeof Button
+> {
     table: Table<TData>;
 }
 

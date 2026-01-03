@@ -20,8 +20,9 @@ import {
 } from "@/components/atoms/popover";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
-interface ColumnVisibilityProps<TData>
-    extends CustomComponentPropsWithRef<typeof Button> {
+interface ColumnVisibilityProps<TData> extends CustomComponentPropsWithRef<
+    typeof Button
+> {
     table: Table<TData>;
 }
 

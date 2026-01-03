@@ -23,8 +23,9 @@ import {
 } from "@/components/atoms/popover";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
-interface TableActionsProps<TData>
-    extends CustomComponentPropsWithRef<typeof Button> {
+interface TableActionsProps<TData> extends CustomComponentPropsWithRef<
+    typeof Button
+> {
     table: Table<TData>;
 }
 
