@@ -10,11 +10,10 @@ import Link from "next/link";
 import React from "react";
 
 import LoadingSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/Loading";
-import {
-    Collapsible,
+import Collapsible, {
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/atoms/collapsible";
+} from "@/components/atoms/Collapsible";
 import {
     SidebarGroup,
     SidebarGroupContent,
@@ -26,11 +25,10 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@/components/atoms/Sidebar";
-import {
-    Tooltip,
+import Tooltip, {
     TooltipContent,
     TooltipTrigger,
-} from "@/components/atoms/tooltip";
+} from "@/components/atoms/Tooltip";
 import { usePathname } from "@/i18n/navigation";
 import getUser from "@/service/authentication/getUser";
 import getMyOrganisations from "@/service/organisations/getMyOrganisations";

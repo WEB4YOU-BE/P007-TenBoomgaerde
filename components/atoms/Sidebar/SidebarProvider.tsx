@@ -20,7 +20,7 @@ import {
     SIDEBAR_WIDTH,
     SIDEBAR_WIDTH_ICON,
 } from "@/components/atoms/Sidebar/constants";
-import { TooltipProvider } from "@/components/atoms/tooltip";
+import { TooltipProvider } from "@/components/atoms/Tooltip";
 import useIsMobile from "@/hooks/use-mobile";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 

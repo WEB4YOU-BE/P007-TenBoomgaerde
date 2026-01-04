@@ -8,11 +8,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/atoms/Sidebar";
-import {
-    Tooltip,
+import Tooltip, {
     TooltipContent,
     TooltipTrigger,
-} from "@/components/atoms/tooltip";
+} from "@/components/atoms/Tooltip";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";

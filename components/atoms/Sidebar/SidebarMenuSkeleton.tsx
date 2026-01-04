@@ -4,7 +4,7 @@ import React, {
     useMemo,
 } from "react";
 
-import Skeleton from "@/components/atoms/skeleton";
+import Skeleton from "@/components/atoms/Skeleton";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface SidebarMenuSkeletonProps extends ComponentPropsWithRef<"div"> {

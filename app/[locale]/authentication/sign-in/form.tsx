@@ -20,7 +20,7 @@ import Form, {
     FormLabel,
     FormMessage,
 } from "@/components/atoms/Form";
-import { Input } from "@/components/atoms/input";
+import Input from "@/components/atoms/Input";
 import { Link, redirect } from "@/i18n/navigation";
 import signInWithPassword from "@/service/authentication/signInWithPassword";
 import { getQueryClient } from "@/utils/query/queryClient";

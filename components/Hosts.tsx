@@ -4,7 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import React from "react";
 import { FC } from "react";
 
-import { Toaster } from "@/components/atoms/sonner";
+import Toaster from "@/components/atoms/Sonner";
 
 const Hosts: FC = () => (
     <>

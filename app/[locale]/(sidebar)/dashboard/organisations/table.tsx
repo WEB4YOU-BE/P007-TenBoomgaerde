@@ -22,11 +22,10 @@ import Avatar from "@/components/atoms/Avatar/Avatar";
 import Badge from "@/components/atoms/Badge";
 import Checkbox from "@/components/atoms/Checkbox";
 import DataTable from "@/components/atoms/DataTable";
-import {
-    Tooltip,
+import Tooltip, {
     TooltipContent,
     TooltipTrigger,
-} from "@/components/atoms/tooltip";
+} from "@/components/atoms/Tooltip";
 import RowActionsFeature from "@/features/table/RowActionsFeature";
 import { Link } from "@/i18n/navigation";
 import getOrganisations, {

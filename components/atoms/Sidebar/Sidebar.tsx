@@ -2,13 +2,12 @@
 
 import React, { type ComponentPropsWithRef, type CSSProperties } from "react";
 
-import {
-    Sheet,
+import Sheet, {
     SheetContent,
     SheetDescription,
     SheetHeader,
     SheetTitle,
-} from "@/components/atoms/sheet";
+} from "@/components/atoms/Sheet";
 import { SIDEBAR_WIDTH_MOBILE } from "@/components/atoms/Sidebar/constants";
 import useSidebar from "@/hooks/use-sidebar";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";

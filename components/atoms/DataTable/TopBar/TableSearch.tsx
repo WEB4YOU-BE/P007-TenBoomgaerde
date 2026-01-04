@@ -5,7 +5,7 @@ import React, {
     useMemo,
 } from "react";
 
-import { Input } from "@/components/atoms/input";
+import Input from "@/components/atoms/Input";
 
 interface TableSearchProps<TData> extends Omit<
     CustomComponentPropsWithRef<typeof Input>,

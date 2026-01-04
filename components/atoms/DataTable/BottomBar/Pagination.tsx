@@ -11,13 +11,12 @@ import { ComponentPropsWithoutRef, useCallback, useMemo } from "react";
 import React from "react";
 
 import Button from "@/components/atoms/Button";
-import {
-    Select,
+import Select, {
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/atoms/select";
+} from "@/components/atoms/Select";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface PaginationProps<TData> extends ComponentPropsWithoutRef<"div"> {

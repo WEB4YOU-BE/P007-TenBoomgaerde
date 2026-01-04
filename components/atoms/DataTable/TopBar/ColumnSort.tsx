@@ -14,8 +14,7 @@ import React, {
 } from "react";
 
 import Button from "@/components/atoms/Button";
-import {
-    Command,
+import Command, {
     CommandEmpty,
     CommandGroup,
     CommandInput,
@@ -23,12 +22,11 @@ import {
     CommandList,
     CommandSeparator,
     CommandShortcut,
-} from "@/components/atoms/command";
-import {
-    Popover,
+} from "@/components/atoms/Command";
+import Popover, {
     PopoverContent,
     PopoverTrigger,
-} from "@/components/atoms/popover";
+} from "@/components/atoms/Popover";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface ColumnSortProps<TData> extends CustomComponentPropsWithRef<

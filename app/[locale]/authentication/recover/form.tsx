@@ -17,7 +17,7 @@ import Form, {
     FormLabel,
     FormMessage,
 } from "@/components/atoms/Form";
-import { Input } from "@/components/atoms/input";
+import Input from "@/components/atoms/Input";
 import { Link } from "@/i18n/navigation";
 import recoverPassword from "@/service/authentication/recoverPassword";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";

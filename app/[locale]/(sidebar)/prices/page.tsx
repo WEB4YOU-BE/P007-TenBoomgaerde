@@ -15,7 +15,7 @@ import {
     CardTitle,
 } from "@/components/atoms/Card";
 import Card from "@/components/atoms/Card/Card";
-import { Separator } from "@/components/atoms/separator";
+import Separator from "@/components/atoms/Separator";
 import { SidebarTrigger } from "@/components/atoms/Sidebar";
 import createClient from "@/utils/supabase/server";
 

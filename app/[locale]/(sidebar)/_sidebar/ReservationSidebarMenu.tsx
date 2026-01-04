@@ -10,11 +10,10 @@ import Link from "next/link";
 import React from "react";
 
 import LoadingSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/Loading";
-import {
-    Collapsible,
+import Collapsible, {
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/atoms/collapsible";
+} from "@/components/atoms/Collapsible";
 import {
     SidebarGroup,
     SidebarGroupContent,

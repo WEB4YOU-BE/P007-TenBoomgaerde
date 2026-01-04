@@ -17,11 +17,6 @@ import React, { useCallback } from "react";
 
 import LoadingSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/Loading";
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/atoms/collapsible";
-import {
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -33,6 +28,10 @@ import {
 import { usePathname } from "@/i18n/navigation";
 import getUser from "@/service/authentication/getUser";
 import isAdmin from "@/service/authentication/isAdmin";
+import Collapsible, {
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/atoms/Collapsible";
 
 const DashboardSidebarMenu = () => {
     const pathname = usePathname();

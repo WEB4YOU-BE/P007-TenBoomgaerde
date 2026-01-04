@@ -1,7 +1,7 @@
 import React, { type ComponentPropsWithRef } from "react";
 
-import { Separator } from "@/components/atoms/separator";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
+import Separator from "@/components/atoms/Separator";
 
 const SidebarSeparator = ({
     className,

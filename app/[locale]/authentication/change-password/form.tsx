@@ -19,7 +19,7 @@ import Form, {
     FormLabel,
     FormMessage,
 } from "@/components/atoms/Form";
-import { Input } from "@/components/atoms/input";
+import Input from "@/components/atoms/Input";
 import { redirect } from "@/i18n/navigation";
 import changePassword from "@/service/authentication/changePassword";
 

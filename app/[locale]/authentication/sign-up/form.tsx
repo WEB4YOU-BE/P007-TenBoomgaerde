@@ -20,7 +20,7 @@ import Form, {
     FormLabel,
     FormMessage,
 } from "@/components/atoms/Form";
-import { Input } from "@/components/atoms/input";
+import Input from "@/components/atoms/Input";
 import signUp from "@/service/authentication/signUp";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
 

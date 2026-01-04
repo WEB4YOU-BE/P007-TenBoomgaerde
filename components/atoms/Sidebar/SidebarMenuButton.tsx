@@ -5,11 +5,10 @@ import type { VariantProps } from "class-variance-authority";
 import { Slot } from "@radix-ui/react-slot";
 import React, { type ComponentPropsWithRef } from "react";
 
-import {
-    Tooltip,
+import Tooltip, {
     TooltipContent,
     TooltipTrigger,
-} from "@/components/atoms/tooltip";
+} from "@/components/atoms/Tooltip";
 import useSidebar from "@/hooks/use-sidebar";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import sidebarMenuButtonVariants from "@/utils/tailwindcss/variants/sidebarMenuButtonVariants";

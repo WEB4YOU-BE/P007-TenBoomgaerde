@@ -9,7 +9,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/atoms/Breadcrumb";
 import Breadcrumb from "@/components/atoms/Breadcrumb/Breadcrumb";
-import { Separator } from "@/components/atoms/separator";
+import Separator from "@/components/atoms/Separator";
 import { SidebarTrigger } from "@/components/atoms/Sidebar";
 
 import UpdateProfileForm from "./form";

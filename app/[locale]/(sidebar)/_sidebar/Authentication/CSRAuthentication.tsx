@@ -15,19 +15,18 @@ import Link from "next/link";
 import React, { useMemo } from "react";
 
 import LoadingSidebarMenu from "@/app/[locale]/(sidebar)/_sidebar/Loading";
-import {
-    DropdownMenu,
+import DropdownMenu, {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/atoms/dropdown-menu";
+} from "@/components/atoms/DropdownMenu";
 import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/atoms/Sidebar";
-import Skeleton from "@/components/atoms/skeleton";
+import Skeleton from "@/components/atoms/Skeleton";
 import getUser from "@/service/authentication/getUser";
 import getUserById from "@/service/users/getUserById";
 

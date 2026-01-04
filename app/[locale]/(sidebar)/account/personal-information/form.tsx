@@ -17,8 +17,8 @@ import Form, {
     FormItem,
     FormLabel,
 } from "@/components/atoms/Form";
-import { Input } from "@/components/atoms/input";
-import { Separator } from "@/components/atoms/separator";
+import Input from "@/components/atoms/Input";
+import Separator from "@/components/atoms/Separator";
 import updateProfile from "@/service/authentication/updateProfile";
 import { Tables } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/client";

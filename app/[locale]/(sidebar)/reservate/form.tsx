@@ -35,15 +35,14 @@ import Form, {
     FormLabel,
     FormMessage,
 } from "@/components/atoms/Form";
-import { RadioGroup, RadioGroupItem } from "@/components/atoms/radio-group";
-import {
-    Select,
+import RadioGroup, { RadioGroupItem } from "@/components/atoms/RadioGroup";
+import Select, {
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/atoms/select";
-import { Textarea } from "@/components/atoms/textarea";
+} from "@/components/atoms/Select";
+import Textarea from "@/components/atoms/Textarea";
 import getUser from "@/service/authentication/getUser";
 import getHalls from "@/service/halls/getHalls";
 import getMyOrganisations from "@/service/organisations/getMyOrganisations";

@@ -1,6 +1,6 @@
 import React, { type ComponentPropsWithRef } from "react";
 
-import { Input } from "@/components/atoms/input";
+import Input from "@/components/atoms/Input";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 const SidebarInput = ({
