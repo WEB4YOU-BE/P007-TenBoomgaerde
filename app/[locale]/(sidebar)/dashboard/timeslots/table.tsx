@@ -104,6 +104,7 @@ const Table = () => {
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
         columns,
+        createHref: "/dashboard/timeslots/new",
         data: timeslots,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),

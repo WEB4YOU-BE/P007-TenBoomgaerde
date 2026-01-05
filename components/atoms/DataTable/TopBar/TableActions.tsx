@@ -1,4 +1,8 @@
-import { CaretUpDownIcon, CheckIcon } from "@phosphor-icons/react/dist/ssr";
+import {
+    CaretUpDownIcon,
+    CheckIcon,
+    PlusIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Table } from "@tanstack/react-table";
 import React, {
     CustomComponentPropsWithRef,
@@ -19,6 +23,7 @@ import Popover, {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/atoms/Popover";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface TableActionsProps<TData> extends CustomComponentPropsWithRef<
@@ -70,71 +75,101 @@ const TableActions = <TData,>({
         table.toggleAllRowsSelected(false);
     }, [table]);
 
-    if (actions.length === 0 && !isEnabledRowSelection) return null; // No actions to display
+    const createHref = table.options.createHref;
+    const hasActionsPopover = actions.length > 0 || isEnabledRowSelection;
+
+    if (!hasActionsPopover && !createHref) return null; // No actions to display
 
     return (
-        <Popover>
-            <PopoverTrigger asChild>
+        <div className="flex items-center gap-2">
+            {hasActionsPopover && (
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button
+                            className={cn(
+                                "min-w-[200px] max-md:grow justify-between",
+                                className
+                            )}
+                            role="combobox"
+                            title="Acties"
+                            variant="outline"
+                            {...props}
+                        >
+                            <span>Acties</span>
+                            <CaretUpDownIcon className="ml-2 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-0 w-[var(--radix-popover-trigger-width)]">
+                        <Command>
+                            <CommandInput
+                                className="h-9"
+                                placeholder="Zoek actie..."
+                            />
+                            <CommandList>
+                                <CommandEmpty>
+                                    Geen actie gevonden.
+                                </CommandEmpty>
+                                {actions.length > 0 && (
+                                    <CommandGroup heading="Acties">
+                                        {actions.map((action) => (
+                                            <CommandItem
+                                                disabled={action.disabled?.(
+                                                    table
+                                                )}
+                                                key={action.id}
+                                                onSelect={() => {
+                                                    action.fn(table);
+                                                }}
+                                            >
+                                                {action.buttonLabel}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                )}
+                                {isEnabledRowSelection && (
+                                    <CommandGroup heading="Rijen">
+                                        <CommandItem
+                                            disabled={!canSelectAllRows}
+                                            onSelect={handleToggleSelectAllRows}
+                                        >
+                                            Selecteer alle rijen
+                                            <CommandShortcut>
+                                                {isAllRowsSelected && (
+                                                    <CheckIcon />
+                                                )}
+                                            </CommandShortcut>
+                                        </CommandItem>
+                                        <CommandItem
+                                            disabled={!canDeselectAllRows}
+                                            onSelect={handleDeselectAllRows}
+                                        >
+                                            Deselecteer alle rijen
+                                            <CommandShortcut>
+                                                {isNoRowsSelected && (
+                                                    <CheckIcon />
+                                                )}
+                                            </CommandShortcut>
+                                        </CommandItem>
+                                    </CommandGroup>
+                                )}
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
+            )}
+            {createHref && (
                 <Button
-                    className={cn(
-                        "min-w-[200px] max-md:grow justify-between",
-                        className
-                    )}
-                    role="combobox"
-                    title="Acties"
+                    asChild
+                    size="icon"
+                    title="Nieuw aanmaken"
                     variant="outline"
-                    {...props}
                 >
-                    <span>Acties</span>
-                    <CaretUpDownIcon className="ml-2 opacity-50" />
+                    <Link href={createHref}>
+                        <PlusIcon />
+                    </Link>
                 </Button>
-            </PopoverTrigger>
-            <PopoverContent className="p-0 w-[var(--radix-popover-trigger-width)]">
-                <Command>
-                    <CommandInput className="h-9" placeholder="Zoek actie..." />
-                    <CommandList>
-                        <CommandEmpty>Geen actie gevonden.</CommandEmpty>
-                        {actions.length > 0 && (
-                            <CommandGroup heading="Acties">
-                                {actions.map((action) => (
-                                    <CommandItem
-                                        disabled={action.disabled?.(table)}
-                                        key={action.id}
-                                        onSelect={() => {
-                                            action.fn(table);
-                                        }}
-                                    >
-                                        {action.buttonLabel}
-                                    </CommandItem>
-                                ))}
-                            </CommandGroup>
-                        )}
-                        {isEnabledRowSelection && (
-                            <CommandGroup heading="Rijen">
-                                <CommandItem
-                                    disabled={!canSelectAllRows}
-                                    onSelect={handleToggleSelectAllRows}
-                                >
-                                    Selecteer alle rijen
-                                    <CommandShortcut>
-                                        {isAllRowsSelected && <CheckIcon />}
-                                    </CommandShortcut>
-                                </CommandItem>
-                                <CommandItem
-                                    disabled={!canDeselectAllRows}
-                                    onSelect={handleDeselectAllRows}
-                                >
-                                    Deselecteer alle rijen
-                                    <CommandShortcut>
-                                        {isNoRowsSelected && <CheckIcon />}
-                                    </CommandShortcut>
-                                </CommandItem>
-                            </CommandGroup>
-                        )}
-                    </CommandList>
-                </Command>
-            </PopoverContent>
-        </Popover>
+            )}
+        </div>
     );
 };
 

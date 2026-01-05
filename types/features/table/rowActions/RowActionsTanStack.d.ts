@@ -11,5 +11,6 @@ declare module "@tanstack/react-table" {
     interface Table<TData extends RowData> extends RowActionsInstance<TData> {}
     interface TableOptionsResolved<TData extends RowData> {
         actions?: RowAction<TData>[];
+        createHref?: string;
     }
 }

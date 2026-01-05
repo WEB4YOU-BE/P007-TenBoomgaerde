@@ -159,6 +159,7 @@ const Table = () => {
         _features: [RowActionsFeature<TData>()],
         actions: actions(queryClient),
         columns,
+        createHref: "/dashboard/halls/new",
         data: halls,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),

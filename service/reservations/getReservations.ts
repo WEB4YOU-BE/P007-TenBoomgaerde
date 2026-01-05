@@ -9,7 +9,6 @@ const getReservations = async ({ signal }: GetReservationsProps) => {
     const { data, error } = await supabase
         .from("reservations")
         .select("*, booker(*), organization(*), reservations_halls(hall(*))")
-        .limit(100_000)
         .abortSignal(signal);
     if (error && error instanceof Error) throw error;
 
