@@ -1,29 +1,26 @@
 "use server";
 
-import { Resend } from "resend";
-
 import ReservationCreatedEmail, {
     ReservationCreatedEmailProps,
 } from "@/emails/ReservationCreatedEmail";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_SEND_KEY);
 
-interface SendReservationCreatedEmailProps extends ReservationCreatedEmailProps {
-    recipientEmail: string;
-}
-
-const sendReservationCreatedEmail = async ({
-    bookerFirstName,
-    bookerLastName,
-    endDate,
-    hallNames,
-    isParty,
-    organisationName,
-    recipientEmail,
-    remarks,
-    reservationNumber,
-    startDate,
-}: SendReservationCreatedEmailProps) => {
+const sendReservationCreatedEmail = async (
+    {
+        bookerFirstName,
+        bookerLastName,
+        endDate,
+        hallNames,
+        isParty,
+        organisationName,
+        remarks,
+        reservationNumber,
+        startDate,
+    }: ReservationCreatedEmailProps,
+    recipientEmail: string
+) => {
     const { data, error } = await resend.emails.send({
         from: "Ten Boomgaerde <info@vzwtenboomgaerdelichtervelde.be>",
         react: ReservationCreatedEmail({
@@ -49,4 +46,3 @@ const sendReservationCreatedEmail = async ({
 };
 
 export default sendReservationCreatedEmail;
-export type { SendReservationCreatedEmailProps };

@@ -140,18 +140,20 @@ const createReservation = async ({
     // Send confirmation email:
     if (bookerEmail) {
         try {
-            await sendReservationCreatedEmail({
-                bookerFirstName: bookerFirstName ?? "",
-                bookerLastName: bookerLastName ?? "",
-                endDate: formattedEndDate,
-                hallNames,
-                isParty: isParty ?? false,
-                organisationName,
-                recipientEmail: bookerEmail,
-                remarks: remarks ?? null,
-                reservationNumber: formattedReservationNumber,
-                startDate: formattedStartDate,
-            });
+            await sendReservationCreatedEmail(
+                {
+                    bookerFirstName: bookerFirstName ?? "",
+                    bookerLastName: bookerLastName ?? "",
+                    endDate: formattedEndDate,
+                    hallNames,
+                    isParty: isParty ?? false,
+                    organisationName,
+                    remarks: remarks ?? null,
+                    reservationNumber: formattedReservationNumber,
+                    startDate: formattedStartDate,
+                },
+                bookerEmail
+            );
         } catch (emailError) {
             // Log email error but don't fail the reservation creation
             console.error(
