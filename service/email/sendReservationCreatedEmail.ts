@@ -1,4 +1,10 @@
-import { ReservationCreatedEmailProps } from "@/emails/ReservationCreatedEmail";
+import { Resend } from "resend";
+
+import ReservationCreatedEmail, {
+    ReservationCreatedEmailProps,
+} from "@/emails/ReservationCreatedEmail";
+
+const resend = new Resend(process.env.RESEND_SEND_KEY);
 
 interface SendReservationCreatedEmailProps extends ReservationCreatedEmailProps {
     recipientEmail: string;
@@ -16,31 +22,28 @@ const sendReservationCreatedEmail = async ({
     reservationNumber,
     startDate,
 }: SendReservationCreatedEmailProps) => {
-    const response = await fetch("/api/email/reservation-created", {
-        body: JSON.stringify({
+    const { data, error } = await resend.emails.send({
+        from: "Ten Boomgaerde <info@vzwtenboomgaerdelichtervelde.be>",
+        react: ReservationCreatedEmail({
             bookerFirstName,
             bookerLastName,
             endDate,
             hallNames,
             isParty,
             organisationName,
-            recipientEmail,
             remarks,
             reservationNumber,
             startDate,
         }),
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
+        subject: `Reservatie ${reservationNumber} ontvangen - Ten Boomgaerde`,
+        to: [recipientEmail],
     });
 
-    if (!response.ok) {
-        const errorData = (await response.json()) as { error?: string };
-        throw new Error(
-            `Failed to send email: ${errorData.error ?? "Unknown error"}`
-        );
+    if (error) {
+        throw new Error(`Failed to send email: ${error.message}`);
     }
 
-    return (await response.json()) as { data: unknown };
+    return data;
 };
 
 export default sendReservationCreatedEmail;
