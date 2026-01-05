@@ -48,7 +48,7 @@ const OrganisationSidebarMenu = () => {
     if (!user?.id) return null;
 
     return (
-        <Collapsible className="group/collapsible">
+        <Collapsible className="group/collapsible" defaultOpen>
             <SidebarGroup>
                 <SidebarGroupLabel asChild>
                     <CollapsibleTrigger>
