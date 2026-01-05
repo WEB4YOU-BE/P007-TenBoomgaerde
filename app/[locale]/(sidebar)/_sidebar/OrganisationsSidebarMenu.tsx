@@ -25,10 +25,6 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@/components/atoms/Sidebar";
-import Tooltip, {
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/atoms/Tooltip";
 import { usePathname } from "@/i18n/navigation";
 import getUser from "@/service/authentication/getUser";
 import getMyOrganisations from "@/service/organisations/getMyOrganisations";
@@ -120,34 +116,17 @@ const OrganisationSidebarMenu = () => {
                                 </Collapsible>
                             ))}
                             <SidebarMenuItem>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <SidebarMenuButton
-                                            asChild
-                                            disabled
-                                            isActive={
-                                                pathname ===
-                                                "/organisations/new/"
-                                            }
-                                        >
-                                            <Link
-                                                aria-disabled
-                                                href="/organisations/new/"
-                                            >
-                                                <PlusIcon />
-                                                <span>
-                                                    Organisatie aanvragen
-                                                </span>
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </TooltipTrigger>
-                                    <TooltipContent
-                                        side="right"
-                                        updatePositionStrategy="always"
-                                    >
-                                        Beschikbaar vanaf 15 augustus
-                                    </TooltipContent>
-                                </Tooltip>
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={
+                                        pathname === "/organisations/new/"
+                                    }
+                                >
+                                    <Link href="/organisations/new/">
+                                        <PlusIcon />
+                                        <span>Organisatie aanvragen</span>
+                                    </Link>
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
