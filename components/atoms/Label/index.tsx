@@ -1,22 +1,25 @@
-import { Root } from "@radix-ui/react-label";
-import React, { type ComponentPropsWithoutRef } from "react";
+"use client";
+
+import * as React from "react";
+import * as LabelPrimitive from "@radix-ui/react-label";
 
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
-const Label = ({
+function Label({
     className,
     ...props
-}: ComponentPropsWithoutRef<typeof Root>) => {
+}: React.ComponentProps<typeof LabelPrimitive.Root>) {
     return (
-        <Root
+        <LabelPrimitive.Root
+            data-slot="label"
             className={cn(
-                "text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+                "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
                 className
             )}
-            data-slot="label"
             {...props}
         />
     );
-};
+}
 
+export { Label };
 export default Label;

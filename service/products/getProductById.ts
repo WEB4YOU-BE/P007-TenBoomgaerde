@@ -1,4 +1,3 @@
-import { Tables } from "@/types/supabase/database";
 import createClient from "@/utils/supabase/client";
 
 interface GetProductByIdProps {
@@ -6,15 +5,11 @@ interface GetProductByIdProps {
     signal?: AbortSignal;
 }
 
-type GetProductByIdResponse = Tables<"products">;
-
-const getProductById = async ({
-    id,
-}: GetProductByIdProps): Promise<GetProductByIdResponse> => {
+const getProductById = async ({ id }: GetProductByIdProps) => {
     const supabase = createClient();
     const { data, error } = await supabase
         .from("products")
-        .select()
+        .select("*, category(*)")
         .eq("id", id)
         .limit(1)
         .single();
@@ -25,4 +20,4 @@ const getProductById = async ({
 };
 
 export default getProductById;
-export type { GetProductByIdProps, GetProductByIdResponse };
+export type { GetProductByIdProps };

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -15,6 +15,7 @@ import Form, {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/atoms/Form";
 import Input from "@/components/atoms/Input";
 import Select, {
@@ -24,10 +25,10 @@ import Select, {
     SelectValue,
 } from "@/components/atoms/Select";
 import Switch from "@/components/atoms/Switch";
-import getCategories from "@/service/categories/getCategories";
-import getProductById, {
-    GetProductByIdResponse,
-} from "@/service/products/getProductById";
+import getCategories, {
+    GetCategoriesResponse,
+} from "@/service/categories/getCategories";
+import getProductById from "@/service/products/getProductById";
 import updateProduct from "@/service/products/updateProduct";
 
 const formSchema = z.object({
@@ -37,45 +38,30 @@ const formSchema = z.object({
     price: z.string(),
 });
 
-interface EditProductFormProps {
+type ProductData = Awaited<ReturnType<typeof getProductById>>;
+
+interface ProductFormContentProps {
+    categories: NonNullable<GetCategoriesResponse>;
+    product: ProductData;
     productId: string;
 }
 
-const EditProductForm = ({ productId }: EditProductFormProps) => {
+const ProductFormContent = ({
+    categories,
+    product,
+    productId,
+}: ProductFormContentProps) => {
     const queryClient = useQueryClient();
 
-    const productQueryFn = useCallback(
-        ({ signal }: { signal: AbortSignal }) =>
-            getProductById({ id: productId, signal }),
-        [productId]
-    );
-
-    const { data: product, isLoading: isLoadingProduct } =
-        useQuery<GetProductByIdResponse>({
-            queryFn: productQueryFn,
-            queryKey: ["products", productId],
-        });
-
-    const { data: categories, isLoading: isLoadingCategories } = useQuery({
-        queryFn: getCategories,
-        queryKey: ["categories"],
-    });
-
     const form = useForm<z.infer<typeof formSchema>>({
-        defaultValues: { category: null, for_sale: false, name: "", price: "" },
+        defaultValues: {
+            category: product.category?.id ?? null,
+            for_sale: product.for_sale ?? false,
+            name: product.name,
+            price: product.price?.toString() ?? "",
+        },
         resolver: zodResolver(formSchema),
     });
-
-    useEffect(() => {
-        if (product) {
-            form.reset({
-                category: product.category,
-                for_sale: product.for_sale ?? false,
-                name: product.name,
-                price: product.price?.toString() ?? "",
-            });
-        }
-    }, [product, form]);
 
     const { isError, isPending, isSuccess, mutate } = useMutation({
         mutationFn: updateProduct,
@@ -102,14 +88,6 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         });
     };
 
-    if (isLoadingProduct || isLoadingCategories) {
-        return (
-            <div className="flex items-center justify-center p-8">
-                <SpinnerBallIcon className="size-8 animate-spin" />
-            </div>
-        );
-    }
-
     return (
         <Form {...form}>
             <form
@@ -126,6 +104,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -149,7 +128,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {categories?.map((category) => (
+                                    {categories.map((category) => (
                                         <SelectItem
                                             key={category.id}
                                             value={category.id}
@@ -159,6 +138,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
                                     ))}
                                 </SelectContent>
                             </Select>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -201,6 +181,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
                                     type="number"
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -226,6 +207,44 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
                 </div>
             </form>
         </Form>
+    );
+};
+
+interface EditProductFormProps {
+    productId: string;
+}
+
+const EditProductForm = ({ productId }: EditProductFormProps) => {
+    const productQueryFn = useCallback(
+        ({ signal }: { signal: AbortSignal }) =>
+            getProductById({ id: productId, signal }),
+        [productId]
+    );
+
+    const { data: product, isLoading: isLoadingProduct } = useQuery({
+        queryFn: productQueryFn,
+        queryKey: ["products", productId],
+    });
+
+    const { data: categories, isLoading: isLoadingCategories } = useQuery({
+        queryFn: getCategories,
+        queryKey: ["categories"],
+    });
+
+    if (isLoadingProduct || isLoadingCategories || !product || !categories) {
+        return (
+            <div className="flex items-center justify-center p-8">
+                <SpinnerBallIcon className="size-8 animate-spin" />
+            </div>
+        );
+    }
+
+    return (
+        <ProductFormContent
+            categories={categories}
+            product={product}
+            productId={productId}
+        />
     );
 };
 

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -15,6 +15,7 @@ import Form, {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/atoms/Form";
 import Input from "@/components/atoms/Input";
 import Switch from "@/components/atoms/Switch";
@@ -28,45 +29,24 @@ const formSchema = z.object({
     price_per_day_discount: z.string(),
 });
 
-interface EditHallFormProps {
+interface HallFormContentProps {
+    hall: GetHallByIdResponse;
     hallId: string;
 }
 
-const EditHallForm = ({ hallId }: EditHallFormProps) => {
+const HallFormContent = ({ hall, hallId }: HallFormContentProps) => {
     const queryClient = useQueryClient();
-
-    const queryFn = useCallback(
-        ({ signal }: { signal: AbortSignal }) =>
-            getHallById({ id: hallId, signal }),
-        [hallId]
-    );
-
-    const { data: hall, isLoading } = useQuery<GetHallByIdResponse>({
-        queryFn,
-        queryKey: ["halls", hallId],
-    });
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
-            is_private: false,
-            name: "",
-            price_per_day: "",
-            price_per_day_discount: "",
+            is_private: hall.is_private,
+            name: hall.name,
+            price_per_day: hall.price_per_day?.toString() ?? "",
+            price_per_day_discount:
+                hall.price_per_day_discount?.toString() ?? "",
         },
         resolver: zodResolver(formSchema),
     });
-
-    useEffect(() => {
-        if (hall) {
-            form.reset({
-                is_private: hall.is_private,
-                name: hall.name,
-                price_per_day: hall.price_per_day?.toString() ?? "",
-                price_per_day_discount:
-                    hall.price_per_day_discount?.toString() ?? "",
-            });
-        }
-    }, [hall, form]);
 
     const { isError, isPending, isSuccess, mutate } = useMutation({
         mutationFn: updateHall,
@@ -99,14 +79,6 @@ const EditHallForm = ({ hallId }: EditHallFormProps) => {
         });
     };
 
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center p-8">
-                <SpinnerBallIcon className="size-8 animate-spin" />
-            </div>
-        );
-    }
-
     return (
         <Form {...form}>
             <form
@@ -123,6 +95,7 @@ const EditHallForm = ({ hallId }: EditHallFormProps) => {
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -167,6 +140,7 @@ const EditHallForm = ({ hallId }: EditHallFormProps) => {
                                             type="number"
                                         />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -186,6 +160,7 @@ const EditHallForm = ({ hallId }: EditHallFormProps) => {
                                             type="number"
                                         />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -214,6 +189,33 @@ const EditHallForm = ({ hallId }: EditHallFormProps) => {
             </form>
         </Form>
     );
+};
+
+interface EditHallFormProps {
+    hallId: string;
+}
+
+const EditHallForm = ({ hallId }: EditHallFormProps) => {
+    const queryFn = useCallback(
+        ({ signal }: { signal: AbortSignal }) =>
+            getHallById({ id: hallId, signal }),
+        [hallId]
+    );
+
+    const { data: hall, isLoading } = useQuery<GetHallByIdResponse>({
+        queryFn,
+        queryKey: ["halls", hallId],
+    });
+
+    if (isLoading || !hall) {
+        return (
+            <div className="flex items-center justify-center p-8">
+                <SpinnerBallIcon className="size-8 animate-spin" />
+            </div>
+        );
+    }
+
+    return <HallFormContent hall={hall} hallId={hallId} />;
 };
 
 export default EditHallForm;

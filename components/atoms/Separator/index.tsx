@@ -1,1 +1,1 @@
-export { default as default } from "./Separator";
+export { default } from "./Separator";

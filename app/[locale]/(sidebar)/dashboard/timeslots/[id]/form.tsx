@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerBallIcon } from "@phosphor-icons/react/ssr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -14,6 +14,7 @@ import Form, {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/atoms/Form";
 import Input from "@/components/atoms/Input";
 import getTimeslotById, {
@@ -27,38 +28,25 @@ const formSchema = z.object({
     start_time: z.string().min(1, "Starttijd is verplicht"),
 });
 
-interface EditTimeslotFormProps {
+interface TimeslotFormContentProps {
+    timeslot: GetTimeslotByIdResponse;
     timeslotId: string;
 }
 
-const EditTimeslotForm = ({ timeslotId }: EditTimeslotFormProps) => {
+const TimeslotFormContent = ({
+    timeslot,
+    timeslotId,
+}: TimeslotFormContentProps) => {
     const queryClient = useQueryClient();
 
-    const queryFn = useCallback(
-        ({ signal }: { signal: AbortSignal }) =>
-            getTimeslotById({ id: timeslotId, signal }),
-        [timeslotId]
-    );
-
-    const { data: timeslot, isLoading } = useQuery<GetTimeslotByIdResponse>({
-        queryFn,
-        queryKey: ["timeslots", timeslotId],
-    });
-
     const form = useForm<z.infer<typeof formSchema>>({
-        defaultValues: { end_time: "", name: "", start_time: "" },
+        defaultValues: {
+            end_time: timeslot.end_time,
+            name: timeslot.name,
+            start_time: timeslot.start_time,
+        },
         resolver: zodResolver(formSchema),
     });
-
-    useEffect(() => {
-        if (timeslot) {
-            form.reset({
-                end_time: timeslot.end_time,
-                name: timeslot.name,
-                start_time: timeslot.start_time,
-            });
-        }
-    }, [timeslot, form]);
 
     const { isError, isPending, isSuccess, mutate } = useMutation({
         mutationFn: updateTimeslot,
@@ -84,14 +72,6 @@ const EditTimeslotForm = ({ timeslotId }: EditTimeslotFormProps) => {
         });
     };
 
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center p-8">
-                <SpinnerBallIcon className="size-8 animate-spin" />
-            </div>
-        );
-    }
-
     return (
         <Form {...form}>
             <form
@@ -108,6 +88,7 @@ const EditTimeslotForm = ({ timeslotId }: EditTimeslotFormProps) => {
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -124,6 +105,7 @@ const EditTimeslotForm = ({ timeslotId }: EditTimeslotFormProps) => {
                                     <FormControl>
                                         <Input {...field} type="time" />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -138,6 +120,7 @@ const EditTimeslotForm = ({ timeslotId }: EditTimeslotFormProps) => {
                                     <FormControl>
                                         <Input {...field} type="time" />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -166,6 +149,33 @@ const EditTimeslotForm = ({ timeslotId }: EditTimeslotFormProps) => {
             </form>
         </Form>
     );
+};
+
+interface EditTimeslotFormProps {
+    timeslotId: string;
+}
+
+const EditTimeslotForm = ({ timeslotId }: EditTimeslotFormProps) => {
+    const queryFn = useCallback(
+        ({ signal }: { signal: AbortSignal }) =>
+            getTimeslotById({ id: timeslotId, signal }),
+        [timeslotId]
+    );
+
+    const { data: timeslot, isLoading } = useQuery<GetTimeslotByIdResponse>({
+        queryFn,
+        queryKey: ["timeslots", timeslotId],
+    });
+
+    if (isLoading || !timeslot) {
+        return (
+            <div className="flex items-center justify-center p-8">
+                <SpinnerBallIcon className="size-8 animate-spin" />
+            </div>
+        );
+    }
+
+    return <TimeslotFormContent timeslot={timeslot} timeslotId={timeslotId} />;
 };
 
 export default EditTimeslotForm;
