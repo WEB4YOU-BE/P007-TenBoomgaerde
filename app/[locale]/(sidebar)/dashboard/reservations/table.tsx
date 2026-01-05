@@ -376,6 +376,7 @@ const Table = () => {
         _features: [RowActionsFeature<TData>()],
         actions: actions(queryClient),
         columns,
+        createHref: "/reservate/",
         data: reservations,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
