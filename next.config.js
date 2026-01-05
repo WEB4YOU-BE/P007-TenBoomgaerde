@@ -8,7 +8,6 @@ const config = {
     compiler: { removeConsole: env.NODE_ENV === "production" },
     trailingSlash: true,
     turbopack: {},
-    reactCompiler: true,
 };
 
 const withVercelToolbar = VercelToolbar();
