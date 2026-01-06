@@ -2,6 +2,7 @@ import { Table } from "@tanstack/react-table";
 import { ComponentPropsWithRef } from "react";
 import React from "react";
 
+import ColumnFilter from "@/components/atoms/DataTable/TopBar/ColumnFilter";
 import ColumnSort from "@/components/atoms/DataTable/TopBar/ColumnSort";
 import ColumnVisibility from "@/components/atoms/DataTable/TopBar/ColumnVisibility";
 import TableActions from "@/components/atoms/DataTable/TopBar/TableActions";
@@ -21,7 +22,7 @@ const TopBar = <TData,>({ className, table, ...props }: TopBarProps<TData>) => (
     >
         <TableSearch table={table} />
         <ColumnSort table={table} />
-        {/* PLACEHOLDER ColumnFilter */}
+        <ColumnFilter table={table} />
         <ColumnVisibility table={table} />
         <TableActions table={table} />
     </div>

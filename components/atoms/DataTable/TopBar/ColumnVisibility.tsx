@@ -39,7 +39,7 @@ const ColumnVisibility = <TData,>({
             <PopoverTrigger asChild>
                 <Button
                     className={cn(
-                        "min-w-[200px] max-md:grow justify-between",
+                        "min-w-50 max-md:grow justify-between",
                         className
                     )}
                     role="combobox"
@@ -51,7 +51,7 @@ const ColumnVisibility = <TData,>({
                     <CaretUpDownIcon className="ml-2 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0 w-[var(--radix-popover-trigger-width)]">
+            <PopoverContent className="p-0 w-(--radix-popover-trigger-width)">
                 <Command>
                     <CommandInput className="h-9" placeholder="Zoek kolom..." />
                     <CommandList>
