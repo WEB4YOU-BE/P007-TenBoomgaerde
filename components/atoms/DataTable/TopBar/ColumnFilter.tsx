@@ -355,14 +355,14 @@ const ColumnFilter = <TData,>({
                                         filterType === "select";
                                     return (
                                         <div
-                                            className="flex items-center gap-2 px-2 py-1.5"
+                                            className="flex flex-col gap-1.5 px-2 py-2 border-b last:border-b-0"
                                             key={filter.id}
                                         >
-                                            <span className="text-sm min-w-20 truncate">
+                                            <span className="text-xs font-medium text-muted-foreground">
                                                 {column.columnDef.header?.toString()}
                                             </span>
                                             {isSelectType ? (
-                                                <span className="h-7 flex-1 flex items-center text-sm px-2 bg-muted rounded-md">
+                                                <span className="h-8 flex items-center text-sm px-3 bg-muted rounded-md">
                                                     {formatFilterValue(
                                                         column,
                                                         filter.value
@@ -370,6 +370,7 @@ const ColumnFilter = <TData,>({
                                                 </span>
                                             ) : (
                                                 <FilterInput
+                                                    className="h-8"
                                                     column={column}
                                                     onChange={(value) => {
                                                         handleUpdateFilter(
@@ -386,16 +387,17 @@ const ColumnFilter = <TData,>({
                                                 />
                                             )}
                                             <Button
-                                                className="size-7"
+                                                className="h-8 w-full"
                                                 onClick={() => {
                                                     handleRemoveFilter(
                                                         filter.id
                                                     );
                                                 }}
-                                                size="icon"
-                                                variant="ghost"
+                                                size="sm"
+                                                variant="destructive"
                                             >
-                                                <XIcon className="opacity-50" />
+                                                <XIcon />
+                                                Verwijder
                                             </Button>
                                         </div>
                                     );
@@ -406,12 +408,13 @@ const ColumnFilter = <TData,>({
                         {/* Add new filter - column selection or input */}
                         {selectedColumn ? (
                             <CommandGroup heading="Nieuwe filter">
-                                <div className="flex items-center gap-2 px-2 py-1.5">
-                                    <span className="text-sm min-w-20 truncate">
+                                <div className="flex flex-col gap-2 px-2 py-2">
+                                    <span className="text-xs font-medium text-muted-foreground">
                                         {selectedColumn.columnDef.header?.toString()}
                                     </span>
                                     <FilterInput
                                         autoFocus
+                                        className="h-8"
                                         column={selectedColumn}
                                         onChange={setFilterInputValue}
                                         onKeyDown={(e) => {
@@ -424,25 +427,29 @@ const ColumnFilter = <TData,>({
                                         }}
                                         value={filterInputValue}
                                     />
-                                    <Button
-                                        className="h-7"
-                                        onClick={handleApplyFilter}
-                                        size="sm"
-                                        variant="default"
-                                    >
-                                        <FunnelIcon />
-                                    </Button>
-                                    <Button
-                                        className="size-7"
-                                        onClick={() => {
-                                            setSelectedColumnId(null);
-                                            setFilterInputValue("");
-                                        }}
-                                        size="icon"
-                                        variant="ghost"
-                                    >
-                                        <XIcon className="opacity-50" />
-                                    </Button>
+                                    <div className="flex flex-col gap-2">
+                                        <Button
+                                            className="h-8 w-full"
+                                            onClick={handleApplyFilter}
+                                            size="sm"
+                                            variant="default"
+                                        >
+                                            <FunnelIcon />
+                                            Toepassen
+                                        </Button>
+                                        <Button
+                                            className="h-8 w-full"
+                                            onClick={() => {
+                                                setSelectedColumnId(null);
+                                                setFilterInputValue("");
+                                            }}
+                                            size="sm"
+                                            variant="outline"
+                                        >
+                                            <XIcon />
+                                            Annuleren
+                                        </Button>
+                                    </div>
                                 </div>
                             </CommandGroup>
                         ) : (
