@@ -138,6 +138,7 @@ const columns = [
     columnHelper.accessor(({ is_party }) => (is_party ? "Ja" : "Nee"), {
         header: "Feest",
         id: "is_party",
+        meta: { filterType: "boolean" },
     }),
     columnHelper.accessor(
         ({ reservations_halls }) =>
@@ -156,6 +157,14 @@ const columns = [
         ),
         header: "Status",
         id: "status",
+        meta: {
+            filterOptions: [
+                { label: "Goedgekeurd", value: "Goedgekeurd" },
+                { label: "In afwachting", value: "In afwachting" },
+                { label: "Afgewezen", value: "Afgewezen" },
+            ],
+            filterType: "select",
+        },
         sortingFn: (rowA, rowB) => {
             const a = getReservationStatusLabel(rowA.original.status);
             const b = getReservationStatusLabel(rowB.original.status);
@@ -193,7 +202,18 @@ const columns = [
     columnHelper.accessor(
         ({ invoiced }) =>
             invoiced ? "ja" : invoiced === false ? "nee" : "onbekend",
-        { header: "Gefactureerd", id: "invoiced" }
+        {
+            header: "Gefactureerd",
+            id: "invoiced",
+            meta: {
+                filterOptions: [
+                    { label: "Ja", value: "ja" },
+                    { label: "Nee", value: "nee" },
+                    { label: "Onbekend", value: "onbekend" },
+                ],
+                filterType: "select",
+            },
+        }
     ),
 ];
 

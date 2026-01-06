@@ -109,6 +109,7 @@ const columns = [
     columnHelper.accessor((row) => (row.is_admin ? "ja" : "nee"), {
         header: "Admin",
         id: "is_admin",
+        meta: { filterType: "boolean" },
     }),
 ];
 

@@ -75,14 +75,17 @@ const columns = [
     columnHelper.accessor((row) => (row.is_private ? "Ja" : "Nee"), {
         header: "Privé",
         id: "is_private",
+        meta: { filterType: "boolean" },
     }),
     columnHelper.accessor((row) => row.price_per_day ?? "-", {
         header: "Prijs per tijdsblok",
         id: "price_per_day",
+        meta: { filterType: "number" },
     }),
     columnHelper.accessor((row) => row.price_per_day_discount ?? "-", {
         header: "Korting per tijdsblok",
         id: "price_per_day_discount",
+        meta: { filterType: "number" },
     }),
 ];
 

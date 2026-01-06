@@ -5,7 +5,7 @@ import {
     TrashIcon,
     XIcon,
 } from "@phosphor-icons/react/dist/ssr";
-import { Table } from "@tanstack/react-table";
+import { Column, Table } from "@tanstack/react-table";
 import React, {
     CustomComponentPropsWithRef,
     useCallback,
@@ -28,6 +28,13 @@ import Popover, {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/atoms/Popover";
+import Select, {
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/atoms/Select";
+import { ColumnFilterType } from "@/types/features/table/columnFilter/ColumnFilterMeta";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface ColumnFilterProps<TData> extends CustomComponentPropsWithRef<
@@ -35,6 +42,210 @@ interface ColumnFilterProps<TData> extends CustomComponentPropsWithRef<
 > {
     table: Table<TData>;
 }
+
+// Helper to determine the filter type for a column
+const getColumnFilterType = <TData,>(
+    column: Column<TData>
+): ColumnFilterType => {
+    // Check if meta specifies a filter type
+    const meta = column.columnDef.meta;
+    if (meta?.filterType) {
+        return meta.filterType;
+    }
+    // Default to text
+    return "text";
+};
+
+// Helper to get filter options for select type
+const getFilterOptions = <TData,>(
+    column: Column<TData>
+): { label: string; value: string }[] => {
+    const meta = column.columnDef.meta;
+    return meta?.filterOptions ?? [];
+};
+
+// Helper to get placeholder
+const getFilterPlaceholder = <TData,>(column: Column<TData>): string => {
+    const meta = column.columnDef.meta;
+    if (meta?.filterPlaceholder) {
+        return meta.filterPlaceholder;
+    }
+    const filterType = getColumnFilterType(column);
+    switch (filterType) {
+        case "boolean":
+            return "Kies...";
+        case "select":
+            return "Selecteer...";
+        case "number":
+            return "Getal...";
+        case "date":
+            return "Datum...";
+        default:
+            return "Filter...";
+    }
+};
+
+// Boolean options for boolean filter type
+const BOOLEAN_OPTIONS = [
+    { label: "Ja", value: "true" },
+    { label: "Nee", value: "false" },
+];
+
+interface FilterInputProps<TData> {
+    column: Column<TData>;
+    value: string;
+    onChange: (value: string) => void;
+    onKeyDown?: (e: React.KeyboardEvent) => void;
+    autoFocus?: boolean;
+    className?: string;
+}
+
+const FilterInput = <TData,>({
+    column,
+    value,
+    onChange,
+    onKeyDown,
+    autoFocus,
+    className,
+}: FilterInputProps<TData>) => {
+    const filterType = getColumnFilterType(column);
+    const placeholder = getFilterPlaceholder(column);
+
+    const handleStopPropagation = (
+        e: React.KeyboardEvent | React.MouseEvent
+    ) => {
+        e.stopPropagation();
+    };
+
+    switch (filterType) {
+        case "boolean":
+            return (
+                <Select onValueChange={onChange} value={value}>
+                    <SelectTrigger
+                        className={cn("h-7 flex-1", className)}
+                        onClick={handleStopPropagation}
+                    >
+                        <SelectValue placeholder={placeholder} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {BOOLEAN_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            );
+
+        case "select": {
+            const options = getFilterOptions(column);
+            return (
+                <Select onValueChange={onChange} value={value}>
+                    <SelectTrigger
+                        className={cn("h-7 flex-1", className)}
+                        onClick={handleStopPropagation}
+                    >
+                        <SelectValue placeholder={placeholder} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {options.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            );
+        }
+
+        case "number":
+            return (
+                <Input
+                    autoFocus={autoFocus}
+                    className={cn("h-7 flex-1", className)}
+                    onChange={(e) => {
+                        onChange(e.target.value);
+                    }}
+                    onClick={handleStopPropagation}
+                    onKeyDown={(e) => {
+                        handleStopPropagation(e);
+                        onKeyDown?.(e);
+                    }}
+                    placeholder={placeholder}
+                    type="number"
+                    value={value}
+                />
+            );
+
+        case "date":
+            return (
+                <Input
+                    autoFocus={autoFocus}
+                    className={cn("h-7 flex-1", className)}
+                    onChange={(e) => {
+                        onChange(e.target.value);
+                    }}
+                    onClick={handleStopPropagation}
+                    onKeyDown={(e) => {
+                        handleStopPropagation(e);
+                        onKeyDown?.(e);
+                    }}
+                    placeholder={placeholder}
+                    type="date"
+                    value={value}
+                />
+            );
+
+        case "text":
+        default:
+            return (
+                <Input
+                    autoFocus={autoFocus}
+                    className={cn("h-7 flex-1", className)}
+                    onChange={(e) => {
+                        onChange(e.target.value);
+                    }}
+                    onClick={handleStopPropagation}
+                    onKeyDown={(e) => {
+                        handleStopPropagation(e);
+                        onKeyDown?.(e);
+                    }}
+                    placeholder={placeholder}
+                    type="text"
+                    value={value}
+                />
+            );
+    }
+};
+
+// Helper to format filter value for display
+const formatFilterValue = <TData,>(
+    column: Column<TData>,
+    value: unknown
+): string => {
+    const filterType = getColumnFilterType(column);
+
+    if (value === null || value === undefined || value === "") {
+        return "";
+    }
+
+    const stringValue =
+        typeof value === "string" ? value : JSON.stringify(value);
+
+    switch (filterType) {
+        case "boolean": {
+            const option = BOOLEAN_OPTIONS.find((o) => o.value === stringValue);
+            return option?.label ?? stringValue;
+        }
+        case "select": {
+            const options = getFilterOptions(column);
+            const option = options.find((o) => o.value === stringValue);
+            return option?.label ?? stringValue;
+        }
+        default:
+            return stringValue;
+    }
+};
 
 const ColumnFilter = <TData,>({
     className,
@@ -59,20 +270,22 @@ const ColumnFilter = <TData,>({
         [currentFilters, filterableColumns]
     );
 
+    const selectedColumn = selectedColumnId
+        ? table.getColumn(selectedColumnId)
+        : null;
+
     const handleSelectColumn = useCallback((columnId: string) => {
         setSelectedColumnId(columnId);
         setFilterInputValue("");
     }, []);
 
     const handleApplyFilter = useCallback(() => {
-        if (!selectedColumnId) return;
-        const column = table.getColumn(selectedColumnId);
-        if (!column) return;
+        if (!selectedColumnId || !selectedColumn) return;
 
-        column.setFilterValue(filterInputValue || undefined);
+        selectedColumn.setFilterValue(filterInputValue || undefined);
         setSelectedColumnId(null);
         setFilterInputValue("");
-    }, [selectedColumnId, filterInputValue, table]);
+    }, [selectedColumnId, selectedColumn, filterInputValue]);
 
     const handleRemoveFilter = useCallback(
         (columnId: string) => {
@@ -135,6 +348,11 @@ const ColumnFilter = <TData,>({
                                 {currentFilters.map((filter) => {
                                     const column = table.getColumn(filter.id);
                                     if (!column) return null;
+                                    const filterType =
+                                        getColumnFilterType(column);
+                                    const isSelectType =
+                                        filterType === "boolean" ||
+                                        filterType === "select";
                                     return (
                                         <div
                                             className="flex items-center gap-2 px-2 py-1.5"
@@ -143,26 +361,30 @@ const ColumnFilter = <TData,>({
                                             <span className="text-sm min-w-20 truncate">
                                                 {column.columnDef.header?.toString()}
                                             </span>
-                                            <Input
-                                                className="h-7 flex-1"
-                                                onChange={(e) => {
-                                                    handleUpdateFilter(
-                                                        filter.id,
-                                                        e.target.value
-                                                    );
-                                                }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                }}
-                                                onKeyDown={(e) => {
-                                                    e.stopPropagation();
-                                                }}
-                                                placeholder="Filter..."
-                                                value={
-                                                    (filter.value as string) ||
-                                                    ""
-                                                }
-                                            />
+                                            {isSelectType ? (
+                                                <span className="h-7 flex-1 flex items-center text-sm px-2 bg-muted rounded-md">
+                                                    {formatFilterValue(
+                                                        column,
+                                                        filter.value
+                                                    )}
+                                                </span>
+                                            ) : (
+                                                <FilterInput
+                                                    column={column}
+                                                    onChange={(value) => {
+                                                        handleUpdateFilter(
+                                                            filter.id,
+                                                            value
+                                                        );
+                                                    }}
+                                                    value={
+                                                        typeof filter.value ===
+                                                        "string"
+                                                            ? filter.value
+                                                            : ""
+                                                    }
+                                                />
+                                            )}
                                             <Button
                                                 className="size-7"
                                                 onClick={() => {
@@ -182,25 +404,17 @@ const ColumnFilter = <TData,>({
                         )}
 
                         {/* Add new filter - column selection or input */}
-                        {selectedColumnId ? (
+                        {selectedColumn ? (
                             <CommandGroup heading="Nieuwe filter">
                                 <div className="flex items-center gap-2 px-2 py-1.5">
                                     <span className="text-sm min-w-20 truncate">
-                                        {table
-                                            .getColumn(selectedColumnId)
-                                            ?.columnDef.header?.toString()}
+                                        {selectedColumn.columnDef.header?.toString()}
                                     </span>
-                                    <Input
+                                    <FilterInput
                                         autoFocus
-                                        className="h-7 flex-1"
-                                        onChange={(e) => {
-                                            setFilterInputValue(e.target.value);
-                                        }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                        }}
+                                        column={selectedColumn}
+                                        onChange={setFilterInputValue}
                                         onKeyDown={(e) => {
-                                            e.stopPropagation();
                                             if (e.key === "Enter") {
                                                 handleApplyFilter();
                                             } else if (e.key === "Escape") {
@@ -208,7 +422,6 @@ const ColumnFilter = <TData,>({
                                                 setFilterInputValue("");
                                             }
                                         }}
-                                        placeholder="Filter waarde..."
                                         value={filterInputValue}
                                     />
                                     <Button
