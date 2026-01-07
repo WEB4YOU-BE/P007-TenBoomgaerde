@@ -12,11 +12,12 @@ import Table, {
 } from "@/components/atoms/Table";
 
 interface DataTableProps<TData> {
+    hideFilter?: boolean;
     table: TTable<TData>;
 }
-const DataTable = <TData,>({ table }: DataTableProps<TData>) => (
+const DataTable = <TData,>({ hideFilter, table }: DataTableProps<TData>) => (
     <div className="flex flex-col gap-2">
-        <TopBar table={table} />
+        <TopBar hideFilter={hideFilter} table={table} />
         <div className="rounded-md border">
             <Table>
                 <TableHeader>
