@@ -10,28 +10,27 @@ import TableSearch from "@/components/atoms/DataTable/TopBar/TableSearch";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 
 interface TopBarProps<TData> extends ComponentPropsWithRef<"div"> {
-    hideFilter?: boolean;
     table: Table<TData>;
 }
-const TopBar = <TData,>({
-    className,
-    hideFilter,
-    table,
-    ...props
-}: TopBarProps<TData>) => (
-    <div
-        className={cn(
-            "flex flex-col gap-2 items-stretch md:items-center md:flex-row",
-            className
-        )}
-        {...props}
-    >
-        <TableSearch table={table} />
-        <ColumnSort table={table} />
-        {!hideFilter && <ColumnFilter table={table} />}
-        <ColumnVisibility table={table} />
-        <TableActions table={table} />
-    </div>
-);
+const TopBar = <TData,>({ className, table, ...props }: TopBarProps<TData>) => {
+    // Check if column filtering is enabled via table options
+    const enableColumnFilters = table.options.enableColumnFilters !== false;
+
+    return (
+        <div
+            className={cn(
+                "flex flex-col gap-2 items-stretch md:items-center md:flex-row",
+                className
+            )}
+            {...props}
+        >
+            <TableSearch table={table} />
+            <ColumnSort table={table} />
+            {enableColumnFilters && <ColumnFilter table={table} />}
+            <ColumnVisibility table={table} />
+            <TableActions table={table} />
+        </div>
+    );
+};
 
 export default TopBar;

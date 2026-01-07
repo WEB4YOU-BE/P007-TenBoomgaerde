@@ -4,6 +4,7 @@ import { ArrowsOutSimpleIcon } from "@phosphor-icons/react/dist/ssr";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+    ColumnFiltersState,
     createColumnHelper,
     getCoreRowModel,
     getFilteredRowModel,
@@ -382,86 +383,34 @@ const createActions: (queryClient: QueryClient) => RowAction<TData>[] = (
     },
 ];
 
-type FilterType = "pending" | "toInvoice" | "thisWeek" | "thisMonth";
-
 interface FilteredReservationTableProps {
     cardDescription: string;
     cardTitle: string;
-    filterType: FilterType;
+    columnFilters: ColumnFiltersState;
     reservations: TData[];
 }
 
 const FilteredReservationTable = ({
     cardDescription,
     cardTitle,
-    filterType,
+    columnFilters,
     reservations,
 }: FilteredReservationTableProps) => {
     const queryClient = useQueryClient();
-
-    // Filter data based on filter type
-    const filteredData = useMemo(() => {
-        const now = new Date();
-        const inSevenDays = addDays(now, 7);
-        const inOneMonth = addMonths(now, 1);
-
-        switch (filterType) {
-            case "pending":
-                return reservations.filter((r) => r.status === "PENDING");
-            case "toInvoice":
-                return reservations.filter((r) => r.invoiced === false);
-            case "thisWeek":
-                return reservations.filter((r) => {
-                    if (r.status === "DECLINED") return false;
-                    const start = r.start ? new Date(r.start) : null;
-                    const end = r.end ? new Date(r.end) : null;
-                    if (!start && !end) return false;
-                    // Check if start or end falls within now to 7 days from now
-                    const startsInRange =
-                        start && start >= now && start <= inSevenDays;
-                    const endsInRange = end && end >= now && end <= inSevenDays;
-                    const spansRange =
-                        start && end && start <= now && end >= now;
-                    return (
-                        Boolean(startsInRange) ||
-                        Boolean(endsInRange) ||
-                        Boolean(spansRange)
-                    );
-                });
-            case "thisMonth":
-                return reservations.filter((r) => {
-                    if (r.status === "DECLINED") return false;
-                    const start = r.start ? new Date(r.start) : null;
-                    const end = r.end ? new Date(r.end) : null;
-                    if (!start && !end) return false;
-                    // Check if start or end falls within now to 1 month from now
-                    const startsInRange =
-                        start && start >= now && start <= inOneMonth;
-                    const endsInRange = end && end >= now && end <= inOneMonth;
-                    const spansRange =
-                        start && end && start <= now && end >= now;
-                    return (
-                        Boolean(startsInRange) ||
-                        Boolean(endsInRange) ||
-                        Boolean(spansRange)
-                    );
-                });
-            default:
-                return reservations;
-        }
-    }, [filterType, reservations]);
 
     const table = useReactTable<TData>({
         _features: [RowActionsFeature<TData>()],
         actions: createActions(queryClient),
         columns,
-        data: filteredData,
+        data: reservations,
+        enableColumnFilters: false,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getRowId: (row) => row.id,
         getSortedRowModel: getSortedRowModel(),
         initialState: {
+            columnFilters,
             columnPinning: { left: ["select"] },
             pagination: { pageIndex: 0, pageSize: 10 },
             sorting: [{ desc: false, id: "dates" }],
@@ -475,7 +424,7 @@ const FilteredReservationTable = ({
                 <CardDescription>{cardDescription}</CardDescription>
             </CardHeader>
             <CardContent>
-                <DataTable hideFilter table={table} />
+                <DataTable table={table} />
             </CardContent>
         </Card>
     );
@@ -488,30 +437,38 @@ const DashboardReservationTables = () => {
     });
     const reservations = useMemo(() => data ?? [], [data]);
 
+    // Calculate date filters
+    const now = new Date();
+    const inSevenDays = addDays(now, 7);
+    const inOneMonth = addMonths(now, 1);
+
     return (
-        <div className="flex flex-col gap-6 px-4 lg:px-6">
+        <div className="flex flex-col gap-6 px-4 pt-4 lg:px-6">
             <FilteredReservationTable
                 cardDescription="Reserveringen met status 'In afwachting' die nog goedgekeurd moeten worden"
                 cardTitle="Te controleren"
-                filterType="pending"
+                columnFilters={[{ id: "status", value: "In afwachting" }]}
                 reservations={reservations}
             />
             <FilteredReservationTable
                 cardDescription="Reserveringen die nog gefactureerd moeten worden"
                 cardTitle="Te factureren"
-                filterType="toInvoice"
+                columnFilters={[
+                    { id: "invoiced", value: "nee" },
+                    { id: "status", value: "Goedgekeurd" },
+                ]}
                 reservations={reservations}
             />
             <FilteredReservationTable
                 cardDescription="Reserveringen met een start of eind in de komende 7 dagen"
                 cardTitle="Deze week"
-                filterType="thisWeek"
+                columnFilters={[{ id: "dates", value: [now, inSevenDays] }]}
                 reservations={reservations}
             />
             <FilteredReservationTable
                 cardDescription="Reserveringen met een start of eind in de komende maand"
                 cardTitle="Deze maand"
-                filterType="thisMonth"
+                columnFilters={[{ id: "dates", value: [now, inOneMonth] }]}
                 reservations={reservations}
             />
         </div>
