@@ -57,7 +57,7 @@ const SidebarAuthentication = () => {
     return (
         <SidebarMenu>
             <SidebarMenuItem>
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton className="group/dropdown">
                             {isLoading && (
