@@ -33,6 +33,7 @@ import filterByDateRange from "@/utils/table/filters/filterByDateRange";
 import { cn } from "@/utils/tailwindcss/mergeClassNames";
 import { BadgeVariantProps } from "@/utils/tailwindcss/variants/badgeVariants";
 import buttonVariants from "@/utils/tailwindcss/variants/buttonVariants";
+import * as XLSX from "@e965/xlsx";
 
 type TData = NonNullable<GetReservationsResponse>[number];
 
@@ -381,6 +382,58 @@ const actions: (queryClient: QueryClient) => RowAction<TData>[] = (
             );
         },
         id: "mark-as-not-invoiced",
+    },
+    {
+        buttonLabel: "Exporteer naar Excel",
+        // disabled: (table) => table.getRowModel().rows.length === 0,
+        fn: (table) => {
+            toast.promise(
+                async () => {
+                    const data = table.getRowModel().rows.reduce((acc, row) => {
+                        return [
+                            ...acc,
+                            row
+                                .getAllCells()
+                                .reduce<
+                                    Record<string, unknown>
+                                >((obj, cell) => {
+                                    if (cell.column.id === "select") return obj;
+
+                                    // columnDef.header can be a React node or a function —
+                                    // use it only when it's a string, otherwise fall back to the column id
+                                    const headerKey =
+                                        typeof cell.column.columnDef.header ===
+                                        "string"
+                                            ? cell.column.columnDef.header
+                                            : cell.column.id;
+
+                                    obj[headerKey] = cell.getValue();
+                                    return obj;
+                                }, {}),
+                        ];
+                    }, Array<Record<string, unknown>>());
+
+                    const workbook = XLSX.utils.book_new();
+                    const worksheet = XLSX.utils.json_to_sheet(data);
+                    XLSX.utils.book_append_sheet(
+                        workbook,
+                        worksheet,
+                        "Reserveringen"
+                    );
+
+                    XLSX.writeFile(workbook, "reserveringen.xlsx", {});
+
+                    await Promise.resolve(); // Allow sheet to be appended before adding data
+                },
+                {
+                    error: (error) =>
+                        `Fout bij exporteren: ${error instanceof Error ? error.message : String(error)}`,
+                    loading: "Bezig met exporteren naar Excel...",
+                    success: "Exporteren naar Excel succesvol!",
+                }
+            );
+        },
+        id: "export-to-excel",
     },
 ];
 
